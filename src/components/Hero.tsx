@@ -14,17 +14,20 @@ import {
   X,
   CheckCircle2,
   Cpu,
+  Terminal,
 } from 'lucide-react';
 import { WORKFLOW_MODES, type WorkflowMode } from '@/lib/data';
 import ParticleCanvas from '@/components/ParticleCanvas';
+import ThreeHookCanvas from '@/components/ThreeHookCanvas';
 
 const STUDIO_URL = 'https://dify-n8n-workflow.ai.studio/';
-const MAGENTA = '#FF0055';
+const ELECTRIC_PURPLE = '#5322ff';
+const ELECTRIC_CYAN = '#00E5FF';
 
 const PRESETS = [
-  { label: 'Sneaker E-com SKU', url: 'https://shop.nike.com/air-jordan-1-2024' },
-  { label: 'SaaS Pitchdeck', url: 'https://docs.startup.io/pitchdeck-series-a.pdf' },
-  { label: 'Financial Report PDF', url: 'https://reports.fintech.io/q4-2024-annual.pdf' },
+  { label: 'Swiss Design System SKU', url: 'https://craft.code/air-jordan-1-2024' },
+  { label: 'Brutalist Pitchdeck PDF', url: 'https://docs.artcraft.io/pitchdeck.pdf' },
+  { label: 'Deterministic Financial Index', url: 'https://reports.artcraft.io/q4-annual.pdf' },
 ];
 
 type NodeDef = {
@@ -51,7 +54,7 @@ function nodeById(id: string) {
 }
 
 function accentColor(accent: 'cyan' | 'purple') {
-  return accent === 'cyan' ? '#00E5FF' : '#7C3AED';
+  return accent === 'cyan' ? ELECTRIC_CYAN : ELECTRIC_PURPLE;
 }
 
 function MetricRow({
@@ -66,10 +69,10 @@ function MetricRow({
   color: string;
 }) {
   return (
-    <div className="flex items-center gap-3 rounded-lg border border-zinc-800/80 bg-white/[0.02] px-3 py-2.5">
+    <div className="flex items-center gap-3 border border-zinc-800 bg-zinc-950 px-3 py-2.5 font-mono">
       <Icon className="h-4 w-4 shrink-0" style={{ color }} />
-      <span className="text-[13px] text-zinc-400">{label}</span>
-      <span className="ml-auto font-mono text-[14px] font-semibold text-white">{value}</span>
+      <span className="text-[12px] text-zinc-400">{label}</span>
+      <span className="ml-auto text-[13px] font-bold text-white">{value}</span>
     </div>
   );
 }
@@ -144,7 +147,7 @@ export default function Hero() {
     setActiveNodeIdx(0);
 
     const startTime = performance.now();
-    const duration = 3000;
+    const duration = 2800;
     const nodeCount = renderNodes.length;
 
     const tick = (now: number) => {
@@ -176,104 +179,129 @@ export default function Hero() {
   const isSimulating = simState === 'running';
 
   return (
-    <section className="relative pt-32 pb-24 lg:pt-40 lg:pb-32 overflow-hidden" id="platform">
-      {/* Ambient particle canvas */}
-      <ParticleCanvas className="absolute inset-0 opacity-40" />
+    <section className="relative pt-28 pb-20 lg:pt-36 lg:pb-28 overflow-hidden bg-[#09090b]" id="platform">
+      {/* Background Particle Canvas */}
+      <ParticleCanvas className="absolute inset-0 opacity-25 pointer-events-none" />
+
+      {/* Grid background overlay */}
       <div
-        className="absolute inset-0 opacity-70"
+        className="absolute inset-0 opacity-15 pointer-events-none"
         style={{
-          background:
-            'radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0,229,255,0.06), transparent 60%), radial-gradient(ellipse 60% 40% at 70% 30%, rgba(255,0,85,0.04), transparent 60%)',
+          backgroundImage:
+            'linear-gradient(to right, #3f3f46 1px, transparent 1px), linear-gradient(to bottom, #3f3f46 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#09090b]" />
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-        {/* Eyebrow */}
+        {/* Top Telemetry / Status Pill */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="flex justify-center"
         >
-          <div className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-white/[0.02] px-3 py-1.5">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+          <div className="inline-flex items-center gap-2.5 border border-zinc-800 bg-zinc-950/80 px-3.5 py-1.5 font-mono text-[11px] text-zinc-300 tracking-wider">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-[#5322ff] opacity-75 animate-ping" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#00E5FF]" />
             </span>
-            <span className="font-mono text-[11px] text-zinc-400 tracking-wide">
-              INFRASTRUCTURE ONLINE · 14 REGIONS · 99.99% SLA
-            </span>
+            <span className="text-zinc-500 uppercase">SYS//TELEMETRY:</span>
+            <span className="text-white font-bold">14 REGIONS ONLINE</span>
+            <span className="text-zinc-600">|</span>
+            <span className="text-cyan-glow font-semibold">99.99% DETERMINISTIC SLA</span>
           </div>
         </motion.div>
 
-        {/* Headline */}
-        <motion.h1
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.05 }}
-          className="mt-8 text-center text-[34px] sm:text-5xl lg:text-6xl font-semibold tracking-[-0.03em] leading-[1.06] text-white"
-        >
-          Stop Building Fragile AI.
-          <br />
-          <span className="text-gradient-cyan-magenta">
-            Orchestrate Enterprise-Grade Deterministic Workflows.
-          </span>
-        </motion.h1>
+        {/* Hero split layout with 3D Hook Canvas */}
+        <div className="mt-8 grid lg:grid-cols-12 gap-8 items-center">
+          {/* Left Column: Brand Copy & CTAs */}
+          <div className="lg:col-span-7 text-left">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.05 }}
+            >
+              <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-cyan-glow border border-zinc-800 bg-zinc-900/60 px-2.5 py-1 mb-4">
+                <span>CRAFT//CODE</span>
+                <span>•</span>
+                <span>METICULOUS GRAPHIC PRECISION MEETS CODE AUTOMATION</span>
+              </div>
+              <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-[1.02] uppercase font-mono">
+                ARTIFICIAL
+                <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00E5FF] via-white to-[#5322ff]">
+                  CRAFT
+                </span>
+              </h1>
+            </motion.div>
 
-        {/* Subtitle */}
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.12 }}
-          className="mt-6 max-w-2xl mx-auto text-center text-[17px] leading-relaxed text-zinc-400"
-        >
-          Unifying Dify's Reasoning Engine with n8n's Execution Orchestrator.
-        </motion.p>
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.12 }}
+              className="mt-6 text-[16px] sm:text-[18px] leading-relaxed text-zinc-300 font-sans max-w-xl border-l-2 border-[#5322ff] pl-4"
+            >
+              Where Meticulous Graphic Design Meets Deterministic AI Automation. Unifying Dify Reasoning & n8n Orchestration.
+            </motion.p>
 
-        {/* CTAs */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.18 }}
-          className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-3"
-        >
-          <a
-            href={STUDIO_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative animate-glow-breathe inline-flex items-center gap-2 rounded-full text-sm font-semibold px-6 py-3 text-white transition-all duration-300"
-            style={{
-              background: 'linear-gradient(135deg, rgba(0,229,255,0.18), rgba(124,58,237,0.14))',
-              border: '1px solid rgba(0,229,255,0.5)',
-            }}
-          >
-            <span
-              className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              style={{ boxShadow: '0 0 0 1px rgba(0,229,255,0.9), 0 0 32px -2px rgba(0,229,255,0.6)' }}
-            />
-            <Zap className="relative h-4 w-4 text-cyan-glow" />
-            <span className="relative">Launch Autopilot Dashboard</span>
-            <ChevronRight className="relative h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-          </a>
-          <a
-            href="#blueprints"
-            className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-white/[0.02] text-sm text-zinc-300 px-5 py-3 hover:bg-white/[0.05] hover:text-white transition-colors"
-          >
-            Explore blueprints
-          </a>
-        </motion.div>
+            {/* Brutalist CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.18 }}
+              className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 font-mono"
+            >
+              <a
+                href={STUDIO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative inline-flex items-center justify-center gap-2 text-sm font-bold px-6 py-3.5 text-white transition-all duration-300 bg-zinc-950 hover:bg-[#5322ff]"
+                style={{
+                  border: '1px solid #5322ff',
+                  boxShadow: '0 0 16px 2px rgba(83, 34, 255, 0.5)',
+                }}
+              >
+                <Terminal className="h-4 w-4 text-cyan-glow" />
+                <span>Launch Autopilot Studio</span>
+                <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </a>
+              <a
+                href="#blueprints"
+                className="inline-flex items-center justify-center gap-2 border border-zinc-800 bg-zinc-900 text-sm font-semibold text-zinc-300 px-5 py-3.5 hover:bg-zinc-800 hover:text-white transition-colors"
+              >
+                EXPLORE BLUEPRINTS
+              </a>
+            </motion.div>
+          </div>
 
-        {/* Simulation Sandbox */}
+          {/* Right Column: 3D Three.js Interactive Hook Canvas */}
+          <div className="lg:col-span-5 relative h-[320px] sm:h-[400px] border border-zinc-800 bg-zinc-950/80 overflow-hidden group">
+            {/* Corner Brutalist Frame Accents */}
+            <div className="absolute top-2 left-2 z-10 font-mono text-[9px] text-zinc-500 uppercase tracking-widest bg-zinc-900 px-1.5 py-0.5 border border-zinc-800">
+              3D_HOOK//PARALLAX
+            </div>
+            <div className="absolute top-2 right-2 z-10 font-mono text-[9px] text-cyan-glow bg-zinc-900 px-1.5 py-0.5 border border-zinc-800">
+              60FPS INTERACTIVE
+            </div>
+            <div className="absolute bottom-2 left-2 z-10 font-mono text-[9px] text-zinc-500">
+              POS [X: MOUSE, Y: MOUSE]
+            </div>
+
+            <ThreeHookCanvas className="w-full h-full" />
+          </div>
+        </div>
+
+        {/* Simulation Control Sandbox */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.24 }}
-          className="mt-10 mx-auto max-w-3xl"
+          className="mt-12 mx-auto max-w-3xl font-mono"
         >
-          <div className="rounded-2xl border border-zinc-800/80 bg-[#0b0b0f]/80 backdrop-blur-sm p-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            <div className="flex items-center gap-2 flex-1 rounded-xl border border-zinc-800 bg-[#09090b] px-3 py-2.5">
-              <Link2 className="h-4 w-4 text-zinc-600 shrink-0" />
+          <div className="border border-zinc-800 bg-zinc-950 p-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <div className="flex items-center gap-2 flex-1 border border-zinc-800 bg-[#09090b] px-3 py-2">
+              <Link2 className="h-4 w-4 text-zinc-500 shrink-0" />
               <input
                 type="text"
                 value={simUrl}
@@ -281,44 +309,40 @@ export default function Hero() {
                   setSimUrl(e.target.value);
                   setActivePreset(null);
                 }}
-                placeholder="Paste a URL to simulate..."
-                className="bg-transparent text-[13px] text-zinc-200 placeholder-zinc-600 outline-none flex-1 font-mono min-w-0"
+                placeholder="Paste endpoint or URL to trigger workflow..."
+                className="bg-transparent text-[12px] text-zinc-200 placeholder-zinc-600 outline-none flex-1 font-mono min-w-0"
               />
             </div>
             <button
               onClick={runSimulation}
               disabled={isSimulating}
-              className="inline-flex items-center justify-center gap-2 rounded-xl text-[13px] font-semibold px-5 py-2.5 text-white transition-all shrink-0 disabled:opacity-50"
-              style={{
-                background: 'linear-gradient(135deg, rgba(0,229,255,0.15), rgba(255,0,85,0.15))',
-                border: '1px solid rgba(0,229,255,0.3)',
-              }}
+              className="inline-flex items-center justify-center gap-2 border border-[#5322ff] bg-[#5322ff]/20 text-[12px] font-bold px-5 py-2.5 text-white transition-all hover:bg-[#5322ff] shrink-0 disabled:opacity-50"
             >
               {isSimulating ? (
                 <>
                   <Activity className="h-4 w-4 animate-pulse text-cyan-glow" />
-                  Simulating...
+                  EXECUTING NODE...
                 </>
               ) : (
                 <>
                   <Play className="h-3.5 w-3.5 text-cyan-glow" />
-                  Simulate Flow
+                  RUN SIMULATOR
                 </>
               )}
             </button>
           </div>
           <div className="flex flex-wrap items-center gap-2 mt-3 justify-center">
             <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-600 mr-1">
-              Try:
+              PRESET ENGINE:
             </span>
             {PRESETS.map((p) => (
               <button
                 key={p.label}
                 onClick={() => handlePreset(p)}
-                className={`rounded-full border px-3 py-1 text-[11.5px] transition-colors ${
+                className={`border px-3 py-1 font-mono text-[11px] transition-colors ${
                   activePreset === p.label
-                    ? 'border-cyan-glow/40 bg-cyan-glow/10 text-cyan-glow'
-                    : 'border-zinc-800 bg-white/[0.02] text-zinc-500 hover:text-zinc-300 hover:border-zinc-700'
+                    ? 'border-[#00E5FF] bg-[#00E5FF]/10 text-[#00E5FF]'
+                    : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-white hover:border-zinc-700'
                 }`}
               >
                 {p.label}
@@ -327,19 +351,19 @@ export default function Hero() {
           </div>
         </motion.div>
 
-        {/* Workflow Simulator */}
+        {/* Workflow Simulator Card */}
         <motion.div
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.3 }}
-          className="mt-10 lg:mt-14"
+          className="mt-10 lg:mt-12 font-mono"
         >
           {/* Mode selector */}
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-2 mb-5">
-            <span className="font-mono text-[11px] text-zinc-600 uppercase tracking-widest sm:mr-2">
-              Workflow
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-2 mb-4">
+            <span className="font-mono text-[11px] text-zinc-500 uppercase tracking-widest sm:mr-2">
+              WORKFLOW ENGINE:
             </span>
-            <div className="inline-flex flex-wrap gap-1 rounded-xl border border-zinc-800 bg-white/[0.02] p-1">
+            <div className="inline-flex flex-wrap gap-1 border border-zinc-800 bg-zinc-950 p-1">
               {WORKFLOW_MODES.map((m, i) => {
                 const isActive = i === activeIdx;
                 const c = accentColor(m.accent);
@@ -347,15 +371,15 @@ export default function Hero() {
                   <button
                     key={m.id}
                     onClick={() => setActiveIdx(i)}
-                    className={`relative rounded-lg px-4 py-2 text-[13px] font-medium transition-colors ${
+                    className={`relative px-4 py-1.5 text-[12px] font-mono font-medium transition-colors ${
                       isActive ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
                     }`}
                   >
                     {isActive && (
                       <motion.div
                         layoutId="mode-pill"
-                        className="absolute inset-0 rounded-lg border"
-                        style={{ borderColor: `${c}55`, background: `${c}12` }}
+                        className="absolute inset-0 border border-zinc-700"
+                        style={{ background: `${c}18` }}
                         transition={{ type: 'spring', stiffness: 400, damping: 35 }}
                       />
                     )}
@@ -367,29 +391,29 @@ export default function Hero() {
           </div>
 
           {/* Simulator card */}
-          <div className="relative rounded-2xl border border-zinc-800/80 bg-[#0b0b0f] overflow-hidden">
-            {/* top bar */}
-            <div className="flex items-center justify-between px-4 py-2.5 border-b border-zinc-800/80 bg-white/[0.015]">
+          <div className="relative border border-zinc-800 bg-[#0b0b0f] overflow-hidden">
+            {/* Top Bar */}
+            <div className="flex items-center justify-between px-4 py-2 border-b border-zinc-800 bg-zinc-950">
               <div className="flex items-center gap-2">
-                <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
-                <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
-                <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
-                <span className="ml-3 font-mono text-[11px] text-zinc-500">
-                  ~/nexora/{mode.id}-workflow.json
+                <span className="h-2 w-2 bg-zinc-700" />
+                <span className="h-2 w-2 bg-zinc-700" />
+                <span className="h-2 w-2 bg-zinc-700" />
+                <span className="ml-3 font-mono text-[11px] text-zinc-400">
+                  ~/artcraft/engine/{mode.id}.json
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <span
-                  className="font-mono text-[10px] px-2 py-0.5 rounded border"
+                  className="font-mono text-[10px] px-2 py-0.5 border"
                   style={{
-                    borderColor: isSimulating ? `${MAGENTA}40` : `${accent}40`,
-                    color: isSimulating ? MAGENTA : accent,
+                    borderColor: isSimulating ? ELECTRIC_PURPLE : accent,
+                    color: isSimulating ? ELECTRIC_CYAN : accent,
                   }}
                 >
-                  {isSimulating ? 'RUNNING' : 'LIVE'}
+                  {isSimulating ? 'EXECUTING' : 'READY'}
                 </span>
-                <span className="font-mono text-[11px] text-zinc-600 hidden sm:inline">
-                  run #4,219
+                <span className="font-mono text-[11px] text-zinc-500 hidden sm:inline">
+                  RUN #08942
                 </span>
               </div>
             </div>
@@ -397,15 +421,15 @@ export default function Hero() {
             {/* SVG canvas + side panel */}
             <div className="grid lg:grid-cols-[1fr_300px]">
               {/* Canvas */}
-              <div className="relative bg-[#09090b] bg-dots min-h-[320px] sm:min-h-[380px]">
+              <div className="relative bg-[#09090b] min-h-[320px] sm:min-h-[380px]">
                 {/* Progress bar */}
                 {isSimulating && (
-                  <div className="absolute top-0 inset-x-0 h-0.5 bg-zinc-800 z-10">
+                  <div className="absolute top-0 inset-x-0 h-1 bg-zinc-800 z-10">
                     <div
                       className="h-full"
                       style={{
                         width: `${progress}%`,
-                        background: 'linear-gradient(90deg, #00E5FF, #FF0055)',
+                        background: 'linear-gradient(90deg, #00E5FF, #5322ff)',
                       }}
                     />
                   </div>
@@ -439,11 +463,9 @@ export default function Hero() {
                           <path
                             d={path}
                             fill="none"
-                            stroke={edgeActive ? MAGENTA : accent}
+                            stroke={edgeActive ? ELECTRIC_CYAN : accent}
                             strokeWidth={edgeActive ? '2.5' : '1.5'}
-                            className="animate-dash"
                             opacity={edgeActive ? 1 : 0.7}
-                            style={{ animationDelay: `${i * 0.4}s` }}
                           />
                         </g>
                       );
@@ -458,78 +480,41 @@ export default function Hero() {
                         <g key={n.id} transform={`translate(${n.x}, ${n.y})`}>
                           {isActive && (
                             <rect
-                              x="-5"
-                              y="-5"
-                              width="138"
-                              height="66"
-                              rx="13"
+                              x="-4"
+                              y="-4"
+                              width="136"
+                              height="64"
                               fill="none"
-                              stroke={MAGENTA}
+                              stroke={ELECTRIC_CYAN}
                               strokeWidth="2"
-                              opacity="0.8"
-                            >
-                              <animate
-                                attributeName="opacity"
-                                values="0.3;1;0.3"
-                                dur="0.5s"
-                                repeatCount="indefinite"
-                              />
-                            </rect>
-                          )}
-                          {isBrain && (
-                            <circle cx="56" cy="28" r="40" fill={accent} opacity="0.06" />
+                            />
                           )}
                           <rect
                             width="128"
                             height="56"
-                            rx="10"
                             fill="#0b0b0f"
                             stroke={
                               isActive
-                                ? `${MAGENTA}99`
+                                ? ELECTRIC_CYAN
                                 : isBrain
-                                  ? `${accent}66`
+                                  ? `${accent}`
                                   : 'rgba(63,63,70,0.8)'
                             }
                             strokeWidth="1"
                           />
-                          <rect
-                            x="0"
-                            y="0"
-                            width="128"
-                            height="56"
-                            rx="10"
-                            fill="url(#node-shine)"
-                            opacity="0.5"
-                          />
-                          <circle cx="18" cy="28" r="10" fill={`${nodeColor}1a`} />
-                          <circle
-                            cx="18"
-                            cy="28"
-                            r="4"
-                            fill={isActive ? MAGENTA : isBrain ? accent : '#71717a'}
-                          >
-                            {(isBrain || isActive) && (
-                              <animate
-                                attributeName="opacity"
-                                values="0.5;1;0.5"
-                                dur={isActive ? '0.6s' : '2s'}
-                                repeatCount="indefinite"
-                              />
-                            )}
-                          </circle>
+                          <circle cx="18" cy="28" r="4" fill={isActive ? ELECTRIC_CYAN : isBrain ? accent : '#71717a'} />
                           <text
-                            x="36"
+                            x="34"
                             y="25"
                             fill="#fafafa"
                             fontSize="11"
                             fontWeight="600"
-                            fontFamily="Inter, sans-serif"
+                            fontFamily="JetBrains Mono, monospace"
                           >
                             {n.label}
                           </text>
                           <text
-                            x="36"
+                            x="34"
                             y="40"
                             fill="#71717a"
                             fontSize="9"
@@ -537,36 +522,11 @@ export default function Hero() {
                           >
                             {n.sub}
                           </text>
-                          {isBrain && (
-                            <rect x="120" y="24" width="3" height="8" rx="1.5" fill={accent}>
-                              <animate
-                                attributeName="opacity"
-                                values="0.3;1;0.3"
-                                dur="1.4s"
-                                repeatCount="indefinite"
-                              />
-                            </rect>
-                          )}
                         </g>
                       );
                     })}
-
-                    <defs>
-                      <linearGradient id="node-shine" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="white" stopOpacity="0.05" />
-                        <stop offset="100%" stopColor="white" stopOpacity="0" />
-                      </linearGradient>
-                    </defs>
                   </motion.svg>
                 </AnimatePresence>
-
-                {/* Scan line */}
-                <div
-                  className="pointer-events-none absolute inset-x-0 top-0 h-px opacity-40"
-                  style={{
-                    background: `linear-gradient(90deg, transparent, ${accent}, transparent)`,
-                  }}
-                />
 
                 {/* Metrics popup */}
                 <AnimatePresence>
@@ -575,31 +535,27 @@ export default function Hero() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute inset-0 z-20 flex items-center justify-center bg-[#09090b]/85 backdrop-blur-sm p-4"
+                      className="absolute inset-0 z-20 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 font-mono"
                     >
                       <motion.div
-                        initial={{ scale: 0.9, y: 12 }}
+                        initial={{ scale: 0.95, y: 12 }}
                         animate={{ scale: 1, y: 0 }}
-                        exit={{ scale: 0.9, y: 12 }}
-                        transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                        className="relative rounded-2xl border border-cyan-glow/30 bg-[#0b0b0f] p-6 max-w-sm w-full"
+                        exit={{ scale: 0.95, y: 12 }}
+                        className="relative border border-[#00E5FF] bg-zinc-950 p-6 max-w-sm w-full"
                       >
                         <button
                           onClick={() => setShowMetrics(false)}
-                          className="absolute top-3 right-3 text-zinc-500 hover:text-white transition-colors"
+                          className="absolute top-3 right-3 text-zinc-500 hover:text-white"
                         >
                           <X className="h-4 w-4" />
                         </button>
-                        <div className="flex items-center gap-2.5 mb-5">
-                          <div className="h-8 w-8 rounded-lg bg-cyan-glow/10 border border-cyan-glow/30 flex items-center justify-center">
-                            <Zap className="h-4 w-4 text-cyan-glow" />
-                          </div>
-                          <span className="text-[15px] font-semibold text-white">
-                            Processing Complete
+                        <div className="flex items-center gap-2.5 mb-5 border-b border-zinc-800 pb-3">
+                          <Zap className="h-5 w-5 text-cyan-glow" />
+                          <span className="text-[14px] font-bold text-white uppercase">
+                            EXECUTION COMPLETED
                           </span>
                         </div>
-                        <div className="space-y-2.5">
+                        <div className="space-y-2">
                           <MetricRow
                             icon={CheckCircle2}
                             label="Deterministic"
@@ -609,14 +565,14 @@ export default function Hero() {
                           <MetricRow
                             icon={Cpu}
                             label="Token Cost"
-                            value="$0.002"
+                            value="$0.0018"
                             color="#00E5FF"
                           />
                           <MetricRow
                             icon={Activity}
-                            label="Time Saved"
-                            value="3.5 Hours"
-                            color={MAGENTA}
+                            label="Craft Precision"
+                            value="Sub-Pixel"
+                            color="#5322ff"
                           />
                         </div>
                         <button
@@ -624,9 +580,9 @@ export default function Hero() {
                             setShowMetrics(false);
                             setSimState('idle');
                           }}
-                          className="mt-5 w-full rounded-lg border border-zinc-800 bg-white/[0.03] text-[13px] text-zinc-300 py-2.5 hover:bg-white/[0.06] hover:text-white transition-colors"
+                          className="mt-5 w-full border border-zinc-800 bg-zinc-900 text-[12px] font-bold text-zinc-300 py-2.5 hover:bg-zinc-800 hover:text-white"
                         >
-                          Run another simulation
+                          RUN ANOTHER SIMULATION
                         </button>
                       </motion.div>
                     </motion.div>
@@ -635,7 +591,7 @@ export default function Hero() {
               </div>
 
               {/* Side panel */}
-              <div className="border-t lg:border-t-0 lg:border-l border-zinc-800/80 bg-[#0b0b0f] p-5 flex flex-col">
+              <div className="border-t lg:border-t-0 lg:border-l border-zinc-800 bg-zinc-950 p-5 flex flex-col font-mono">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={mode.id}
@@ -646,10 +602,10 @@ export default function Hero() {
                     className="flex flex-col h-full gap-4"
                   >
                     <div>
-                      <div className="font-mono text-[10px] uppercase tracking-widest text-zinc-600 mb-1.5">
+                      <div className="font-mono text-[10px] uppercase tracking-widest text-cyan-glow mb-1">
                         {mode.sublabel}
                       </div>
-                      <p className="text-[13px] leading-relaxed text-zinc-400">
+                      <p className="text-[12px] leading-relaxed text-zinc-400 font-sans">
                         {mode.description}
                       </p>
                     </div>
@@ -658,39 +614,28 @@ export default function Hero() {
                       {mode.stats.map((s) => (
                         <div
                           key={s.label}
-                          className="rounded-lg border border-zinc-800/80 bg-white/[0.02] p-2.5"
+                          className="border border-zinc-800 bg-zinc-900/60 p-2"
                         >
-                          <div className="font-mono text-[15px] font-semibold text-white">
+                          <div className="font-mono text-[13px] font-bold text-white">
                             {s.value}
                           </div>
-                          <div className="text-[10px] text-zinc-500 mt-0.5 leading-tight">
+                          <div className="text-[9px] text-zinc-500 leading-tight">
                             {s.label}
-                          </div>
-                          <div
-                            className="font-mono text-[10px] mt-1"
-                            style={{
-                              color:
-                                s.delta.startsWith('-') && !s.delta.includes('rate')
-                                  ? '#71717a'
-                                  : accent,
-                            }}
-                          >
-                            {s.delta}
                           </div>
                         </div>
                       ))}
                     </div>
 
-                    <div className="mt-auto pt-3 border-t border-zinc-800/60">
-                      <div className="font-mono text-[10px] uppercase tracking-widest text-zinc-600 mb-2">
-                        Output channels
+                    <div className="mt-auto pt-3 border-t border-zinc-800">
+                      <div className="font-mono text-[10px] uppercase tracking-widest text-zinc-500 mb-2">
+                        OUTPUT NODES
                       </div>
                       <div className="flex flex-col gap-1.5">
                         {mode.outputs.map((o) => (
-                          <div key={o.label} className="flex items-center gap-2 text-[12px]">
-                            <o.icon className="h-3.5 w-3.5 text-zinc-500" />
+                          <div key={o.label} className="flex items-center gap-2 text-[11px]">
+                            <o.icon className="h-3.5 w-3.5 text-cyan-glow" />
                             <span className="text-zinc-300">{o.label}</span>
-                            <span className="text-zinc-600 font-mono text-[10px] ml-auto">
+                            <span className="text-zinc-600 font-mono text-[9px] ml-auto">
                               {o.sub}
                             </span>
                           </div>
@@ -703,13 +648,13 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Log strip */}
-          <div className="mt-3 rounded-xl border border-zinc-800/60 bg-[#0b0b0f] px-4 py-3 font-mono text-[11px] text-zinc-500 overflow-hidden mask-fade-edges">
-            <span className="text-emerald-400">[ok]</span> agent.reason → completed in 1.42s &nbsp;
-            <span className="text-cyan-glow">[n8n]</span> webhook.ingest → 200 OK &nbsp;
-            <span className="text-zinc-600">[rag]</span> pinecone.query → 142 docs, p95 780ms &nbsp;
-            <span className="text-purple-glow">[dify]</span> critic.merge → consensus reached &nbsp;
-            <span className="text-emerald-400">[ok]</span> fanout.telegram → delivered
+          {/* Telemetry log strip */}
+          <div className="mt-2 border border-zinc-800 bg-zinc-950 px-4 py-2.5 font-mono text-[10px] text-zinc-500 flex flex-wrap items-center gap-3">
+            <span className="text-emerald-400">[OK]</span> dify.reasoning → consensus reached (1.2s)
+            <span>|</span>
+            <span className="text-cyan-glow">[n8n]</span> webhook.fanout → 200 OK
+            <span>|</span>
+            <span className="text-[#5322ff]">[craft]</span> node.anchor → pulse active
           </div>
         </motion.div>
       </div>
