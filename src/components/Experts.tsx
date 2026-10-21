@@ -3,7 +3,7 @@ import { Linkedin, ArrowUpRight, Award } from 'lucide-react';
 import { EXPERTS, type Expert } from '@/lib/data';
 
 function accentHex(accent: 'cyan' | 'purple') {
-  return accent === 'cyan' ? '#00E5FF' : '#7C3AED';
+  return accent === 'cyan' ? '#00E5FF' : '#5322ff';
 }
 
 function ExpertCard({ expert, index }: { expert: Expert; index: number }) {
@@ -14,60 +14,53 @@ function ExpertCard({ expert, index }: { expert: Expert; index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.4, delay: index * 0.08 }}
-      className="group relative rounded-2xl border border-zinc-800/80 bg-[#0b0b0f] p-6 hover:border-zinc-700 transition-colors"
+      className="group relative border border-zinc-800 bg-zinc-950 p-6 font-mono hover:border-zinc-700 transition-colors"
     >
       <div
-        className="absolute inset-x-0 top-0 h-px opacity-0 group-hover:opacity-100 transition-opacity"
-        style={{ background: `linear-gradient(90deg, transparent, ${accent}, transparent)` }}
+        className="absolute inset-x-0 top-0 h-1 opacity-80"
+        style={{ background: accent }}
       />
 
-      <div className="flex items-start justify-between mb-5">
+      <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
           <div
-            className="relative h-11 w-11 rounded-full flex items-center justify-center font-mono text-[13px] font-semibold text-white"
-            style={{
-              background: `linear-gradient(135deg, ${accent}33, ${accent}11)`,
-              border: `1px solid ${accent}40`,
-            }}
+            className="relative h-10 w-10 border flex items-center justify-center font-mono text-[12px] font-bold text-white bg-zinc-900"
+            style={{ borderColor: accent }}
           >
             {expert.initials}
-            <span
-              className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-[#0b0b0f]"
-              style={{ background: accent }}
-            />
           </div>
           <div>
-            <div className="text-[14px] font-semibold text-white tracking-tight">{expert.name}</div>
-            <div className="text-[12px] text-zinc-500">{expert.role}</div>
+            <div className="text-[13px] font-bold text-white uppercase tracking-tight">{expert.name}</div>
+            <div className="text-[11px] text-zinc-500 font-sans">{expert.role}</div>
           </div>
         </div>
         <a
           href="#"
-          className="opacity-60 group-hover:opacity-100 transition-opacity text-zinc-400 hover:text-white"
+          className="text-zinc-500 hover:text-white transition-colors"
           aria-label={`${expert.name} on LinkedIn`}
         >
           <Linkedin className="h-4 w-4" />
         </a>
       </div>
 
-      <div className="rounded-xl border border-zinc-800/60 bg-[#09090b] p-4">
-        <div className="flex items-center gap-2 mb-2">
+      <div className="border border-zinc-800 bg-[#09090b] p-3">
+        <div className="flex items-center gap-2 mb-1.5">
           <Award className="h-3.5 w-3.5" style={{ color: accent }} />
-          <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-600">
-            Curated workflow
+          <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-500">
+            CURATED WORKFLOW
           </span>
         </div>
-        <div className="text-[13px] text-zinc-300 font-medium leading-snug">
+        <div className="text-[12px] text-zinc-200 font-bold leading-snug">
           {expert.workflow}
         </div>
       </div>
 
       <a
         href="#"
-        className="mt-4 inline-flex items-center gap-1 text-[12px] text-zinc-500 hover:text-white transition-colors group/link"
+        className="mt-4 inline-flex items-center gap-1 text-[11px] font-bold text-cyan-glow hover:text-white transition-colors uppercase"
       >
-        View blueprint
-        <ArrowUpRight className="h-3.5 w-3.5 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
+        VIEW BLUEPRINT
+        <ArrowUpRight className="h-3.5 w-3.5" />
       </a>
     </motion.div>
   );
@@ -75,12 +68,11 @@ function ExpertCard({ expert, index }: { expert: Expert; index: number }) {
 
 export default function Experts() {
   return (
-    <section className="relative py-24 lg:py-32" id="experts">
-      <div className="absolute inset-0 bg-dots opacity-30 mask-fade-b" />
+    <section className="relative py-20 lg:py-28 bg-[#09090b] font-mono" id="experts">
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-zinc-500 mb-4">
-          <span className="h-px w-6 bg-zinc-700" />
-          Curated by Industry Experts
+        <div className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-cyan-glow mb-3 border border-zinc-800 bg-zinc-900 px-2.5 py-1">
+          <span className="h-1.5 w-1.5 bg-[#5322ff]" />
+          EXPERT DIRECTORY // CURATED
         </div>
 
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
@@ -89,43 +81,40 @@ export default function Experts() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.5 }}
-            className="text-3xl sm:text-5xl font-semibold tracking-tight text-white max-w-2xl leading-[1.08]"
+            className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white max-w-2xl uppercase leading-[1.05]"
           >
-            Trusted by the people
-            <br />
-            <span className="text-zinc-500">who build the future.</span>
+            VETTED BY BUILDERS OF THE FUTURE.
           </motion.h2>
-          <p className="max-w-md text-[15px] text-zinc-400 leading-relaxed">
-            Every featured workflow is vetted, deployed, and maintained by
-            operators running production AI at scale.
+          <p className="max-w-md text-[14px] text-zinc-400 font-sans leading-relaxed border-l-2 border-[#00E5FF] pl-3">
+            Every featured workflow is audited, deployed, and maintained by operators running production AI.
           </p>
         </div>
 
-        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {EXPERTS.map((e, i) => (
             <ExpertCard key={e.id} expert={e} index={i} />
           ))}
         </div>
 
-        {/* Stats strip */}
+        {/* Telemetry Stats Strip */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.5 }}
-          className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-px rounded-2xl border border-zinc-800/80 bg-zinc-800/80 overflow-hidden"
+          className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-px border border-zinc-800 bg-zinc-800 font-mono"
         >
           {[
-            { v: '4,200+', l: 'Workflows in production' },
-            { v: '180M+', l: 'Agent runs / month' },
-            { v: '14', l: 'Regions, multi-AZ' },
-            { v: '99.99%', l: 'Uptime SLA' },
+            { v: '4,200+', l: 'PRODUCTION WORKFLOWS' },
+            { v: '180M+', l: 'AGENT RUNS / MONTH' },
+            { v: '14', l: 'MULTI-AZ REGIONS' },
+            { v: '99.99%', l: 'DETERMINISTIC SLA' },
           ].map((s) => (
-            <div key={s.l} className="bg-[#0b0b0f] p-6">
-              <div className="font-mono text-2xl sm:text-3xl font-semibold text-white tracking-tight">
+            <div key={s.l} className="bg-zinc-950 p-5">
+              <div className="font-mono text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
                 {s.v}
               </div>
-              <div className="text-[12.5px] text-zinc-500 mt-1">{s.l}</div>
+              <div className="text-[10px] text-zinc-500 uppercase mt-1">{s.l}</div>
             </div>
           ))}
         </motion.div>

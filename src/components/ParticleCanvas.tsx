@@ -13,7 +13,7 @@ export default function ParticleCanvas({ className = '' }: { className?: string 
     let raf = 0;
     let running = true;
     const CYAN = '#00E5FF';
-    const MAGENTA = '#FF0055';
+    const PURPLE = '#5322ff';
     const SPACING = 50;
 
     type Pt = { x: number; y: number; ox: number; oy: number; ph: number };
@@ -23,15 +23,18 @@ export default function ParticleCanvas({ className = '' }: { className?: string 
     let pts: Pt[] = [];
     let conns: Conn[] = [];
     let pulses: Pulse[] = [];
-    let w = 0, h = 0, dpr = 1;
+    let w = 0,
+      h = 0,
+      dpr = 1;
 
     function build() {
+      if (!canvas) return;
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       w = canvas.clientWidth;
       h = canvas.clientHeight;
       canvas.width = w * dpr;
       canvas.height = h * dpr;
-      context.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       pts = [];
       conns = [];
@@ -67,7 +70,7 @@ export default function ParticleCanvas({ className = '' }: { className?: string 
           ci: Math.floor(Math.random() * conns.length),
           prog: Math.random(),
           speed: 0.003 + Math.random() * 0.005,
-          color: Math.random() > 0.5 ? CYAN : MAGENTA,
+          color: Math.random() > 0.5 ? CYAN : PURPLE,
         });
       }
     }
@@ -76,27 +79,29 @@ export default function ParticleCanvas({ className = '' }: { className?: string 
     function frame() {
       if (!running) return;
       t += 0.016;
-      context.clearRect(0, 0, w, h);
+      ctx.clearRect(0, 0, w, h);
 
       for (const p of pts) {
         p.x = p.ox + Math.sin(t + p.ph) * 3;
         p.y = p.oy + Math.cos(t * 0.7 + p.ph) * 3;
       }
 
-      context.lineWidth = 0.5;
-      context.strokeStyle = 'rgba(63,63,70,0.1)';
-      context.beginPath();
+      ctx.lineWidth = 0.5;
+      ctx.strokeStyle = 'rgba(63,63,70,0.15)';
+      ctx.beginPath();
       for (const conn of conns) {
-        context.moveTo(pts[conn.a].x, pts[conn.a].y);
-        context.lineTo(pts[conn.b].x, pts[conn.b].y);
+        if (pts[conn.a] && pts[conn.b]) {
+          ctx.moveTo(pts[conn.a].x, pts[conn.a].y);
+          ctx.lineTo(pts[conn.b].x, pts[conn.b].y);
+        }
       }
-      context.stroke();
+      ctx.stroke();
 
-      context.fillStyle = 'rgba(82,82,91,0.3)';
+      ctx.fillStyle = 'rgba(82,82,91,0.3)';
       for (const p of pts) {
-        context.beginPath();
-        context.arc(p.x, p.y, 1, 0, Math.PI * 2);
-        context.fill();
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 1, 0, Math.PI * 2);
+        ctx.fill();
       }
 
       for (const pu of pulses) {
@@ -104,24 +109,27 @@ export default function ParticleCanvas({ className = '' }: { className?: string 
         if (pu.prog >= 1) {
           pu.prog = 0;
           pu.ci = Math.floor(Math.random() * conns.length);
-          pu.color = Math.random() > 0.5 ? CYAN : MAGENTA;
+          pu.color = Math.random() > 0.5 ? CYAN : PURPLE;
         }
         const conn = conns[pu.ci];
-        const a = pts[conn.a], b = pts[conn.b];
-        const px = a.x + (b.x - a.x) * pu.prog;
-        const py = a.y + (b.y - a.y) * pu.prog;
+        if (conn && pts[conn.a] && pts[conn.b]) {
+          const a = pts[conn.a],
+            b = pts[conn.b];
+          const px = a.x + (b.x - a.x) * pu.prog;
+          const py = a.y + (b.y - a.y) * pu.prog;
 
-        context.globalAlpha = 0.12;
-        context.fillStyle = pu.color;
-        context.beginPath();
-        context.arc(px, py, 5, 0, Math.PI * 2);
-        context.fill();
+          ctx.globalAlpha = 0.12;
+          ctx.fillStyle = pu.color;
+          ctx.beginPath();
+          ctx.arc(px, py, 5, 0, Math.PI * 2);
+          ctx.fill();
 
-        context.globalAlpha = 0.9;
-        context.beginPath();
-        context.arc(px, py, 1.5, 0, Math.PI * 2);
-        context.fill();
-        context.globalAlpha = 1;
+          ctx.globalAlpha = 0.9;
+          ctx.beginPath();
+          ctx.arc(px, py, 1.5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
       }
 
       raf = requestAnimationFrame(frame);
@@ -152,5 +160,11 @@ export default function ParticleCanvas({ className = '' }: { className?: string 
     };
   }, []);
 
-  return <canvas ref={canvasRef} className={className} style={{ width: '100%', height: '100%' }} />;
+  return (
+    <canvas
+      ref={canvasRef}
+      className={className}
+      style={{ width: '100%', height: '100%' }}
+    />
+  );
 }
