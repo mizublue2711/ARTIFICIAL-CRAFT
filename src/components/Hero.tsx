@@ -242,7 +242,7 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.12 }}
               className="mt-6 text-[16px] sm:text-[18px] leading-relaxed text-zinc-300 font-sans max-w-xl border-l-2 border-[#5322ff] pl-4"
             >
-              Where meticulous Swiss graphic design meets deterministic automation engines. Unifying Dify's reasoning matrix with n8n's robust execution orchestrator.
+              Where Meticulous Graphic Design Meets Deterministic AI Automation. Unifying Dify Reasoning & n8n Orchestration.
             </motion.p>
 
             {/* Brutalist CTAs */}
@@ -256,10 +256,14 @@ export default function Hero() {
                 href={STUDIO_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative inline-flex items-center justify-center gap-2 border border-[#00E5FF] bg-[#5322ff] text-sm font-bold px-6 py-3.5 text-white transition-all duration-300 hover:bg-[#00E5FF] hover:text-black hover:border-black"
+                className="group relative inline-flex items-center justify-center gap-2 text-sm font-bold px-6 py-3.5 text-white transition-all duration-300 bg-zinc-950 hover:bg-[#5322ff]"
+                style={{
+                  border: '1px solid #5322ff',
+                  boxShadow: '0 0 16px 2px rgba(83, 34, 255, 0.5)',
+                }}
               >
-                <Terminal className="h-4 w-4" />
-                <span>LAUNCH CRAFT//CONSOLE</span>
+                <Terminal className="h-4 w-4 text-cyan-glow" />
+                <span>Launch Autopilot Studio</span>
                 <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </a>
               <a
