@@ -13,7 +13,7 @@ import {
   ImageIcon,
 } from 'lucide-react';
 import { BLUEPRINTS, type Blueprint } from '@/lib/data';
-import { useLanguage } from '@/context/LanguageContext';
+import { useLanguage } from '@/context/useLanguage';
 
 function accentHex(accent: 'cyan' | 'purple') {
   return accent === 'cyan' ? '#00E5FF' : '#5322ff';

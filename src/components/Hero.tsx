@@ -19,7 +19,7 @@ import {
 import { WORKFLOW_MODES, type WorkflowMode } from '@/lib/data';
 import ParticleCanvas from '@/components/ParticleCanvas';
 import ThreeHookCanvas from '@/components/ThreeHookCanvas';
-import { useLanguage } from '@/context/LanguageContext';
+import { useLanguage } from '@/context/useLanguage';
 
 const STUDIO_URL = 'https://dify-n8n-workflow.ai.studio/';
 const ELECTRIC_PURPLE = '#5322ff';
@@ -449,7 +449,7 @@ export default function Hero() {
                     transition={{ duration: 0.3 }}
                   >
                     {/* Edges */}
-                    {renderEdges.map(([from, to], i) => {
+                    {renderEdges.map(([from, to]) => {
                       const a = nodeById(from);
                       const b = renderNodes.find((n) => n.id === to)!;
                       const fromIdx = nodeIndexMap[from];
@@ -477,7 +477,6 @@ export default function Hero() {
                     {renderNodes.map((n, ni) => {
                       const isBrain = n.type === 'dify';
                       const isActive = isSimulating && ni === activeNodeIdx;
-                      const nodeColor = isBrain ? accent : '#a1a1aa';
                       return (
                         <g key={n.id} transform={`translate(${n.x}, ${n.y})`}>
                           {isActive && (

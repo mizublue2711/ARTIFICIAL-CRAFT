@@ -1,4 +1,4 @@
-import { Github, Twitter, Linkedin, ArrowRight, Terminal } from 'lucide-react';
+import { Github, Twitter, Linkedin, ArrowRight } from 'lucide-react';
 import BrutalistLogo from './BrutalistLogo';
 
 const cols = [
