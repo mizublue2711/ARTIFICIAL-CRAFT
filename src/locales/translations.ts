@@ -418,7 +418,7 @@ export const translations: Record<Language, Translations> = {
     hero_badge_text: 'ĐỘ CHÍNH XÁC ĐỒ HỌA TỈ MẨN GẶP TỰ ĐỘNG HÓA MÃ',
     heroTitleLine1: 'ARTIFICIAL',
     heroTitleLine2: 'CRAFT',
-    subtitle: 'Nơi Thiết Kế Đồ Họa Tỉ Mẩn Gặp Tự Động Hóa AI Xác Định.',
+    subtitle: 'Nơi Cây Cọ Thiết Kế Đồ Họa Gặp Đường Ống Tự Động Hóa AI.',
     ctaButton: 'Kích Hoạt Autopilot Studio',
     cta_explore: 'KHÁM PHÁ SƠ ĐỒ MẪU',
     exportBlueprint: 'Xuất Ảnh Sơ Đồ HD',
@@ -511,7 +511,7 @@ export const translations: Record<Language, Translations> = {
     bp_browse_all: 'DUYỆT TẤT CẢ 40+ MẪU',
 
     // LinkedIn Banner Studio Form
-    banner_studio_title: 'Studio Banner LinkedIn (100% Automated & Free)',
+    banner_studio_title: 'Plug & Play Studio Banner LinkedIn (100% Automated & Free)',
     banner_full_name: 'Họ và Tên',
     banner_company_domain: 'Tên Miền / URL Logo',
     banner_job_title: 'Chức Danh Công Việc',
