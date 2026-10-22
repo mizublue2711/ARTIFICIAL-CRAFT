@@ -308,7 +308,7 @@ export const translations: Record<Language, Translations> = {
     bp_browse_all: 'BROWSE ALL 40+ TEMPLATES',
 
     // LinkedIn Banner Studio Form
-    banner_studio_title: 'LinkedIn Banner Studio',
+    banner_studio_title: 'Create Your Own LinkedIn Banner Studio',
     banner_full_name: 'Full Name',
     banner_company_domain: 'Company Domain / Logo URL',
     banner_job_title: 'Job Title',
@@ -511,7 +511,7 @@ export const translations: Record<Language, Translations> = {
     bp_browse_all: 'DUYỆT TẤT CẢ 40+ MẪU',
 
     // LinkedIn Banner Studio Form
-    banner_studio_title: 'Studio Banner LinkedIn',
+    banner_studio_title: 'Studio Banner LinkedIn (100% Automated & Free)',
     banner_full_name: 'Họ và Tên',
     banner_company_domain: 'Tên Miền / URL Logo',
     banner_job_title: 'Chức Danh Công Việc',
