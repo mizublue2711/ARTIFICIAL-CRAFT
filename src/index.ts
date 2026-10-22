@@ -25,10 +25,12 @@ export default {
         });
       }
 
-      // 1. Kiểm tra tham số domain truyền lên từ Client
+      // 1. Kiểm tra tham số url hoặc domain truyền lên từ Client
+      const imageUrlParam = url.searchParams.get('url');
       const domain = url.searchParams.get('domain');
-      if (!domain) {
-        return new Response(JSON.stringify({ error: 'Missing domain parameter' }), {
+
+      if (!imageUrlParam && !domain) {
+        return new Response(JSON.stringify({ error: 'Missing url or domain parameter' }), {
           status: 400,
           headers: {
             ...corsHeaders,
@@ -37,12 +39,17 @@ export default {
         });
       }
 
-      // 2. Lấy Token từ Environment Variable (hoặc fallback token)
-      const apiToken = env.LOGO_DEV_TOKEN || 'pk_free_tier_key';
-      const logoApiUrl = `https://img.logo.dev/${encodeURIComponent(domain)}?token=${apiToken}`;
+      // 2. Xác định URL nguồn ảnh
+      let logoApiUrl: string;
+      if (imageUrlParam) {
+        logoApiUrl = imageUrlParam;
+      } else {
+        const apiToken = env.LOGO_DEV_TOKEN || 'pk_free_tier_key';
+        logoApiUrl = `https://img.logo.dev/${encodeURIComponent(domain!)}?token=${apiToken}`;
+      }
 
       try {
-        // 3. Worker đóng vai trò Server-to-Server gọi sang Logo Provider
+        // 3. Worker đóng vai trò Server-to-Server gọi sang Logo / Image Provider
         const imageRes = await fetch(logoApiUrl);
 
         if (!imageRes.ok) {
@@ -58,6 +65,7 @@ export default {
         // 5. GÁN HEADER CORS BẤT TỬ - CHỐNG LỖI CANVAS TAINT
         response.headers.set('Access-Control-Allow-Origin', '*');
         response.headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+        response.headers.set('Access-Control-Allow-Headers', '*');
         response.headers.set('Cache-Control', 'public, max-age=86400'); // Cache trên CDN Cloudflare 24h
 
         return response;
