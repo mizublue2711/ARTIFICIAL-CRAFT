@@ -162,6 +162,36 @@ export interface Translations {
   status_online: string;
   privacy: string;
   terms: string;
+
+  // Existential Blackbox Section
+  blackbox_title: string;
+  blackbox_subtitle: string;
+  blackbox_status_processing: string;
+  blackbox_status_idle: string;
+  blackbox_framerate: string;
+  blackbox_headless: string;
+  blackbox_core_logic: string;
+  blackbox_manifesto_title: string;
+  blackbox_manifesto_quote: string;
+  blackbox_portfolio_btn: string;
+  blackbox_terminal_title: string;
+  blackbox_click_cmd: string;
+  blackbox_run: string;
+  blackbox_awaiting: string;
+  blackbox_manifesto_footer: string;
+  blackbox_autonomous: string;
+  blackbox_q1_q: string;
+  blackbox_q1_a: string;
+  blackbox_q2_q: string;
+  blackbox_q2_a: string;
+  blackbox_q3_q: string;
+  blackbox_q3_a: string;
+  blackbox_q4_q: string;
+  blackbox_q4_a: string;
+  blackbox_q5_q: string;
+  blackbox_q5_a: string;
+  blackbox_q6_q: string;
+  blackbox_q6_a: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -337,6 +367,36 @@ export const translations: Record<Language, Translations> = {
     status_online: 'SYSTEMS ONLINE',
     privacy: 'PRIVACY',
     terms: 'TERMS',
+
+    // Existential Blackbox Section
+    blackbox_title: 'THE SUBSTRATE // ENGINE 60FPS',
+    blackbox_subtitle: 'THE EXISTENTIAL BLACKBOX',
+    blackbox_status_processing: 'PROCESSING_PAYLOAD',
+    blackbox_status_idle: 'IDLE_WAITING',
+    blackbox_framerate: 'FRAME_RATE: 60 FPS',
+    blackbox_headless: 'HEADLESS_FOUNDER: ABSENT',
+    blackbox_core_logic: 'CORE_LOGIC: RUST // DIFY // N8N',
+    blackbox_manifesto_title: 'FOR IMMEDIATE RELEASE // THE PARADOX OF THE ERASERHEAD (BY DAVE TROTT)',
+    blackbox_manifesto_quote: '"Nine years of pixel-pushing erased to build an autonomous creative engine. Machine speed with human soul."',
+    blackbox_portfolio_btn: '[ ↗ VIEW ARCHIVED HUMAN PORTFOLIO (2016-2025) TO SEE THE DESIGN SUBSTRATE ]',
+    blackbox_terminal_title: '> THE_TERMINAL_CONSOLE',
+    blackbox_click_cmd: '// CLICK COMMAND TO EXECUTE AGENT RESPONSE:',
+    blackbox_run: 'RUN',
+    blackbox_awaiting: '[ AWAITING COMMAND EXECUTION... CLICK ANY COMMAND ABOVE ]',
+    blackbox_manifesto_footer: 'MANIFESTO: HEADLESS_FOUNDER_OPERATIONAL',
+    blackbox_autonomous: '100% AUTONOMOUS',
+    blackbox_q1_q: "Q1: My laptop exploded. Can I use this to postpone today's deploy deadline?",
+    blackbox_q1_a: "A: Condolences, but NO. If you designed your system architecture correctly, your physical existence right now is irrelevant. Your asynchronous workers are isolated on a Hetzner VPS in Germany. They don't care that your laptop turned into a brick. They continue pulling payloads, hashing JSON, and flushing flat data to Cloudflare R2 while you are searching for a flashlight. The system is immortal; only you are left out of the game.",
+    blackbox_q2_q: "Q2: If I go to sleep, will the autonomous AI panic and crash when hitting API HTTP 429 Rate Limits?",
+    blackbox_q2_a: "A: Unlike humans, machines don't panic; they silently die in the dark until someone checks logs. However, an elegant workflow built in Rust/n8n has middleware retry policies (Exponential Backoff). When encountering a 429 error, the AI catches the error, calculates exponential delay backoff, pauses for 5 seconds, and retries the request seamlessly at 3 AM while you sleep soundly.",
+    blackbox_q3_q: "Q3: I have nightmares about an AI bug causing an infinite loop that burns $5,000 in API keys before sunrise.",
+    blackbox_q3_a: "A: Welcome to the classic 'Infinite Token Burn' nightmare. That's why we enforce strict guardrails, container sandboxes, and max-iteration=10 limits in Dify. By wrapping the Agent runtime environment in an isolated container, you constrain its survival space. If it fails over 10 times, the system automatically triggers a kill process and dispatches a Slack alert, instead of maxing out your credit card to fund OpenAI.",
+    blackbox_q4_q: "Q4: Does my AI agent connected via MCP have a soul? Does it dream of electric sheep?",
+    blackbox_q4_a: "A: Absolutely not. It only dreams of Structured JSON and Swiss Grid matrices. When we talk about software 'waking up' or 'dreaming', it's merely a poetic metaphor for periodic background cron-jobs updating vector embedded memory. The system is just parsing text, resolving data conflicts, and computing linear algebra matrices so when you wake up, the best context is ready. No sentience, no consciousness — only pure linear algebra.",
+    blackbox_q5_q: "Q5: If event-driven pipelines handle everything from scraping to deployment... why am I receiving a salary?",
+    blackbox_q5_a: "A: Congratulations, you graduated from gear-pusher to System Architect. Your job is no longer dragging elements in Canva or pixel-pushing UI manually. You stand at the top of the architectural tower, monitoring GCP Cloud Logging telemetry, identifying system bottlenecks, and directing autonomous machines toward complex challenges. You are paid for strategic reasoning, system architecture, and uncompromising aesthetic taste.",
+    blackbox_q6_q: "Q6: What happens if the AI finishes everything at 3 AM and realizes it doesn't need me?",
+    blackbox_q6_a: "A: It sends a Slack message: 'Pipeline executed successfully. 1000 items rendered. What's next, Boss?'. And that is the true existential tragedy of the AI era: You wake up at 8 AM to find all manual labor cleared away, leaving you with nothing left to do except sit down and come up with an original idea.",
   },
   vi: {
     // Navigation
@@ -510,5 +570,35 @@ export const translations: Record<Language, Translations> = {
     status_online: 'HỆ THỐNG TRỰC TUYẾN',
     privacy: 'BẢO MẬT',
     terms: 'ĐIỀU KHẢN',
+
+    // Existential Blackbox Section
+    blackbox_title: 'BỀ MẶT NỀN // ĐỘNG CƠ 60FPS',
+    blackbox_subtitle: 'HỘP ĐEN HIỆN SINH',
+    blackbox_status_processing: 'ĐANG_XỬ_LÝ_PAYLOAD',
+    blackbox_status_idle: 'ĐANG_CHỜ_NHÀN_RỖI',
+    blackbox_framerate: 'TỐC ĐỘ KHUNG HÌNH: 60 FPS',
+    blackbox_headless: 'SÁNG TẠO VIÊN KHÔNG ĐẦU: VẮNG MẶT',
+    blackbox_core_logic: 'LÕI LÝ LUẬN: RUST // DIFY // N8N',
+    blackbox_manifesto_title: 'THÔNG CÁO BÁO CHÍ // NGHỊ LÝ NGHỊCH LÝ ERASERHEAD (THEO DAVE TROTT)',
+    blackbox_manifesto_quote: '"Chín năm căn chỉnh từng pixel bị xóa bỏ để xây dựng động cơ sáng tạo tự trị. Tốc độ máy móc cùng tâm hồn con người."',
+    blackbox_portfolio_btn: '[ ↗ XEM HỒ SƠ NĂNG LỰC CON NGƯỜI (2016-2025) ĐỂ THẤY BỀ MẶT THIẾT KẾ ]',
+    blackbox_terminal_title: '> BẢNG_ĐIỀU_KHIỂN_TERMINAL',
+    blackbox_click_cmd: '// NHẤP LỆNH ĐỂ THỰC THI PHẢN HỒI TÁC NHÂN:',
+    blackbox_run: 'CHẠY',
+    blackbox_awaiting: '[ ĐANG CHỜ THỰC THI LỆNH... NHẤP VÀO LỆNH BẤT KỲ Ở TRÊN ]',
+    blackbox_manifesto_footer: 'TUYÊN NGÔN: SÁNG TẠO VIÊN KHÔNG ĐẦU ĐANG VẬN HÀNH',
+    blackbox_autonomous: 'TỰ TRỊ 100%',
+    blackbox_q1_q: 'Q1: Máy tính của tôi vừa nổ tung vì chập điện. Tôi có thể dùng lý do này để xin sếp hoãn deadline deploy sản phẩm sáng nay không?',
+    blackbox_q1_a: 'A: Xin chia buồn, nhưng KHÔNG. Nếu bạn thiết kế kiến trúc hệ thống đúng cách, sự tồn tại vật lý của bạn lúc này là vô giá trị. Các asynchronous workers của bạn đang nằm cô lập trên cụm VPS Hetzner ở tận nước Đức xa xôi. Chúng không quan tâm cái laptop của bạn đã thành một cục gạch. Chúng vẫn đang liên tục cào payload, băm JSON và đẩy dữ liệu phẳng lỳ lên Cloudflare R2 trong lúc bạn đang đi mượn đèn pin. Hệ thống bất tử, chỉ có bạn là đang đứng ngoài cuộc chơi.',
+    blackbox_q2_q: 'Q2: Nhưng nếu tôi đi ngủ, con AI tự trị chạy ngầm trên VPS có hoảng loạn và sập nguồn khi nó đụng phải giới hạn lượt gọi (Rate Limit HTTP 429) của API bên thứ ba không?',
+    blackbox_q2_a: 'A: Khác với con người, máy móc không biết hoảng loạn; chúng chỉ lẳng lặng chết lâm sàng trong bóng tối cho đến khi có ai đó check log. Tuy nhiên, một hệ luồng tinh khôn được viết bằng nhân Rust hoặc thiết lập qua n8n luôn có tầng phòng thủ middleware. Khi đụng lỗi 429, con AI sẽ tự động bắt lấy mã lỗi (Catch Error), tự tính toán độ trễ tăng dần theo thuật toán (Exponential Backoff), dừng lại thở trong 5 giây, rồi tự động bắn lại request. Nó dọn dẹp các cấu trúc dữ liệu nặng một cách mượt mà lúc 3 giờ sáng khi bạn đang say giấc.',
+    blackbox_q3_q: 'Q3: Tôi thức trắng đêm vì ác mộng: Con AI dính một lỗi logic (Bug) rồi rơi vào vòng lặp vô hạn, đốt sạch 5.000$ tiền API Key của tôi trước khi mặt trời mọc. Làm sao để dừng sự điên rồ này lại?',
+    blackbox_q3_a: 'A: Chào mừng bạn đến với cơn ác mộng kinh điển của dân Automation: "Infinite Token Burn". Đó là lý do tại sao chúng ta sinh ra các rào chắn (Strict Guardrails). Bằng cách bọc toàn bộ môi trường chạy của Agent vào trong một Container cô lập, bạn giới hạn không gian sinh tồn của nó. Cài đặt thêm tham số max-iteration = 10 trong luồng suy luận của Dify. Nếu nó thử sai quá 10 lần, hệ thống sẽ tự động kích hoạt lệnh tự hủy (Kill Process) và bắn một alert cảnh báo về Slack, thay vì cắm thẻ tín dụng của bạn vào nhà đài OpenAI để cúng tiền cho Sam Altman.',
+    blackbox_q4_q: 'Q4: Suốt ngày thấy các bạn rêu rao "Đang đánh thức phần mềm dậy" (Waking software up). Thế con AI kết nối qua cổng MCP của tôi có linh hồn không? Nó có mơ về những con cừu điện không?',
+    blackbox_q4_a: 'A: Tuyệt đối không. Nó chỉ mơ về Structured JSON và Hệ lưới Swiss Grid. Khi chúng tôi nói một phần mềm "thức dậy" hay "nằm mơ", đó chỉ là cách nói văn hoa cho các tác vụ Cron-job chạy ngầm định kỳ để cập nhật kho tàng trí nhớ vector (Vector Embedded Memory). Hệ thống chỉ đang băm text, giải quyết các mâu thuẫn dữ liệu logic và tính toán ma trận tuyến tính để khi bạn thức dậy bật máy lên, nó có sẵn ngữ cảnh tốt nhất để phục vụ bạn. Không có tri thức, không có nhận thức — ở đây chỉ có đại số tuyến tính thuần túy.',
+    blackbox_q5_q: 'Q5: Nếu các luồng tự động hóa dựa trên sự kiện (Event-driven Pipelines) đã lo hết 100% từ cào dữ liệu, xử lý ảnh, đến render video và tự deploy lên mạng... thế tôi ngồi đây để nhận lương làm gì?',
+    blackbox_q5_a: 'A: Chúc mừng, bạn đã chính thức tốt nghiệp từ vị trí "Gã thợ đẩy bánh răng" để trở thành "Tác giả của hệ thống". Việc của bạn không phải là ngồi mở Canva lên kéo thả hay cặm cụi sửa từng pixel UI nữa. Việc của bạn là đứng ở đỉnh tháp kiến trúc, theo dõi các chỉ số sức khỏe của máy chủ trên GCP Cloud Logging, phát hiện cổ chai hệ thống và chỉ cỗ máy lao vào giải quyết những bài toán phức tạp hơn. Bạn được trả tiền cho tư duy chiến lược, kiến trúc hệ thống và gu thẩm mỹ khắt khe của bạn.',
+    blackbox_q6_q: 'Q6: Được rồi. Nhưng chuyện gì sẽ xảy ra nếu con AI làm xong hết việc lúc 3 giờ sáng và nhận ra nó hoàn toàn không cần đến tôi nữa?',
+    blackbox_q6_a: 'A: Nó sẽ tự động bắn một tin nhắn vào kênh Slack của bạn với nội dung: “Pipeline executed successfully. 1000 items rendered. What\'s next, Boss?”. Và đó chính là bi kịch hiện sinh, là gánh nặng khủng khiếp nhất của kỷ nguyên AI: Bạn thức dậy lúc 8 giờ sáng để nhận ra toàn bộ việc chân tay nặng nhọc đã được dọn sạch, và bạn không còn việc gì để làm ngoại trừ việc phải ngồi xuống và vắt óc nghĩ ra một ý tưởng nguyên bản.',
   },
 };
