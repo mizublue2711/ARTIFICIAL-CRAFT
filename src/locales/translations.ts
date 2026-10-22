@@ -278,7 +278,7 @@ export const translations: Record<Language, Translations> = {
     // LinkedIn Banner Studio Form
     banner_studio_title: 'LinkedIn Banner Studio',
     banner_full_name: 'Full Name',
-    banner_company_domain: 'Company Domain',
+    banner_company_domain: 'Company Domain / Logo URL',
     banner_job_title: 'Job Title',
     banner_industry: 'Industry Category',
     banner_industry_tech: 'Tech / AI / Data',
@@ -450,7 +450,7 @@ export const translations: Record<Language, Translations> = {
     // LinkedIn Banner Studio Form
     banner_studio_title: 'Studio Banner LinkedIn',
     banner_full_name: 'Họ và Tên',
-    banner_company_domain: 'Tên Miền Công Ty',
+    banner_company_domain: 'Tên Miền / URL Logo',
     banner_job_title: 'Chức Danh Công Việc',
     banner_industry: 'Danh Mục Ngành Nghề',
     banner_industry_tech: 'Công Nghệ / AI / Dữ Liệu',

@@ -12,6 +12,44 @@ function hashCode(str: string): number {
   return Math.abs(hash);
 }
 
+function getCompanyInitials(domainOrUrl: string, fullName: string): string {
+  let str = domainOrUrl.trim();
+  if (!str) {
+    str = fullName.trim();
+  }
+  if (!str) return 'AC';
+
+  if (str.startsWith('http://') || str.startsWith('https://')) {
+    try {
+      str = new URL(str).hostname;
+    } catch {
+      str = str.replace(/^https?:\/\//i, '');
+    }
+  }
+
+  str = str.replace(/^www\./i, '').split('/')[0];
+  const parts = str.split('.');
+  if (parts.length > 1 && parts[0]) {
+    str = parts[0];
+  }
+
+  const words = str
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .split(/[^a-zA-Z0-9]+/)
+    .filter(Boolean);
+
+  if (words.length >= 2) {
+    return (words[0][0] + words[1][0]).toUpperCase();
+  }
+  if (words.length === 1 && words[0].length >= 2) {
+    return words[0].substring(0, 2).toUpperCase();
+  }
+  if (words.length === 1 && words[0].length === 1) {
+    return words[0].toUpperCase();
+  }
+  return 'AC';
+}
+
 function createPRNG(seed: number) {
   let s = seed || 1234567;
   return function () {
@@ -366,7 +404,16 @@ export default function BannerStudio() {
     ctx.fillText('RES: 1584x396 // SYS_READY', width - 60, 348);
 
     // 5. Draw Domain & Logo Badge Top-Left
-    const domainText = (companyDomain || 'artcraft.io').toLowerCase();
+    let domainText = (companyDomain || 'artcraft.io').trim();
+    if (domainText.startsWith('http://') || domainText.startsWith('https://')) {
+      try {
+        domainText = new URL(domainText).hostname;
+      } catch {
+        // fallback
+      }
+    }
+    domainText = domainText.toLowerCase();
+
     ctx.font = '600 18px "JetBrains Mono", monospace';
     const textWidth = ctx.measureText(domainText).width;
 
@@ -377,7 +424,11 @@ export default function BannerStudio() {
       const startX = 60;
       const startY = 45;
       const badgeHeight = 42;
-      const badgeWidth = logoImg ? logoSize + padding * 3 + textWidth : padding * 2 + textWidth;
+      const badgeWidth = logoSize + padding * 3 + textWidth;
+
+      // Clear badge background area to prevent ghosting on async redraws
+      ctx.fillStyle = currentTheme.bg;
+      ctx.fillRect(startX - 2, startY - 2, badgeWidth + 20, badgeHeight + 4);
 
       // Badge Container
       ctx.fillStyle = currentTheme.badgeBg;
@@ -386,9 +437,17 @@ export default function BannerStudio() {
       ctx.lineWidth = 1;
       ctx.strokeRect(startX, startY, badgeWidth, badgeHeight);
 
-      let textX = startX + padding;
+      const boxX = startX + padding;
+      const boxY = startY + (badgeHeight - logoSize) / 2;
 
-      // Offscreen Canvas for Logo Tinting (Requirement 2)
+      // Logo Anchor Box Outer Border
+      ctx.strokeStyle = currentTheme.borderColor;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(boxX, boxY, logoSize, logoSize);
+
+      let renderedImageSuccess = false;
+
+      // Offscreen Canvas for Logo Tinting
       if (logoImg) {
         try {
           const offCanvas = document.createElement('canvas');
@@ -402,15 +461,26 @@ export default function BannerStudio() {
             offCtx.fillStyle = currentTheme.accentColor;
             offCtx.fillRect(0, 0, offCanvas.width, offCanvas.height);
 
-            ctx.drawImage(offCanvas, startX + padding, startY + (badgeHeight - logoSize) / 2, logoSize, logoSize);
+            ctx.drawImage(offCanvas, boxX, boxY, logoSize, logoSize);
+            renderedImageSuccess = true;
           }
         } catch (e) {
           console.error('Offscreen logo tinting failed:', e);
         }
-        textX += logoSize + padding;
+      }
+
+      // Fallback: Display Company Initials in JetBrains Mono inside logo anchor box if image absent/failed
+      if (!renderedImageSuccess) {
+        const initials = getCompanyInitials(companyDomain, fullName);
+        ctx.fillStyle = currentTheme.accentColor;
+        ctx.font = '700 12px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(initials, boxX + logoSize / 2, boxY + logoSize / 2 + 1);
       }
 
       // Domain Text inside Badge
+      const textX = boxX + logoSize + padding;
       ctx.fillStyle = currentTheme.textColor;
       ctx.font = '600 18px "JetBrains Mono", monospace';
       ctx.textAlign = 'left';
@@ -418,9 +488,12 @@ export default function BannerStudio() {
       ctx.fillText(domainText, textX, startY + badgeHeight / 2);
     };
 
-    if (companyDomain.trim()) {
+    const trimmedInput = companyDomain.trim();
+    if (trimmedInput) {
+      // Synchronously render initial badge with initials fallback while image loads
+      renderBadge();
+
       const img = new Image();
-      // Requirement 2: Set img.crossOrigin = "anonymous" BEFORE assigning img.src
       img.crossOrigin = 'anonymous';
       img.onload = () => {
         renderBadge(img);
@@ -428,7 +501,9 @@ export default function BannerStudio() {
       img.onerror = () => {
         renderBadge();
       };
-      img.src = `/api/logo-proxy?domain=${encodeURIComponent(companyDomain.trim())}`;
+      const isDirectUrl = trimmedInput.startsWith('http://') || trimmedInput.startsWith('https://');
+      const paramName = isDirectUrl ? 'url' : 'domain';
+      img.src = `/api/logo-proxy?${paramName}=${encodeURIComponent(trimmedInput)}`;
     } else {
       renderBadge();
     }
@@ -491,6 +566,7 @@ export default function BannerStudio() {
                 type="text"
                 value={companyDomain}
                 onChange={(e) => setCompanyDomain(e.target.value)}
+                placeholder="artcraft.io or https://..."
                 className="w-full bg-[#09090b] border border-zinc-800 px-3 py-2 text-xs text-white outline-none focus:border-[#00E5FF]"
               />
             </div>
