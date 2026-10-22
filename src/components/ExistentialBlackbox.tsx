@@ -70,7 +70,7 @@ export const ExistentialBlackbox: React.FC = () => {
     }
   }, [language, activeQA, isTyping]);
 
-  // Canvas 2D 60FPS Brutalist Fibonacci Golden Spiral Taiji + CAD Blueprint Engine
+  // Canvas 2D 60FPS Dynamic Fibonacci Golden Spiral Taiji Engine
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -87,12 +87,13 @@ export const ExistentialBlackbox: React.FC = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Hàm bổ trợ: Dựng đường cong xoắn ốc Fibonacci chính xác bằng thuật toán ghép cung
-    const buildFibonacciSpiralPath = (
+    // Hàm dựng đường cong Fibonacci xoắn ốc chuyển động uốn lượn
+    const buildDynamicFibonacciPath = (
       c: CanvasRenderingContext2D,
       centerX: number,
       centerY: number,
       scale: number,
+      rotationAngle: number,
       reverse = false
     ) => {
       let a = 0, b = 1;
@@ -100,15 +101,16 @@ export const ExistentialBlackbox: React.FC = () => {
 
       for (let i = 0; i < 8; i++) {
         let radius = b * scale;
-        let startAngle = (i * Math.PI) / 2;
-        if (reverse) startAngle += Math.PI; // Đối xứng ngược chiều
+        // Góc xoay biến thiên liên tục theo thời gian để tạo nhịp uốn lượn
+        let startAngle = (i * Math.PI) / 2 + rotationAngle;
+        if (reverse) startAngle += Math.PI;
         let endAngle = startAngle + Math.PI / 2;
 
         c.arc(x, y, radius, startAngle, endAngle);
 
-        let nextB = a + b;
+        let nextFb = a + b;
         a = b;
-        b = nextB;
+        b = nextFb;
 
         if ((i % 4 === 0 && !reverse) || (i % 4 === 2 && reverse)) x -= a * scale;
         else if ((i % 4 === 1 && !reverse) || (i % 4 === 3 && reverse)) y += a * scale;
@@ -123,7 +125,7 @@ export const ExistentialBlackbox: React.FC = () => {
       ctx.clearRect(0, 0, w, h);
 
       // --- 1. CAD BLUEPRINT OVERLAY: SWISS GRID LINES ---
-      ctx.strokeStyle = '#27272a'; // 1px zinc-800 border line
+      ctx.strokeStyle = '#27272a';
       ctx.lineWidth = 1;
       const margin = 20;
       ctx.strokeRect(margin, margin, w - margin * 2, h - margin * 2);
@@ -177,20 +179,28 @@ export const ExistentialBlackbox: React.FC = () => {
         ctx.stroke();
       });
 
-      // --- 3. FIBONACCI TAICHI ENGINE (MACHINE SPEED vs. HUMAN SOUL) ---
+      // --- 3. DYNAMIC FIBONACCI TAIJI FLUID ENGINE ---
       const cx = w / 2;
       const cy = h / 2;
-      const scale = Math.min(w, h) / 52; // Tỷ lệ co giãn linh hoạt theo Canvas
+      const scale = Math.min(w, h) / 54;
       const fibSequence = [1, 1, 2, 3, 5, 8, 13, 21];
 
-      // A. Hệ khung xương Matrix (Fibonacci Grid)
+      // Góc xoay Thái Cực biến thiên theo nhịp sóng sinh học
+      const spinAngle = time * 0.8; 
+      const waveWave = Math.sin(time * 2) * 0.15; // Hiệu ứng lắc uốn lượn linh hoạt
+
+      // A. Hệ khung xương Matrix (Fibonacci Grid & Rays)
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(spinAngle * 0.2); // Khung xoay chậm tạo chiều sâu
+      ctx.translate(-cx, -cy);
+
       let fx = cx, fy = cy;
       let fa = 0, fb = 1;
-
-      ctx.strokeStyle = isTyping ? 'rgba(0, 229, 255, 0.4)' : 'rgba(83, 34, 255, 0.25)';
+      ctx.strokeStyle = isTyping ? 'rgba(0, 229, 255, 0.35)' : 'rgba(83, 34, 255, 0.2)';
       ctx.lineWidth = 1;
       ctx.font = '8px monospace';
-      ctx.fillStyle = isTyping ? 'rgba(0, 229, 255, 0.6)' : 'rgba(83, 34, 255, 0.5)';
+      ctx.fillStyle = isTyping ? 'rgba(0, 229, 255, 0.6)' : 'rgba(83, 34, 255, 0.4)';
 
       for (let i = 0; i < fibSequence.length; i++) {
         let size = fibSequence[i] * scale;
@@ -206,87 +216,94 @@ export const ExistentialBlackbox: React.FC = () => {
         else if (i % 4 === 2) fx += fa * scale;
         else if (i % 4 === 3) fy -= fa * scale;
       }
+      ctx.restore();
 
-      // B. Nửa "Cơ máy" (Dương - Machine Speed: Brutalist Grid & Binary)
+      // B. Nửa "Cơ Máy" (Dương - Brutalist Machine Speed) - Xoay & Chuyển động Nhị phân
       ctx.save();
       ctx.beginPath();
-      buildFibonacciSpiralPath(ctx, cx, cy, scale, false);
-      ctx.arc(cx, cy, 21 * scale, 0, Math.PI, false);
+      buildDynamicFibonacciPath(ctx, cx, cy, scale, spinAngle + waveWave, false);
+      ctx.arc(cx, cy, 21 * scale, spinAngle, spinAngle + Math.PI, false);
       ctx.clip();
 
       ctx.fillStyle = '#0c0d10';
       ctx.fillRect(cx - 21 * scale, cy - 21 * scale, 42 * scale, 42 * scale);
 
-      ctx.fillStyle = isTyping ? 'rgba(0, 229, 255, 0.3)' : 'rgba(255, 255, 255, 0.15)';
+      // Binary Matrix chảy cuồn cuộn
+      ctx.fillStyle = isTyping ? 'rgba(0, 229, 255, 0.35)' : 'rgba(255, 255, 255, 0.18)';
       ctx.font = '8px monospace';
       for (let bx = -21 * scale; bx < 21 * scale; bx += 14) {
         for (let by = -21 * scale; by < 21 * scale; by += 14) {
-          let bit = ((bx + by + Math.floor(time * 10)) % 2 === 0) ? '1' : '0';
+          let bit = ((Math.floor(bx + time * 40) + Math.floor(by + time * 20)) % 2 === 0) ? '1' : '0';
           ctx.fillText(bit, cx + bx, cy + by);
         }
       }
       ctx.restore();
 
-      // C. Nửa "Tâm hồn" (Âm - Human Soul: Neon Particles)
+      // C. Nửa "Tâm Hồn" (Âm - Human Soul) - Dải hạt Tím Neon #5322ff chảy xoáy tâm
       ctx.save();
       ctx.beginPath();
-      buildFibonacciSpiralPath(ctx, cx, cy, scale, true);
-      ctx.arc(cx, cy, 21 * scale, Math.PI, 0, false);
+      buildDynamicFibonacciPath(ctx, cx, cy, scale, spinAngle + waveWave, true);
+      ctx.arc(cx, cy, 21 * scale, spinAngle + Math.PI, spinAngle, false);
       ctx.clip();
 
       let soulGrad = ctx.createRadialGradient(cx, cy, 5, cx, cy, 21 * scale);
       soulGrad.addColorStop(0, isTyping ? 'rgba(0, 229, 255, 0.95)' : 'rgba(83, 34, 255, 0.95)');
-      soulGrad.addColorStop(1, 'rgba(15, 5, 35, 0.98)');
+      soulGrad.addColorStop(1, 'rgba(12, 4, 30, 0.98)');
       ctx.fillStyle = soulGrad;
       ctx.fillRect(cx - 21 * scale, cy - 21 * scale, 42 * scale, 42 * scale);
 
-      ctx.fillStyle = isTyping ? '#00E5FF' : 'rgba(180, 150, 255, 0.8)';
-      for (let p = 0; p < 35; p++) {
-        let px = cx + Math.sin(p * 1.7 + time * 2) * (p * 2.5);
-        let py = cy + Math.cos(p * 1.3 + time * 1.5) * (p * 2.5);
+      // Hiệu ứng dòng chảy hạt xoáy Dấu Vết Ý Thức (Flowing Swarm)
+      for (let p = 0; p < 60; p++) {
+        let pAngle = spinAngle + (p * 0.1) + Math.sin(time * 3 + p) * 0.2;
+        let pRadius = (p * scale * 0.35) % (20 * scale);
+        let px = cx + Math.cos(pAngle) * pRadius;
+        let py = cy + Math.sin(pAngle) * pRadius;
+
+        ctx.fillStyle = isTyping ? '#00E5FF' : `rgba(${130 + p * 2}, 34, 255, ${0.3 + (p % 5) * 0.15})`;
         ctx.beginPath();
-        ctx.arc(px, py, (p % 3) + 1, 0, Math.PI * 2);
+        ctx.arc(px, py, (p % 3) + 1.2, 0, Math.PI * 2);
         ctx.fill();
       }
       ctx.restore();
 
-      // D. Mối nối Nhất Nguyên (The Singularity - Eyes of Taiji)
-      let eyeOffset = 8 * scale;
+      // D. Mối Nối Nhất Nguyên (The Singularity - Dynamic Moving Eyes)
+      let eyeRadiusOffset = 8 * scale;
+      
+      // Tọa độ 2 Mắt Thái Cực tự động xoay quanh tâm theo nhịp spinAngle
+      let mEyeX = cx + Math.cos(spinAngle + Math.PI / 2) * eyeRadiusOffset;
+      let mEyeY = cy + Math.sin(spinAngle + Math.PI / 2) * eyeRadiusOffset;
+      
+      let hEyeX = cx + Math.cos(spinAngle - Math.PI / 2) * eyeRadiusOffset;
+      let hEyeY = cy + Math.sin(spinAngle - Math.PI / 2) * eyeRadiusOffset;
 
-      // Mắt bên Cơ Máy: Node Tọa độ Vector Phát Sáng
-      let machineEyeX = cx;
-      let machineEyeY = cy - eyeOffset;
-      let pulseRadius = 5 + Math.sin(time * 6) * (isTyping ? 3 : 1.5);
-
+      // Mắt Machine Node (Phát sáng Cyan / Tím Neon)
+      let pulseRadius = 5 + Math.sin(time * 8) * (isTyping ? 3 : 1.5);
       ctx.save();
       ctx.shadowColor = isTyping ? '#00E5FF' : '#5322ff';
-      ctx.shadowBlur = isTyping ? 20 : 12;
+      ctx.shadowBlur = isTyping ? 22 : 12;
       ctx.fillStyle = isTyping ? '#00E5FF' : '#5322ff';
       ctx.beginPath();
-      ctx.arc(machineEyeX, machineEyeY, pulseRadius, 0, Math.PI * 2);
+      ctx.arc(mEyeX, mEyeY, pulseRadius, 0, Math.PI * 2);
       ctx.fill();
 
       ctx.strokeStyle = isTyping ? '#ffffff' : '#00E5FF';
       ctx.lineWidth = 1;
-      ctx.strokeRect(machineEyeX - 8, machineEyeY - 8, 16, 16);
+      ctx.strokeRect(mEyeX - 7, mEyeY - 7, 14, 14);
       ctx.restore();
 
-      // Mắt bên Con Người: Single Pixel Trống (#000000)
-      let humanEyeX = cx;
-      let humanEyeY = cy + eyeOffset;
-
+      // Mắt Human Soul (Khoảng trống Pixel Đen tuyệt đối)
       ctx.save();
       ctx.fillStyle = '#000000';
       ctx.beginPath();
-      ctx.arc(humanEyeX, humanEyeY, 6, 0, Math.PI * 2);
+      ctx.arc(hEyeX, hEyeY, 6, 0, Math.PI * 2);
       ctx.fill();
 
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
       ctx.lineWidth = 1;
       ctx.stroke();
       ctx.restore();
 
-      time += 0.03;
+      time += 0.025; // Tốc độ cuộn sóng mượt mà 60fps
       animationFrameId = requestAnimationFrame(drawEngine);
     };
 
