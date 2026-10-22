@@ -5,6 +5,7 @@ export interface Translations {
   nav_engine: string;
   nav_architecture: string;
   nav_blueprints: string;
+  nav_blackbox: string;
   nav_experts: string;
   nav_deploy_node: string;
   nav_studio_console: string;
@@ -169,6 +170,7 @@ export const translations: Record<Language, Translations> = {
     nav_engine: 'ENGINE',
     nav_architecture: 'ARCHITECTURE',
     nav_blueprints: 'BLUEPRINTS',
+    nav_blackbox: 'BLACKBOX',
     nav_experts: 'EXPERTS',
     nav_deploy_node: 'DEPLOY//NODE',
     nav_studio_console: 'STUDIO//CONSOLE',
@@ -341,6 +343,7 @@ export const translations: Record<Language, Translations> = {
     nav_engine: 'ĐỘNG CƠ',
     nav_architecture: 'KIẾN TRÚC',
     nav_blueprints: 'SƠ ĐỒ MẪU',
+    nav_blackbox: 'HỘP ĐEN',
     nav_experts: 'CHUYÊN GIA',
     nav_deploy_node: 'TRIỂN KHAI//NÚT',
     nav_studio_console: 'STUDIO//ĐIỀU HÀNH',

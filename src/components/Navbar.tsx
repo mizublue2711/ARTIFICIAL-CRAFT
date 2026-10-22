@@ -16,6 +16,7 @@ export default function Navbar() {
     { label: t('nav_engine'), href: '#platform' },
     { label: t('nav_architecture'), href: '#architecture' },
     { label: t('nav_blueprints'), href: '#blueprints' },
+    { label: t('nav_blackbox'), href: '#existential-blackbox' },
     { label: t('nav_experts'), href: '#experts' },
   ];
 
