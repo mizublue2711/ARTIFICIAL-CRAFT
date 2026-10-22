@@ -376,7 +376,7 @@ export const translations: Record<Language, Translations> = {
     blackbox_framerate: 'FRAME_RATE: 60 FPS',
     blackbox_headless: 'HEADLESS_FOUNDER: ABSENT',
     blackbox_core_logic: 'CORE_LOGIC: RUST // DIFY // N8N',
-    blackbox_manifesto_title: 'FOR IMMEDIATE RELEASE // THE PARADOX OF THE ERASERHEAD (BY DAVE TROTT)',
+    blackbox_manifesto_title: 'FOR IMMEDIATE RELEASE // THE PARADOX OF THE ERASERHEAD (BY THUY VU)',
     blackbox_manifesto_quote: '"Nine years of pixel-pushing erased to build an autonomous creative engine. Machine speed with human soul."',
     blackbox_portfolio_btn: '[ ↗ VIEW ARCHIVED HUMAN PORTFOLIO (2016-2025) TO SEE THE DESIGN SUBSTRATE ]',
     blackbox_terminal_title: '> THE_TERMINAL_CONSOLE',
@@ -450,25 +450,25 @@ export const translations: Record<Language, Translations> = {
     mode_content_label: 'Động Cơ Thiết Kế // Studio',
     mode_content_sublabel: 'Độ Chính Xác Đồ Họa → Phân Phối Xác Định',
     mode_content_desc:
-      'Biểu thị sự kết hợp giữa độ chính xác thiết kế đồ họa và tự động hóa mã: Tác nhân Dify biên tập và định dạng tài sản thương hiệu, trong khi n8n thực thi phân phối xác định 100% trên các kênh sản xuất.',
+      'Sự giao thoa giữa độ chuẩn xác của thiết kế và tự động hóa lập trình: AI Agent của Dify xử lý và quy chuẩn hóa ấn phẩm truyền thông, còn n8n đảm bảo luồng phân phối tự động chuẩn xác tuyệt đối trên các nền tảng.',
     mode_lead_label: 'Động Cơ Chấm Điểm Nút',
     mode_lead_sublabel: 'Dữ Liệu Viễn Thông → Định Tuyến Dự Đoán',
     mode_lead_desc:
-      'Sự kiện Webhook đầu vào cung cấp cho bộ lọc thần kinh ARTIFICIAL CRAFT. Các vectơ hành vi thời gian thực được hợp nhất thành điểm số xác định với khả năng chống giới hạn tốc độ.',
+      'Dữ liệu đầu vào từ sự kiện Webhook sẽ được nạp vào bộ lọc AI của ARTIFICIAL CRAFT. Tại đây, các vector hành vi theo thời gian thực được tổng hợp thành một thang điểm chuẩn xác, đồng thời hệ thống tự động tối ưu hóa để tránh bị khóa do vượt quá tần suất gửi yêu cầu (Rate Limit).',
     mode_research_label: 'Ma Trận RAG Nhân Tạo',
     mode_research_sublabel: 'Truy Xuất Vectơ → Tóm Tắt Cấu Trúc',
     mode_research_desc:
-      'Truy xuất vector RAG lai sâu với xếp hạng lại BM25. Lõi lý luận Dify xây dựng trích dẫn trong khi n8n đảm bảo tuân thủ sơ đồ không sai lệch.',
+      '"Truy xuất dữ liệu bằng Hybrid RAG kết hợp Vector và tái xếp hạng (Reranking) BM25. Khối xử lý Dify tự động trích dẫn nguồn, còn n8n kiểm soát dữ liệu đầu ra tuân thủ nghiêm ngặt theo Schema.',
 
     // Bento Grid
     bento_section_label: 'KIẾN TRÚC // ĐỘNG CƠ KÉP',
     bento_title_line1: 'HAI ĐỘNG CƠ. MỘT MÔI TRƯỜNG.',
     bento_title_line2: 'ĐỘ CHÍNH XÁC ĐỒ HỌA + ĐIỀU PHỐI MÃ.',
     bento_desc:
-      'ARTIFICIAL CRAFT kết hợp ma trận lý luận của Dify với bộ điều phối thực thi của n8n. Thiết kế thương hiệu có cấu trúc và tự động hóa chính xác được liên kết bởi mặt phẳng kiểm soát không sai lệch.',
+      'ARTIFICIAL CRAFT tích hợp lõi xử lý thông minh của Dify cùng năng lực điều phối tự động từ n8n. Toàn bộ quy trình chuẩn hóa thiết kế và vận hành hệ thống được đồng bộ hóa toàn diện, đảm bảo độ chính xác tuyệt đối.',
     card_hybrid_title: 'MÔI TRƯỜNG THỰC THI THIẾT KẾ LAI',
     card_hybrid_desc:
-      'Động cơ lý luận gọi quy trình n8n như các công cụ thiết kế Thụy Sĩ có kiểu dữ liệu; quy trình n8n thực thi tác nhân Dify như các bước mã xác định.',
+      'Nền tảng tư duy xử lý quy trình n8n dựa trên các kiểu dữ liệu rõ ràng, và vận hành các tác nhân Dify giống như các bước lập trình tuần tự.',
     node_trigger: 'KÍCH HOẠT',
     node_reason: 'LÝ LUẬN',
     node_vector: 'VECTƠ',
@@ -478,13 +478,13 @@ export const translations: Record<Language, Translations> = {
     status_streaming_matrix: 'MA TRẬN DÒNG',
     status_retry_eligible: 'CÓ THỂ THỬ LẠI',
     card_rag_title: 'MA TRẬN VECTOR RAG',
-    card_rag_desc: 'Xếp hạng lại lai Pinecone + BM25 cho các thông số thiết kế Thụy Sĩ.',
+    card_rag_desc: 'Tìm kiếm kết hợp Pinecone + BM25 và tái xếp hạng dữ liệu (Reranking) cho các bộ tham số thiết kế',
     rag_latency: 'ĐỘ TRỄ: 540ms',
     card_det_title: 'ĐỘNG CƠ XÁC ĐỊNH',
-    card_det_desc: 'Chính sách tự động thử lại theo số nhân, lá chắn giới hạn tốc độ, lưu trữ thư chết.',
+    card_det_desc: 'Thử lại theo cấp số nhân, Giới hạn tốc độ lệnh, Hàng đợi lệnh lỗi.',
     row_retry: 'THỬ LẠI: LŨY THỪA · TỐI ĐA 5',
-    row_rate_limit: 'GIỚI HẠN TỐC ĐỘ: DÒ DÌM THÍCH ỨNG',
-    row_dead_letter: 'LƯU TRỮ THƯ CHẾT: BẤT BIẾN',
+    row_rate_limit: 'GIỚI HẠN TỐC ĐỘ: HÀNG ĐỢI THÍCH ỨNG',
+    row_dead_letter: 'CHẶN QUÁ TẢI: CÁCH LY LỆNH LỖI',
     card_router_title: 'BỘ ĐỊNH TUYẾN ĐA MÔ HÌNH',
     card_router_desc: 'GPT-4o, Claude, Llama — được định tuyến theo độ trễ, chi phí hoặc điểm thiết kế.',
     card_telemetry_title: 'THEO DÕI VIỄN THÔNG',
@@ -498,7 +498,7 @@ export const translations: Record<Language, Translations> = {
     bp_title_line1: 'SƠ ĐỒ MẪU SẴN SÀNG SẢN XUẤT.',
     bp_title_line2: 'SAO CHÉP. TRIỂN KHAI. CHIA SẺ.',
     bp_desc:
-      'Mỗi sơ đồ mẫu đi kèm với API có kiểu, cấu trúc nút và công cụ xuất ảnh HD phong cách Thụy Sĩ.',
+      'Mỗi sơ đồ mẫu đi kèm với API có kiểu, cấu trúc nút và công cụ xuất ảnh HD.',
     copy_api: 'SAO CHÉP API',
     copied: 'ĐÃ SAO CHÉP',
     export_clean_screenshot: 'Xuất Ảnh Màn Hình Sạch',
@@ -528,7 +528,7 @@ export const translations: Record<Language, Translations> = {
     banner_export_button: 'Xuất Banner',
 
     // Experts Section
-    experts_section_label: 'DANH MỤC CHUYÊN GIA // TUYỂN CHỌN',
+    experts_section_label: 'CHẤP NHẬN THỬ NGHIỆM',
     experts_title: 'ĐƯỢC ĐÁNH GIÁ BỞI NHỮNG NGƯỜI XÂY DỰNG TƯƠNG LAI.',
     experts_desc:
       'Mỗi quy trình được giới thiệu đều được kiểm toán, triển khai và bảo trì bởi các kỹ sư vận hành AI thực tế.',
@@ -579,9 +579,9 @@ export const translations: Record<Language, Translations> = {
     blackbox_framerate: 'TỐC ĐỘ KHUNG HÌNH: 60 FPS',
     blackbox_headless: 'SÁNG TẠO VIÊN KHÔNG ĐẦU: VẮNG MẶT',
     blackbox_core_logic: 'LÕI LÝ LUẬN: RUST // DIFY // N8N',
-    blackbox_manifesto_title: 'THÔNG CÁO BÁO CHÍ // NGHỊ LÝ NGHỊCH LÝ ERASERHEAD (THEO DAVE TROTT)',
-    blackbox_manifesto_quote: '"Chín năm căn chỉnh từng pixel bị xóa bỏ để xây dựng động cơ sáng tạo tự trị. Tốc độ máy móc cùng tâm hồn con người."',
-    blackbox_portfolio_btn: '[ ↗ XEM HỒ SƠ NĂNG LỰC CON NGƯỜI (2016-2025) ĐỂ THẤY BỀ MẶT THIẾT KẾ ]',
+    blackbox_manifesto_title: '// NGHỊCH LÝ ERASERHEAD (THEO THUY VU)',
+    blackbox_manifesto_quote: '"Chín năm căn chỉnh từng pixel bị xóa bỏ để xây dựng hệ thống sáng tạo tối ưu. Tốc độ máy móc cùng tâm hồn con người."',
+    blackbox_portfolio_btn: '[ ↗ XEM HỒ SƠ NĂNG LỰC NHÀ SÁNG LẬP (2016-2025) ĐỂ THẤY NỀN TẢNG THIẾT KẾ ]',
     blackbox_terminal_title: '> BẢNG_ĐIỀU_KHIỂN_TERMINAL',
     blackbox_click_cmd: '// NHẤP LỆNH ĐỂ THỰC THI PHẢN HỒI TÁC NHÂN:',
     blackbox_run: 'CHẠY',
