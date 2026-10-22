@@ -3,6 +3,7 @@ import Hero from '@/components/Hero';
 import BentoGrid from '@/components/BentoGrid';
 import BlueprintLibrary from '@/components/BlueprintLibrary';
 import BannerStudio from '@/components/BannerStudio';
+import ExistentialBlackbox from '@/components/ExistentialBlackbox';
 import Experts from '@/components/Experts';
 import Footer from '@/components/Footer';
 import { LanguageProvider } from '@/context/LanguageContext';
@@ -45,6 +46,7 @@ function App() {
           <BentoGrid />
           <BlueprintLibrary />
           <BannerStudio />
+          <ExistentialBlackbox />
           <Experts />
         </main>
         <Footer />
