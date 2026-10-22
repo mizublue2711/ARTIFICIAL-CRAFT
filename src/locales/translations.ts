@@ -110,10 +110,16 @@ export interface Translations {
   banner_full_name: string;
   banner_company_domain: string;
   banner_job_title: string;
+  banner_industry: string;
+  banner_industry_tech: string;
+  banner_industry_design: string;
+  banner_industry_finance: string;
+  banner_industry_marketing: string;
   banner_palette: string;
   banner_palette_swiss: string;
   banner_palette_cyan: string;
   banner_palette_purple: string;
+  banner_palette_amber: string;
   banner_export_button: string;
 
   // Experts Section
@@ -274,10 +280,16 @@ export const translations: Record<Language, Translations> = {
     banner_full_name: 'Full Name',
     banner_company_domain: 'Company Domain',
     banner_job_title: 'Job Title',
+    banner_industry: 'Industry Category',
+    banner_industry_tech: 'Tech / AI / Data',
+    banner_industry_design: 'Design / Frontend',
+    banner_industry_finance: 'Finance / Crypto',
+    banner_industry_marketing: 'Marketing / Creator',
     banner_palette: 'Palette',
-    banner_palette_swiss: 'Swiss Brutalist',
+    banner_palette_swiss: 'Monochrome White',
     banner_palette_cyan: 'Cyber Cyan',
-    banner_palette_purple: 'Neon Purple',
+    banner_palette_purple: '#5322ff Neon',
+    banner_palette_amber: 'Earthy Amber',
     banner_export_button: 'Export Banner',
 
     // Experts Section
@@ -440,10 +452,16 @@ export const translations: Record<Language, Translations> = {
     banner_full_name: 'Họ và Tên',
     banner_company_domain: 'Tên Miền Công Ty',
     banner_job_title: 'Chức Danh Công Việc',
+    banner_industry: 'Danh Mục Ngành Nghề',
+    banner_industry_tech: 'Công Nghệ / AI / Dữ Liệu',
+    banner_industry_design: 'Thiết Kế / Frontend',
+    banner_industry_finance: 'Tài Chính / Mã Hóa',
+    banner_industry_marketing: 'Marketing / Sáng Tạo',
     banner_palette: 'Bảng Màu',
-    banner_palette_swiss: 'Brutalist Thụy Sĩ',
+    banner_palette_swiss: 'Trắng Đơn Sắc',
     banner_palette_cyan: 'Xanh Cyber',
-    banner_palette_purple: 'Tím Neon',
+    banner_palette_purple: 'Neon Purple (#5322ff)',
+    banner_palette_amber: 'Hổ Phách Tự Nhiên',
     banner_export_button: 'Xuất Banner',
 
     // Experts Section
