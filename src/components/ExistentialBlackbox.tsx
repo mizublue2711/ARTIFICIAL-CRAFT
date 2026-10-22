@@ -88,10 +88,10 @@ export const ExistentialBlackbox: React.FC = () => {
       const rad = angle * (Math.PI / 180);
       const rotated = vertices.map(([x, y, z]) => {
         // Rotations Y & X
-        let x1 = x * Math.cos(rad) - z * Math.sin(rad);
-        let z1 = x * Math.sin(rad) + z * Math.cos(rad);
-        let y1 = y * Math.cos(rad * 0.5) - z1 * Math.sin(rad * 0.5);
-        let z2 = y * Math.sin(rad * 0.5) + z1 * Math.cos(rad * 0.5);
+        const x1 = x * Math.cos(rad) - z * Math.sin(rad);
+        const z1 = x * Math.sin(rad) + z * Math.cos(rad);
+        const y1 = y * Math.cos(rad * 0.5) - z1 * Math.sin(rad * 0.5);
+        const z2 = y * Math.sin(rad * 0.5) + z1 * Math.cos(rad * 0.5);
 
         const scale = 200 / (200 + z2 * 40);
         return [cx + x1 * currentSize * scale, cy + y1 * currentSize * scale];
