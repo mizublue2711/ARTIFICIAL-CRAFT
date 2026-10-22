@@ -1,12 +1,14 @@
 import { motion } from 'framer-motion';
 import { Linkedin, ArrowUpRight, Award } from 'lucide-react';
 import { EXPERTS, type Expert } from '@/lib/data';
+import { useTranslation } from '@/context/useLanguage';
 
 function accentHex(accent: 'cyan' | 'purple') {
   return accent === 'cyan' ? '#00E5FF' : '#5322ff';
 }
 
 function ExpertCard({ expert, index }: { expert: Expert; index: number }) {
+  const { t } = useTranslation();
   const accent = accentHex(expert.accent);
   return (
     <motion.div
@@ -47,7 +49,7 @@ function ExpertCard({ expert, index }: { expert: Expert; index: number }) {
         <div className="flex items-center gap-2 mb-1.5">
           <Award className="h-3.5 w-3.5" style={{ color: accent }} />
           <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-500">
-            CURATED WORKFLOW
+            {t('curated_workflow')}
           </span>
         </div>
         <div className="text-[12px] text-zinc-200 font-bold leading-snug">
@@ -59,7 +61,7 @@ function ExpertCard({ expert, index }: { expert: Expert; index: number }) {
         href="#"
         className="mt-4 inline-flex items-center gap-1 text-[11px] font-bold text-cyan-glow hover:text-white transition-colors uppercase"
       >
-        VIEW BLUEPRINT
+        {t('view_blueprint')}
         <ArrowUpRight className="h-3.5 w-3.5" />
       </a>
     </motion.div>
@@ -67,12 +69,14 @@ function ExpertCard({ expert, index }: { expert: Expert; index: number }) {
 }
 
 export default function Experts() {
+  const { t } = useTranslation();
+
   return (
     <section className="relative py-20 lg:py-28 bg-[#09090b] font-mono" id="experts">
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <div className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-cyan-glow mb-3 border border-zinc-800 bg-zinc-900 px-2.5 py-1">
           <span className="h-1.5 w-1.5 bg-[#5322ff]" />
-          EXPERT DIRECTORY // CURATED
+          {t('experts_section_label')}
         </div>
 
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
@@ -83,10 +87,10 @@ export default function Experts() {
             transition={{ duration: 0.5 }}
             className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white max-w-2xl uppercase leading-[1.05]"
           >
-            VETTED BY BUILDERS OF THE FUTURE.
+            {t('experts_title')}
           </motion.h2>
           <p className="max-w-md text-[14px] text-zinc-400 font-sans leading-relaxed border-l-2 border-[#00E5FF] pl-3">
-            Every featured workflow is audited, deployed, and maintained by operators running production AI.
+            {t('experts_desc')}
           </p>
         </div>
 
@@ -105,10 +109,10 @@ export default function Experts() {
           className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-px border border-zinc-800 bg-zinc-800 font-mono"
         >
           {[
-            { v: '4,200+', l: 'PRODUCTION WORKFLOWS' },
-            { v: '180M+', l: 'AGENT RUNS / MONTH' },
-            { v: '14', l: 'MULTI-AZ REGIONS' },
-            { v: '99.99%', l: 'DETERMINISTIC SLA' },
+            { v: '4,200+', l: t('stat_workflows') },
+            { v: '180M+', l: t('stat_runs') },
+            { v: '14', l: t('stat_regions') },
+            { v: '99.99%', l: t('stat_sla') },
           ].map((s) => (
             <div key={s.l} className="bg-zinc-950 p-5">
               <div className="font-mono text-2xl sm:text-3xl font-extrabold text-white tracking-tight">

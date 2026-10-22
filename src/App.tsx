@@ -2,6 +2,7 @@ import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import BentoGrid from '@/components/BentoGrid';
 import BlueprintLibrary from '@/components/BlueprintLibrary';
+import BannerStudio from '@/components/BannerStudio';
 import Experts from '@/components/Experts';
 import Footer from '@/components/Footer';
 import { LanguageProvider } from '@/context/LanguageContext';
@@ -43,6 +44,7 @@ function App() {
           <LogoMarquee />
           <BentoGrid />
           <BlueprintLibrary />
+          <BannerStudio />
           <Experts />
         </main>
         <Footer />

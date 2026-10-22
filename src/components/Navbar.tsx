@@ -3,19 +3,21 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Github, Menu, X, ArrowRight, Terminal } from 'lucide-react';
 import BrutalistLogo from './BrutalistLogo';
 import LanguageToggle from './LanguageToggle';
+import { useTranslation } from '@/context/useLanguage';
 
 const STUDIO_URL = 'https://dify-n8n-workflow.ai.studio/';
 
-const links = [
-  { label: 'ENGINE', href: '#platform' },
-  { label: 'ARCHITECTURE', href: '#architecture' },
-  { label: 'BLUEPRINTS', href: '#blueprints' },
-  { label: 'EXPERTS', href: '#experts' },
-];
-
 export default function Navbar() {
+  const { t } = useTranslation();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+
+  const links = [
+    { label: t('nav_engine'), href: '#platform' },
+    { label: t('nav_architecture'), href: '#architecture' },
+    { label: t('nav_blueprints'), href: '#blueprints' },
+    { label: t('nav_experts'), href: '#experts' },
+  ];
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -33,16 +35,16 @@ export default function Navbar() {
     >
       <nav className="mx-auto max-w-7xl px-6 lg:px-8 h-16 flex items-center justify-between">
         <a href="#" className="flex items-center gap-3 group">
-          <BrutalistLogo size={32} subtag="CRAFT//CODE" />
+          <BrutalistLogo size={32} subtag={t('logo_subtag')} />
           <span className="hidden sm:inline-flex font-mono text-[9px] px-1.5 py-0.5 rounded border border-zinc-700 bg-zinc-900 text-cyan-glow tracking-widest ml-1">
-            v3.0//BRUTALIST
+            {t('subtag_version')}
           </span>
         </a>
 
         <div className="hidden md:flex items-center gap-1">
-          {links.map((l) => (
+          {links.map((l, idx) => (
             <a
-              key={l.href}
+              key={idx}
               href={l.href}
               className="px-3.5 py-2 text-[12px] font-mono tracking-wider text-zinc-400 hover:text-white transition-colors rounded-none hover:bg-zinc-900 border border-transparent hover:border-zinc-800"
             >
@@ -63,7 +65,7 @@ export default function Navbar() {
             href="#platform"
             className="group inline-flex items-center gap-1.5 border border-zinc-800 bg-zinc-950 text-[12px] font-mono text-zinc-300 px-4 py-2 hover:bg-zinc-900 hover:text-white hover:border-zinc-700 transition-colors"
           >
-            DEPLOY//NODE
+            {t('nav_deploy_node')}
             <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform text-cyan-glow" />
           </a>
           <a
@@ -79,7 +81,7 @@ export default function Navbar() {
               }}
             />
             <Terminal className="relative h-3.5 w-3.5 text-cyan-glow" />
-            <span className="relative">STUDIO//CONSOLE</span>
+            <span className="relative">{t('nav_studio_console')}</span>
           </a>
           <LanguageToggle />
         </div>
@@ -106,9 +108,9 @@ export default function Navbar() {
             className="md:hidden overflow-hidden border-t border-zinc-800 bg-[#09090b]/98 backdrop-blur-xl font-mono"
           >
             <div className="px-6 py-4 flex flex-col gap-2">
-              {links.map((l) => (
+              {links.map((l, idx) => (
                 <a
-                  key={l.href}
+                  key={idx}
                   href={l.href}
                   onClick={() => setOpen(false)}
                   className="py-2 text-[13px] tracking-wider text-zinc-300 hover:text-white border-b border-zinc-900"
@@ -121,7 +123,7 @@ export default function Navbar() {
                 onClick={() => setOpen(false)}
                 className="inline-flex items-center justify-center gap-1.5 border border-zinc-800 bg-zinc-950 text-xs text-zinc-300 px-4 py-2.5 mt-2"
               >
-                DEPLOY//NODE <ArrowRight className="h-4 w-4 text-cyan-glow" />
+                {t('nav_deploy_node')} <ArrowRight className="h-4 w-4 text-cyan-glow" />
               </a>
               <a
                 href={STUDIO_URL}
@@ -131,7 +133,7 @@ export default function Navbar() {
                 className="inline-flex items-center justify-center gap-2 border border-[#5322ff] bg-[#5322ff]/20 text-xs font-bold px-4 py-2.5 text-white"
               >
                 <Terminal className="h-4 w-4 text-cyan-glow" />
-                STUDIO//CONSOLE
+                {t('nav_studio_console')}
               </a>
             </div>
           </motion.div>
