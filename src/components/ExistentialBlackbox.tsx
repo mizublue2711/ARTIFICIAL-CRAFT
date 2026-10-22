@@ -189,7 +189,7 @@ export const ExistentialBlackbox: React.FC = () => {
       const spinAngle = time * 0.8; 
       const waveWave = Math.sin(time * 2) * 0.15; // Hiệu ứng lắc uốn lượn linh hoạt
 
-      // A. Hệ khung xương Matrix (Fibonacci Grid & Rays)
+      // A. Hệ khung Matrix (Fibonacci Grid & Rays)
       ctx.save();
       ctx.translate(cx, cy);
       ctx.rotate(spinAngle * 0.2); // Khung xoay chậm tạo chiều sâu
