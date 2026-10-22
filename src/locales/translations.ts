@@ -450,7 +450,7 @@ export const translations: Record<Language, Translations> = {
     mode_content_label: 'Động Cơ Thiết Kế // Studio',
     mode_content_sublabel: 'Độ Chính Xác Đồ Họa → Phân Phối Xác Định',
     mode_content_desc:
-      'Biểu thị sự kết hợp giữa độ chính xác thiết kế đồ họa và tự động hóa mã: Tác nhân Dify biên tập và định dạng tài sản thương hiệu, trong khi n8n thực thi phân phối xác định 100% trên các kênh sản xuất.',
+      'Sự giao thoa giữa độ chuẩn xác của thiết kế và tự động hóa lập trình: AI Agent của Dify xử lý và quy chuẩn hóa ấn phẩm truyền thông, còn n8n đảm bảo luồng phân phối tự động chuẩn xác tuyệt đối trên các nền tảng.',
     mode_lead_label: 'Động Cơ Chấm Điểm Nút',
     mode_lead_sublabel: 'Dữ Liệu Viễn Thông → Định Tuyến Dự Đoán',
     mode_lead_desc:
@@ -465,10 +465,10 @@ export const translations: Record<Language, Translations> = {
     bento_title_line1: 'HAI ĐỘNG CƠ. MỘT MÔI TRƯỜNG.',
     bento_title_line2: 'ĐỘ CHÍNH XÁC ĐỒ HỌA + ĐIỀU PHỐI MÃ.',
     bento_desc:
-      'ARTIFICIAL CRAFT kết hợp ma trận lý luận của Dify với bộ điều phối thực thi của n8n. Thiết kế thương hiệu có cấu trúc và tự động hóa chính xác được liên kết bởi mặt phẳng kiểm soát không sai lệch.',
+      'ARTIFICIAL CRAFT kết hợp ma trận lý luận của Dify với bộ điều phối thực thi của n8n. Thiết kế thương hiệu có cấu trúc và tự động hóa chính xác được liên kết bởi giới hạn kiểm soát không sai lệch.',
     card_hybrid_title: 'MÔI TRƯỜNG THỰC THI THIẾT KẾ LAI',
     card_hybrid_desc:
-      'Động cơ lý luận gọi quy trình n8n như các công cụ thiết kế Thụy Sĩ có kiểu dữ liệu; quy trình n8n thực thi tác nhân Dify như các bước mã xác định.',
+      'Nền tảng tư duy xử lý quy trình n8n dựa trên các kiểu dữ liệu rõ ràng, và vận hành các tác nhân Dify giống như các bước lập trình tuần tự',
     node_trigger: 'KÍCH HOẠT',
     node_reason: 'LÝ LUẬN',
     node_vector: 'VECTƠ',
@@ -498,7 +498,7 @@ export const translations: Record<Language, Translations> = {
     bp_title_line1: 'SƠ ĐỒ MẪU SẴN SÀNG SẢN XUẤT.',
     bp_title_line2: 'SAO CHÉP. TRIỂN KHAI. CHIA SẺ.',
     bp_desc:
-      'Mỗi sơ đồ mẫu đi kèm với API có kiểu, cấu trúc nút và công cụ xuất ảnh HD phong cách Thụy Sĩ.',
+      'Mỗi sơ đồ mẫu đi kèm với API có kiểu, cấu trúc nút và công cụ xuất ảnh định hình theo phong cách của khách hàng.',
     copy_api: 'SAO CHÉP API',
     copied: 'ĐÃ SAO CHÉP',
     export_clean_screenshot: 'Xuất Ảnh Màn Hình Sạch',
@@ -581,7 +581,7 @@ export const translations: Record<Language, Translations> = {
     blackbox_core_logic: 'LÕI LÝ LUẬN: RUST // DIFY // N8N',
     blackbox_manifesto_title: 'NGHỊCH LÝ ERASERHEAD (THEO THUY VU)',
     blackbox_manifesto_quote: '"Chín năm căn chỉnh từng pixel bị xóa bỏ để xây dựng động cơ sáng tạo tự trị. Tốc độ máy móc cùng tâm hồn con người."',
-    blackbox_portfolio_btn: '[ ↗ XEM HỒ SƠ NĂNG LỰC CON NGƯỜI (2016-2025) ĐỂ THẤY BỀ MẶT THIẾT KẾ ]',
+    blackbox_portfolio_btn: '[ ↗ XEM HỒ SƠ NĂNG LỰC CON NGƯỜI (2016-2025) ĐỂ THẤY NỀN TẢNG THIẾT KẾ ]',
     blackbox_terminal_title: '> BẢNG_ĐIỀU_KHIỂN_TERMINAL',
     blackbox_click_cmd: '// NHẤP LỆNH ĐỂ THỰC THI PHẢN HỒI TÁC NHÂN:',
     blackbox_run: 'CHẠY',
