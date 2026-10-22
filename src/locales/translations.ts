@@ -308,7 +308,7 @@ export const translations: Record<Language, Translations> = {
     bp_browse_all: 'BROWSE ALL 40+ TEMPLATES',
 
     // LinkedIn Banner Studio Form
-    banner_studio_title: 'Create Your Own LinkedIn Banner Studio',
+    banner_studio_title: 'Plug & Play Studio Banner LinkedIn (100% Automated & Free),
     banner_full_name: 'Full Name',
     banner_company_domain: 'Company Domain / Logo URL',
     banner_job_title: 'Job Title',
