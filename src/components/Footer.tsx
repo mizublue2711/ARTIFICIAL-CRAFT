@@ -1,4 +1,4 @@
-import { Github, Twitter, Linkedin, ArrowRight } from 'lucide-react';
+import { Github, Mail, Linkedin, ArrowRight } from 'lucide-react';
 import BrutalistLogo from './BrutalistLogo';
 import { useTranslation } from '@/context/useLanguage';
 
@@ -73,15 +73,31 @@ export default function Footer() {
               {t('footer_brand_desc')}
             </p>
             <div className="flex items-center gap-2 mt-5">
-              {[Github, Twitter, Linkedin].map((Icon, i) => (
-                <a
-                  key={i}
-                  href="#"
-                  className="h-8 w-8 border border-zinc-800 bg-zinc-900 flex items-center justify-center text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors"
-                >
-                  <Icon className="h-4 w-4" />
-                </a>
-              ))}
+              <a
+                href="https://github.com/mizublue2711/DIFY-N8N-AUTOMATION-DESIGN"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="h-8 w-8 border border-zinc-800 bg-zinc-900 flex items-center justify-center text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors"
+                title="GitHub"
+              >
+                <Github className="h-4 w-4" />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/thuy-thu-vu-271190"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="h-8 w-8 border border-zinc-800 bg-zinc-900 flex items-center justify-center text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors"
+                title="LinkedIn"
+              >
+                <Linkedin className="h-4 w-4" />
+              </a>
+              <a
+                href="mailto:mizu2711@gmail.com"
+                className="h-8 w-8 border border-zinc-800 bg-zinc-900 flex items-center justify-center text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors"
+                title="Email"
+              >
+                <Mail className="h-4 w-4" />
+              </a>
             </div>
           </div>
 

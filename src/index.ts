@@ -1,6 +1,7 @@
 export interface Env {
   // Khai báo biến môi trường đã set ở Bước 1
   LOGO_DEV_TOKEN?: string;
+  ASSETS?: { fetch: (request: Request) => Promise<Response> };
 }
 
 export default {
@@ -77,7 +78,10 @@ export default {
       }
     }
 
-    // Trả về 404 cho các Route không khớp khác (nếu không phải tệp tĩnh)
+    // Trả về Tệp Tĩnh / SPA Frontend qua ASSETS binding nếu có, hoặc 404
+    if (env.ASSETS) {
+      return env.ASSETS.fetch(request);
+    }
     return new Response('Not Found', { status: 404 });
   }
 };
