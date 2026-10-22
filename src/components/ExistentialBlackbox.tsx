@@ -70,7 +70,7 @@ export const ExistentialBlackbox: React.FC = () => {
     }
   }, [language, activeQA, isTyping]);
 
-  // Canvas 2D 60FPS Brutalist Rotating Cube + CAD Blueprint Overlay Engine
+  // Canvas 2D 60FPS Brutalist Fibonacci Golden Spiral Taiji + CAD Blueprint Engine
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -78,7 +78,7 @@ export const ExistentialBlackbox: React.FC = () => {
     if (!ctx) return;
 
     let animationFrameId: number;
-    let angle = 0;
+    let time = 0;
 
     const resizeCanvas = () => {
       canvas.width = canvas.parentElement?.clientWidth || 400;
@@ -87,20 +87,47 @@ export const ExistentialBlackbox: React.FC = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
+    // Hàm bổ trợ: Dựng đường cong xoắn ốc Fibonacci chính xác bằng thuật toán ghép cung
+    const buildFibonacciSpiralPath = (
+      c: CanvasRenderingContext2D,
+      centerX: number,
+      centerY: number,
+      scale: number,
+      reverse = false
+    ) => {
+      let a = 0, b = 1;
+      let x = centerX, y = centerY;
+
+      for (let i = 0; i < 8; i++) {
+        let radius = b * scale;
+        let startAngle = (i * Math.PI) / 2;
+        if (reverse) startAngle += Math.PI; // Đối xứng ngược chiều
+        let endAngle = startAngle + Math.PI / 2;
+
+        c.arc(x, y, radius, startAngle, endAngle);
+
+        let nextB = a + b;
+        a = b;
+        b = nextB;
+
+        if ((i % 4 === 0 && !reverse) || (i % 4 === 2 && reverse)) x -= a * scale;
+        else if ((i % 4 === 1 && !reverse) || (i % 4 === 3 && reverse)) y += a * scale;
+        else if ((i % 4 === 2 && !reverse) || (i % 4 === 0 && reverse)) x += a * scale;
+        else if ((i % 4 === 3 && !reverse) || (i % 4 === 1 && reverse)) y -= a * scale;
+      }
+    };
+
     const drawEngine = () => {
       const w = canvas.width;
       const h = canvas.height;
       ctx.clearRect(0, 0, w, h);
 
       // --- 1. CAD BLUEPRINT OVERLAY: SWISS GRID LINES ---
-      ctx.strokeStyle = '#27272a'; // 1px zinc-800 border line style
+      ctx.strokeStyle = '#27272a'; // 1px zinc-800 border line
       ctx.lineWidth = 1;
-
-      // Outer margin border grid
       const margin = 20;
       ctx.strokeRect(margin, margin, w - margin * 2, h - margin * 2);
 
-      // Swiss Grid Subdivisions (Horizontal & Vertical guide lines)
       const gridCols = 4;
       const gridRows = 4;
       for (let i = 1; i < gridCols; i++) {
@@ -124,16 +151,14 @@ export const ExistentialBlackbox: React.FC = () => {
       }
 
       // --- 2. CAD CROSSHAIR TARGET ANCHORS (+) & DIMENSION MARKERS ---
-      ctx.strokeStyle = isTyping ? '#00E5FF' : '#52525b'; // zinc-600 or cyan on pulse
-      ctx.fillStyle = '#a1a1aa'; // zinc-400
+      ctx.strokeStyle = isTyping ? '#00E5FF' : '#52525b';
+      ctx.fillStyle = '#a1a1aa';
       ctx.font = '9px monospace';
 
-      // Dimension Markers
       ctx.fillText('W: 1024 / H: 1024', margin + 6, margin + 14);
       ctx.fillText(`MATRIX_HEX: 0x71C${Math.floor(Date.now() / 200).toString(16).slice(-3).toUpperCase()}3A9`, margin + 6, margin + 26);
       ctx.fillText(`STATUS: ${isTyping ? 'BUSY_PULSE_60FPS' : 'OPERATIONAL_60FPS'}`, w - margin - 150, margin + 14);
 
-      // Crosshair Target Anchors (+) at corners & center intersections
       const crosshairs = [
         [margin, margin],
         [w - margin, margin],
@@ -142,76 +167,126 @@ export const ExistentialBlackbox: React.FC = () => {
         [w / 2, h / 2],
       ];
 
-      crosshairs.forEach(([cx, cy]) => {
+      crosshairs.forEach(([cxAnchor, cyAnchor]) => {
         const size = 6;
         ctx.beginPath();
-        ctx.moveTo(cx - size, cy);
-        ctx.lineTo(cx + size, cy);
-        ctx.moveTo(cx, cy - size);
-        ctx.lineTo(cx, cy + size);
+        ctx.moveTo(cxAnchor - size, cyAnchor);
+        ctx.lineTo(cxAnchor + size, cyAnchor);
+        ctx.moveTo(cxAnchor, cyAnchor - size);
+        ctx.lineTo(cxAnchor, cyAnchor + size);
         ctx.stroke();
       });
 
-      // --- 3. 3D ROTATING NODE CUBE WITH AUDIO-REACTIVE PULSE ---
+      // --- 3. FIBONACCI TAICHI ENGINE (MACHINE SPEED vs. HUMAN SOUL) ---
       const cx = w / 2;
       const cy = h / 2;
-      const baseSize = 70;
+      const scale = Math.min(w, h) / 52; // Tỷ lệ co giãn linh hoạt theo Canvas
+      const fibSequence = [1, 1, 2, 3, 5, 8, 13, 21];
 
-      // Audio-Reactive Pulse effect when Agent is typing
-      const pulseWave = isTyping ? Math.sin(Date.now() * 0.02) * 12 : 0;
-      const currentSize = baseSize + pulseWave;
+      // A. Hệ khung xương Matrix (Fibonacci Grid)
+      let fx = cx, fy = cy;
+      let fa = 0, fb = 1;
 
-      // Dynamic glow effect for typing state
-      if (isTyping) {
-        ctx.shadowColor = '#00E5FF';
-        ctx.shadowBlur = 15 + Math.sin(Date.now() * 0.01) * 10;
-      } else {
-        ctx.shadowBlur = 0;
+      ctx.strokeStyle = isTyping ? 'rgba(0, 229, 255, 0.4)' : 'rgba(83, 34, 255, 0.25)';
+      ctx.lineWidth = 1;
+      ctx.font = '8px monospace';
+      ctx.fillStyle = isTyping ? 'rgba(0, 229, 255, 0.6)' : 'rgba(83, 34, 255, 0.5)';
+
+      for (let i = 0; i < fibSequence.length; i++) {
+        let size = fibSequence[i] * scale;
+        ctx.strokeRect(fx, fy, size, size);
+        if (size > 15) ctx.fillText(`FIB_${fibSequence[i]}`, fx + 3, fy + 10);
+
+        let nextFb = fa + fb;
+        fa = fb;
+        fb = nextFb;
+
+        if (i % 4 === 0) fx -= fa * scale;
+        else if (i % 4 === 1) fy += fa * scale;
+        else if (i % 4 === 2) fx += fa * scale;
+        else if (i % 4 === 3) fy -= fa * scale;
       }
 
-      // Vertices of the 3D Cube
-      const vertices = [
-        [-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1],
-        [-1, -1, 1],  [1, -1, 1],  [1, 1, 1],  [-1, 1, 1]
-      ];
+      // B. Nửa "Cơ máy" (Dương - Machine Speed: Brutalist Grid & Binary)
+      ctx.save();
+      ctx.beginPath();
+      buildFibonacciSpiralPath(ctx, cx, cy, scale, false);
+      ctx.arc(cx, cy, 21 * scale, 0, Math.PI, false);
+      ctx.clip();
 
-      const rad = angle * (Math.PI / 180);
-      const rotated = vertices.map(([x, y, z]) => {
-        const x1 = x * Math.cos(rad) - z * Math.sin(rad);
-        const z1 = x * Math.sin(rad) + z * Math.cos(rad);
-        const y1 = y * Math.cos(rad * 0.5) - z1 * Math.sin(rad * 0.5);
-        const z2 = y * Math.sin(rad * 0.5) + z1 * Math.cos(rad * 0.5);
+      ctx.fillStyle = '#0c0d10';
+      ctx.fillRect(cx - 21 * scale, cy - 21 * scale, 42 * scale, 42 * scale);
 
-        const scale = 200 / (200 + z2 * 40);
-        return [cx + x1 * currentSize * scale, cy + y1 * currentSize * scale];
-      });
+      ctx.fillStyle = isTyping ? 'rgba(0, 229, 255, 0.3)' : 'rgba(255, 255, 255, 0.15)';
+      ctx.font = '8px monospace';
+      for (let bx = -21 * scale; bx < 21 * scale; bx += 14) {
+        for (let by = -21 * scale; by < 21 * scale; by += 14) {
+          let bit = ((bx + by + Math.floor(time * 10)) % 2 === 0) ? '1' : '0';
+          ctx.fillText(bit, cx + bx, cy + by);
+        }
+      }
+      ctx.restore();
 
-      const edges = [
-        [0,1], [1,2], [2,3], [3,0],
-        [4,5], [5,6], [6,7], [7,4],
-        [0,4], [1,5], [2,6], [3,7]
-      ];
+      // C. Nửa "Tâm hồn" (Âm - Human Soul: Neon Particles)
+      ctx.save();
+      ctx.beginPath();
+      buildFibonacciSpiralPath(ctx, cx, cy, scale, true);
+      ctx.arc(cx, cy, 21 * scale, Math.PI, 0, false);
+      ctx.clip();
 
-      // Styling Lines & Glow
-      ctx.strokeStyle = isTyping ? '#00E5FF' : '#5322ff';
-      ctx.lineWidth = isTyping ? 2.5 : 1.5;
+      let soulGrad = ctx.createRadialGradient(cx, cy, 5, cx, cy, 21 * scale);
+      soulGrad.addColorStop(0, isTyping ? 'rgba(0, 229, 255, 0.95)' : 'rgba(83, 34, 255, 0.95)');
+      soulGrad.addColorStop(1, 'rgba(15, 5, 35, 0.98)');
+      ctx.fillStyle = soulGrad;
+      ctx.fillRect(cx - 21 * scale, cy - 21 * scale, 42 * scale, 42 * scale);
 
-      edges.forEach(([i, j]) => {
+      ctx.fillStyle = isTyping ? '#00E5FF' : 'rgba(180, 150, 255, 0.8)';
+      for (let p = 0; p < 35; p++) {
+        let px = cx + Math.sin(p * 1.7 + time * 2) * (p * 2.5);
+        let py = cy + Math.cos(p * 1.3 + time * 1.5) * (p * 2.5);
         ctx.beginPath();
-        ctx.moveTo(rotated[i][0], rotated[i][1]);
-        ctx.lineTo(rotated[j][0], rotated[j][1]);
-        ctx.stroke();
+        ctx.arc(px, py, (p % 3) + 1, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
 
-        // Node Anchor Squares
-        ctx.fillStyle = isTyping ? '#00E5FF' : '#ffffff';
-        const nodeSize = isTyping ? 6 : 4;
-        ctx.fillRect(rotated[i][0] - nodeSize / 2, rotated[i][1] - nodeSize / 2, nodeSize, nodeSize);
-      });
+      // D. Mối nối Nhất Nguyên (The Singularity - Eyes of Taiji)
+      let eyeOffset = 8 * scale;
 
-      // Reset shadow blur for other renders
-      ctx.shadowBlur = 0;
+      // Mắt bên Cơ Máy: Node Tọa độ Vector Phát Sáng
+      let machineEyeX = cx;
+      let machineEyeY = cy - eyeOffset;
+      let pulseRadius = 5 + Math.sin(time * 6) * (isTyping ? 3 : 1.5);
 
-      angle += 0.8;
+      ctx.save();
+      ctx.shadowColor = isTyping ? '#00E5FF' : '#5322ff';
+      ctx.shadowBlur = isTyping ? 20 : 12;
+      ctx.fillStyle = isTyping ? '#00E5FF' : '#5322ff';
+      ctx.beginPath();
+      ctx.arc(machineEyeX, machineEyeY, pulseRadius, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = isTyping ? '#ffffff' : '#00E5FF';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(machineEyeX - 8, machineEyeY - 8, 16, 16);
+      ctx.restore();
+
+      // Mắt bên Con Người: Single Pixel Trống (#000000)
+      let humanEyeX = cx;
+      let humanEyeY = cy + eyeOffset;
+
+      ctx.save();
+      ctx.fillStyle = '#000000';
+      ctx.beginPath();
+      ctx.arc(humanEyeX, humanEyeY, 6, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.restore();
+
+      time += 0.03;
       animationFrameId = requestAnimationFrame(drawEngine);
     };
 
