@@ -13,6 +13,7 @@ import {
   ImageIcon,
 } from 'lucide-react';
 import { BLUEPRINTS, type Blueprint } from '@/lib/data';
+import { useLanguage } from '@/context/useLanguage';
 
 function accentHex(accent: 'cyan' | 'purple') {
   return accent === 'cyan' ? '#00E5FF' : '#5322ff';
@@ -93,6 +94,7 @@ function ExportPreviewModal({
 }
 
 function BlueprintCard({ bp, index }: { bp: Blueprint; index: number }) {
+  const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
   const [exported, setExported] = useState(false);
   const [exporting, setExporting] = useState(false);
@@ -252,7 +254,7 @@ function BlueprintCard({ bp, index }: { bp: Blueprint; index: number }) {
             ) : (
               <>
                 <Camera className="h-3.5 w-3.5" style={{ color: accent }} />
-                EXPORT HD DIAGRAM
+                {t.exportBlueprint}
               </>
             )}
           </button>

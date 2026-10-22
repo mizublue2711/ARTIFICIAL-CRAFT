@@ -19,6 +19,7 @@ import {
 import { WORKFLOW_MODES, type WorkflowMode } from '@/lib/data';
 import ParticleCanvas from '@/components/ParticleCanvas';
 import ThreeHookCanvas from '@/components/ThreeHookCanvas';
+import { useLanguage } from '@/context/useLanguage';
 
 const STUDIO_URL = 'https://dify-n8n-workflow.ai.studio/';
 const ELECTRIC_PURPLE = '#5322ff';
@@ -78,6 +79,7 @@ function MetricRow({
 }
 
 export default function Hero() {
+  const { t } = useLanguage();
   const [activeIdx, setActiveIdx] = useState(0);
   const mode: WorkflowMode = WORKFLOW_MODES[activeIdx];
   const accent = accentColor(mode.accent);
@@ -228,10 +230,10 @@ export default function Hero() {
                 <span>METICULOUS GRAPHIC PRECISION MEETS CODE AUTOMATION</span>
               </div>
               <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-[1.02] uppercase font-mono">
-                ARTIFICIAL
+                {t.heroTitleLine1}
                 <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00E5FF] via-white to-[#5322ff]">
-                  CRAFT
+                  {t.heroTitleLine2}
                 </span>
               </h1>
             </motion.div>
@@ -242,7 +244,7 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.12 }}
               className="mt-6 text-[16px] sm:text-[18px] leading-relaxed text-zinc-300 font-sans max-w-xl border-l-2 border-[#5322ff] pl-4"
             >
-              Where Meticulous Graphic Design Meets Deterministic AI Automation. Unifying Dify Reasoning & n8n Orchestration.
+              {t.subtitle}
             </motion.p>
 
             {/* Brutalist CTAs */}
@@ -263,7 +265,7 @@ export default function Hero() {
                 }}
               >
                 <Terminal className="h-4 w-4 text-cyan-glow" />
-                <span>Launch Autopilot Studio</span>
+                <span>{t.ctaButton}</span>
                 <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </a>
               <a
@@ -447,7 +449,7 @@ export default function Hero() {
                     transition={{ duration: 0.3 }}
                   >
                     {/* Edges */}
-                    {renderEdges.map(([from, to], i) => {
+                    {renderEdges.map(([from, to]) => {
                       const a = nodeById(from);
                       const b = renderNodes.find((n) => n.id === to)!;
                       const fromIdx = nodeIndexMap[from];
@@ -475,7 +477,6 @@ export default function Hero() {
                     {renderNodes.map((n, ni) => {
                       const isBrain = n.type === 'dify';
                       const isActive = isSimulating && ni === activeNodeIdx;
-                      const nodeColor = isBrain ? accent : '#a1a1aa';
                       return (
                         <g key={n.id} transform={`translate(${n.x}, ${n.y})`}>
                           {isActive && (

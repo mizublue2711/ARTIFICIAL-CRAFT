@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Github, Menu, X, ArrowRight, Terminal } from 'lucide-react';
 import BrutalistLogo from './BrutalistLogo';
+import LanguageToggle from './LanguageToggle';
 
 const STUDIO_URL = 'https://dify-n8n-workflow.ai.studio/';
 
@@ -80,15 +81,19 @@ export default function Navbar() {
             <Terminal className="relative h-3.5 w-3.5 text-cyan-glow" />
             <span className="relative">STUDIO//CONSOLE</span>
           </a>
+          <LanguageToggle />
         </div>
 
-        <button
-          className="md:hidden text-zinc-300 p-2 border border-zinc-800 bg-zinc-900"
-          onClick={() => setOpen((v) => !v)}
-          aria-label="Menu"
-        >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        <div className="flex md:hidden items-center gap-2">
+          <LanguageToggle />
+          <button
+            className="text-zinc-300 p-2 border border-zinc-800 bg-zinc-900"
+            onClick={() => setOpen((v) => !v)}
+            aria-label="Menu"
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </nav>
 
       <AnimatePresence>

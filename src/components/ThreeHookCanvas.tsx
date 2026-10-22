@@ -133,7 +133,7 @@ export default function ThreeHookCanvas({ className = '' }: { className?: string
 
     // Animation Loop
     let animId = 0;
-    let clock = new THREE.Clock();
+    const clock = new THREE.Clock();
 
     const animate = () => {
       animId = requestAnimationFrame(animate);
