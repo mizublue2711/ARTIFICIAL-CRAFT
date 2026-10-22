@@ -41,7 +41,7 @@ export default {
         response.headers.set('Cache-Control', 'public, max-age=86400'); // Cache trên CDN Cloudflare 24h
 
         return response;
-      } catch (err) {
+      } catch {
         return new Response('Error fetching logo proxy', { status: 500 });
       }
     }

@@ -19,17 +19,11 @@ import {
 import { WORKFLOW_MODES, type WorkflowMode } from '@/lib/data';
 import ParticleCanvas from '@/components/ParticleCanvas';
 import ThreeHookCanvas from '@/components/ThreeHookCanvas';
-import { useLanguage } from '@/context/useLanguage';
+import { useTranslation } from '@/context/useLanguage';
 
 const STUDIO_URL = 'https://dify-n8n-workflow.ai.studio/';
 const ELECTRIC_PURPLE = '#5322ff';
 const ELECTRIC_CYAN = '#00E5FF';
-
-const PRESETS = [
-  { label: 'Swiss Design System SKU', url: 'https://craft.code/air-jordan-1-2024' },
-  { label: 'Brutalist Pitchdeck PDF', url: 'https://docs.artcraft.io/pitchdeck.pdf' },
-  { label: 'Deterministic Financial Index', url: 'https://reports.artcraft.io/q4-annual.pdf' },
-];
 
 type NodeDef = {
   id: string;
@@ -79,9 +73,44 @@ function MetricRow({
 }
 
 export default function Hero() {
-  const { t } = useLanguage();
+  const { t } = useTranslation();
   const [activeIdx, setActiveIdx] = useState(0);
-  const mode: WorkflowMode = WORKFLOW_MODES[activeIdx];
+  const baseMode: WorkflowMode = WORKFLOW_MODES[activeIdx];
+
+  const mode = useMemo(() => {
+    if (baseMode.id === 'content') {
+      return {
+        ...baseMode,
+        label: t('mode_content_label'),
+        sublabel: t('mode_content_sublabel'),
+        description: t('mode_content_desc'),
+      };
+    }
+    if (baseMode.id === 'lead') {
+      return {
+        ...baseMode,
+        label: t('mode_lead_label'),
+        sublabel: t('mode_lead_sublabel'),
+        description: t('mode_lead_desc'),
+      };
+    }
+    if (baseMode.id === 'research') {
+      return {
+        ...baseMode,
+        label: t('mode_research_label'),
+        sublabel: t('mode_research_sublabel'),
+        description: t('mode_research_desc'),
+      };
+    }
+    return baseMode;
+  }, [baseMode, t]);
+
+  const presets = useMemo(() => [
+    { label: t('preset_swiss'), url: 'https://craft.code/air-jordan-1-2024' },
+    { label: t('preset_brutalist'), url: 'https://docs.artcraft.io/pitchdeck.pdf' },
+    { label: t('preset_financial'), url: 'https://reports.artcraft.io/q4-annual.pdf' },
+  ], [t]);
+
   const accent = accentColor(mode.accent);
 
   const [simState, setSimState] = useState<'idle' | 'running' | 'done'>('idle');
@@ -172,7 +201,7 @@ export default function Hero() {
 
   useEffect(() => () => cancelSim(), [cancelSim]);
 
-  const handlePreset = (preset: (typeof PRESETS)[0]) => {
+  const handlePreset = (preset: (typeof presets)[0]) => {
     setSimUrl(preset.url);
     setActivePreset(preset.label);
     runSimulation();
@@ -208,10 +237,10 @@ export default function Hero() {
               <span className="absolute inline-flex h-full w-full rounded-full bg-[#5322ff] opacity-75 animate-ping" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-[#00E5FF]" />
             </span>
-            <span className="text-zinc-500 uppercase">SYS//TELEMETRY:</span>
-            <span className="text-white font-bold">14 REGIONS ONLINE</span>
+            <span className="text-zinc-500 uppercase">{t('telemetry_prefix')}</span>
+            <span className="text-white font-bold">{t('telemetry_status')}</span>
             <span className="text-zinc-600">|</span>
-            <span className="text-cyan-glow font-semibold">99.99% DETERMINISTIC SLA</span>
+            <span className="text-cyan-glow font-semibold">{t('telemetry_sla')}</span>
           </div>
         </motion.div>
 
@@ -225,15 +254,15 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.05 }}
             >
               <div className="inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-cyan-glow border border-zinc-800 bg-zinc-900/60 px-2.5 py-1 mb-4">
-                <span>CRAFT//CODE</span>
+                <span>{t('hero_badge_subtag')}</span>
                 <span>•</span>
-                <span>METICULOUS GRAPHIC PRECISION MEETS CODE AUTOMATION</span>
+                <span>{t('hero_badge_text')}</span>
               </div>
               <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-[1.02] uppercase font-mono">
-                {t.heroTitleLine1}
+                {t('heroTitleLine1')}
                 <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00E5FF] via-white to-[#5322ff]">
-                  {t.heroTitleLine2}
+                  {t('heroTitleLine2')}
                 </span>
               </h1>
             </motion.div>
@@ -244,7 +273,7 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.12 }}
               className="mt-6 text-[16px] sm:text-[18px] leading-relaxed text-zinc-300 font-sans max-w-xl border-l-2 border-[#5322ff] pl-4"
             >
-              {t.subtitle}
+              {t('subtitle')}
             </motion.p>
 
             {/* Brutalist CTAs */}
@@ -265,14 +294,14 @@ export default function Hero() {
                 }}
               >
                 <Terminal className="h-4 w-4 text-cyan-glow" />
-                <span>{t.ctaButton}</span>
+                <span>{t('ctaButton')}</span>
                 <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </a>
               <a
                 href="#blueprints"
                 className="inline-flex items-center justify-center gap-2 border border-zinc-800 bg-zinc-900 text-sm font-semibold text-zinc-300 px-5 py-3.5 hover:bg-zinc-800 hover:text-white transition-colors"
               >
-                EXPLORE BLUEPRINTS
+                {t('cta_explore')}
               </a>
             </motion.div>
           </div>
@@ -281,13 +310,13 @@ export default function Hero() {
           <div className="lg:col-span-5 relative h-[320px] sm:h-[400px] border border-zinc-800 bg-zinc-950/80 overflow-hidden group">
             {/* Corner Brutalist Frame Accents */}
             <div className="absolute top-2 left-2 z-10 font-mono text-[9px] text-zinc-500 uppercase tracking-widest bg-zinc-900 px-1.5 py-0.5 border border-zinc-800">
-              3D_HOOK//PARALLAX
+              {t('canvas_hook_parallax')}
             </div>
             <div className="absolute top-2 right-2 z-10 font-mono text-[9px] text-cyan-glow bg-zinc-900 px-1.5 py-0.5 border border-zinc-800">
-              60FPS INTERACTIVE
+              {t('canvas_fps_interactive')}
             </div>
             <div className="absolute bottom-2 left-2 z-10 font-mono text-[9px] text-zinc-500">
-              POS [X: MOUSE, Y: MOUSE]
+              {t('canvas_pos_mouse')}
             </div>
 
             <ThreeHookCanvas className="w-full h-full" />
@@ -311,7 +340,7 @@ export default function Hero() {
                   setSimUrl(e.target.value);
                   setActivePreset(null);
                 }}
-                placeholder="Paste endpoint or URL to trigger workflow..."
+                placeholder={t('sim_placeholder')}
                 className="bg-transparent text-[12px] text-zinc-200 placeholder-zinc-600 outline-none flex-1 font-mono min-w-0"
               />
             </div>
@@ -323,21 +352,21 @@ export default function Hero() {
               {isSimulating ? (
                 <>
                   <Activity className="h-4 w-4 animate-pulse text-cyan-glow" />
-                  EXECUTING NODE...
+                  {t('sim_executing')}
                 </>
               ) : (
                 <>
                   <Play className="h-3.5 w-3.5 text-cyan-glow" />
-                  RUN SIMULATOR
+                  {t('sim_run_btn')}
                 </>
               )}
             </button>
           </div>
           <div className="flex flex-wrap items-center gap-2 mt-3 justify-center">
             <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-600 mr-1">
-              PRESET ENGINE:
+              {t('preset_engine')}
             </span>
-            {PRESETS.map((p) => (
+            {presets.map((p) => (
               <button
                 key={p.label}
                 onClick={() => handlePreset(p)}
@@ -363,12 +392,13 @@ export default function Hero() {
           {/* Mode selector */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-2 mb-4">
             <span className="font-mono text-[11px] text-zinc-500 uppercase tracking-widest sm:mr-2">
-              WORKFLOW ENGINE:
+              {t('workflow_engine')}
             </span>
             <div className="inline-flex flex-wrap gap-1 border border-zinc-800 bg-zinc-950 p-1">
               {WORKFLOW_MODES.map((m, i) => {
                 const isActive = i === activeIdx;
                 const c = accentColor(m.accent);
+                const displayLabel = i === 0 ? t('mode_content_label') : i === 1 ? t('mode_lead_label') : t('mode_research_label');
                 return (
                   <button
                     key={m.id}
@@ -385,7 +415,7 @@ export default function Hero() {
                         transition={{ type: 'spring', stiffness: 400, damping: 35 }}
                       />
                     )}
-                    <span className="relative">{m.label}</span>
+                    <span className="relative">{displayLabel}</span>
                   </button>
                 );
               })}
@@ -412,7 +442,7 @@ export default function Hero() {
                     color: isSimulating ? ELECTRIC_CYAN : accent,
                   }}
                 >
-                  {isSimulating ? 'EXECUTING' : 'READY'}
+                  {isSimulating ? t('exec_status_executing') : t('exec_status_ready')}
                 </span>
                 <span className="font-mono text-[11px] text-zinc-500 hidden sm:inline">
                   RUN #08942
@@ -553,25 +583,25 @@ export default function Hero() {
                         <div className="flex items-center gap-2.5 mb-5 border-b border-zinc-800 pb-3">
                           <Zap className="h-5 w-5 text-cyan-glow" />
                           <span className="text-[14px] font-bold text-white uppercase">
-                            EXECUTION COMPLETED
+                            {t('exec_completed_title')}
                           </span>
                         </div>
                         <div className="space-y-2">
                           <MetricRow
                             icon={CheckCircle2}
-                            label="Deterministic"
+                            label={t('metric_deterministic')}
                             value="100%"
                             color="#10b981"
                           />
                           <MetricRow
                             icon={Cpu}
-                            label="Token Cost"
+                            label={t('metric_token_cost')}
                             value="$0.0018"
                             color="#00E5FF"
                           />
                           <MetricRow
                             icon={Activity}
-                            label="Craft Precision"
+                            label={t('metric_craft_precision')}
                             value="Sub-Pixel"
                             color="#5322ff"
                           />
@@ -581,9 +611,9 @@ export default function Hero() {
                             setShowMetrics(false);
                             setSimState('idle');
                           }}
-                          className="mt-5 w-full border border-zinc-800 bg-zinc-900 text-[12px] font-bold text-zinc-300 py-2.5 hover:bg-zinc-800 hover:text-white"
+                          className="mt-5 w-full border border-zinc-800 bg-zinc-900 text-[12px] font-bold text-zinc-300 py-2.5 hover:bg-zinc-800 hover:text-white uppercase"
                         >
-                          RUN ANOTHER SIMULATION
+                          {t('run_another_sim')}
                         </button>
                       </motion.div>
                     </motion.div>
@@ -629,7 +659,7 @@ export default function Hero() {
 
                     <div className="mt-auto pt-3 border-t border-zinc-800">
                       <div className="font-mono text-[10px] uppercase tracking-widest text-zinc-500 mb-2">
-                        OUTPUT NODES
+                        {t('output_nodes')}
                       </div>
                       <div className="flex flex-col gap-1.5">
                         {mode.outputs.map((o) => (

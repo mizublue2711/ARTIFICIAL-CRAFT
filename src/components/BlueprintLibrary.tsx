@@ -13,7 +13,7 @@ import {
   ImageIcon,
 } from 'lucide-react';
 import { BLUEPRINTS, type Blueprint } from '@/lib/data';
-import { useLanguage } from '@/context/useLanguage';
+import { useTranslation } from '@/context/useLanguage';
 
 function accentHex(accent: 'cyan' | 'purple') {
   return accent === 'cyan' ? '#00E5FF' : '#5322ff';
@@ -38,6 +38,8 @@ function ExportPreviewModal({
   onClose: () => void;
   onDownload: () => void;
 }) {
+  const { t } = useTranslation();
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -58,7 +60,7 @@ function ExportPreviewModal({
           <div className="flex items-center justify-between px-5 py-3 border-b border-zinc-800">
             <div className="flex items-center gap-2">
               <ImageIcon className="h-4 w-4 text-cyan-glow" />
-              <span className="text-[13px] font-bold text-white uppercase">EXPORT PREVIEW</span>
+              <span className="text-[13px] font-bold text-white uppercase">{t('export_preview_title')}</span>
               <span className="text-[10px] text-zinc-500 ml-1">HD · 2160PX</span>
             </div>
             <button
@@ -84,7 +86,7 @@ function ExportPreviewModal({
               className="inline-flex items-center gap-2 border border-zinc-200 bg-white text-black text-[12px] font-bold px-4 py-2 hover:bg-zinc-200 transition-colors"
             >
               <Download className="h-4 w-4" />
-              DOWNLOAD PNG
+              {t('download_png')}
             </button>
           </div>
         </div>
@@ -94,7 +96,7 @@ function ExportPreviewModal({
 }
 
 function BlueprintCard({ bp, index }: { bp: Blueprint; index: number }) {
-  const { t } = useLanguage();
+  const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
   const [exported, setExported] = useState(false);
   const [exporting, setExporting] = useState(false);
@@ -215,12 +217,12 @@ function BlueprintCard({ bp, index }: { bp: Blueprint; index: number }) {
               {copied ? (
                 <>
                   <Check className="h-3.5 w-3.5 text-emerald-400" />
-                  <span className="text-emerald-400">COPIED</span>
+                  <span className="text-emerald-400">{t('copied')}</span>
                 </>
               ) : (
                 <>
                   <Copy className="h-3.5 w-3.5" />
-                  COPY API
+                  {t('copy_api')}
                 </>
               )}
             </button>
@@ -244,17 +246,17 @@ function BlueprintCard({ bp, index }: { bp: Blueprint; index: number }) {
             {exporting ? (
               <>
                 <Loader2 className="h-3.5 w-3.5 animate-spin" style={{ color: accent }} />
-                <span>RENDERING HD...</span>
+                <span>{t('rendering_hd')}</span>
               </>
             ) : exported ? (
               <>
                 <Check className="h-3.5 w-3.5 text-emerald-400" />
-                <span className="text-emerald-400">PREVIEW READY</span>
+                <span className="text-emerald-400">{t('preview_ready')}</span>
               </>
             ) : (
               <>
                 <Camera className="h-3.5 w-3.5" style={{ color: accent }} />
-                {t.exportBlueprint}
+                {t('exportBlueprint')}
               </>
             )}
           </button>
@@ -369,12 +371,14 @@ function BlueprintCard({ bp, index }: { bp: Blueprint; index: number }) {
 }
 
 export default function BlueprintLibrary() {
+  const { t } = useTranslation();
+
   return (
     <section className="relative py-20 lg:py-28 bg-[#09090b] font-mono" id="blueprints">
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <div className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-cyan-glow mb-3 border border-zinc-800 bg-zinc-900 px-2.5 py-1">
           <span className="h-1.5 w-1.5 bg-[#5322ff]" />
-          BLUEPRINT LIBRARY // TEMPLATES
+          {t('bp_section_label')}
         </div>
 
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
@@ -385,12 +389,12 @@ export default function BlueprintLibrary() {
             transition={{ duration: 0.5 }}
             className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white max-w-2xl uppercase leading-[1.05]"
           >
-            PRODUCTION-READY BLUEPRINTS.
+            {t('bp_title_line1')}
             <br />
-            <span className="text-zinc-500">COPY. DEPLOY. SHARE.</span>
+            <span className="text-zinc-500">{t('bp_title_line2')}</span>
           </motion.h2>
           <p className="max-w-md text-[14px] text-zinc-400 font-sans leading-relaxed border-l-2 border-[#5322ff] pl-3">
-            Every blueprint ships with a typed API, node topology, and Carbon-style HD Swiss image exporter.
+            {t('bp_desc')}
           </p>
         </div>
 
@@ -404,15 +408,15 @@ export default function BlueprintLibrary() {
           <div className="flex items-center gap-3">
             <Boxes className="h-6 w-6 text-cyan-glow" />
             <div>
-              <div className="text-[13px] font-bold text-white uppercase">ALL BLUEPRINTS ARE OPEN SOURCE</div>
-              <div className="text-[11px] text-zinc-500">MIT LICENSED · CRAFT//CODE CLI READY</div>
+              <div className="text-[13px] font-bold text-white uppercase">{t('bp_banner_title')}</div>
+              <div className="text-[11px] text-zinc-500">{t('bp_banner_sub')}</div>
             </div>
           </div>
           <a
             href="#"
             className="group inline-flex items-center gap-1.5 text-[12px] font-bold text-cyan-glow hover:text-white transition-colors uppercase"
           >
-            BROWSE ALL 40+ TEMPLATES
+            {t('bp_browse_all')}
             <ArrowUpRight className="h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </a>
         </div>
