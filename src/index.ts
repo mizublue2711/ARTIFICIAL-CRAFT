@@ -11,12 +11,29 @@ export default {
     // ROUTE PROXY: Xử lý bypass CORS cho Logo API
     // -------------------------------------------------------------
     if (url.pathname === '/api/logo-proxy') {
+      const corsHeaders = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+        'Access-Control-Allow-Headers': '*',
+        'Cache-Control': 'public, max-age=86400',
+      };
+
+      if (request.method === 'OPTIONS') {
+        return new Response(null, {
+          status: 204,
+          headers: corsHeaders,
+        });
+      }
+
       // 1. Kiểm tra tham số domain truyền lên từ Client
       const domain = url.searchParams.get('domain');
       if (!domain) {
         return new Response(JSON.stringify({ error: 'Missing domain parameter' }), {
           status: 400,
-          headers: { 'Content-Type': 'application/json' }
+          headers: {
+            ...corsHeaders,
+            'Content-Type': 'application/json',
+          },
         });
       }
 
@@ -29,7 +46,10 @@ export default {
         const imageRes = await fetch(logoApiUrl);
 
         if (!imageRes.ok) {
-          return new Response('Logo not found', { status: imageRes.status });
+          return new Response('Logo not found', {
+            status: imageRes.status,
+            headers: corsHeaders,
+          });
         }
 
         // 4. Khởi tạo Response trả về dữ liệu Binary của ảnh
@@ -42,7 +62,10 @@ export default {
 
         return response;
       } catch {
-        return new Response('Error fetching logo proxy', { status: 500 });
+        return new Response('Error fetching logo proxy', {
+          status: 500,
+          headers: corsHeaders,
+        });
       }
     }
 
