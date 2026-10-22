@@ -4,6 +4,7 @@ import BentoGrid from '@/components/BentoGrid';
 import BlueprintLibrary from '@/components/BlueprintLibrary';
 import Experts from '@/components/Experts';
 import Footer from '@/components/Footer';
+import { LanguageProvider } from '@/context/LanguageContext';
 
 function LogoMarquee() {
   const items = [
@@ -34,17 +35,19 @@ function LogoMarquee() {
 
 function App() {
   return (
-    <div className="relative min-h-screen bg-[#09090b] text-zinc-200 selection:bg-cyan-400/20">
-      <Navbar />
-      <main>
-        <Hero />
-        <LogoMarquee />
-        <BentoGrid />
-        <BlueprintLibrary />
-        <Experts />
-      </main>
-      <Footer />
-    </div>
+    <LanguageProvider>
+      <div className="relative min-h-screen bg-[#09090b] text-zinc-200 selection:bg-cyan-400/20">
+        <Navbar />
+        <main>
+          <Hero />
+          <LogoMarquee />
+          <BentoGrid />
+          <BlueprintLibrary />
+          <Experts />
+        </main>
+        <Footer />
+      </div>
+    </LanguageProvider>
   );
 }
 
