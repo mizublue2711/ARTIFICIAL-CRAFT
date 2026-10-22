@@ -35,7 +35,7 @@ export default function BrutalistLogo({
           viewBox="0 0 40 40"
           className="w-full h-full relative z-10"
           fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+          xmlns="https://pub-b61e4ba5294d47b594f0d427db0aa7b5.r2.dev/AC%20STUDIO/AC%20logo%20white.svg"
         >
           {/* Outer framing corners */}
           <path d="M 2 6 V 2 H 6" stroke="#a1a1aa" strokeWidth="1" />
