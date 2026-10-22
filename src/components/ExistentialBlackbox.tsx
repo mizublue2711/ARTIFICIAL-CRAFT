@@ -162,37 +162,6 @@ export const ExistentialBlackbox: React.FC = () => {
       const spinAngle = time * 0.8;
       const mainRadius = 18 * scale;
 
-      // A. Hệ khung Matrix (Fibonacci Grid)
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(spinAngle * 0.2);
-      ctx.translate(-cx, -cy);
-
-      let fx = cx, fy = cy;
-      let fa = 0, fb = 1;
-      const fibSequence = [1, 1, 2, 3, 5, 8, 13, 21];
-
-      ctx.strokeStyle = isTyping ? 'rgba(0, 229, 255, 0.35)' : 'rgba(83, 34, 255, 0.2)';
-      ctx.lineWidth = 1;
-      ctx.font = '8px monospace';
-      ctx.fillStyle = isTyping ? 'rgba(0, 229, 255, 0.6)' : 'rgba(83, 34, 255, 0.4)';
-
-      for (let i = 0; i < fibSequence.length; i++) {
-        let size = fibSequence[i] * scale;
-        ctx.strokeRect(fx, fy, size, size);
-        if (size > 15) ctx.fillText(`FIB_${fibSequence[i]}`, fx + 3, fy + 10);
-
-        let nextFb = fa + fb;
-        fa = fb;
-        fb = nextFb;
-
-        if (i % 4 === 0) fx -= fa * scale;
-        else if (i % 4 === 1) fy += fa * scale;
-        else if (i % 4 === 2) fx += fa * scale;
-        else if (i % 4 === 3) fy -= fa * scale;
-      }
-      ctx.restore();
-
       // B. VẼ THÁI CỰC CHUYỂN ĐỘNG XOAY UỐN LƯỢN (DYNAMIC TAICHI CORE)
       ctx.save();
       ctx.translate(cx, cy);
