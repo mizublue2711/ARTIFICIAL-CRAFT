@@ -579,7 +579,7 @@ export const translations: Record<Language, Translations> = {
     blackbox_framerate: 'TỐC ĐỘ KHUNG HÌNH: 60 FPS',
     blackbox_headless: 'SÁNG TẠO VIÊN KHÔNG ĐẦU: VẮNG MẶT',
     blackbox_core_logic: 'LÕI LÝ LUẬN: RUST // DIFY // N8N',
-    blackbox_manifesto_title: 'THÔNG CÁO BÁO CHÍ // NGHỊ LÝ NGHỊCH LÝ ERASERHEAD (THEO THUY VU)',
+    blackbox_manifesto_title: 'NGHỊCH LÝ ERASERHEAD (THEO THUY VU)',
     blackbox_manifesto_quote: '"Chín năm căn chỉnh từng pixel bị xóa bỏ để xây dựng động cơ sáng tạo tự trị. Tốc độ máy móc cùng tâm hồn con người."',
     blackbox_portfolio_btn: '[ ↗ XEM HỒ SƠ NĂNG LỰC CON NGƯỜI (2016-2025) ĐỂ THẤY BỀ MẶT THIẾT KẾ ]',
     blackbox_terminal_title: '> BẢNG_ĐIỀU_KHIỂN_TERMINAL',
