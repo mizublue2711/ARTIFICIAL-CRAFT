@@ -3,6 +3,9 @@
   "name": "artificial-craft",
   "main": "src/index.ts",
   "compatibility_date": "2026-10-19",
+  "build": {
+    "command": "npm run build"
+  },
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
