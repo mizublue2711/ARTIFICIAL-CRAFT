@@ -1,6 +1,5 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Download, Sparkles, Layout } from 'lucide-react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { Download, Layout } from 'lucide-react';
 import { useTranslation } from '@/context/useLanguage';
 
 export default function BannerStudio() {
@@ -9,6 +8,202 @@ export default function BannerStudio() {
   const [companyDomain, setCompanyDomain] = useState('artcraft.io');
   const [jobTitle, setJobTitle] = useState('Principal AI Engineer');
   const [palette, setPalette] = useState('swiss');
+
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  const drawCanvas = useCallback(() => {
+    const canvas = canvasRef.current || (document.getElementById('banner-canvas') as HTMLCanvasElement);
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const width = 1584;
+    const height = 396;
+
+    // Palette themes
+    const themes = {
+      swiss: {
+        bg: '#09090b',
+        textColor: '#ffffff',
+        accentColor: '#00E5FF',
+        subTextColor: '#a1a1aa',
+        borderColor: '#27272a',
+        badgeBg: 'rgba(24, 24, 27, 0.8)',
+      },
+      cyan: {
+        bg: '#030712',
+        textColor: '#00E5FF',
+        accentColor: '#00E5FF',
+        subTextColor: '#38bdf8',
+        borderColor: '#0e7490',
+        badgeBg: 'rgba(6, 182, 212, 0.1)',
+      },
+      purple: {
+        bg: '#0b061a',
+        textColor: '#ffffff',
+        accentColor: '#a855f7',
+        subTextColor: '#c084fc',
+        borderColor: '#5322ff',
+        badgeBg: 'rgba(83, 34, 255, 0.2)',
+      },
+    };
+
+    const currentTheme = themes[palette as keyof typeof themes] || themes.swiss;
+
+    // 1. Draw Background
+    ctx.fillStyle = currentTheme.bg;
+    ctx.fillRect(0, 0, width, height);
+
+    // 2. Draw Swiss Grid Lines & Decorative accents
+    ctx.strokeStyle = currentTheme.borderColor;
+    ctx.lineWidth = 1;
+
+    // Outer frame
+    ctx.strokeRect(20, 20, width - 40, height - 40);
+
+    // Sub grid lines
+    ctx.beginPath();
+    ctx.moveTo(60, 110);
+    ctx.lineTo(width - 60, 110);
+    ctx.moveTo(60, 310);
+    ctx.lineTo(width - 60, 310);
+    ctx.moveTo(480, 20);
+    ctx.lineTo(480, height - 20);
+    ctx.stroke();
+
+    // 3. Draw Sparkles / Swiss Accent in top right
+    ctx.fillStyle = currentTheme.accentColor;
+    ctx.beginPath();
+    const sparkX = width - 80;
+    const sparkY = 65;
+    ctx.arc(sparkX, sparkY, 4, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Corner crosshairs
+    ctx.beginPath();
+    ctx.moveTo(sparkX - 12, sparkY);
+    ctx.lineTo(sparkX + 12, sparkY);
+    ctx.moveTo(sparkX, sparkY - 12);
+    ctx.lineTo(sparkX, sparkY + 12);
+    ctx.strokeStyle = currentTheme.accentColor;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // 4. Main Text Content
+    // Full Name
+    ctx.fillStyle = currentTheme.textColor;
+    ctx.font = '900 52px "Inter", sans-serif, system-ui';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText((fullName || 'Alex Rivera').toUpperCase(), 60, 185);
+
+    // Job Title
+    ctx.fillStyle = currentTheme.subTextColor;
+    ctx.font = '500 24px "JetBrains Mono", monospace, monospace';
+    ctx.fillText(jobTitle || 'Principal AI Engineer', 60, 245);
+
+    // Footer Text
+    ctx.fillStyle = currentTheme.accentColor;
+    ctx.font = '600 16px "JetBrains Mono", monospace, monospace';
+    ctx.fillText('ARTIFICIAL CRAFT // SWISS GRAPHIC AUTOMATION', 60, 348);
+
+    // System coordinates info text (bottom right)
+    ctx.fillStyle = currentTheme.subTextColor;
+    ctx.font = '400 14px "JetBrains Mono", monospace';
+    ctx.textAlign = 'right';
+    ctx.fillText('RES: 1584x396 // SYS_READY', width - 60, 348);
+
+    // 5. Draw Domain & Logo Badge Top-Left
+    const domainText = (companyDomain || 'artcraft.io').toLowerCase();
+    ctx.font = '600 18px "JetBrains Mono", monospace';
+    const textWidth = ctx.measureText(domainText).width;
+
+    const logoSize = 28;
+    const padding = 12;
+
+    const renderBadge = (logoImg?: HTMLImageElement) => {
+      const startX = 60;
+      const startY = 45;
+      const badgeHeight = 42;
+      const badgeWidth = logoImg ? logoSize + padding * 3 + textWidth : padding * 2 + textWidth;
+
+      // Badge Container
+      ctx.fillStyle = currentTheme.badgeBg;
+      ctx.fillRect(startX, startY, badgeWidth, badgeHeight);
+      ctx.strokeStyle = currentTheme.borderColor;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(startX, startY, badgeWidth, badgeHeight);
+
+      let textX = startX + padding;
+
+      // Offscreen Canvas for Logo Tinting (Requirement 2)
+      if (logoImg) {
+        try {
+          const offCanvas = document.createElement('canvas');
+          offCanvas.width = logoImg.naturalWidth || logoSize;
+          offCanvas.height = logoImg.naturalHeight || logoSize;
+          const offCtx = offCanvas.getContext('2d');
+
+          if (offCtx) {
+            offCtx.drawImage(logoImg, 0, 0);
+            offCtx.globalCompositeOperation = 'source-in';
+            offCtx.fillStyle = currentTheme.accentColor;
+            offCtx.fillRect(0, 0, offCanvas.width, offCanvas.height);
+
+            ctx.drawImage(offCanvas, startX + padding, startY + (badgeHeight - logoSize) / 2, logoSize, logoSize);
+          }
+        } catch (e) {
+          console.error('Offscreen logo tinting failed:', e);
+        }
+        textX += logoSize + padding;
+      }
+
+      // Domain Text inside Badge
+      ctx.fillStyle = currentTheme.textColor;
+      ctx.font = '600 18px "JetBrains Mono", monospace';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(domainText, textX, startY + badgeHeight / 2);
+    };
+
+    if (companyDomain.trim()) {
+      const img = new Image();
+      // Requirement 2: Set img.crossOrigin = "anonymous" BEFORE assigning img.src
+      img.crossOrigin = 'anonymous';
+      img.onload = () => {
+        renderBadge(img);
+      };
+      img.onerror = () => {
+        renderBadge();
+      };
+      img.src = `/api/logo-proxy?domain=${encodeURIComponent(companyDomain.trim())}`;
+    } else {
+      renderBadge();
+    }
+  }, [fullName, companyDomain, jobTitle, palette]);
+
+  useEffect(() => {
+    document.fonts.ready.then(() => {
+      drawCanvas();
+    });
+  }, [drawCanvas]);
+
+  const handleExport = () => {
+    document.fonts.ready.then(() => {
+      const canvas = document.getElementById('banner-canvas') as HTMLCanvasElement;
+      if (!canvas) return;
+      try {
+        const dataUrl = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.download = 'LinkedIn_Banner_ARTIFICIAL_CRAFT.png';
+        link.href = dataUrl;
+        link.click();
+      } catch (err) {
+        console.error('Canvas export error:', err);
+      }
+    });
+  };
 
   return (
     <section className="relative py-20 bg-[#09090b] border-t border-zinc-800/80 font-mono" id="banner-studio">
@@ -104,7 +299,8 @@ export default function BannerStudio() {
 
             <button
               type="button"
-              className="w-full mt-4 inline-flex items-center justify-center gap-2 border border-[#00E5FF] bg-[#00E5FF]/10 text-[12px] font-bold text-white px-4 py-3 hover:bg-[#00E5FF]/20 transition-colors uppercase"
+              onClick={handleExport}
+              className="w-full mt-4 inline-flex items-center justify-center gap-2 border border-[#00E5FF] bg-[#00E5FF]/10 text-[12px] font-bold text-white px-4 py-3 hover:bg-[#00E5FF]/20 transition-colors uppercase cursor-pointer"
             >
               <Download className="h-4 w-4 text-[#00E5FF]" />
               {t('banner_export_button')}
@@ -122,38 +318,15 @@ export default function BannerStudio() {
                 <span>SWISS GRID RESOLUTION</span>
               </div>
 
-              <motion.div
-                key={palette}
-                initial={{ opacity: 0.8 }}
-                animate={{ opacity: 1 }}
-                className={`aspect-[4/1] relative p-6 flex flex-col justify-between overflow-hidden border ${
-                  palette === 'swiss'
-                    ? 'bg-[#09090b] border-zinc-700 text-white'
-                    : palette === 'cyan'
-                    ? 'bg-zinc-950 border-[#00E5FF] text-cyan-glow'
-                    : 'bg-[#0b061a] border-[#5322ff] text-white'
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-[10px] tracking-widest uppercase border px-2 py-0.5 border-zinc-700 bg-black/40">
-                    {companyDomain || 'artcraft.io'}
-                  </span>
-                  <Sparkles className="h-4 w-4 text-cyan-glow" />
-                </div>
-
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-black uppercase tracking-tight">
-                    {fullName || 'Alex Rivera'}
-                  </h3>
-                  <p className="text-xs font-mono opacity-80 mt-1">
-                    {jobTitle || 'Principal AI Engineer'}
-                  </p>
-                </div>
-
-                <div className="text-[8px] tracking-widest opacity-50 uppercase">
-                  ARTIFICIAL CRAFT // SWISS GRAPHIC AUTOMATION
-                </div>
-              </motion.div>
+              <div className="w-full aspect-[4/1] relative overflow-hidden border border-zinc-800 bg-[#09090b]">
+                <canvas
+                  id="banner-canvas"
+                  ref={canvasRef}
+                  width={1584}
+                  height={396}
+                  className="w-full h-full object-contain block"
+                />
+              </div>
             </div>
           </div>
         </div>
