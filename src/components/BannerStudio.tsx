@@ -63,7 +63,7 @@ function createPRNG(seed: number) {
 
 export default function BannerStudio() {
   const { t } = useTranslation();
-  const [fullName, setFullName] = useState('Enter your name or a title here to create a banner');
+  const [fullName, setFullName] = useState('This is your LinkedIn banner');
   const [companyDomain, setCompanyDomain] = useState('artcraft.io');
   const [jobTitle, setJobTitle] = useState('Principal AI Engineer');
   const [industry, setIndustry] = useState<'tech' | 'design' | 'finance' | 'marketing'>('tech');
@@ -163,7 +163,7 @@ export default function BannerStudio() {
       ctx.stroke();
 
       ctx.font = '500 12px "JetBrains Mono", monospace';
-      ctx.textAlign = 'center';
+      ctx.textAlign = 'c';
       ctx.textBaseline = 'bottom';
       ctx.fillText('W:1024px / H:512px', (dimStartX + dimEndX) / 2, dimY - 4);
 
@@ -248,11 +248,11 @@ export default function BannerStudio() {
         const amplitude = 30 + rng() * 40;
         const frequency = 0.005 + rng() * 0.008;
         const phase = rng() * Math.PI * 2;
-        const centerY = 180 + (w - 1) * 50;
+        const cY = 180 + (w - 1) * 50;
 
         ctx.beginPath();
         for (let x = 480; x <= width - 40; x += 6) {
-          const y = centerY + Math.sin(x * frequency + phase) * amplitude;
+          const y = cY + Math.sin(x * frequency + phase) * amplitude;
           if (x === 480) {
             ctx.moveTo(x, y);
           } else {
@@ -474,7 +474,7 @@ export default function BannerStudio() {
         const initials = getCompanyInitials(companyDomain, fullName);
         ctx.fillStyle = currentTheme.accentColor;
         ctx.font = '700 12px "JetBrains Mono", monospace';
-        ctx.textAlign = 'center';
+        ctx.textAlign = 'c';
         ctx.textBaseline = 'middle';
         ctx.fillText(initials, boxX + logoSize / 2, boxY + logoSize / 2 + 1);
       }
@@ -534,7 +534,7 @@ export default function BannerStudio() {
   return (
     <section className="relative py-20 bg-[#09090b] border-t border-zinc-800/80 font-mono" id="banner-studio">
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-cyan-glow mb-3 border border-zinc-800 bg-zinc-900 px-2.5 py-1">
+        <div className="inline-flex items-c gap-2 font-mono text-[11px] uppercase tracking-widest text-cyan-glow mb-3 border border-zinc-800 bg-zinc-900 px-2.5 py-1">
           <span className="h-1.5 w-1.5 bg-[#5322ff]" />
           STUDIO // GENERATOR
         </div>
@@ -591,7 +591,7 @@ export default function BannerStudio() {
                 <button
                   type="button"
                   onClick={() => setIndustry('tech')}
-                  className={`px-2.5 py-2 text-[10px] border font-bold uppercase transition-colors text-left flex items-center justify-between ${
+                  className={`px-2.5 py-2 text-[10px] border font-bold uppercase transition-colors text-left flex items-c justify-between ${
                     industry === 'tech'
                       ? 'border-[#00E5FF] bg-[#00E5FF]/10 text-[#00E5FF]'
                       : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700'
