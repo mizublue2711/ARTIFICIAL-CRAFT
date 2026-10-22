@@ -63,7 +63,7 @@ function createPRNG(seed: number) {
 
 export default function BannerStudio() {
   const { t } = useTranslation();
-  const [fullName, setFullName] = useState('Alex Rivera');
+  const [fullName, setFullName] = useState('Enter your name or a title here to create a banner');
   const [companyDomain, setCompanyDomain] = useState('artcraft.io');
   const [jobTitle, setJobTitle] = useState('Principal AI Engineer');
   const [industry, setIndustry] = useState<'tech' | 'design' | 'finance' | 'marketing'>('tech');
@@ -79,7 +79,7 @@ export default function BannerStudio() {
     width: number,
     height: number
   ) => {
-    const seed = hashCode(name || 'Alex Rivera');
+    const seed = hashCode(name || 'Your Name');
     const rng = createPRNG(seed);
 
     ctx.save();
@@ -385,7 +385,7 @@ export default function BannerStudio() {
     ctx.font = '900 52px "Inter", sans-serif, system-ui';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
-    ctx.fillText((fullName || 'Alex Rivera').toUpperCase(), 60, 185);
+    ctx.fillText((fullName || 'Your Name').toUpperCase(), 60, 185);
 
     // Job Title
     ctx.fillStyle = currentTheme.subTextColor;
@@ -724,7 +724,7 @@ export default function BannerStudio() {
                 <span className="text-[10px] text-zinc-600">STATUS: ONLINE</span>
               </div>
               <div className="text-emerald-400 tracking-wide font-medium break-all">
-                {`SYSTEM LOG: GENETIC ALGORITHM ACTIVE // SEED: 0x${hashCode(fullName || 'Alex Rivera')
+                {`SYSTEM LOG: GENETIC ALGORITHM ACTIVE // SEED: 0x${hashCode(fullName || 'Your Name')
                   .toString(16)
                   .toUpperCase()
                   .padStart(8, '0')} // 100% UNIQUE ARTIFACT`}
