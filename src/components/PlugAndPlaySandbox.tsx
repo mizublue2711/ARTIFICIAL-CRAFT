@@ -594,15 +594,15 @@ export default function PlugAndPlaySandbox() {
         else if (selectedAlgoId === 'reaction_diffusion') {
           const cellW = width / rdGridSize;
           const cellH = height / rdGridSize;
-          const F = 30;
-          const k = 30;
+          const F = 60;
+          const k = 120;
 
           // Mouse spot injection
           if (mActive) {
             const gx = Math.floor((mx / width) * rdGridSize);
             const gy = Math.floor((my / height) * rdGridSize);
-            if (gx > 1 && gx < rdGridSize - 1 && gy > 1 && gy < rdGridSize - 2) {
-              gridV[gx * rdGridSize + gy] = 0.9;
+            if (gx > 0.1 && gx < rdGridSize - 1 && gy > 0.1 && gy < rdGridSize - 6) {
+              gridV[gx * rdGridSize + gy] = 15;
             }
           }
 
