@@ -1031,64 +1031,7 @@ ${svgPaths}
           }
         }
 
-        // ================= ALGORITHM 04: ISOMETRIC GRID ARCHITECTURE =================
-        else if (selectedAlgoId === 'isometric_grid') {
-          const gridCols = 8;
-          const gridRows = 6;
-          const tileW = width / 10;
-          const tileH = tileW * 0.5;
-          const originX = width / 2;
-          const originY = height / 4;
-
-          for (let r = 0; r < gridRows; r++) {
-            for (let c = 0; c < gridCols; c++) {
-              const isoX = originX + (c - r) * (tileW / 2);
-              const isoY = originY + (c + r) * (tileH / 2);
-
-              // Dynamic block height
-              const distToMouse = mActive ? Math.sqrt((isoX - mx) ** 2 + (isoY - my) ** 2) : 200;
-              const baseH = 20 + Math.sin(c * 0.8 + r * 0.8 + globalTime * 2) * 15;
-              const blockH = Math.max(10, baseH + (distToMouse < 150 ? (1 - distToMouse / 150) * 40 : 0));
-
-              // Draw Top Face
-              ctx.fillStyle = primary;
-              ctx.beginPath();
-              ctx.moveTo(isoX, isoY - blockH);
-              ctx.lineTo(isoX + tileW / 2, isoY + tileH / 2 - blockH);
-              ctx.lineTo(isoX, isoY + tileH - blockH);
-              ctx.lineTo(isoX - tileW / 2, isoY + tileH / 2 - blockH);
-              ctx.closePath();
-              ctx.fill();
-
-              // Draw Left Face
-              ctx.fillStyle = secondary;
-              ctx.beginPath();
-              ctx.moveTo(isoX - tileW / 2, isoY + tileH / 2 - blockH);
-              ctx.lineTo(isoX, isoY + tileH - blockH);
-              ctx.lineTo(isoX, isoY + tileH);
-              ctx.lineTo(isoX - tileW / 2, isoY + tileH / 2);
-              ctx.closePath();
-              ctx.fill();
-
-              // Draw Right Face
-              ctx.fillStyle = accent;
-              ctx.beginPath();
-              ctx.moveTo(isoX, isoY + tileH - blockH);
-              ctx.lineTo(isoX + tileW / 2, isoY + tileH / 2 - blockH);
-              ctx.lineTo(isoX + tileW / 2, isoY + tileH / 2);
-              ctx.lineTo(isoX, isoY + tileH);
-              ctx.closePath();
-              ctx.fill();
-
-              // Swiss precision stroke outline
-              ctx.strokeStyle = '#00000066';
-              ctx.lineWidth = 1;
-              ctx.stroke();
-            }
-          }
-        }
-          
-        // ================= ALGORITHM 05: REACTION-DIFFUSION =================
+        // ================= ALGORITHM 04: REACTION-DIFFUSION =================
         else if (selectedAlgoId === 'reaction_diffusion') {
           const cellW = width / rdGridSize;
           const cellH = height / rdGridSize;
@@ -1147,6 +1090,65 @@ ${svgPaths}
             }
           }
         }
+          
+        // ================= ALGORITHM 05: ISOMETRIC GRID ARCHITECTURE =================
+        else if (selectedAlgoId === 'isometric_grid') {
+          const gridCols = 8;
+          const gridRows = 6;
+          const tileW = width / 10;
+          const tileH = tileW * 0.5;
+          const originX = width / 2;
+          const originY = height / 4;
+
+          for (let r = 0; r < gridRows; r++) {
+            for (let c = 0; c < gridCols; c++) {
+              const isoX = originX + (c - r) * (tileW / 2);
+              const isoY = originY + (c + r) * (tileH / 2);
+
+              // Dynamic block height
+              const distToMouse = mActive ? Math.sqrt((isoX - mx) ** 2 + (isoY - my) ** 2) : 200;
+              const baseH = 20 + Math.sin(c * 0.8 + r * 0.8 + globalTime * 2) * 15;
+              const blockH = Math.max(10, baseH + (distToMouse < 150 ? (1 - distToMouse / 150) * 40 : 0));
+
+              // Draw Top Face
+              ctx.fillStyle = primary;
+              ctx.beginPath();
+              ctx.moveTo(isoX, isoY - blockH);
+              ctx.lineTo(isoX + tileW / 2, isoY + tileH / 2 - blockH);
+              ctx.lineTo(isoX, isoY + tileH - blockH);
+              ctx.lineTo(isoX - tileW / 2, isoY + tileH / 2 - blockH);
+              ctx.closePath();
+              ctx.fill();
+
+              // Draw Left Face
+              ctx.fillStyle = secondary;
+              ctx.beginPath();
+              ctx.moveTo(isoX - tileW / 2, isoY + tileH / 2 - blockH);
+              ctx.lineTo(isoX, isoY + tileH - blockH);
+              ctx.lineTo(isoX, isoY + tileH);
+              ctx.lineTo(isoX - tileW / 2, isoY + tileH / 2);
+              ctx.closePath();
+              ctx.fill();
+
+              // Draw Right Face
+              ctx.fillStyle = accent;
+              ctx.beginPath();
+              ctx.moveTo(isoX, isoY + tileH - blockH);
+              ctx.lineTo(isoX + tileW / 2, isoY + tileH / 2 - blockH);
+              ctx.lineTo(isoX + tileW / 2, isoY + tileH / 2);
+              ctx.lineTo(isoX, isoY + tileH);
+              ctx.closePath();
+              ctx.fill();
+
+              // Swiss precision stroke outline
+              ctx.strokeStyle = '#00000066';
+              ctx.lineWidth = 1;
+              ctx.stroke();
+            }
+          }
+        }
+          
+       
 
         // ================= ALGORITHM 06: ORGANIC FLUID VORONOI MESH =================
         else if (selectedAlgoId === 'voronoi') {
