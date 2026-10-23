@@ -462,7 +462,7 @@ export default function PlugAndPlaySandbox() {
           const cy = height / 2;
           const fiberCount = Math.min(45, Math.max(15, Math.floor(15 + (effectiveDensity / 500) * 30)));
           const maxRadius = Math.min(width, height) * 0.42;
-          const numSteps = 12;
+          const numSteps = 24;
 
           const pRgb = hexToRgb(primary);
           const sRgb = hexToRgb(secondary);
@@ -496,8 +496,8 @@ export default function PlugAndPlaySandbox() {
                 if (dist < 240 && dist > 1) {
                   const factor = (1 - dist / 240) * ratio;
                   const gravAngle = Math.atan2(my - py, mx - px) + Math.PI * 0.42;
-                  px += Math.cos(gravAngle) * 30 * factor * speed;
-                  py += Math.sin(gravAngle) * 30 * factor * speed;
+                  px += Math.cos(gravAngle) * 40 * factor * speed;
+                  py += Math.sin(gravAngle) * 40 * factor * speed;
                 }
               }
 
