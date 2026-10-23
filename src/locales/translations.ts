@@ -35,7 +35,7 @@ export interface Translations {
   sim_run_btn: string;
   sim_executing: string;
   preset_engine: string;
-  preset_swiss: string;
+  preset_LOGARITHMIC: string;
   preset_brutalist: string;
   preset_financial: string;
   workflow_engine: string;
@@ -106,7 +106,7 @@ export interface Translations {
   bp_banner_sub: string;
   bp_browse_all: string;
 
-  // LinkedIn Banner Studio Form
+  //  Banner Studio Form
   banner_studio_title: string;
   banner_full_name: string;
   banner_company_domain: string;
@@ -117,7 +117,7 @@ export interface Translations {
   banner_industry_finance: string;
   banner_industry_marketing: string;
   banner_palette: string;
-  banner_palette_swiss: string;
+  banner_palette_LOGARITHMIC: string;
   banner_palette_cyan: string;
   banner_palette_purple: string;
   banner_palette_amber: string;
@@ -230,7 +230,7 @@ export const translations: Record<Language, Translations> = {
     sim_run_btn: 'RUN SIMULATOR',
     sim_executing: 'EXECUTING NODE...',
     preset_engine: 'PRESET ENGINE:',
-    preset_swiss: 'Swiss Design System SKU',
+    preset_LOGARITHMIC: 'LOGARITHMIC Design System SKU',
     preset_brutalist: 'Brutalist Pitchdeck PDF',
     preset_financial: 'Deterministic Financial Index',
     workflow_engine: 'WORKFLOW ENGINE:',
@@ -265,7 +265,7 @@ export const translations: Record<Language, Translations> = {
       "ARTIFICIAL CRAFT fuses Dify's reasoning matrix with n8n's execution orchestrator. Structured brand design and precision automation linked by a zero-drift control plane.",
     card_hybrid_title: 'HYBRID CRAFT RUNTIME',
     card_hybrid_desc:
-      'Reasoning engines call n8n workflows as typed Swiss design tools; n8n workflows execute Dify agents as deterministic code steps.',
+      'Reasoning engines call n8n workflows as typed LOGARITHMIC design tools; n8n workflows execute Dify agents as deterministic code steps.',
     node_trigger: 'TRIGGER',
     node_reason: 'REASON',
     node_vector: 'VECTOR',
@@ -275,7 +275,7 @@ export const translations: Record<Language, Translations> = {
     status_streaming_matrix: 'STREAMING MATRIX',
     status_retry_eligible: 'RETRY ELIGIBLE',
     card_rag_title: 'VECTOR RAG MATRIX',
-    card_rag_desc: 'Hybrid Pinecone + BM25 cross-reranking for Swiss design specs.',
+    card_rag_desc: 'Hybrid Pinecone + BM25 cross-reranking for LOGARITHMIC design specs.',
     rag_latency: 'LATENCY: 540ms',
     card_det_title: 'DETERMINISTIC ENGINE',
     card_det_desc: 'Auto-retry exponential policies, rate-limit shields, dead-letter archives.',
@@ -287,7 +287,7 @@ export const translations: Record<Language, Translations> = {
     card_telemetry_title: 'TELEMETRY TRACING',
     card_telemetry_desc: 'Every token, node call, and fanout event logged in 60fps real-time.',
     tracing_active: '● TRACING ACTIVE',
-    card_guardrails_title: 'SWISS GUARDRAILS',
+    card_guardrails_title: 'LOGARITHMIC GUARDRAILS',
     card_guardrails_desc: 'Schema-validated inputs and outputs. 0% silent drift.',
 
     // Blueprint Library
@@ -295,7 +295,7 @@ export const translations: Record<Language, Translations> = {
     bp_title_line1: 'PRODUCTION-READY BLUEPRINTS.',
     bp_title_line2: 'COPY. DEPLOY. SHARE.',
     bp_desc:
-      'Every blueprint ships with a typed API, node topology, and Carbon-style HD Swiss image exporter.',
+      'Every blueprint ships with a typed API, node topology, and Carbon-style HD LOGARITHMIC image exporter.',
     copy_api: 'COPY API',
     copied: 'COPIED',
     export_clean_screenshot: 'Export Clean Screenshot',
@@ -307,7 +307,7 @@ export const translations: Record<Language, Translations> = {
     bp_banner_sub: 'MIT LICENSED · CRAFT//CODE CLI READY',
     bp_browse_all: 'BROWSE ALL 40+ TEMPLATES',
 
-    // LinkedIn Banner Studio Form
+    //  Banner Studio Form
     banner_studio_title: 'Plug & Play Studio Banner LinkedIn (100% Automated & Free)',
     banner_full_name: 'Full Name',
     banner_company_domain: 'Company Domain / Logo URL',
@@ -318,7 +318,7 @@ export const translations: Record<Language, Translations> = {
     banner_industry_finance: 'Finance / Crypto',
     banner_industry_marketing: 'Marketing / Creator',
     banner_palette: 'Palette',
-    banner_palette_swiss: 'Monochrome White',
+    banner_palette_LOGARITHMIC: 'Monochrome White',
     banner_palette_cyan: 'Cyber Cyan',
     banner_palette_purple: '#5322ff Neon',
     banner_palette_amber: 'Earthy Amber',
@@ -392,7 +392,7 @@ export const translations: Record<Language, Translations> = {
     blackbox_q3_q: "Q3: I have nightmares about an AI bug causing an infinite loop that burns $5,000 in API keys before sunrise.",
     blackbox_q3_a: "A: Welcome to the classic 'Infinite Token Burn' nightmare. That's why we enforce strict guardrails, container sandboxes, and max-iteration=10 limits in Dify. By wrapping the Agent runtime environment in an isolated container, you constrain its survival space. If it fails over 10 times, the system automatically triggers a kill process and dispatches a Slack alert, instead of maxing out your credit card to fund OpenAI.",
     blackbox_q4_q: "Q4: Does my AI agent connected via MCP have a soul? Does it dream of electric sheep?",
-    blackbox_q4_a: "A: Absolutely not. It only dreams of Structured JSON and Swiss Grid matrices. When we talk about software 'waking up' or 'dreaming', it's merely a poetic metaphor for periodic background cron-jobs updating vector embedded memory. The system is just parsing text, resolving data conflicts, and computing linear algebra matrices so when you wake up, the best context is ready. No sentience, no consciousness — only pure linear algebra.",
+    blackbox_q4_a: "A: Absolutely not. It only dreams of Structured JSON and LOGARITHMIC Grid matrices. When we talk about software 'waking up' or 'dreaming', it's merely a poetic metaphor for periodic background cron-jobs updating vector embedded memory. The system is just parsing text, resolving data conflicts, and computing linear algebra matrices so when you wake up, the best context is ready. No sentience, no consciousness — only pure linear algebra.",
     blackbox_q5_q: "Q5: If event-driven pipelines handle everything from scraping to deployment... why am I receiving a salary?",
     blackbox_q5_a: "A: Congratulations, you graduated from gear-pusher to System Architect. Your job is no longer dragging elements in Canva or pixel-pushing UI manually. You stand at the top of the architectural tower, monitoring GCP Cloud Logging telemetry, identifying system bottlenecks, and directing autonomous machines toward complex challenges. You are paid for strategic reasoning, system architecture, and uncompromising aesthetic taste.",
     blackbox_q6_q: "Q6: What happens if the AI finishes everything at 3 AM and realizes it doesn't need me?",
@@ -433,7 +433,7 @@ export const translations: Record<Language, Translations> = {
     sim_run_btn: 'CHẠY MÔ PHỎNG',
     sim_executing: 'ĐANG THỰC THI NÚT...',
     preset_engine: 'ĐỘNG CƠ CẤU HÌNH SẴN:',
-    preset_swiss: 'Hệ Thống Thiết Kế Thụy Sĩ SKU',
+    preset_LOGARITHMIC: 'Hệ Thống Thiết Kế Thụy Sĩ SKU',
     preset_brutalist: 'Hồ Sơ Pitchdeck Brutalist PDF',
     preset_financial: 'Chỉ Số Tài Chính Xác Định',
     workflow_engine: 'ĐỘNG CƠ QUY TRÌNH:',
@@ -490,7 +490,7 @@ export const translations: Record<Language, Translations> = {
     card_telemetry_title: 'THEO DÕI VIỄN THÔNG',
     card_telemetry_desc: 'Mọi token, cuộc gọi nút và sự kiện phân phối được ghi lại theo thời gian thực 60fps.',
     tracing_active: '● ĐANG THEO DÕI',
-    card_guardrails_title: 'RÀO CHẮN THỤY SĨ',
+    card_guardrails_title: 'RÀO CHẮN CẤU TRÚC XOẮN ỐC',
     card_guardrails_desc: 'Đầu vào và đầu ra xác thực sơ đồ. 0% sai lệch âm thầm.',
 
     // Blueprint Library
@@ -521,7 +521,7 @@ export const translations: Record<Language, Translations> = {
     banner_industry_finance: 'Tài Chính / Mã Hóa',
     banner_industry_marketing: 'Marketing / Sáng Tạo',
     banner_palette: 'Bảng Màu',
-    banner_palette_swiss: 'Trắng Đơn Sắc',
+    banner_palette_LOGARITHMIC: 'Trắng Đơn Sắc',
     banner_palette_cyan: 'Xanh Cyber',
     banner_palette_purple: 'Neon Purple (#5322ff)',
     banner_palette_amber: 'Hổ Phách Tự Nhiên',
@@ -595,7 +595,7 @@ export const translations: Record<Language, Translations> = {
     blackbox_q3_q: 'Q3: Tôi thức trắng đêm vì ác mộng: Con AI dính một lỗi logic (Bug) rồi rơi vào vòng lặp vô hạn, đốt sạch 5.000$ tiền API Key của tôi trước khi mặt trời mọc. Làm sao để dừng sự điên rồ này lại?',
     blackbox_q3_a: 'A: Chào mừng bạn đến với cơn ác mộng kinh điển của dân Automation: "Infinite Token Burn". Đó là lý do tại sao chúng ta sinh ra các rào chắn (Strict Guardrails). Bằng cách bọc toàn bộ môi trường chạy của Agent vào trong một Container cô lập, bạn giới hạn không gian sinh tồn của nó. Cài đặt thêm tham số max-iteration = 10 trong luồng suy luận của Dify. Nếu nó thử sai quá 10 lần, hệ thống sẽ tự động kích hoạt lệnh tự hủy (Kill Process) và bắn một alert cảnh báo về Slack, thay vì cắm thẻ tín dụng của bạn vào nhà đài OpenAI để cúng tiền cho Sam Altman.',
     blackbox_q4_q: 'Q4: Suốt ngày thấy các bạn rêu rao "Đang đánh thức phần mềm dậy" (Waking software up). Thế con AI kết nối qua cổng MCP của tôi có linh hồn không? Nó có mơ về những con cừu điện không?',
-    blackbox_q4_a: 'A: Tuyệt đối không. Nó chỉ mơ về Structured JSON và Hệ lưới Swiss Grid. Khi chúng tôi nói một phần mềm "thức dậy" hay "nằm mơ", đó chỉ là cách nói văn hoa cho các tác vụ Cron-job chạy ngầm định kỳ để cập nhật kho tàng trí nhớ vector (Vector Embedded Memory). Hệ thống chỉ đang băm text, giải quyết các mâu thuẫn dữ liệu logic và tính toán ma trận tuyến tính để khi bạn thức dậy bật máy lên, nó có sẵn ngữ cảnh tốt nhất để phục vụ bạn. Không có tri thức, không có nhận thức — ở đây chỉ có đại số tuyến tính thuần túy.',
+    blackbox_q4_a: 'A: Tuyệt đối không. Nó chỉ mơ về Structured JSON và Hệ lưới LOGARITHMIC Grid. Khi chúng tôi nói một phần mềm "thức dậy" hay "nằm mơ", đó chỉ là cách nói văn hoa cho các tác vụ Cron-job chạy ngầm định kỳ để cập nhật kho tàng trí nhớ vector (Vector Embedded Memory). Hệ thống chỉ đang băm text, giải quyết các mâu thuẫn dữ liệu logic và tính toán ma trận tuyến tính để khi bạn thức dậy bật máy lên, nó có sẵn ngữ cảnh tốt nhất để phục vụ bạn. Không có tri thức, không có nhận thức — ở đây chỉ có đại số tuyến tính thuần túy.',
     blackbox_q5_q: 'Q5: Nếu các luồng tự động hóa dựa trên sự kiện (Event-driven Pipelines) đã lo hết 100% từ cào dữ liệu, xử lý ảnh, đến render video và tự deploy lên mạng... thế tôi ngồi đây để nhận lương làm gì?',
     blackbox_q5_a: 'A: Chúc mừng, bạn đã chính thức tốt nghiệp từ vị trí "Gã thợ đẩy bánh răng" để trở thành "Tác giả của hệ thống". Việc của bạn không phải là ngồi mở Canva lên kéo thả hay cặm cụi sửa từng pixel UI nữa. Việc của bạn là đứng ở đỉnh tháp kiến trúc, theo dõi các chỉ số sức khỏe của máy chủ trên GCP Cloud Logging, phát hiện cổ chai hệ thống và chỉ cỗ máy lao vào giải quyết những bài toán phức tạp hơn. Bạn được trả tiền cho tư duy chiến lược, kiến trúc hệ thống và gu thẩm mỹ khắt khe của bạn.',
     blackbox_q6_q: 'Q6: Được rồi. Nhưng chuyện gì sẽ xảy ra nếu con AI làm xong hết việc lúc 3 giờ sáng và nhận ra nó hoàn toàn không cần đến tôi nữa?',
