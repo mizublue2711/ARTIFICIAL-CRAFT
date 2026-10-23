@@ -1,5 +1,6 @@
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
+import PlugAndPlaySandbox from '@/components/PlugAndPlaySandbox';
 import BentoGrid from '@/components/BentoGrid';
 import BlueprintLibrary from '@/components/BlueprintLibrary';
 import BannerStudio from '@/components/BannerStudio';
@@ -43,6 +44,7 @@ function App() {
         <main>
           <Hero />
           <LogoMarquee />
+          <PlugAndPlaySandbox />
           <BentoGrid />
           <BlueprintLibrary />
           <BannerStudio />

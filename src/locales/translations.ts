@@ -3,6 +3,7 @@ export type Language = 'en' | 'vi';
 export interface Translations {
   // Navigation
   nav_engine: string;
+  nav_playground: string;
   nav_architecture: string;
   nav_blueprints: string;
   nav_blackbox: string;
@@ -163,6 +164,36 @@ export interface Translations {
   privacy: string;
   terms: string;
 
+  // Plug & Play Sandbox
+  sandbox_section_label: string;
+  sandbox_title: string;
+  sandbox_subtitle: string;
+  sandbox_control_panel: string;
+  sandbox_cat_organic: string;
+  sandbox_cat_structure: string;
+  sandbox_cat_biological: string;
+  sandbox_select_algo: string;
+  sandbox_param_density: string;
+  sandbox_param_speed: string;
+  sandbox_palette: string;
+  sandbox_palette_cyberpunk: string;
+  sandbox_palette_monochrome: string;
+  sandbox_palette_bauhaus: string;
+  sandbox_palette_amber: string;
+  sandbox_randomize_seed: string;
+  sandbox_telemetry_title: string;
+  sandbox_telemetry_status: string;
+  sandbox_telemetry_algo: string;
+  sandbox_telemetry_category: string;
+  sandbox_telemetry_density: string;
+  sandbox_telemetry_speed: string;
+  sandbox_telemetry_palette: string;
+  sandbox_telemetry_seed: string;
+  sandbox_telemetry_fps: string;
+  sandbox_telemetry_frametime: string;
+  sandbox_telemetry_resolution: string;
+  sandbox_canvas_interactive: string;
+
   // Existential Blackbox Section
   blackbox_title: string;
   blackbox_subtitle: string;
@@ -198,6 +229,7 @@ export const translations: Record<Language, Translations> = {
   en: {
     // Navigation
     nav_engine: 'ENGINE',
+    nav_playground: 'PLAYGROUND',
     nav_architecture: 'ARCHITECTURE',
     nav_blueprints: 'BLUEPRINTS',
     nav_blackbox: 'BLACKBOX',
@@ -368,6 +400,36 @@ export const translations: Record<Language, Translations> = {
     privacy: 'PRIVACY',
     terms: 'TERMS',
 
+    // Plug & Play Sandbox
+    sandbox_section_label: 'PLUG & PLAY // SANDBOX',
+    sandbox_title: 'GENERATIVE ALGORITHM LAB',
+    sandbox_subtitle: 'Real-time parameter tuning & telemetry for generative craft algorithms.',
+    sandbox_control_panel: 'CONTROL PANEL',
+    sandbox_cat_organic: 'Flow & Organic',
+    sandbox_cat_structure: 'Geometry & Structure',
+    sandbox_cat_biological: 'Digital & Biological',
+    sandbox_select_algo: 'Select Algorithm',
+    sandbox_param_density: 'Density',
+    sandbox_param_speed: 'Speed / Velocity',
+    sandbox_palette: 'Color Palette Swatches',
+    sandbox_palette_cyberpunk: '01: Cyberpunk Neon',
+    sandbox_palette_monochrome: '02: Brutalist Monochrome',
+    sandbox_palette_bauhaus: '03: Bauhaus Primary',
+    sandbox_palette_amber: '04: Gold Amber',
+    sandbox_randomize_seed: 'Randomize Seed',
+    sandbox_telemetry_title: 'TELEMETRY CONSOLE',
+    sandbox_telemetry_status: 'SYS//STATUS: ACTIVE',
+    sandbox_telemetry_algo: 'ALGORITHM',
+    sandbox_telemetry_category: 'CATEGORY',
+    sandbox_telemetry_density: 'DENSITY',
+    sandbox_telemetry_speed: 'SPEED',
+    sandbox_telemetry_palette: 'PALETTE',
+    sandbox_telemetry_seed: 'SEED HASH',
+    sandbox_telemetry_fps: 'FRAME RATE',
+    sandbox_telemetry_frametime: 'FRAME TIME',
+    sandbox_telemetry_resolution: 'CANVAS RES',
+    sandbox_canvas_interactive: '2D CANVAS // INTERACTIVE',
+
     // Existential Blackbox Section
     blackbox_title: 'THE SUBSTRATE // ENGINE 60FPS',
     blackbox_subtitle: 'THE EXISTENTIAL BLACKBOX',
@@ -401,6 +463,7 @@ export const translations: Record<Language, Translations> = {
   vi: {
     // Navigation
     nav_engine: 'ĐỘNG CƠ',
+    nav_playground: 'SÂN CHƠI',
     nav_architecture: 'KIẾN TRÚC',
     nav_blueprints: 'SƠ ĐỒ MẪU',
     nav_blackbox: 'HỘP ĐEN',
@@ -570,6 +633,36 @@ export const translations: Record<Language, Translations> = {
     status_online: 'HỆ THỐNG TRỰC TUYẾN',
     privacy: 'BẢO MẬT',
     terms: 'ĐIỀU KHẢN',
+
+    // Plug & Play Sandbox
+    sandbox_section_label: 'CẮM & CHẠY // MÔ PHỎNG',
+    sandbox_title: 'PHÒNG THÍ NGHIỆM THUẬT TOÁN MÃ TẠO',
+    sandbox_subtitle: 'Tinh chỉnh tham số và đo viễn thông thời gian thực cho các thuật toán sáng tạo.',
+    sandbox_control_panel: 'BẢNG ĐIỀU KHIỂN',
+    sandbox_cat_organic: 'Luồng & Hữu Cơ',
+    sandbox_cat_structure: 'Hình Học & Cấu Trúc',
+    sandbox_cat_biological: 'KTS & Sinh Học',
+    sandbox_select_algo: 'Chọn Thuật Toán',
+    sandbox_param_density: 'Mật Độ',
+    sandbox_param_speed: 'Tốc Độ / Vận Tốc',
+    sandbox_palette: 'Bảng Màu Lựa Chọn',
+    sandbox_palette_cyberpunk: '01: Cyberpunk Neon',
+    sandbox_palette_monochrome: '02: Brutalist Đơn Sắc',
+    sandbox_palette_bauhaus: '03: Bauhaus Nguyên Bản',
+    sandbox_palette_amber: '04: Hổ Phách Vàng',
+    sandbox_randomize_seed: 'Tạo Hạt Giống Ngẫu Nhiên',
+    sandbox_telemetry_title: 'BẢNG ĐO VIỄN THÔNG',
+    sandbox_telemetry_status: 'SYS//HỆ THỐNG: HOẠT ĐỘNG',
+    sandbox_telemetry_algo: 'THUẬT TOÁN',
+    sandbox_telemetry_category: 'DANH MỤC',
+    sandbox_telemetry_density: 'MẬT ĐỘ',
+    sandbox_telemetry_speed: 'TỐC ĐỘ',
+    sandbox_telemetry_palette: 'BẢNG MÀU',
+    sandbox_telemetry_seed: 'MÃ HẠT GIỐNG',
+    sandbox_telemetry_fps: 'TỐC ĐỘ KHUNG HÌNH',
+    sandbox_telemetry_frametime: 'THỜI GIAN KHUNG',
+    sandbox_telemetry_resolution: 'ĐỘ PHÂN GIẢI CANVAS',
+    sandbox_canvas_interactive: 'CANVAS 2D // TƯƠNG TÁC',
 
     // Existential Blackbox Section
     blackbox_title: 'BỀ MẶT NỀN // ĐỘNG CƠ 60FPS',
