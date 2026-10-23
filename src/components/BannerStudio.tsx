@@ -163,7 +163,7 @@ export default function BannerStudio() {
       ctx.stroke();
 
       ctx.font = '500 12px "JetBrains Mono", monospace';
-      ctx.textAlign = 'c';
+      ctx.textAlign = 'center';
       ctx.textBaseline = 'bottom';
       ctx.fillText('W:1024px / H:512px', (dimStartX + dimEndX) / 2, dimY - 4);
 
@@ -474,7 +474,7 @@ export default function BannerStudio() {
         const initials = getCompanyInitials(companyDomain, fullName);
         ctx.fillStyle = currentTheme.accentColor;
         ctx.font = '700 12px "JetBrains Mono", monospace';
-        ctx.textAlign = 'c';
+        ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(initials, boxX + logoSize / 2, boxY + logoSize / 2 + 1);
       }
