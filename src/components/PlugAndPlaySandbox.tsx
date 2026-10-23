@@ -495,9 +495,9 @@ export default function PlugAndPlaySandbox() {
                 const dist = Math.sqrt(dx * dx + dy * dy);
                 if (dist < 240 && dist > 1) {
                   const factor = (1 - dist / 240) * ratio;
-                  const gravAngle = Math.atan2(my - py, mx - px) + Math.PI * 0.42;
-                  px += Math.cos(gravAngle) * 30 * factor * speed;
-                  py += Math.sin(gravAngle) * 30 * factor * speed;
+                  const gravAngle = Math.atan2(my - py, mx - px) + Math.PI * 0.24;
+                  px += Math.cos(gravAngle) * 40 * factor * speed;
+                  py += Math.sin(gravAngle) * 40 * factor * speed;
                 }
               }
 
