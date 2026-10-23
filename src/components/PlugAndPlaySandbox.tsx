@@ -689,10 +689,19 @@ export default function PlugAndPlaySandbox() {
             });
           });
 
+          / Pre-convert palette colors for liquid gradient fills
+          const liquidColorsRGB = [
+            hexToRgb('#00E5FF'),
+            hexToRgb('#5322ff'),
+            hexToRgb('#FF007A'),
+            hexToRgb(primary),
+            hexToRgb(secondary),
+          ];
+          
           // Apply organic noise warp to seed positions once per frame (12 calls instead of 25,000)
           const noisySeeds = allSeeds.map((sd, i) => ({
-            x: sd.x + noise2D(sd.x * 0.01 + globalTime * 0.2, i) * 3,
-            y: sd.y + noise2D(sd.y * 0.01 + globalTime * 0.2, i + 3) * 3,
+            x: sd.x + noise2D(sd.x * 0.001 + globalTime * 0.2, i) * 3,
+            y: sd.y + noise2D(sd.y * 0.001 + globalTime * 0.2, i + 3) * 3,
             idx: i,
           }));
 
