@@ -594,14 +594,14 @@ export default function PlugAndPlaySandbox() {
         else if (selectedAlgoId === 'reaction_diffusion') {
           const cellW = width / rdGridSize;
           const cellH = height / rdGridSize;
-          const F = 0.0545;
-          const k = 0.062;
+          const F = 0.0959;
+          const k = 0.172;
 
           // Mouse spot injection
           if (mActive) {
             const gx = Math.floor((mx / width) * rdGridSize);
             const gy = Math.floor((my / height) * rdGridSize);
-            if (gx > 1 && gx < rdGridSize - 2 && gy > 1 && gy < rdGridSize - 2) {
+            if (gx > 1 && gx < rdGridSize - 6 && gy > 1 && gy < rdGridSize - 2) {
               gridV[gx * rdGridSize + gy] = 0.9;
             }
           }
@@ -631,8 +631,8 @@ export default function PlugAndPlaySandbox() {
                 4 * v;
 
               const uvv = u * v * v;
-              nextU[idx] = Math.max(0, Math.min(1, u + (1.0 * lapU - uvv + F * (1 - u)) * 0.8 * speed));
-              nextV[idx] = Math.max(0, Math.min(1, v + (0.5 * lapV + uvv - (F + k) * v) * 0.8 * speed));
+              nextU[idx] = Math.max(0, Math.min(3, u + (5 * lapU - uvv + F * (1 - u)) * 1.2 * speed));
+              nextV[idx] = Math.max(0, Math.min(1, v + (7 * lapV + uvv - (F + k) * v) * 1.2 * speed));
             }
           }
           gridU = nextU;
@@ -644,7 +644,7 @@ export default function PlugAndPlaySandbox() {
               const val = gridV[x * rdGridSize + y];
               if (val > 0.1) {
                 ctx.fillStyle = val > 0.4 ? primary : secondary;
-                ctx.fillRect(x * cellW, y * cellH, cellW - 0.5, cellH - 0.5);
+                ctx.fillRect(x * cellW, y * cellH, cellW - 1, cellH - 1);
               }
             }
           }
