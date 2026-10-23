@@ -594,8 +594,8 @@ export default function PlugAndPlaySandbox() {
         else if (selectedAlgoId === 'reaction_diffusion') {
           const cellW = width / rdGridSize;
           const cellH = height / rdGridSize;
-          const F = 0.0959;
-          const k = 0.172;
+          const F = 30;
+          const k = 30;
 
           // Mouse spot injection
           if (mActive) {
