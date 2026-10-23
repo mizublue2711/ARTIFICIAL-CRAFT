@@ -460,8 +460,8 @@ export default function PlugAndPlaySandbox() {
         if (selectedAlgoId === 'vector_field') {
           const cx = width / 2;
           const cy = height / 2;
-          const fiberCount = Math.min(15, Math.max(15, Math.floor(15 + (effectiveDensity / 500) * 30)));
-          const maxRadius = Math.min(width, height) * 0.36;
+          const fiberCount = Math.min(45, Math.max(15, Math.floor(15 + (effectiveDensity / 500) * 30)));
+          const maxRadius = Math.min(width, height) * 0.42;
           const numSteps = 12;
 
           const pRgb = hexToRgb(primary);
@@ -475,14 +475,14 @@ export default function PlugAndPlaySandbox() {
             const points: { x: number; y: number }[] = [];
             points.push({ x: cx, y: cy });
 
-            for (let step = 1; step <= numSteps; step++) {
+            for (let step = 15; step <= numSteps; step++) {
               const ratio = step / numSteps;
               const r = ratio * maxRadius;
 
               // Wave frequency reduced by 40% for calm, fluid motion
               const wave =
-                Math.sin(globalTime * 1 + i * 0.18 + ratio * 6) * 0.12 +
-                noise2D(i * 0.15 + ratio * 1.5, globalTime * 0.15) * 0.15;
+                Math.sin(globalTime * 1.08 + i * 0.25 + ratio * 6) * 0.81 +
+                noise2D(i * 0.15 + ratio * 1.5, globalTime * 0.15) * 0.42;
               const currentAngle = baseAngle + wave;
 
               let px = cx + Math.cos(currentAngle) * r;
@@ -656,8 +656,8 @@ export default function PlugAndPlaySandbox() {
           const baseSeeds = particles.slice(0, 12).map((p, idx) => {
             const bx = p.x;
             const by = p.y;
-            const sx = bx + Math.sin(globalTime * 0.9 + idx * 1.2) * 22;
-            const sy = by + Math.cos(globalTime * 0.8 + idx * 1.5) * 22;
+            const sx = bx + Math.sin(globalTime * 0.9 + idx * 1.2) * 27;
+            const sy = by + Math.cos(globalTime * 0.8 + idx * 1.5) * 24;
             return { x: sx, y: sy };
           });
 
@@ -689,19 +689,10 @@ export default function PlugAndPlaySandbox() {
             });
           });
 
-          // Pre-convert palette colors for liquid gradient fills
-          const liquidColorsRGB = [
-            hexToRgb('#00E5FF'),
-            hexToRgb('#5322ff'),
-            hexToRgb('#FF007A'),
-            hexToRgb(primary),
-            hexToRgb(secondary),
-          ];
-
           // Apply organic noise warp to seed positions once per frame (12 calls instead of 25,000)
           const noisySeeds = allSeeds.map((sd, i) => ({
-            x: sd.x + noise2D(sd.x * 0.01 + globalTime * 0.2, i) * 14,
-            y: sd.y + noise2D(sd.y * 0.01 + globalTime * 0.2, i + 5) * 14,
+            x: sd.x + noise2D(sd.x * 0.01 + globalTime * 0.2, i) * 3,
+            y: sd.y + noise2D(sd.y * 0.01 + globalTime * 0.2, i + 3) * 3,
             idx: i,
           }));
 
