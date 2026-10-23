@@ -183,7 +183,7 @@ export const ExistentialBlackbox: React.FC = () => {
       ctx.font = '8px monospace';
       for (let bx = -mainRadius; bx < mainRadius; bx += 12) {
         for (let by = -mainRadius; by < mainRadius; by += 12) {
-          let bit = ((Math.floor(bx + time * 30) + Math.floor(by + time * 15)) % 2 === 0) ? '1' : '0';
+          const bit = ((Math.floor(bx + time * 30) + Math.floor(by + time * 15)) % 2 === 0) ? '1' : '0';
           ctx.fillText(bit, bx, by);
         }
       }
@@ -198,7 +198,7 @@ export const ExistentialBlackbox: React.FC = () => {
       ctx.closePath();
       ctx.clip();
 
-      let soulGrad = ctx.createRadialGradient(0, 0, 2, 0, 0, mainRadius);
+      const soulGrad = ctx.createRadialGradient(0, 0, 2, 0, 0, mainRadius);
       soulGrad.addColorStop(0, isTyping ? 'rgba(0, 229, 255, 0.95)' : 'rgba(83, 34, 255, 0.95)');
       soulGrad.addColorStop(1, 'rgba(12, 4, 30, 0.98)');
       ctx.fillStyle = soulGrad;
@@ -206,10 +206,10 @@ export const ExistentialBlackbox: React.FC = () => {
 
       // Các hạt năng lượng chuyển động dòng chảy (Swarm Particles)
       for (let p = 0; p < 45; p++) {
-        let pAngle = time * 2 + p * 0.15;
-        let pRadius = (p * scale * 0.3) % mainRadius;
-        let px = Math.cos(pAngle) * pRadius;
-        let py = Math.sin(pAngle) * pRadius;
+        const pAngle = time * 2 + p * 0.15;
+        const pRadius = (p * scale * 0.3) % mainRadius;
+        const px = Math.cos(pAngle) * pRadius;
+        const py = Math.sin(pAngle) * pRadius;
 
         ctx.fillStyle = isTyping ? '#00E5FF' : `rgba(${140 + p * 2}, 34, 255, ${0.4 + (p % 4) * 0.15})`;
         ctx.beginPath();
@@ -219,10 +219,10 @@ export const ExistentialBlackbox: React.FC = () => {
       ctx.restore();
 
       // C. MẮT THÁI CỰC (SINGULARITY EYES)
-      let eyeOffset = mainRadius / 2;
+      const eyeOffset = mainRadius / 2;
 
       // Mắt bên phía Dương (Machine Eye - Cyan/Tím Pulse Node)
-      let pulseRadius = 4 + Math.sin(time * 8) * (isTyping ? 2.5 : 1.2);
+      const pulseRadius = 4 + Math.sin(time * 8) * (isTyping ? 2.5 : 1.2);
       ctx.save();
       ctx.shadowColor = isTyping ? '#00E5FF' : '#5322ff';
       ctx.shadowBlur = isTyping ? 20 : 10;
