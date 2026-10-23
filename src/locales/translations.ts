@@ -433,7 +433,7 @@ export const translations: Record<Language, Translations> = {
     sim_run_btn: 'CHẠY MÔ PHỎNG',
     sim_executing: 'ĐANG THỰC THI NÚT...',
     preset_engine: 'ĐỘNG CƠ CẤU HÌNH SẴN:',
-    preset_swiss: 'Hệ Thống Thiết Kế Thụy Sĩ SKU',
+    preset_swiss: 'Hệ Thống Thiết Kế LOGARITHMIC SKU',
     preset_brutalist: 'Hồ Sơ Pitchdeck Brutalist PDF',
     preset_financial: 'Chỉ Số Tài Chính Xác Định',
     workflow_engine: 'ĐỘNG CƠ QUY TRÌNH:',
@@ -478,7 +478,7 @@ export const translations: Record<Language, Translations> = {
     status_streaming_matrix: 'MA TRẬN DÒNG',
     status_retry_eligible: 'CÓ THỂ THỬ LẠI',
     card_rag_title: 'MA TRẬN VECTOR RAG',
-    card_rag_desc: 'Xếp hạng lại lai Pinecone + BM25 cho các thông số thiết kế Thụy Sĩ.',
+    card_rag_desc: 'Xếp hạng lại lai Pinecone + BM25 cho các thông số thiết kế LOGARITHMIC.',
     rag_latency: 'ĐỘ TRỄ: 540ms',
     card_det_title: 'ĐỘNG CƠ XÁC ĐỊNH',
     card_det_desc: 'Chính sách tự động thử lại theo số nhân, lá chắn giới hạn tốc độ, cách ly lệnh lỗi.',
@@ -490,7 +490,7 @@ export const translations: Record<Language, Translations> = {
     card_telemetry_title: 'THEO DÕI VIỄN THÔNG',
     card_telemetry_desc: 'Mọi token, cuộc gọi nút và sự kiện phân phối được ghi lại theo thời gian thực 60fps.',
     tracing_active: '● ĐANG THEO DÕI',
-    card_guardrails_title: 'RÀO CHẮN THỤY SĨ',
+    card_guardrails_title: 'RÀO CHẮN LOGARITHMIC',
     card_guardrails_desc: 'Đầu vào và đầu ra xác thực sơ đồ. 0% sai lệch âm thầm.',
 
     // Blueprint Library
