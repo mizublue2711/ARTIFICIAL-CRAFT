@@ -452,7 +452,7 @@ export const translations: Record<Language, Translations> = {
     mode_content_desc:
       'Sự giao thoa giữa độ chuẩn xác của thiết kế và tự động hóa lập trình: AI Agent của Dify xử lý và quy chuẩn hóa ấn phẩm truyền thông, còn n8n đảm bảo luồng phân phối tự động chuẩn xác tuyệt đối trên các nền tảng.',
     mode_lead_label: 'Động Cơ Chấm Điểm Nút',
-    mode_lead_sublabel: 'Dữ Liệu Viễn Thông → Định Tuyến Dự Đoán',
+    mode_lead_sublabel: 'Dữ liệu đo từ xa → Định tuyến dự báo',
     mode_lead_desc:
       'Sự kiện Webhook đầu vào cung cấp cho bộ lọc thần kinh ARTIFICIAL CRAFT. Các vectơ hành vi thời gian thực được hợp nhất thành điểm số xác định với khả năng chống giới hạn tốc độ.',
     mode_research_label: 'Ma Trận RAG Nhân Tạo',
