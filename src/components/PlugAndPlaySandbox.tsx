@@ -481,8 +481,8 @@ export default function PlugAndPlaySandbox() {
 
               // Wave frequency reduced by 40% for calm, fluid motion
               const wave =
-                Math.sin(globalTime * 1.08 + i * 0.25 + ratio * 6) * 0.81 +
-                noise2D(i * 0.15 + ratio * 1.5, globalTime * 0.15) * 0.42;
+                Math.sin(globalTime * 1.08 + i * 0.25 + ratio * 6) * 0.54 +
+                noise2D(i * 0.15 + ratio * 1.5, globalTime * 0.15) * 0.15;
               const currentAngle = baseAngle + wave;
 
               let px = cx + Math.cos(currentAngle) * r;
