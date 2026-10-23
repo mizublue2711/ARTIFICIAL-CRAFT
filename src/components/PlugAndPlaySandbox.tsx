@@ -219,6 +219,7 @@ export default function PlugAndPlaySandbox() {
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const offscreenCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
   // Active objects derived from selection
   const activePalette = useMemo(() => {
@@ -462,7 +463,7 @@ export default function PlugAndPlaySandbox() {
           const cy = height / 2;
           const fiberCount = Math.min(45, Math.max(15, Math.floor(15 + (effectiveDensity / 500) * 30)));
           const maxRadius = Math.min(width, height) * 0.42;
-          const numSteps = 12;
+          const numSteps = 24;
 
           const pRgb = hexToRgb(primary);
           const sRgb = hexToRgb(secondary);
@@ -481,8 +482,8 @@ export default function PlugAndPlaySandbox() {
 
               // Wave frequency reduced by 40% for calm, fluid motion
               const wave =
-                Math.sin(globalTime * 1.08 + i * 0.25 + ratio * 6) * 0.81 +
-                noise2D(i * 0.15 + ratio * 1.5, globalTime * 0.15) * 0.42;
+                Math.sin(globalTime * 1.08 + i * 0.25 + ratio * 6) * 0.54 +
+                noise2D(i * 0.15 + ratio * 1.5, globalTime * 0.15) * 0.15;
               const currentAngle = baseAngle + wave;
 
               let px = cx + Math.cos(currentAngle) * r;
@@ -710,9 +711,12 @@ export default function PlugAndPlaySandbox() {
           const bufW = Math.max(1, Math.ceil(width / renderStep));
           const bufH = Math.max(1, Math.ceil(height / renderStep));
 
-          const offCanvas = document.createElement('canvas');
-          offCanvas.width = bufW;
-          offCanvas.height = bufH;
+          if (!offscreenCanvasRef.current) {
+            offscreenCanvasRef.current = document.createElement('canvas');
+          }
+          const offCanvas = offscreenCanvasRef.current;
+          if (offCanvas.width !== bufW) offCanvas.width = bufW;
+          if (offCanvas.height !== bufH) offCanvas.height = bufH;
           const offCtx = offCanvas.getContext('2d');
 
           if (offCtx) {
