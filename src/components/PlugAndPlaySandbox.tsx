@@ -136,7 +136,7 @@ const PALETTES: PaletteDef[] = [
     primary: '#8C00FF',
     secondary: '#02CCF5',
     accent: '#8A80FF',
-    background: '##000000',
+    background: '#000000',
   },
   {
     id: 'amber',
