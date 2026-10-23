@@ -1,19 +1,14 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import {
   Sliders,
   Activity,
   RefreshCw,
-  Zap,
-  Layers,
-  Cpu,
-  Sparkles,
   Terminal,
-  Grid,
   Box,
-  Eye,
+  MousePointer,
 } from 'lucide-react';
 import { useTranslation } from '@/context/useLanguage';
+import { Translations } from '@/locales/translations';
 
 export type AlgorithmCategory = 'organic' | 'structure' | 'biological';
 
@@ -21,6 +16,7 @@ export interface AlgorithmDef {
   id: string;
   name: string;
   category: AlgorithmCategory;
+  groupLabel: string;
   description: string;
 }
 
@@ -35,21 +31,81 @@ export interface PaletteDef {
 }
 
 export const ALGORITHMS: AlgorithmDef[] = [
-  // Organic Category
-  { id: 'perlin_flow', name: 'Perlin Flow Field', category: 'organic', description: 'Vector velocity fields driven by multi-octave 2D Perlin noise.' },
-  { id: 'diff_growth', name: 'Differential Growth', category: 'organic', description: 'Simulated node expansion with spatial repulsion and path splitting.' },
-  { id: 'react_diff', name: 'Reaction-Diffusion', category: 'organic', description: 'Gray-Scott chemical reaction modeling morphogenetic Turing patterns.' },
-  { id: 'physarum', name: 'Physarum Slime Mold', category: 'organic', description: 'Agent-based foraging network with chemo-attractant trail transport.' },
+  // Group A: Flow & Organic Motion
+  {
+    id: 'vector_field',
+    name: '01. Vector Field',
+    category: 'organic',
+    groupLabel: 'Group A: Flow & Organic Motion',
+    description: 'Perlin Noise vector flow field with particle velocity trails & force fields.',
+  },
+  {
+    id: 'fibonacci_spiral',
+    name: '02. Fibonacci Spiral',
+    category: 'organic',
+    groupLabel: 'Group A: Flow & Organic Motion',
+    description: 'Phyllotaxis dynamic expansion governed by the golden angle ratio.',
+  },
+  {
+    id: 'reaction_diffusion',
+    name: '03. Reaction-Diffusion',
+    category: 'organic',
+    groupLabel: 'Group A: Flow & Organic Motion',
+    description: 'Gray-Scott chemical reaction modeling organic skin patterns.',
+  },
 
-  // Structure Category
-  { id: 'voronoi', name: 'Voronoi Tessellation', category: 'structure', description: 'Delaunay triangulation and dynamic Fortune sweep-line partitioning.' },
-  { id: 'lsystem', name: 'L-System Fractal Trees', category: 'structure', description: 'Recursive Lindenmayer string rewrite grammar geometry.' },
-  { id: 'recursive_sub', name: 'Recursive Sub-division', category: 'structure', description: 'Golden ratio Mondrian grid sub-quad splitting matrix.' },
+  // Group B: Geometry & Structure
+  {
+    id: 'voronoi',
+    name: '04. Brutalist Voronoi Diagram',
+    category: 'structure',
+    groupLabel: 'Group B: Geometry & Structure',
+    description: 'Dynamic Voronoi cell partitioning. Click canvas to add cell centers.',
+  },
+  {
+    id: 'delaunay',
+    name: '05. Delaunay Triangulation',
+    category: 'structure',
+    groupLabel: 'Group B: Geometry & Structure',
+    description: 'Dynamic mesh connecting nearby particle nodes with structural wireframes.',
+  },
+  {
+    id: 'isometric_grid',
+    name: '06. Isometric Grid Architecture',
+    category: 'structure',
+    groupLabel: 'Group B: Geometry & Structure',
+    description: '3D extruded flat cuboid blocks with Swiss dimension lines.',
+  },
+  {
+    id: 'geometric_lines',
+    name: '07. Geometric Line Art',
+    category: 'structure',
+    groupLabel: 'Group B: Geometry & Structure',
+    description: 'Swiss-style precision intersecting vector paths & arc tangents.',
+  },
 
-  // Biological Category
-  { id: 'cellular_auto', name: 'Cellular Automata (Game of Life)', category: 'biological', description: 'Conway grid state transitions with periodic boundary conditions.' },
-  { id: 'flocking_boids', name: 'Flocking Boids', category: 'biological', description: 'Craig Reynolds emergent swarm behavior (separation, alignment, cohesion).' },
-  { id: 'neural_ca', name: 'Neural Cellular Automata', category: 'biological', description: 'Convolutional neural kernel growth dynamics.' },
+  // Group C: Digital & Biological Systems
+  {
+    id: 'cyber_matrix',
+    name: '08. Cyber Matrix Rain',
+    category: 'biological',
+    groupLabel: 'Group C: Digital & Biological Systems',
+    description: 'Algorithmic code stream with neon color tinting & mouse disruption.',
+  },
+  {
+    id: 'bauhaus_composition',
+    name: '09. Bauhaus Graphic Composition',
+    category: 'biological',
+    groupLabel: 'Group C: Digital & Biological Systems',
+    description: 'Abstract geometric balance of primary forms, circles, and grid axes.',
+  },
+  {
+    id: 'cellular_automata',
+    name: '10. Cellular Automata',
+    category: 'biological',
+    groupLabel: 'Group C: Digital & Biological Systems',
+    description: 'Conway Game of Life grid evolution. Click canvas to spawn live cells.',
+  },
 ];
 
 export const PALETTES: PaletteDef[] = [
@@ -67,7 +123,7 @@ export const PALETTES: PaletteDef[] = [
     nameKey: 'sandbox_palette_monochrome',
     label: '02: Brutalist Monochrome',
     primary: '#FAFAFA',
-    secondary: '#71717A',
+    secondary: '#A1A1AA',
     accent: '#27272A',
     background: '#000000',
   },
@@ -100,21 +156,39 @@ function generateSeedHash(): string {
   return hash;
 }
 
+// Simple fast Perlin-like pseudo noise generator
+function noise2D(x: number, y: number): number {
+  const sin1 = Math.sin(x * 12.9898 + y * 78.233);
+  const sin2 = Math.sin(x * 37.719 + y * 51.137);
+  return (Math.sin(sin1 * 43758.5453) + Math.cos(sin2 * 24614.63)) * 0.5;
+}
+
 export default function PlugAndPlaySandbox() {
   const { t } = useTranslation();
 
   // Control State
   const [selectedCategory, setSelectedCategory] = useState<AlgorithmCategory>('organic');
-  const [selectedAlgoId, setSelectedAlgoId] = useState<string>('perlin_flow');
+  const [selectedAlgoId, setSelectedAlgoId] = useState<string>('vector_field');
   const [density, setDensity] = useState<number>(250);
   const [speed, setSpeed] = useState<number>(1.5);
   const [selectedPaletteId, setSelectedPaletteId] = useState<string>('cyberpunk');
   const [seedHash, setSeedHash] = useState<string>('0x71C8A93A');
 
+  // Interactive Voronoi cell centers added on mouse click
+  const voronoiClickPointsRef = useRef<{ x: number; y: number }[]>([]);
+
+  // Interactive Cellular Automata grid state ref
+  const caGridRef = useRef<number[][] | null>(null);
+
+  // Mouse Refs to avoid re-rendering/destroying canvas loop on mousemove
+  const mousePosRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const isMouseOverRef = useRef<boolean>(false);
+
   // Telemetry state
   const [fps, setFps] = useState<number>(60);
   const [frameTime, setFrameTime] = useState<number>(16.6);
   const [canvasRes, setCanvasRes] = useState<{ width: number; height: number }>({ width: 800, height: 600 });
+  const canvasResRef = useRef<{ width: number; height: number }>({ width: 800, height: 600 });
   const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -134,7 +208,6 @@ export default function PlugAndPlaySandbox() {
     return ALGORITHMS.filter((a) => a.category === selectedCategory);
   }, [selectedCategory]);
 
-  // Handle category tab change: auto-select first algorithm in that category if needed
   const handleCategoryChange = (cat: AlgorithmCategory) => {
     setSelectedCategory(cat);
     const firstInCat = ALGORITHMS.find((a) => a.category === cat);
@@ -145,9 +218,42 @@ export default function PlugAndPlaySandbox() {
 
   const handleRandomizeSeed = () => {
     setSeedHash(generateSeedHash());
+    voronoiClickPointsRef.current = [];
+    caGridRef.current = null;
   };
 
-  // Particle / Canvas Simulation Loop
+  // Canvas Mouse Click handler for interactive Voronoi and CA grid
+  const handleCanvasClick = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const clickY = e.clientY - rect.top;
+
+    if (selectedAlgoId === 'voronoi') {
+      voronoiClickPointsRef.current.push({ x: clickX, y: clickY });
+    } else if (selectedAlgoId === 'cellular_automata' && caGridRef.current) {
+      const cols = caGridRef.current.length;
+      const rows = caGridRef.current[0].length;
+      const cellW = rect.width / cols;
+      const cellH = rect.height / rows;
+      const c = Math.floor(clickX / cellW);
+      const r = Math.floor(clickY / cellH);
+
+      // Toggle 3x3 neighborhood around click
+      for (let dc = -1; dc <= 1; dc++) {
+        for (let dr = -1; dr <= 1; dr++) {
+          const nc = c + dc;
+          const nr = r + dr;
+          if (nc >= 0 && nc < cols && nr >= 0 && nr < rows) {
+            caGridRef.current[nc][nr] = 1;
+          }
+        }
+      }
+    }
+  };
+
+  // Core 60FPS Generative Algorithm Suite Render Loop
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -155,14 +261,23 @@ export default function PlugAndPlaySandbox() {
     if (!ctx) return;
 
     let animFrameId: number;
-    let lastTime = performance.now();
+    let lastFrameTime = performance.now();
     let frameCount = 0;
     let fpsTimer = performance.now();
 
-    // Generate particle nodes based on seed and density
-    const seedNum = parseInt(seedHash.replace('0x', ''), 16) || 1234567;
-    const count = density;
+    // Responsive 50% density reduction on mobile viewport
+    const isMobile = window.innerWidth < 768;
+    const effectiveDensity = isMobile ? Math.max(10, Math.floor(density * 0.5)) : density;
 
+    // Seed state initialization
+    const seedNum = parseInt(seedHash.replace('0x', ''), 16) || 1234567;
+    let rngState = seedNum;
+    const pseudoRandom = () => {
+      rngState = (rngState * 16807) % 2147483647;
+      return (rngState - 1) / 2147483646;
+    };
+
+    // Particles Data Structure
     interface Particle {
       x: number;
       y: number;
@@ -174,15 +289,9 @@ export default function PlugAndPlaySandbox() {
     }
 
     const particles: Particle[] = [];
-    let rngState = seedNum;
-    const pseudoRandom = () => {
-      rngState = (rngState * 16807) % 2147483647;
-      return (rngState - 1) / 2147483646;
-    };
-
     const initParticles = (w: number, h: number) => {
       particles.length = 0;
-      for (let i = 0; i < count; i++) {
+      for (let i = 0; i < effectiveDensity; i++) {
         particles.push({
           x: pseudoRandom() * w,
           y: pseudoRandom() * h,
@@ -195,125 +304,565 @@ export default function PlugAndPlaySandbox() {
       }
     };
 
+    // Matrix Rain drops
+    interface RainColumn {
+      x: number;
+      y: number;
+      speed: number;
+      chars: string[];
+    }
+    const matrixCols: RainColumn[] = [];
+    const initMatrix = (w: number) => {
+      matrixCols.length = 0;
+      const colWidth = 14;
+      const count = Math.floor(w / colWidth);
+      const chars = '01CRAFTDIFYN8NXY789ABCDEF'.split('');
+      for (let i = 0; i < count; i++) {
+        matrixCols.push({
+          x: i * colWidth + 4,
+          y: pseudoRandom() * -500,
+          speed: 2 + pseudoRandom() * 4,
+          chars: Array.from({ length: 15 }, () => chars[Math.floor(pseudoRandom() * chars.length)]),
+        });
+      }
+    };
+
+    // CA Grid initialization
+    const initCA = (cols: number, rows: number) => {
+      const grid: number[][] = [];
+      for (let c = 0; c < cols; c++) {
+        grid[c] = [];
+        for (let r = 0; r < rows; r++) {
+          grid[c][r] = pseudoRandom() < 0.25 ? 1 : 0;
+        }
+      }
+      return grid;
+    };
+
+    // Canvas size updating
     const updateCanvasSize = () => {
       if (containerRef.current) {
         const rect = containerRef.current.getBoundingClientRect();
         const dpr = window.devicePixelRatio || 1;
-        const w = Math.floor(rect.width);
-        const h = Math.floor(rect.height);
+        const w = Math.floor(rect.width) || 800;
+        const h = Math.floor(rect.height) || 600;
         canvas.width = w * dpr;
         canvas.height = h * dpr;
         canvas.style.width = `${w}px`;
         canvas.style.height = `${h}px`;
         ctx.scale(dpr, dpr);
+
+        canvasResRef.current = { width: w, height: h };
         setCanvasRes({ width: w, height: h });
         initParticles(w, h);
+        initMatrix(w);
+
+        const caCols = Math.floor(w / 12);
+        const caRows = Math.floor(h / 12);
+        caGridRef.current = initCA(caCols, caRows);
       }
     };
 
     updateCanvasSize();
     window.addEventListener('resize', updateCanvasSize);
 
+    // Gray-Scott Reaction Diffusion simulation state (organic skin)
+    const rdGridSize = 64;
+    let gridU = new Float32Array(rdGridSize * rdGridSize).fill(1.0);
+    let gridV = new Float32Array(rdGridSize * rdGridSize).fill(0.0);
+    // Seed initial chemical spots
+    for (let i = 28; i < 36; i++) {
+      for (let j = 28; j < 36; j++) {
+        gridV[i * rdGridSize + j] = 0.8;
+      }
+    }
+
+    let globalTime = 0;
+
+    // 60FPS Delta Capped Main Loop (with 2ms tolerance for 60Hz RAF jitter)
+    const targetFPS = 60;
+    const frameInterval = 1000 / targetFPS;
+
     const render = (now: number) => {
-      const delta = now - lastTime;
-      lastTime = now;
+      const elapsed = now - lastFrameTime;
 
-      frameCount++;
-      if (now - fpsTimer >= 500) {
-        const calculatedFps = Math.round((frameCount * 1000) / (now - fpsTimer));
-        setFps(calculatedFps);
-        setFrameTime(parseFloat((1000 / Math.max(calculatedFps, 1)).toFixed(1)));
-        frameCount = 0;
-        fpsTimer = now;
-      }
+      if (elapsed >= frameInterval - 2) {
+        lastFrameTime = now - (elapsed % frameInterval);
 
-      const width = canvasRes.width || 800;
-      const height = canvasRes.height || 600;
-
-      // Semi-transparent fade for trailing effect
-      ctx.fillStyle = activePalette.background + '22';
-      ctx.fillRect(0, 0, width, height);
-
-      // Render algorithmic generative geometry based on selected category & algorithm
-      const spd = speed;
-      const primaryHex = activePalette.primary;
-      const secondaryHex = activePalette.secondary;
-      const accentHex = activePalette.accent;
-
-      if (selectedAlgoId === 'voronoi' || selectedAlgoId === 'recursive_sub') {
-        // Structural grid overlay
-        ctx.strokeStyle = secondaryHex + '33';
-        ctx.lineWidth = 1;
-        const cols = 6;
-        const rows = 4;
-        const cw = width / cols;
-        const ch = height / rows;
-
-        for (let c = 0; c <= cols; c++) {
-          ctx.beginPath();
-          ctx.moveTo(c * cw, 0);
-          ctx.lineTo(c * cw, height);
-          ctx.stroke();
+        frameCount++;
+        if (now - fpsTimer >= 500) {
+          const calculatedFps = Math.min(60, Math.round((frameCount * 1000) / (now - fpsTimer)));
+          setFps(calculatedFps);
+          setFrameTime(parseFloat((1000 / Math.max(calculatedFps, 1)).toFixed(1)));
+          frameCount = 0;
+          fpsTimer = now;
         }
-        for (let r = 0; r <= rows; r++) {
-          ctx.beginPath();
-          ctx.moveTo(0, r * ch);
-          ctx.lineTo(width, r * ch);
-          ctx.stroke();
-        }
-      }
 
-      // Draw particle dynamics according to parameters
-      ctx.lineWidth = 1;
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
+        globalTime += 0.016 * speed;
+        const width = canvasResRef.current.width || 800;
+        const height = canvasResRef.current.height || 600;
 
-        if (selectedCategory === 'organic') {
-          // Flow noise field effect
-          p.angle += (pseudoRandom() - 0.5) * 0.2 * spd;
-          p.x += Math.cos(p.angle) * spd * 1.5;
-          p.y += Math.sin(p.angle) * spd * 1.5;
-        } else if (selectedCategory === 'structure') {
-          // Geometric axis movement
-          p.x += p.vx * spd * 1.2;
-          p.y += p.vy * spd * 1.2;
-          if (Math.random() < 0.05 * spd) {
-            p.vx = (Math.floor(pseudoRandom() * 3) - 1) * 1.5;
-            p.vy = (Math.floor(pseudoRandom() * 3) - 1) * 1.5;
-          }
+        const mx = mousePosRef.current.x;
+        const my = mousePosRef.current.y;
+        const mActive = isMouseOverRef.current;
+
+        const primary = activePalette.primary;
+        const secondary = activePalette.secondary;
+        const accent = activePalette.accent;
+
+        // Trail background clearing
+        if (selectedAlgoId === 'vector_field' || selectedAlgoId === 'cyber_matrix') {
+          ctx.fillStyle = activePalette.background + '2A';
         } else {
-          // Biological / Swarm / CA dynamics
-          p.x += p.vx * spd;
-          p.y += p.vy * spd;
-          p.vx += (pseudoRandom() - 0.5) * 0.3;
-          p.vy += (pseudoRandom() - 0.5) * 0.3;
+          ctx.fillStyle = activePalette.background;
+        }
+        ctx.fillRect(0, 0, width, height);
+
+        // ================= ALGORITHM 01: VECTOR FIELD =================
+        if (selectedAlgoId === 'vector_field') {
+          ctx.lineWidth = 1.2;
+          for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+            const n = noise2D(p.x * 0.005, p.y * 0.005 + globalTime * 0.2);
+            p.angle = n * Math.PI * 4;
+
+            p.vx = Math.cos(p.angle) * speed * 2;
+            p.vy = Math.sin(p.angle) * speed * 2;
+
+            // Mouse force field repulsion / attraction
+            if (mActive) {
+              const dx = mx - p.x;
+              const dy = my - p.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 150) {
+                const force = (1 - dist / 150) * 4 * speed;
+                p.vx -= (dx / dist) * force;
+                p.vy -= (dy / dist) * force;
+              }
+            }
+
+            p.x += p.vx;
+            p.y += p.vy;
+
+            if (p.x < 0) p.x = width;
+            if (p.x > width) p.x = 0;
+            if (p.y < 0) p.y = height;
+            if (p.y > height) p.y = 0;
+
+            ctx.fillStyle = i % 2 === 0 ? primary : secondary;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+          }
         }
 
-        // Screen wrap
-        if (p.x < 0) p.x = width;
-        if (p.x > width) p.x = 0;
-        if (p.y < 0) p.y = height;
-        if (p.y > height) p.y = 0;
+        // ================= ALGORITHM 02: FIBONACCI SPIRAL =================
+        else if (selectedAlgoId === 'fibonacci_spiral') {
+          const centerX = width / 2;
+          const centerY = height / 2;
+          const goldenAngle = 2.39996; // ~137.5 degrees in radians
+          const count = effectiveDensity;
+          const scale = 8 + Math.sin(globalTime) * 2;
 
-        // Draw particle
-        ctx.fillStyle = i % 3 === 0 ? primaryHex : i % 3 === 1 ? secondaryHex : accentHex;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fill();
+          for (let i = 0; i < count; i++) {
+            const r = Math.sqrt(i) * scale;
+            const theta = i * goldenAngle + globalTime * 0.5;
 
-        // Connect nearby particles for structural / organic look
-        if (density < 350) {
-          for (let j = i + 1; j < Math.min(i + 8, particles.length); j++) {
-            const p2 = particles[j];
-            const dx = p.x - p2.x;
-            const dy = p.y - p2.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 60) {
-              ctx.strokeStyle = primaryHex + Math.floor((1 - dist / 60) * 128).toString(16).padStart(2, '0');
+            let px = centerX + r * Math.cos(theta);
+            let py = centerY + r * Math.sin(theta);
+
+            // Mouse proximity repulsion
+            if (mActive) {
+              const dx = px - mx;
+              const dy = py - my;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 120) {
+                const push = (1 - dist / 120) * 50;
+                px += (dx / (dist || 1)) * push;
+                py += (dy / (dist || 1)) * push;
+              }
+            }
+
+            ctx.fillStyle = i % 3 === 0 ? primary : i % 3 === 1 ? secondary : accent;
+            ctx.beginPath();
+            ctx.arc(px, py, 2 + (i % 3), 0, Math.PI * 2);
+            ctx.fill();
+
+            if (i > 0 && i % 5 === 0) {
+              ctx.strokeStyle = secondary + '33';
               ctx.beginPath();
-              ctx.moveTo(p.x, p.y);
-              ctx.lineTo(p2.x, p2.y);
+              ctx.moveTo(centerX, centerY);
+              ctx.lineTo(px, py);
               ctx.stroke();
+            }
+          }
+        }
+
+        // ================= ALGORITHM 03: REACTION-DIFFUSION =================
+        else if (selectedAlgoId === 'reaction_diffusion') {
+          const cellW = width / rdGridSize;
+          const cellH = height / rdGridSize;
+          const F = 0.0545;
+          const k = 0.062;
+
+          // Mouse spot injection
+          if (mActive) {
+            const gx = Math.floor((mx / width) * rdGridSize);
+            const gy = Math.floor((my / height) * rdGridSize);
+            if (gx > 1 && gx < rdGridSize - 2 && gy > 1 && gy < rdGridSize - 2) {
+              gridV[gx * rdGridSize + gy] = 0.9;
+            }
+          }
+
+          // Reaction-diffusion step
+          const nextU = new Float32Array(gridU);
+          const nextV = new Float32Array(gridV);
+
+          for (let x = 1; x < rdGridSize - 1; x++) {
+            for (let y = 1; y < rdGridSize - 1; y++) {
+              const idx = x * rdGridSize + y;
+              const u = gridU[idx];
+              const v = gridV[idx];
+
+              const lapU =
+                gridU[(x - 1) * rdGridSize + y] +
+                gridU[(x + 1) * rdGridSize + y] +
+                gridU[x * rdGridSize + (y - 1)] +
+                gridU[x * rdGridSize + (y + 1)] -
+                4 * u;
+
+              const lapV =
+                gridV[(x - 1) * rdGridSize + y] +
+                gridV[(x + 1) * rdGridSize + y] +
+                gridV[x * rdGridSize + (y - 1)] +
+                gridV[x * rdGridSize + (y + 1)] -
+                4 * v;
+
+              const uvv = u * v * v;
+              nextU[idx] = Math.max(0, Math.min(1, u + (1.0 * lapU - uvv + F * (1 - u)) * 0.8 * speed));
+              nextV[idx] = Math.max(0, Math.min(1, v + (0.5 * lapV + uvv - (F + k) * v) * 0.8 * speed));
+            }
+          }
+          gridU = nextU;
+          gridV = nextV;
+
+          // Render reaction diffusion grid
+          for (let x = 0; x < rdGridSize; x++) {
+            for (let y = 0; y < rdGridSize; y++) {
+              const val = gridV[x * rdGridSize + y];
+              if (val > 0.1) {
+                ctx.fillStyle = val > 0.4 ? primary : secondary;
+                ctx.fillRect(x * cellW, y * cellH, cellW - 0.5, cellH - 0.5);
+              }
+            }
+          }
+        }
+
+        // ================= ALGORITHM 04: BRUTALIST VORONOI DIAGRAM =================
+        else if (selectedAlgoId === 'voronoi') {
+          // Dynamic Voronoi centers = initial seed particles + user click points
+          const seedPoints = particles.slice(0, 12).map((p) => ({
+            x: p.x + Math.sin(globalTime + p.angle) * 20,
+            y: p.y + Math.cos(globalTime + p.angle) * 20,
+          }));
+          const allCenters = [...seedPoints, ...voronoiClickPointsRef.current];
+
+          // Coarse grid sampling for Voronoi rendering
+          const step = 16;
+          for (let x = 0; x < width; x += step) {
+            for (let y = 0; y < height; y += step) {
+              let minDist = Infinity;
+              let nearestIdx = 0;
+
+              for (let i = 0; i < allCenters.length; i++) {
+                const dx = x - allCenters[i].x;
+                const dy = y - allCenters[i].y;
+                const dist = dx * dx + dy * dy;
+                if (dist < minDist) {
+                  minDist = dist;
+                  nearestIdx = i;
+                }
+              }
+
+              ctx.fillStyle = nearestIdx % 3 === 0 ? primary + '20' : nearestIdx % 3 === 1 ? secondary + '20' : accent + '20';
+              ctx.fillRect(x, y, step, step);
+            }
+          }
+
+          // Draw Voronoi seed points
+          allCenters.forEach((pt, i) => {
+            ctx.fillStyle = i >= seedPoints.length ? '#00E5FF' : primary;
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, 6, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+          });
+        }
+
+        // ================= ALGORITHM 05: DELAUNAY TRIANGULATION =================
+        else if (selectedAlgoId === 'delaunay') {
+          // Move particles
+          for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+            p.x += p.vx * speed;
+            p.y += p.vy * speed;
+
+            if (p.x < 0 || p.x > width) p.vx *= -1;
+            if (p.y < 0 || p.y > height) p.vy *= -1;
+
+            if (mActive) {
+              const dx = mx - p.x;
+              const dy = my - p.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 100) {
+                p.x -= (dx / dist) * 2 * speed;
+                p.y -= (dy / dist) * 2 * speed;
+              }
+            }
+          }
+
+          // Connect nearby particles to form triangulation mesh
+          ctx.lineWidth = 1;
+          const connectDist = 80;
+          for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+              const p1 = particles[i];
+              const p2 = particles[j];
+              const dx = p1.x - p2.x;
+              const dy = p1.y - p2.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+
+              if (dist < connectDist) {
+                const alpha = Math.floor((1 - dist / connectDist) * 255).toString(16).padStart(2, '0');
+                ctx.strokeStyle = primary + alpha;
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.stroke();
+
+                // Fill dynamic triangles
+                for (let k = j + 1; k < Math.min(j + 5, particles.length); k++) {
+                  const p3 = particles[k];
+                  const d3 = Math.sqrt((p2.x - p3.x) ** 2 + (p2.y - p3.y) ** 2);
+                  if (d3 < connectDist) {
+                    ctx.fillStyle = secondary + '15';
+                    ctx.beginPath();
+                    ctx.moveTo(p1.x, p1.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.lineTo(p3.x, p3.y);
+                    ctx.closePath();
+                    ctx.fill();
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        // ================= ALGORITHM 06: ISOMETRIC GRID ARCHITECTURE =================
+        else if (selectedAlgoId === 'isometric_grid') {
+          const gridCols = 8;
+          const gridRows = 6;
+          const tileW = width / 10;
+          const tileH = tileW * 0.5;
+          const originX = width / 2;
+          const originY = height / 4;
+
+          for (let r = 0; r < gridRows; r++) {
+            for (let c = 0; c < gridCols; c++) {
+              const isoX = originX + (c - r) * (tileW / 2);
+              const isoY = originY + (c + r) * (tileH / 2);
+
+              // Dynamic block height
+              const distToMouse = mActive ? Math.sqrt((isoX - mx) ** 2 + (isoY - my) ** 2) : 200;
+              const baseH = 20 + Math.sin(c * 0.8 + r * 0.8 + globalTime * 2) * 15;
+              const blockH = Math.max(10, baseH + (distToMouse < 150 ? (1 - distToMouse / 150) * 40 : 0));
+
+              // Draw Top Face
+              ctx.fillStyle = primary;
+              ctx.beginPath();
+              ctx.moveTo(isoX, isoY - blockH);
+              ctx.lineTo(isoX + tileW / 2, isoY + tileH / 2 - blockH);
+              ctx.lineTo(isoX, isoY + tileH - blockH);
+              ctx.lineTo(isoX - tileW / 2, isoY + tileH / 2 - blockH);
+              ctx.closePath();
+              ctx.fill();
+
+              // Draw Left Face
+              ctx.fillStyle = secondary;
+              ctx.beginPath();
+              ctx.moveTo(isoX - tileW / 2, isoY + tileH / 2 - blockH);
+              ctx.lineTo(isoX, isoY + tileH - blockH);
+              ctx.lineTo(isoX, isoY + tileH);
+              ctx.lineTo(isoX - tileW / 2, isoY + tileH / 2);
+              ctx.closePath();
+              ctx.fill();
+
+              // Draw Right Face
+              ctx.fillStyle = accent;
+              ctx.beginPath();
+              ctx.moveTo(isoX, isoY + tileH - blockH);
+              ctx.lineTo(isoX + tileW / 2, isoY + tileH / 2 - blockH);
+              ctx.lineTo(isoX + tileW / 2, isoY + tileH / 2);
+              ctx.lineTo(isoX, isoY + tileH);
+              ctx.closePath();
+              ctx.fill();
+
+              // Swiss precision stroke outline
+              ctx.strokeStyle = '#00000066';
+              ctx.lineWidth = 1;
+              ctx.stroke();
+            }
+          }
+        }
+
+        // ================= ALGORITHM 07: GEOMETRIC LINE ART =================
+        else if (selectedAlgoId === 'geometric_lines') {
+          const cx = width / 2;
+          const cy = height / 2;
+          const linesCount = 24;
+
+          ctx.lineWidth = 1.5;
+          for (let i = 0; i < linesCount; i++) {
+            const angle = (i / linesCount) * Math.PI * 2 + globalTime * 0.2;
+            const r1 = 40 + Math.sin(globalTime + i) * 20;
+            const r2 = 180 + Math.cos(globalTime * 0.5 + i) * 40;
+
+            const x1 = cx + Math.cos(angle) * r1;
+            const y1 = cy + Math.sin(angle) * r1;
+            let x2 = cx + Math.cos(angle) * r2;
+            let y2 = cy + Math.sin(angle) * r2;
+
+            if (mActive) {
+              const dx = mx - x2;
+              const dy = my - y2;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 120) {
+                x2 += (dx / dist) * 30;
+                y2 += (dy / dist) * 30;
+              }
+            }
+
+            ctx.strokeStyle = i % 2 === 0 ? primary : secondary;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+
+            // Tangent circles
+            ctx.strokeStyle = accent + '66';
+            ctx.beginPath();
+            ctx.arc(x2, y2, 12, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+        }
+
+        // ================= ALGORITHM 08: CYBER MATRIX RAIN =================
+        else if (selectedAlgoId === 'cyber_matrix') {
+          ctx.font = '12px JetBrains Mono, monospace';
+
+          matrixCols.forEach((col) => {
+            col.y += col.speed * speed;
+            if (col.y > height + 200) {
+              col.y = -100;
+            }
+
+            col.chars.forEach((char, i) => {
+              const charY = col.y - i * 14;
+              if (charY > 0 && charY < height) {
+                ctx.fillStyle = i === 0 ? '#FFFFFF' : i < 3 ? secondary : primary;
+                ctx.fillText(char, col.x, charY);
+              }
+            });
+          });
+        }
+
+        // ================= ALGORITHM 09: BAUHAUS COMPOSITION =================
+        else if (selectedAlgoId === 'bauhaus_composition') {
+          const tRot = globalTime * 0.3;
+
+          // Main Bauhaus Circle
+          ctx.fillStyle = primary;
+          ctx.beginPath();
+          ctx.arc(width * 0.35 + Math.sin(tRot) * 20, height * 0.4, 90, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Slicing Semi-circle
+          ctx.fillStyle = secondary;
+          ctx.beginPath();
+          ctx.arc(width * 0.6, height * 0.5, 110, tRot, tRot + Math.PI);
+          ctx.fill();
+
+          // Heavy Rectangles
+          ctx.fillStyle = accent;
+          ctx.fillRect(width * 0.2, height * 0.65, 180, 40);
+
+          // Diagonal accent lines
+          ctx.strokeStyle = primary;
+          ctx.lineWidth = 6;
+          ctx.beginPath();
+          ctx.moveTo(width * 0.1, height * 0.2);
+          ctx.lineTo(width * 0.8, height * 0.8);
+          ctx.stroke();
+
+          // Interactive cursor line
+          if (mActive) {
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(mx, 0);
+            ctx.lineTo(mx, height);
+            ctx.moveTo(0, my);
+            ctx.lineTo(width, my);
+            ctx.stroke();
+          }
+        }
+
+        // ================= ALGORITHM 10: CELLULAR AUTOMATA =================
+        else if (selectedAlgoId === 'cellular_automata' && caGridRef.current) {
+          const grid = caGridRef.current;
+          const cols = grid.length;
+          const rows = grid[0].length;
+          const cellW = width / cols;
+          const cellH = height / rows;
+
+          // Compute Conway Game of Life evolution
+          const nextGrid: number[][] = [];
+          for (let c = 0; c < cols; c++) {
+            nextGrid[c] = [];
+            for (let r = 0; r < rows; r++) {
+              let neighbors = 0;
+              for (let dc = -1; dc <= 1; dc++) {
+                for (let dr = -1; dr <= 1; dr++) {
+                  if (dc === 0 && dr === 0) continue;
+                  const nc = (c + dc + cols) % cols;
+                  const nr = (r + dr + rows) % rows;
+                  neighbors += grid[nc][nr] ? 1 : 0;
+                }
+              }
+
+              const state = grid[c][r];
+              if (state === 1 && (neighbors === 2 || neighbors === 3)) {
+                nextGrid[c][r] = 1;
+              } else if (state === 0 && neighbors === 3) {
+                nextGrid[c][r] = 1;
+              } else {
+                nextGrid[c][r] = 0;
+              }
+            }
+          }
+          caGridRef.current = nextGrid;
+
+          // Draw CA grid
+          for (let c = 0; c < cols; c++) {
+            for (let r = 0; r < rows; r++) {
+              if (nextGrid[c][r] === 1) {
+                ctx.fillStyle = (c + r) % 2 === 0 ? primary : secondary;
+                ctx.fillRect(c * cellW, r * cellH, cellW - 1, cellH - 1);
+              }
             }
           }
         }
@@ -328,20 +877,27 @@ export default function PlugAndPlaySandbox() {
       window.removeEventListener('resize', updateCanvasSize);
       cancelAnimationFrame(animFrameId);
     };
-  }, [density, speed, seedHash, selectedCategory, selectedAlgoId, activePalette, canvasRes.width, canvasRes.height]);
+  }, [
+    density,
+    speed,
+    seedHash,
+    selectedCategory,
+    selectedAlgoId,
+    activePalette,
+  ]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
-      setMousePos({
-        x: Math.round(e.clientX - rect.left),
-        y: Math.round(e.clientY - rect.top),
-      });
+      const x = Math.round(e.clientX - rect.left);
+      const y = Math.round(e.clientY - rect.top);
+      mousePosRef.current = { x, y };
+      setMousePos({ x, y });
     }
   };
 
   return (
-    <section id="playground" className="relative bg-[#0B0B0F] border-t border-b border-zinc-800 py-16 lg:py-24 font-mono">
+    <section id="playground" className="relative bg-[#0B0B0F] border-t border-b border-zinc-800 pt-28 pb-16 lg:pt-36 lg:pb-24 scroll-mt-20 font-mono">
       {/* Background Grid Pattern */}
       <div
         className="absolute inset-0 opacity-10 pointer-events-none"
@@ -379,7 +935,7 @@ export default function PlugAndPlaySandbox() {
           </div>
         </div>
 
-        {/* Dual-Panel / 3-Column Viewport Architecture (100vh style container) */}
+        {/* Dual-Panel / 3-Column Viewport Architecture */}
         <div className="grid lg:grid-cols-[300px_1fr_280px] border border-zinc-800 bg-[#09090c] min-h-[640px] shadow-2xl">
           {/* ================= LEFT PANEL: CONTROL PANEL (300px) ================= */}
           <div className="p-5 border-b lg:border-b-0 lg:border-r border-zinc-800 bg-[#0B0B0F] flex flex-col justify-between font-mono gap-6">
@@ -390,7 +946,7 @@ export default function PlugAndPlaySandbox() {
                   <Sliders className="h-4 w-4 text-cyan-glow" />
                   <span>{t('sandbox_control_panel')}</span>
                 </div>
-                <span className="text-[10px] text-zinc-600">v1.0.4</span>
+                <span className="text-[10px] text-zinc-600">v2.1.0</span>
               </div>
 
               {/* Category Selector Tabs */}
@@ -403,7 +959,7 @@ export default function PlugAndPlaySandbox() {
                     <button
                       key={cat}
                       onClick={() => handleCategoryChange(cat)}
-                      className={`py-1.5 text-[10px] font-bold uppercase transition-all ${
+                      className={`py-1.5 px-1 text-[9px] font-bold uppercase transition-all truncate ${
                         selectedCategory === cat
                           ? 'bg-[#5322ff] text-white'
                           : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900'
@@ -527,7 +1083,7 @@ export default function PlugAndPlaySandbox() {
                           />
                         </div>
                         <div className="text-[10px] font-bold text-zinc-300 truncate">
-                          {t(pal.nameKey as any)}
+                          {t(pal.nameKey as keyof Translations)}
                         </div>
                       </button>
                     );
@@ -552,6 +1108,12 @@ export default function PlugAndPlaySandbox() {
           <div
             ref={containerRef}
             onMouseMove={handleMouseMove}
+            onMouseEnter={() => {
+              isMouseOverRef.current = true;
+            }}
+            onMouseLeave={() => {
+              isMouseOverRef.current = false;
+            }}
             className="relative bg-[#07070A] border-b lg:border-b-0 lg:border-r border-zinc-800 min-h-[400px] flex items-center justify-center overflow-hidden group select-none"
           >
             {/* Top Overlay Badge */}
@@ -560,8 +1122,11 @@ export default function PlugAndPlaySandbox() {
               <span>{t('sandbox_canvas_interactive')}</span>
             </div>
 
-            <div className="absolute top-3 right-3 z-10 font-mono text-[10px] text-zinc-500 bg-zinc-950/80 border border-zinc-800 px-2 py-0.5">
-              POS [X: {mousePos.x}, Y: {mousePos.y}]
+            <div className="absolute top-3 right-3 z-10 flex items-center gap-2 font-mono text-[10px] text-zinc-500 bg-zinc-950/80 border border-zinc-800 px-2 py-0.5">
+              <MousePointer className="h-3 w-3 text-[#5322ff]" />
+              <span>
+                POS [X: {mousePos.x}, Y: {mousePos.y}]
+              </span>
             </div>
 
             {/* Crosshair Corner Accents */}
@@ -570,8 +1135,12 @@ export default function PlugAndPlaySandbox() {
             <div className="absolute bottom-2 left-2 pointer-events-none text-zinc-700 text-xs">+</div>
             <div className="absolute bottom-2 right-2 pointer-events-none text-zinc-700 text-xs">+</div>
 
-            {/* The Live HTML5 2D Interactive Canvas */}
-            <canvas ref={canvasRef} className="block w-full h-full cursor-crosshair" />
+            {/* Interactive HTML5 2D Canvas */}
+            <canvas
+              ref={canvasRef}
+              onClick={handleCanvasClick}
+              className="block w-full h-full cursor-crosshair"
+            />
 
             {/* Bottom Overlay Info Strip */}
             <div className="absolute bottom-3 left-3 right-3 z-10 flex items-center justify-between font-mono text-[10px] text-zinc-500 bg-zinc-950/90 border border-zinc-800 px-3 py-1.5 backdrop-blur-sm">
@@ -665,9 +1234,9 @@ export default function PlugAndPlaySandbox() {
             {/* Bottom System Log */}
             <div className="border border-zinc-800 bg-zinc-950 p-2.5 text-[9px] text-zinc-500 space-y-1">
               <div className="text-emerald-400 font-bold">[SYS//LOG]</div>
-              <div>&gt; ALGO_EXEC_OK</div>
+              <div>&gt; ALGO_SUITE_ACTIVE</div>
+              <div>&gt; FORCE_FIELD_MOUSE_ON</div>
               <div>&gt; SEED_MUTATED ({seedHash})</div>
-              <div>&gt; BUFFER_RENDER_60FPS</div>
             </div>
           </div>
         </div>
