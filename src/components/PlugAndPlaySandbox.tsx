@@ -117,7 +117,7 @@ const PALETTES: PaletteDef[] = [
     label: '01: Cyberpunk Neon',
     primary: '#5322ff',
     secondary: '#00E5FF',
-    accent: '#FF007A',
+    accent: '#D400FF',
     background: '#0B0B0F',
   },
   {
@@ -971,7 +971,124 @@ ${svgPaths}
           }
         }
 
-        // ================= ALGORITHM 03: REACTION-DIFFUSION =================
+        // ================= ALGORITHM 03: DELAUNAY TRIANGULATION =================
+        else if (selectedAlgoId === 'delaunay') {
+          // Move particles
+          for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+            p.x += p.vx * speed;
+            p.y += p.vy * speed;
+
+            if (p.x < 0 || p.x > width) p.vx *= -1;
+            if (p.y < 0 || p.y > height) p.vy *= -1;
+
+            if (mActive) {
+              const dx = mx - p.x;
+              const dy = my - p.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 100) {
+                p.x -= (dx / dist) * 2 * speed;
+                p.y -= (dy / dist) * 2 * speed;
+              }
+            }
+          }
+
+          // Connect nearby particles to form triangulation mesh
+          ctx.lineWidth = 1;
+          const connectDist = 80;
+          for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+              const p1 = particles[i];
+              const p2 = particles[j];
+              const dx = p1.x - p2.x;
+              const dy = p1.y - p2.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+
+              if (dist < connectDist) {
+                const alpha = Math.floor((1 - dist / connectDist) * 255).toString(16).padStart(2, '0');
+                ctx.strokeStyle = primary + alpha;
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.stroke();
+
+                // Fill dynamic triangles
+                for (let k = j + 1; k < Math.min(j + 5, particles.length); k++) {
+                  const p3 = particles[k];
+                  const d3 = Math.sqrt((p2.x - p3.x) ** 2 + (p2.y - p3.y) ** 2);
+                  if (d3 < connectDist) {
+                    ctx.fillStyle = secondary + '15';
+                    ctx.beginPath();
+                    ctx.moveTo(p1.x, p1.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.lineTo(p3.x, p3.y);
+                    ctx.closePath();
+                    ctx.fill();
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        // ================= ALGORITHM 04: ISOMETRIC GRID ARCHITECTURE =================
+        else if (selectedAlgoId === 'isometric_grid') {
+          const gridCols = 8;
+          const gridRows = 6;
+          const tileW = width / 10;
+          const tileH = tileW * 0.5;
+          const originX = width / 2;
+          const originY = height / 4;
+
+          for (let r = 0; r < gridRows; r++) {
+            for (let c = 0; c < gridCols; c++) {
+              const isoX = originX + (c - r) * (tileW / 2);
+              const isoY = originY + (c + r) * (tileH / 2);
+
+              // Dynamic block height
+              const distToMouse = mActive ? Math.sqrt((isoX - mx) ** 2 + (isoY - my) ** 2) : 200;
+              const baseH = 20 + Math.sin(c * 0.8 + r * 0.8 + globalTime * 2) * 15;
+              const blockH = Math.max(10, baseH + (distToMouse < 150 ? (1 - distToMouse / 150) * 40 : 0));
+
+              // Draw Top Face
+              ctx.fillStyle = primary;
+              ctx.beginPath();
+              ctx.moveTo(isoX, isoY - blockH);
+              ctx.lineTo(isoX + tileW / 2, isoY + tileH / 2 - blockH);
+              ctx.lineTo(isoX, isoY + tileH - blockH);
+              ctx.lineTo(isoX - tileW / 2, isoY + tileH / 2 - blockH);
+              ctx.closePath();
+              ctx.fill();
+
+              // Draw Left Face
+              ctx.fillStyle = secondary;
+              ctx.beginPath();
+              ctx.moveTo(isoX - tileW / 2, isoY + tileH / 2 - blockH);
+              ctx.lineTo(isoX, isoY + tileH - blockH);
+              ctx.lineTo(isoX, isoY + tileH);
+              ctx.lineTo(isoX - tileW / 2, isoY + tileH / 2);
+              ctx.closePath();
+              ctx.fill();
+
+              // Draw Right Face
+              ctx.fillStyle = accent;
+              ctx.beginPath();
+              ctx.moveTo(isoX, isoY + tileH - blockH);
+              ctx.lineTo(isoX + tileW / 2, isoY + tileH / 2 - blockH);
+              ctx.lineTo(isoX + tileW / 2, isoY + tileH / 2);
+              ctx.lineTo(isoX, isoY + tileH);
+              ctx.closePath();
+              ctx.fill();
+
+              // Swiss precision stroke outline
+              ctx.strokeStyle = '#00000066';
+              ctx.lineWidth = 1;
+              ctx.stroke();
+            }
+          }
+        }
+          
+        // ================= ALGORITHM 05: REACTION-DIFFUSION =================
         else if (selectedAlgoId === 'reaction_diffusion') {
           const cellW = width / rdGridSize;
           const cellH = height / rdGridSize;
@@ -1031,7 +1148,7 @@ ${svgPaths}
           }
         }
 
-        // ================= ALGORITHM 04: ORGANIC FLUID VORONOI MESH =================
+        // ================= ALGORITHM 06: ORGANIC FLUID VORONOI MESH =================
         else if (selectedAlgoId === 'voronoi') {
           // Animate base Voronoi seed points with subtle sinusoidal swaying
           const baseSeeds = particles.slice(0, 12).map((p, idx) => {
@@ -1191,128 +1308,11 @@ ${svgPaths}
           });
         }
 
-        // ================= ALGORITHM 05: DELAUNAY TRIANGULATION =================
-        else if (selectedAlgoId === 'delaunay') {
-          // Move particles
-          for (let i = 0; i < particles.length; i++) {
-            const p = particles[i];
-            p.x += p.vx * speed;
-            p.y += p.vy * speed;
-
-            if (p.x < 0 || p.x > width) p.vx *= -1;
-            if (p.y < 0 || p.y > height) p.vy *= -1;
-
-            if (mActive) {
-              const dx = mx - p.x;
-              const dy = my - p.y;
-              const dist = Math.sqrt(dx * dx + dy * dy);
-              if (dist < 100) {
-                p.x -= (dx / dist) * 2 * speed;
-                p.y -= (dy / dist) * 2 * speed;
-              }
-            }
-          }
-
-          // Connect nearby particles to form triangulation mesh
-          ctx.lineWidth = 1;
-          const connectDist = 80;
-          for (let i = 0; i < particles.length; i++) {
-            for (let j = i + 1; j < particles.length; j++) {
-              const p1 = particles[i];
-              const p2 = particles[j];
-              const dx = p1.x - p2.x;
-              const dy = p1.y - p2.y;
-              const dist = Math.sqrt(dx * dx + dy * dy);
-
-              if (dist < connectDist) {
-                const alpha = Math.floor((1 - dist / connectDist) * 255).toString(16).padStart(2, '0');
-                ctx.strokeStyle = primary + alpha;
-                ctx.beginPath();
-                ctx.moveTo(p1.x, p1.y);
-                ctx.lineTo(p2.x, p2.y);
-                ctx.stroke();
-
-                // Fill dynamic triangles
-                for (let k = j + 1; k < Math.min(j + 5, particles.length); k++) {
-                  const p3 = particles[k];
-                  const d3 = Math.sqrt((p2.x - p3.x) ** 2 + (p2.y - p3.y) ** 2);
-                  if (d3 < connectDist) {
-                    ctx.fillStyle = secondary + '15';
-                    ctx.beginPath();
-                    ctx.moveTo(p1.x, p1.y);
-                    ctx.lineTo(p2.x, p2.y);
-                    ctx.lineTo(p3.x, p3.y);
-                    ctx.closePath();
-                    ctx.fill();
-                  }
-                }
-              }
-            }
-          }
-        }
-
-        // ================= ALGORITHM 06: ISOMETRIC GRID ARCHITECTURE =================
-        else if (selectedAlgoId === 'isometric_grid') {
-          const gridCols = 8;
-          const gridRows = 6;
-          const tileW = width / 10;
-          const tileH = tileW * 0.5;
-          const originX = width / 2;
-          const originY = height / 4;
-
-          for (let r = 0; r < gridRows; r++) {
-            for (let c = 0; c < gridCols; c++) {
-              const isoX = originX + (c - r) * (tileW / 2);
-              const isoY = originY + (c + r) * (tileH / 2);
-
-              // Dynamic block height
-              const distToMouse = mActive ? Math.sqrt((isoX - mx) ** 2 + (isoY - my) ** 2) : 200;
-              const baseH = 20 + Math.sin(c * 0.8 + r * 0.8 + globalTime * 2) * 15;
-              const blockH = Math.max(10, baseH + (distToMouse < 150 ? (1 - distToMouse / 150) * 40 : 0));
-
-              // Draw Top Face
-              ctx.fillStyle = primary;
-              ctx.beginPath();
-              ctx.moveTo(isoX, isoY - blockH);
-              ctx.lineTo(isoX + tileW / 2, isoY + tileH / 2 - blockH);
-              ctx.lineTo(isoX, isoY + tileH - blockH);
-              ctx.lineTo(isoX - tileW / 2, isoY + tileH / 2 - blockH);
-              ctx.closePath();
-              ctx.fill();
-
-              // Draw Left Face
-              ctx.fillStyle = secondary;
-              ctx.beginPath();
-              ctx.moveTo(isoX - tileW / 2, isoY + tileH / 2 - blockH);
-              ctx.lineTo(isoX, isoY + tileH - blockH);
-              ctx.lineTo(isoX, isoY + tileH);
-              ctx.lineTo(isoX - tileW / 2, isoY + tileH / 2);
-              ctx.closePath();
-              ctx.fill();
-
-              // Draw Right Face
-              ctx.fillStyle = accent;
-              ctx.beginPath();
-              ctx.moveTo(isoX, isoY + tileH - blockH);
-              ctx.lineTo(isoX + tileW / 2, isoY + tileH / 2 - blockH);
-              ctx.lineTo(isoX + tileW / 2, isoY + tileH / 2);
-              ctx.lineTo(isoX, isoY + tileH);
-              ctx.closePath();
-              ctx.fill();
-
-              // Swiss precision stroke outline
-              ctx.strokeStyle = '#00000066';
-              ctx.lineWidth = 1;
-              ctx.stroke();
-            }
-          }
-        }
-
         // ================= ALGORITHM 07: GEOMETRIC LINE ART =================
         else if (selectedAlgoId === 'geometric_lines') {
           const cx = width / 2;
           const cy = height / 2;
-          const linesCount = 24;
+          const linesCount = 60;
 
           ctx.lineWidth = 1.5;
           for (let i = 0; i < linesCount; i++) {
