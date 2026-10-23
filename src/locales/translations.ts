@@ -181,6 +181,8 @@ export interface Translations {
   sandbox_palette_bauhaus: string;
   sandbox_palette_amber: string;
   sandbox_randomize_seed: string;
+  sandbox_export_png: string;
+  sandbox_export_svg: string;
   sandbox_telemetry_title: string;
   sandbox_telemetry_status: string;
   sandbox_telemetry_algo: string;
@@ -417,6 +419,8 @@ export const translations: Record<Language, Translations> = {
     sandbox_palette_bauhaus: '03: Bauhaus Primary',
     sandbox_palette_amber: '04: Gold Amber',
     sandbox_randomize_seed: 'Randomize Seed',
+    sandbox_export_png: 'EXPORT 2048px PNG',
+    sandbox_export_svg: 'EXPORT VECTOR SVG',
     sandbox_telemetry_title: 'TELEMETRY CONSOLE',
     sandbox_telemetry_status: 'SYS//STATUS: ACTIVE',
     sandbox_telemetry_algo: 'ALGORITHM',
@@ -651,6 +655,8 @@ export const translations: Record<Language, Translations> = {
     sandbox_palette_bauhaus: '03: Bauhaus Nguyên Bản',
     sandbox_palette_amber: '04: Hổ Phách Vàng',
     sandbox_randomize_seed: 'Tạo Hạt Giống Ngẫu Nhiên',
+    sandbox_export_png: 'XUẤT PNG 2048px',
+    sandbox_export_svg: 'XUẤT VECTOR SVG',
     sandbox_telemetry_title: 'BẢNG ĐO VIỄN THÔNG',
     sandbox_telemetry_status: 'SYS//HỆ THỐNG: HOẠT ĐỘNG',
     sandbox_telemetry_algo: 'THUẬT TOÁN',
