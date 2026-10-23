@@ -6,6 +6,8 @@ import {
   Terminal,
   Box,
   MousePointer,
+  Download,
+  FileCode,
 } from 'lucide-react';
 import { useTranslation } from '@/context/useLanguage';
 import { Translations } from '@/locales/translations';
@@ -248,6 +250,384 @@ export default function PlugAndPlaySandbox() {
     voronoiClickPointsRef.current = [];
     shockwavesRef.current = [];
     caGridRef.current = null;
+  };
+
+  // Helper to render watermark on 2D context scaled appropriately
+  const drawWatermark = (ctx: CanvasRenderingContext2D, width: number, height: number, seed: string) => {
+    const watermarkText = `ARTIFICIAL CRAFT // ARTIFACT_ID: 0x${seed.replace('0x', '')} // DETERMINISTIC GENERATIVE ENGINE`;
+    const fontSize = Math.max(12, Math.round(width * 0.015));
+    ctx.save();
+    ctx.font = `600 ${fontSize}px "JetBrains Mono", monospace`;
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'bottom';
+    const paddingX = Math.round(width * 0.03);
+    const paddingY = Math.round(height * 0.03);
+
+    // Subtle dark background backing for crisp readability
+    const textMetrics = ctx.measureText(watermarkText);
+    const bgWidth = textMetrics.width + 16;
+    const bgHeight = fontSize + 8;
+    ctx.fillStyle = 'rgba(11, 11, 15, 0.85)';
+    ctx.fillRect(width - paddingX - bgWidth, height - paddingY - bgHeight, bgWidth, bgHeight);
+    ctx.strokeStyle = 'rgba(83, 34, 255, 0.4)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(width - paddingX - bgWidth, height - paddingY - bgHeight, bgWidth, bgHeight);
+
+    // Watermark text
+    ctx.fillStyle = 'rgba(0, 229, 255, 0.9)';
+    ctx.fillText(watermarkText, width - paddingX - 8, height - paddingY - 4);
+    ctx.restore();
+  };
+
+  // 2048x2048 High-Res PNG Export Engine
+  const handleExportPNG = () => {
+    const exportCanvas = document.createElement('canvas');
+    exportCanvas.width = 2048;
+    exportCanvas.height = 2048;
+    const ctx = exportCanvas.getContext('2d');
+    if (!ctx) return;
+
+    const size = 2048;
+
+    // Seed state initialization
+    const seedNum = parseInt(seedHash.replace('0x', ''), 16) || 1234567;
+    let rngState = seedNum;
+    const pseudoRandom = () => {
+      rngState = (rngState * 16807) % 2147483647;
+      return (rngState - 1) / 2147483646;
+    };
+
+    // Draw background
+    ctx.fillStyle = activePalette.background;
+    ctx.fillRect(0, 0, size, size);
+
+    const primary = activePalette.primary;
+    const secondary = activePalette.secondary;
+    const accent = activePalette.accent;
+    const pRgb = hexToRgb(primary);
+    const sRgb = hexToRgb(secondary);
+
+    // Render high-res algorithm paths
+    if (selectedAlgoId === 'vector_field') {
+      const cx = size / 2;
+      const cy = size / 2;
+      const fiberCount = Math.min(45, Math.max(15, Math.floor(15 + (density / 500) * 30)));
+      const maxRadius = size * 0.42;
+      const numSteps = 30;
+
+      for (let i = 0; i < fiberCount; i++) {
+        const baseAngle = (i / fiberCount) * Math.PI * 2;
+        let tipX = cx;
+        let tipY = cy;
+        const points: { x: number; y: number }[] = [{ x: cx, y: cy }];
+
+        for (let step = 15; step <= numSteps; step++) {
+          const ratio = step / numSteps;
+          const r = ratio * maxRadius;
+          const wave =
+            Math.sin(1.08 + i * 0.25 + ratio * 6) * 0.54 +
+            noise2D(i * 0.15 + ratio * 1.5, 0.15) * 0.15;
+          const currentAngle = baseAngle + wave;
+          const px = cx + Math.cos(currentAngle) * r;
+          const py = cy + Math.sin(currentAngle) * r;
+          points.push({ x: px, y: py });
+          if (step === numSteps) {
+            tipX = px;
+            tipY = py;
+          }
+        }
+
+        if (points.length > 1) {
+          const grad = ctx.createLinearGradient(cx, cy, tipX, tipY);
+          const cRgb = i % 2 === 0 ? pRgb : sRgb;
+          grad.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
+          grad.addColorStop(0.15, 'rgba(0, 229, 255, 0.8)');
+          grad.addColorStop(0.5, `rgba(${cRgb.r}, ${cRgb.g}, ${cRgb.b}, 0.5)`);
+          grad.addColorStop(0.85, `rgba(${cRgb.r}, ${cRgb.g}, ${cRgb.b}, 0.12)`);
+          grad.addColorStop(1.0, 'rgba(0, 0, 0, 0)');
+
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.moveTo(points[0].x, points[0].y);
+          for (let ptIdx = 1; ptIdx < points.length; ptIdx++) {
+            ctx.lineTo(points[ptIdx].x, points[ptIdx].y);
+          }
+          ctx.stroke();
+        }
+
+        ctx.fillStyle = 'rgba(0, 229, 255, 0.8)';
+        ctx.beginPath();
+        ctx.arc(tipX, tipY, 4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      const coreGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 100);
+      coreGrad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+      coreGrad.addColorStop(0.25, 'rgba(0, 229, 255, 0.85)');
+      coreGrad.addColorStop(0.65, 'rgba(83, 34, 255, 0.4)');
+      coreGrad.addColorStop(1, 'rgba(11, 11, 15, 0)');
+      ctx.fillStyle = coreGrad;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 100, 0, Math.PI * 2);
+      ctx.fill();
+    } else if (selectedAlgoId === 'fibonacci_spiral') {
+      const cx = size / 2;
+      const cy = size / 2;
+      const goldenAngle = 2.39996;
+      const scale = 22;
+
+      for (let i = 0; i < density; i++) {
+        const r = Math.sqrt(i) * scale;
+        const theta = i * goldenAngle;
+        const px = cx + r * Math.cos(theta);
+        const py = cy + r * Math.sin(theta);
+
+        ctx.fillStyle = i % 3 === 0 ? primary : i % 3 === 1 ? secondary : accent;
+        ctx.beginPath();
+        ctx.arc(px, py, 6 + (i % 3) * 2, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (i > 0 && i % 5 === 0) {
+          ctx.strokeStyle = secondary + '44';
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(cx, cy);
+          ctx.lineTo(px, py);
+          ctx.stroke();
+        }
+      }
+    } else if (selectedAlgoId === 'voronoi' || selectedAlgoId === 'delaunay') {
+      const pts: { x: number; y: number }[] = [];
+      for (let i = 0; i < Math.min(density, 60); i++) {
+        pts.push({ x: pseudoRandom() * size, y: size * 0.1 + pseudoRandom() * size * 0.8 });
+      }
+
+      ctx.lineWidth = 2;
+      for (let i = 0; i < pts.length; i++) {
+        for (let j = i + 1; j < pts.length; j++) {
+          const d = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y);
+          if (d < 380) {
+            ctx.strokeStyle = primary + '66';
+            ctx.beginPath();
+            ctx.moveTo(pts[i].x, pts[i].y);
+            ctx.lineTo(pts[j].x, pts[j].y);
+            ctx.stroke();
+
+            for (let k = j + 1; k < pts.length; k++) {
+              const d2 = Math.hypot(pts[j].x - pts[k].x, pts[j].y - pts[k].y);
+              if (d2 < 380) {
+                ctx.fillStyle = secondary + '1A';
+                ctx.beginPath();
+                ctx.moveTo(pts[i].x, pts[i].y);
+                ctx.lineTo(pts[j].x, pts[j].y);
+                ctx.lineTo(pts[k].x, pts[k].y);
+                ctx.closePath();
+                ctx.fill();
+              }
+            }
+          }
+        }
+      }
+
+      pts.forEach((pt) => {
+        ctx.strokeStyle = '#00E5FF';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(pt.x - 16, pt.y);
+        ctx.lineTo(pt.x + 16, pt.y);
+        ctx.moveTo(pt.x, pt.y - 16);
+        ctx.lineTo(pt.x, pt.y + 16);
+        ctx.stroke();
+        ctx.fillStyle = '#FFFFFF';
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, 4, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    } else if (selectedAlgoId === 'bauhaus_composition') {
+      ctx.fillStyle = primary;
+      ctx.beginPath();
+      ctx.arc(size * 0.35, size * 0.4, 300, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = secondary;
+      ctx.beginPath();
+      ctx.arc(size * 0.6, size * 0.5, 360, 0, Math.PI);
+      ctx.fill();
+
+      ctx.fillStyle = accent;
+      ctx.fillRect(size * 0.2, size * 0.65, 500, 120);
+
+      ctx.strokeStyle = primary;
+      ctx.lineWidth = 16;
+      ctx.beginPath();
+      ctx.moveTo(size * 0.1, size * 0.2);
+      ctx.lineTo(size * 0.8, size * 0.8);
+      ctx.stroke();
+    } else {
+      // Default high-res geometric grid composition for other algorithms
+      const lineCount = Math.min(density, 80);
+      for (let i = 0; i < lineCount; i++) {
+        const x1 = pseudoRandom() * size;
+        const y1 = pseudoRandom() * size;
+        const x2 = pseudoRandom() * size;
+        const y2 = pseudoRandom() * size;
+
+        ctx.strokeStyle = i % 2 === 0 ? primary : secondary;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+
+        ctx.strokeStyle = accent + '88';
+        ctx.beginPath();
+        ctx.arc(x2, y2, 24, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    }
+
+    // Embed cryptographic watermark
+    drawWatermark(ctx, size, size, seedHash);
+
+    // Download PNG
+    const link = document.createElement('a');
+    link.download = `artificial-craft-${selectedAlgoId}-${seedHash}.png`;
+    link.href = exportCanvas.toDataURL('image/png');
+    link.click();
+  };
+
+  // Clean Vector SVG Export Engine
+  const handleExportSVG = () => {
+    const width = 1200;
+    const height = 1200;
+    const primary = activePalette.primary;
+    const secondary = activePalette.secondary;
+    const accent = activePalette.accent;
+    const bg = activePalette.background;
+
+    // Seed state initialization
+    const seedNum = parseInt(seedHash.replace('0x', ''), 16) || 1234567;
+    let rngState = seedNum;
+    const pseudoRandom = () => {
+      rngState = (rngState * 16807) % 2147483647;
+      return (rngState - 1) / 2147483646;
+    };
+
+    let svgPaths = '';
+
+    if (selectedAlgoId === 'vector_field') {
+      const cx = width / 2;
+      const cy = height / 2;
+      const fiberCount = Math.min(45, Math.max(15, Math.floor(15 + (density / 500) * 30)));
+      const maxRadius = width * 0.42;
+      const numSteps = 24;
+
+      for (let i = 0; i < fiberCount; i++) {
+        const baseAngle = (i / fiberCount) * Math.PI * 2;
+        let pathData = `M ${cx} ${cy}`;
+        let tipX = cx;
+        let tipY = cy;
+
+        for (let step = 15; step <= numSteps; step++) {
+          const ratio = step / numSteps;
+          const r = ratio * maxRadius;
+          const wave =
+            Math.sin(1.08 + i * 0.25 + ratio * 6) * 0.54 +
+            noise2D(i * 0.15 + ratio * 1.5, 0.15) * 0.15;
+          const currentAngle = baseAngle + wave;
+          const px = cx + Math.cos(currentAngle) * r;
+          const py = cy + Math.sin(currentAngle) * r;
+          pathData += ` L ${px.toFixed(1)} ${py.toFixed(1)}`;
+          if (step === numSteps) {
+            tipX = px;
+            tipY = py;
+          }
+        }
+
+        const color = i % 2 === 0 ? primary : secondary;
+        svgPaths += `<path d="${pathData}" stroke="${color}" stroke-width="1.5" fill="none" opacity="0.8" />\n`;
+        svgPaths += `<circle cx="${tipX.toFixed(1)}" cy="${tipY.toFixed(1)}" r="2" fill="#00E5FF" opacity="0.9" />\n`;
+      }
+
+      svgPaths += `<circle cx="${cx}" cy="${cy}" r="40" fill="url(#coreGlow)" />\n`;
+    } else if (selectedAlgoId === 'fibonacci_spiral') {
+      const cx = width / 2;
+      const cy = height / 2;
+      const goldenAngle = 2.39996;
+      const scale = 14;
+
+      for (let i = 0; i < density; i++) {
+        const r = Math.sqrt(i) * scale;
+        const theta = i * goldenAngle;
+        const px = cx + r * Math.cos(theta);
+        const py = cy + r * Math.sin(theta);
+        const color = i % 3 === 0 ? primary : i % 3 === 1 ? secondary : accent;
+
+        svgPaths += `<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${(3 + (i % 3)).toFixed(1)}" fill="${color}" />\n`;
+        if (i > 0 && i % 5 === 0) {
+          svgPaths += `<line x1="${cx}" y1="${cy}" x2="${px.toFixed(1)}" y2="${py.toFixed(1)}" stroke="${secondary}" stroke-width="0.8" opacity="0.3" />\n`;
+        }
+      }
+    } else if (selectedAlgoId === 'bauhaus_composition') {
+      svgPaths += `<circle cx="${width * 0.35}" cy="${height * 0.4}" r="180" fill="${primary}" />\n`;
+      svgPaths += `<path d="M ${width * 0.6 - 220} ${height * 0.5} A 220 220 0 0 0 ${width * 0.6 + 220} ${height * 0.5} Z" fill="${secondary}" />\n`;
+      svgPaths += `<rect x="${width * 0.2}" y="${height * 0.65}" width="320" height="80" fill="${accent}" />\n`;
+      svgPaths += `<line x1="${width * 0.1}" y1="${height * 0.2}" x2="${width * 0.8}" y2="${height * 0.8}" stroke="${primary}" stroke-width="10" />\n`;
+    } else {
+      const pts: { x: number; y: number }[] = [];
+      for (let i = 0; i < Math.min(density, 50); i++) {
+        pts.push({ x: pseudoRandom() * width, y: height * 0.1 + pseudoRandom() * height * 0.8 });
+      }
+
+      for (let i = 0; i < pts.length; i++) {
+        for (let j = i + 1; j < pts.length; j++) {
+          const d = Math.hypot(pts[i].x - pts[j].x, pts[i].y - pts[j].y);
+          if (d < 240) {
+            const color = i % 2 === 0 ? primary : secondary;
+            svgPaths += `<line x1="${pts[i].x.toFixed(1)}" y1="${pts[i].y.toFixed(1)}" x2="${pts[j].x.toFixed(1)}" y2="${pts[j].y.toFixed(1)}" stroke="${color}" stroke-width="1.2" opacity="0.6" />\n`;
+          }
+        }
+        svgPaths += `<circle cx="${pts[i].x.toFixed(1)}" cy="${pts[i].y.toFixed(1)}" r="3" fill="#00E5FF" />\n`;
+      }
+    }
+
+    const watermarkText = `ARTIFICIAL CRAFT // ARTIFACT_ID: 0x${seedHash.replace('0x', '')} // DETERMINISTIC GENERATIVE ENGINE`;
+
+    const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}">
+  <defs>
+    <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="1" />
+      <stop offset="35%" stop-color="#00E5FF" stop-opacity="0.8" />
+      <stop offset="70%" stop-color="#5322ff" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#0B0B0F" stop-opacity="0" />
+    </radialGradient>
+    <style>
+      .watermark-text {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 16px;
+        font-weight: 600;
+        fill: #00E5FF;
+      }
+    </style>
+  </defs>
+  <rect width="${width}" height="${height}" fill="${bg}" />
+  <g id="algorithm-paths">
+${svgPaths}
+  </g>
+  <!-- Cryptographic Artifact Watermark -->
+  <g id="watermark" transform="translate(${width - 40}, ${height - 40})">
+    <rect x="-720" y="-30" width="720" height="36" fill="#0B0B0F" fill-opacity="0.85" stroke="#5322ff" stroke-width="1" />
+    <text x="-12" y="-6" text-anchor="end" class="watermark-text">${watermarkText}</text>
+  </g>
+</svg>`;
+
+    const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+    const link = document.createElement('a');
+    link.download = `artificial-craft-${selectedAlgoId}-${seedHash}.svg`;
+    link.href = URL.createObjectURL(blob);
+    link.click();
   };
 
   // Canvas Mouse Click handler for interactive Voronoi and CA grid
@@ -1366,22 +1746,22 @@ export default function PlugAndPlaySandbox() {
           </div>
 
           {/* ================= RIGHT PANEL: TELEMETRY CONSOLE (280px) ================= */}
-          <div className="p-5 bg-[#0B0B0F] font-mono flex flex-col justify-between text-xs space-y-6">
-            <div>
+          <div className="p-4 bg-[#0B0B0F] font-mono flex flex-col justify-between text-xs space-y-3">
+            <div className="space-y-3">
               {/* Telemetry Header */}
-              <div className="flex items-center justify-between border-b border-zinc-800 pb-3 mb-4">
-                <div className="flex items-center gap-2 font-bold text-white uppercase tracking-wider">
-                  <Terminal className="h-4 w-4 text-[#5322ff]" />
+              <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
+                <div className="flex items-center gap-2 font-bold text-white uppercase tracking-wider text-[11px]">
+                  <Terminal className="h-3.5 w-3.5 text-[#5322ff]" />
                   <span>{t('sandbox_telemetry_title')}</span>
                 </div>
                 <span className="h-2 w-2 rounded-full bg-cyan-glow animate-ping" />
               </div>
 
               {/* FPS & Performance Readout Box */}
-              <div className="border border-zinc-800 bg-zinc-950 p-3 mb-5 space-y-2">
+              <div className="border border-zinc-800 bg-zinc-950 p-2.5 space-y-1.5">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] text-zinc-500 uppercase">{t('sandbox_telemetry_fps')}</span>
-                  <span className="text-base font-extrabold text-cyan-glow">{fps} FPS</span>
+                  <span className="text-sm font-extrabold text-cyan-glow">{fps} FPS</span>
                 </div>
                 <div className="w-full bg-zinc-900 h-1">
                   <div
@@ -1389,37 +1769,37 @@ export default function PlugAndPlaySandbox() {
                     style={{ width: `${Math.min((fps / 60) * 100, 100)}%` }}
                   />
                 </div>
-                <div className="flex items-center justify-between text-[10px] text-zinc-400 pt-1">
+                <div className="flex items-center justify-between text-[10px] text-zinc-400 pt-0.5">
                   <span>{t('sandbox_telemetry_frametime')}</span>
                   <span className="font-bold text-white">{frameTime} ms</span>
                 </div>
               </div>
 
               {/* State Readouts */}
-              <div className="space-y-3 font-mono">
-                <div className="border-b border-zinc-800/60 pb-2 flex justify-between items-center">
+              <div className="space-y-2 font-mono text-[11px]">
+                <div className="border-b border-zinc-800/60 pb-1.5 flex justify-between items-center">
                   <span className="text-[10px] text-zinc-500 uppercase">{t('sandbox_telemetry_algo')}</span>
                   <span className="text-zinc-200 font-bold truncate max-w-[130px]" title={activeAlgo.name}>
                     {activeAlgo.name}
                   </span>
                 </div>
 
-                <div className="border-b border-zinc-800/60 pb-2 flex justify-between items-center">
+                <div className="border-b border-zinc-800/60 pb-1.5 flex justify-between items-center">
                   <span className="text-[10px] text-zinc-500 uppercase">{t('sandbox_telemetry_category')}</span>
                   <span className="text-[#5322ff] font-bold uppercase">{selectedCategory}</span>
                 </div>
 
-                <div className="border-b border-zinc-800/60 pb-2 flex justify-between items-center">
+                <div className="border-b border-zinc-800/60 pb-1.5 flex justify-between items-center">
                   <span className="text-[10px] text-zinc-500 uppercase">{t('sandbox_telemetry_density')}</span>
                   <span className="text-white font-bold">{density} / 500</span>
                 </div>
 
-                <div className="border-b border-zinc-800/60 pb-2 flex justify-between items-center">
+                <div className="border-b border-zinc-800/60 pb-1.5 flex justify-between items-center">
                   <span className="text-[10px] text-zinc-500 uppercase">{t('sandbox_telemetry_speed')}</span>
                   <span className="text-cyan-glow font-bold">{speed.toFixed(1)}x</span>
                 </div>
 
-                <div className="border-b border-zinc-800/60 pb-2 flex justify-between items-center">
+                <div className="border-b border-zinc-800/60 pb-1.5 flex justify-between items-center">
                   <span className="text-[10px] text-zinc-500 uppercase">{t('sandbox_telemetry_palette')}</span>
                   <div className="flex items-center gap-1">
                     <span className="h-2 w-2 rounded-full" style={{ backgroundColor: activePalette.primary }} />
@@ -1428,23 +1808,41 @@ export default function PlugAndPlaySandbox() {
                   </div>
                 </div>
 
-                <div className="border-b border-zinc-800/60 pb-2 flex justify-between items-center">
+                <div className="border-b border-zinc-800/60 pb-1.5 flex justify-between items-center">
                   <span className="text-[10px] text-zinc-500 uppercase">{t('sandbox_telemetry_seed')}</span>
                   <span className="text-[#00E5FF] font-bold">{seedHash}</span>
                 </div>
 
-                <div className="border-b border-zinc-800/60 pb-2 flex justify-between items-center">
+                <div className="border-b border-zinc-800/60 pb-1.5 flex justify-between items-center">
                   <span className="text-[10px] text-zinc-500 uppercase">{t('sandbox_telemetry_resolution')}</span>
                   <span className="text-zinc-400">{canvasRes.width}x{canvasRes.height}</span>
                 </div>
               </div>
+
+              {/* Export Buttons Section */}
+              <div className="pt-2 border-t border-zinc-800 space-y-2">
+                <button
+                  onClick={handleExportPNG}
+                  className="w-full py-2 px-3 border border-cyan-glow/50 bg-cyan-glow/10 hover:bg-cyan-glow hover:text-black text-cyan-glow font-mono text-[10px] font-bold tracking-wider uppercase transition-all duration-200 flex items-center justify-center gap-1.5 group"
+                >
+                  <Download className="h-3.5 w-3.5 group-hover:scale-110 transition-transform" />
+                  <span>{t('sandbox_export_png')}</span>
+                </button>
+
+                <button
+                  onClick={handleExportSVG}
+                  className="w-full py-2 px-3 border border-zinc-700 bg-zinc-900 hover:border-[#5322ff] hover:bg-[#5322ff]/20 text-zinc-300 hover:text-white font-mono text-[10px] font-bold tracking-wider uppercase transition-all duration-200 flex items-center justify-center gap-1.5 group"
+                >
+                  <FileCode className="h-3.5 w-3.5 text-[#5322ff] group-hover:scale-110 transition-transform" />
+                  <span>{t('sandbox_export_svg')}</span>
+                </button>
+              </div>
             </div>
 
             {/* Bottom System Log */}
-            <div className="border border-zinc-800 bg-zinc-950 p-2.5 text-[9px] text-zinc-500 space-y-1">
+            <div className="border border-zinc-800 bg-zinc-950 p-2 text-[9px] text-zinc-500 space-y-0.5">
               <div className="text-emerald-400 font-bold">[SYS//LOG]</div>
               <div>&gt; ALGO_SUITE_ACTIVE</div>
-              <div>&gt; FORCE_FIELD_MOUSE_ON</div>
               <div>&gt; SEED_MUTATED ({seedHash})</div>
             </div>
           </div>
