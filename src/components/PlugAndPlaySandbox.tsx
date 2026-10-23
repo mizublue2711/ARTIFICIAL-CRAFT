@@ -656,8 +656,8 @@ export default function PlugAndPlaySandbox() {
           const baseSeeds = particles.slice(0, 12).map((p, idx) => {
             const bx = p.x;
             const by = p.y;
-            const sx = bx + Math.sin(globalTime * 0.9 + idx * 1.2) * 27;
-            const sy = by + Math.cos(globalTime * 0.8 + idx * 1.5) * 24;
+            const sx = bx + Math.sin(globalTime * 0.9 + idx * 1.2) * 22;
+            const sy = by + Math.cos(globalTime * 0.8 + idx * 1.5) * 22;
             return { x: sx, y: sy };
           });
 
@@ -689,10 +689,19 @@ export default function PlugAndPlaySandbox() {
             });
           });
 
+          // Pre-convert palette colors for liquid gradient fills
+          const liquidColorsRGB = [
+            hexToRgb('#00E5FF'),
+            hexToRgb('#5322ff'),
+            hexToRgb('#FF007A'),
+            hexToRgb(primary),
+            hexToRgb(secondary),
+          ];
+
           // Apply organic noise warp to seed positions once per frame (12 calls instead of 25,000)
           const noisySeeds = allSeeds.map((sd, i) => ({
-            x: sd.x + noise2D(sd.x * 0.01 + globalTime * 0.2, i) * 3,
-            y: sd.y + noise2D(sd.y * 0.01 + globalTime * 0.2, i + 3) * 3,
+            x: sd.x + noise2D(sd.x * 0.01 + globalTime * 0.2, i) * 14,
+            y: sd.y + noise2D(sd.y * 0.01 + globalTime * 0.2, i + 5) * 14,
             idx: i,
           }));
 
