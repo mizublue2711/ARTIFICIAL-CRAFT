@@ -30,14 +30,14 @@ export interface PaletteDef {
   background: string;
 }
 
-export const ALGORITHMS: AlgorithmDef[] = [
+const ALGORITHMS: AlgorithmDef[] = [
   // Group A: Flow & Organic Motion
   {
     id: 'vector_field',
-    name: '01. Vector Field',
+    name: '01. Radiant Energy Fiber Core',
     category: 'organic',
     groupLabel: 'Group A: Flow & Organic Motion',
-    description: 'Perlin Noise vector flow field with particle velocity trails & force fields.',
+    description: 'Central luminescent core with 80-120 organic tendril fibers & gravitational force field.',
   },
   {
     id: 'fibonacci_spiral',
@@ -57,10 +57,10 @@ export const ALGORITHMS: AlgorithmDef[] = [
   // Group B: Geometry & Structure
   {
     id: 'voronoi',
-    name: '04. Brutalist Voronoi Diagram',
+    name: '04. Organic Fluid Voronoi Mesh',
     category: 'structure',
     groupLabel: 'Group B: Geometry & Structure',
-    description: 'Dynamic Voronoi cell partitioning. Click canvas to add cell centers.',
+    description: 'Smooth rounded membrane cells with vivid liquid gradients & elastic shockwaves.',
   },
   {
     id: 'delaunay',
@@ -108,7 +108,7 @@ export const ALGORITHMS: AlgorithmDef[] = [
   },
 ];
 
-export const PALETTES: PaletteDef[] = [
+const PALETTES: PaletteDef[] = [
   {
     id: 'cyberpunk',
     nameKey: 'sandbox_palette_cyberpunk',
@@ -156,6 +156,22 @@ function generateSeedHash(): string {
   return hash;
 }
 
+function hexToRgb(hex: string) {
+  const clean = hex.replace('#', '');
+  if (clean.length === 3) {
+    return {
+      r: parseInt(clean[0] + clean[0], 16),
+      g: parseInt(clean[1] + clean[1], 16),
+      b: parseInt(clean[2] + clean[2], 16),
+    };
+  }
+  return {
+    r: parseInt(clean.substring(0, 2), 16) || 83,
+    g: parseInt(clean.substring(2, 4), 16) || 34,
+    b: parseInt(clean.substring(4, 6), 16) || 255,
+  };
+}
+
 // Simple fast Perlin-like pseudo noise generator
 function noise2D(x: number, y: number): number {
   const sin1 = Math.sin(x * 12.9898 + y * 78.233);
@@ -176,6 +192,16 @@ export default function PlugAndPlaySandbox() {
 
   // Interactive Voronoi cell centers added on mouse click
   const voronoiClickPointsRef = useRef<{ x: number; y: number }[]>([]);
+
+  // Interactive Shockwave Ripples for Organic Fluid Voronoi
+  interface Shockwave {
+    x: number;
+    y: number;
+    radius: number;
+    maxRadius: number;
+    force: number;
+  }
+  const shockwavesRef = useRef<Shockwave[]>([]);
 
   // Interactive Cellular Automata grid state ref
   const caGridRef = useRef<number[][] | null>(null);
@@ -219,6 +245,7 @@ export default function PlugAndPlaySandbox() {
   const handleRandomizeSeed = () => {
     setSeedHash(generateSeedHash());
     voronoiClickPointsRef.current = [];
+    shockwavesRef.current = [];
     caGridRef.current = null;
   };
 
@@ -232,6 +259,13 @@ export default function PlugAndPlaySandbox() {
 
     if (selectedAlgoId === 'voronoi') {
       voronoiClickPointsRef.current.push({ x: clickX, y: clickY });
+      shockwavesRef.current.push({
+        x: clickX,
+        y: clickY,
+        radius: 0,
+        maxRadius: 320,
+        force: 50,
+      });
     } else if (selectedAlgoId === 'cellular_automata' && caGridRef.current) {
       const cols = caGridRef.current.length;
       const rows = caGridRef.current[0].length;
@@ -422,65 +456,90 @@ export default function PlugAndPlaySandbox() {
         }
         ctx.fillRect(0, 0, width, height);
 
-        // ================= ALGORITHM 01: VECTOR FIELD (Topological Contour Ribbons) =================
+        // ================= ALGORITHM 01: RADIANT ENERGY FIBER CORE =================
         if (selectedAlgoId === 'vector_field') {
-          const maxPathLength = 22;
+          const cx = width / 2;
+          const cy = height / 2;
+          const fiberCount = Math.min(120, Math.max(70, Math.floor(effectiveDensity * 0.35)));
+          const maxRadius = Math.min(width, height) * 0.42;
+          const numSteps = 28;
 
-          for (let i = 0; i < particles.length; i++) {
-            const p = particles[i];
+          for (let i = 0; i < fiberCount; i++) {
+            const baseAngle = (i / fiberCount) * Math.PI * 2;
+            let tipX = cx;
+            let tipY = cy;
 
-            // Perlin noise vector field
-            const n = noise2D(p.x * 0.003, p.y * 0.003 + globalTime * 0.15);
-            p.angle = n * Math.PI * 4;
+            const points: { x: number; y: number }[] = [];
+            points.push({ x: cx, y: cy });
 
-            let vx = Math.cos(p.angle) * speed * 2.5;
-            let vy = Math.sin(p.angle) * speed * 2.5;
+            for (let step = 1; step <= numSteps; step++) {
+              const ratio = step / numSteps;
+              const r = ratio * maxRadius;
 
-            // Mouse Gravitational Warp Core interaction
-            if (mActive) {
-              const dx = mx - p.x;
-              const dy = my - p.y;
-              const dist = Math.sqrt(dx * dx + dy * dy);
-              if (dist < 220 && dist > 1) {
-                const factor = (1 - dist / 220);
-                // Tangential vortex & gravitational deflection
-                const warpAngle = Math.atan2(dy, dx) + Math.PI * 0.5;
-                vx += (Math.cos(warpAngle) * 4 + (dx / dist) * 2) * factor * speed;
-                vy += (Math.sin(warpAngle) * 4 + (dy / dist) * 2) * factor * speed;
+              const wave =
+                Math.sin(globalTime * 1.8 + i * 0.25 + ratio * 6) * 0.18 +
+                noise2D(i * 0.15 + ratio * 1.5, globalTime * 0.25) * 0.35;
+              const currentAngle = baseAngle + wave;
+
+              let px = cx + Math.cos(currentAngle) * r;
+              let py = cy + Math.sin(currentAngle) * r;
+
+              // Mouse Magnetic Force interaction
+              if (mActive) {
+                const dx = mx - px;
+                const dy = my - py;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 240 && dist > 1) {
+                  const factor = (1 - dist / 240) * ratio;
+                  const gravAngle = Math.atan2(my - py, mx - px) + Math.PI * 0.25;
+                  px += Math.cos(gravAngle) * 40 * factor * speed;
+                  py += Math.sin(gravAngle) * 40 * factor * speed;
+                }
+              }
+
+              points.push({ x: px, y: py });
+              if (step === numSteps) {
+                tipX = px;
+                tipY = py;
               }
             }
 
-            p.x += vx;
-            p.y += vy;
-            p.life++;
+            // Continuous ultra-fine organic tendril fiber path with radiant linear gradient
+            if (points.length > 1) {
+              const grad = ctx.createLinearGradient(cx, cy, tipX, tipY);
+              grad.addColorStop(0, '#FFFFFF');
+              grad.addColorStop(0.2, '#00E5FF');
+              grad.addColorStop(0.65, i % 2 === 0 ? primary : secondary);
+              grad.addColorStop(1.0, '#5322ff');
 
-            // Screen boundary re-seed & reset ribbon path
-            if (p.x < -10 || p.x > width + 10 || p.y < -10 || p.y > height + 10 || p.life > 180) {
-              p.x = pseudoRandom() * width;
-              p.y = pseudoRandom() * height;
-              p.life = 0;
-              p.path = [{ x: p.x, y: p.y }];
-            } else {
-              p.path.push({ x: p.x, y: p.y });
-              if (p.path.length > maxPathLength) {
-                p.path.shift();
-              }
-            }
-
-            // Draw continuous 1px vector ribbon curve
-            if (p.path.length > 1) {
-              const strokeColor = i % 3 === 0 ? primary : i % 3 === 1 ? secondary : accent;
-              ctx.strokeStyle = strokeColor;
-              ctx.lineWidth = 1;
+              ctx.strokeStyle = grad;
+              ctx.lineWidth = 1.2;
               ctx.beginPath();
-              ctx.moveTo(p.path[0].x, p.path[0].y);
-
-              for (let ptIdx = 1; ptIdx < p.path.length; ptIdx++) {
-                ctx.lineTo(p.path[ptIdx].x, p.path[ptIdx].y);
+              ctx.moveTo(points[0].x, points[0].y);
+              for (let ptIdx = 1; ptIdx < points.length; ptIdx++) {
+                ctx.lineTo(points[ptIdx].x, points[ptIdx].y);
               }
               ctx.stroke();
             }
+
+            // 1.5px Glowing Node Anchor at Fiber Tip
+            ctx.fillStyle = '#00E5FF';
+            ctx.beginPath();
+            ctx.arc(tipX, tipY, 1.5, 0, Math.PI * 2);
+            ctx.fill();
           }
+
+          // Central Radiant Luminescent Core Glow
+          const coreGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 38);
+          coreGrad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+          coreGrad.addColorStop(0.25, 'rgba(0, 229, 255, 0.85)');
+          coreGrad.addColorStop(0.65, 'rgba(83, 34, 255, 0.4)');
+          coreGrad.addColorStop(1, 'rgba(11, 11, 15, 0)');
+
+          ctx.fillStyle = coreGrad;
+          ctx.beginPath();
+          ctx.arc(cx, cy, 38, 0, Math.PI * 2);
+          ctx.fill();
         }
 
         // ================= ALGORITHM 02: FIBONACCI SPIRAL =================
@@ -585,123 +644,113 @@ export default function PlugAndPlaySandbox() {
           }
         }
 
-        // ================= ALGORITHM 04: BRUTALIST VORONOI DIAGRAM =================
+        // ================= ALGORITHM 04: ORGANIC FLUID VORONOI MESH =================
         else if (selectedAlgoId === 'voronoi') {
-          // Dynamic Voronoi centers = initial seed particles + user click points
-          const seedPoints = particles.slice(0, 10).map((p) => ({
-            x: p.x + Math.sin(globalTime + p.angle) * 15,
-            y: p.y + Math.cos(globalTime + p.angle) * 15,
-          }));
-          const allCenters = [...seedPoints, ...voronoiClickPointsRef.current];
+          // Animate base Voronoi seed points with subtle sinusoidal swaying
+          const baseSeeds = particles.slice(0, 12).map((p, idx) => {
+            const bx = p.x;
+            const by = p.y;
+            const sx = bx + Math.sin(globalTime * 0.9 + idx * 1.2) * 22;
+            const sy = by + Math.cos(globalTime * 0.8 + idx * 1.5) * 22;
+            return { x: sx, y: sy };
+          });
 
-          // Solid Swiss / Brutalist Flat Color Palette
-          const flatColors = [
-            primary,
-            secondary,
-            accent,
-            activePalette.background,
-            '#FAFAFA',
-            '#18181B',
+          const userPoints = voronoiClickPointsRef.current;
+          const allSeeds = [...baseSeeds, ...userPoints];
+
+          // Update and apply elastic shockwaves
+          const activeShockwaves = shockwavesRef.current;
+          for (let swIdx = activeShockwaves.length - 1; swIdx >= 0; swIdx--) {
+            const sw = activeShockwaves[swIdx];
+            sw.radius += 8 * speed;
+            if (sw.radius > sw.maxRadius) {
+              activeShockwaves.splice(swIdx, 1);
+            }
+          }
+
+          // Displace seed points via active shockwaves
+          allSeeds.forEach((sd) => {
+            activeShockwaves.forEach((sw) => {
+              const dx = sd.x - sw.x;
+              const dy = sd.y - sw.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              const diff = Math.abs(dist - sw.radius);
+              if (diff < 70 && dist > 1) {
+                const force = Math.sin((1 - diff / 70) * Math.PI) * sw.force * (1 - sw.radius / sw.maxRadius);
+                sd.x += (dx / dist) * force;
+                sd.y += (dy / dist) * force;
+              }
+            });
+          });
+
+          // Pre-convert palette colors for liquid gradient fills
+          const liquidColorsRGB = [
+            hexToRgb('#00E5FF'),
+            hexToRgb('#5322ff'),
+            hexToRgb('#FF007A'),
+            hexToRgb(primary),
+            hexToRgb(secondary),
           ];
 
-          const step = 12;
+          const step = 8;
           const cols = Math.ceil(width / step);
           const rows = Math.ceil(height / step);
-          const gridMap: number[][] = Array.from({ length: cols }, () => new Array(rows));
 
-          // 1. Fill Voronoi cells with solid flat colors
           for (let c = 0; c < cols; c++) {
             const x = c * step;
             for (let r = 0; r < rows; r++) {
               const y = r * step;
-              let minDist = Infinity;
+
+              const warp = noise2D(x * 0.006 + globalTime * 0.1, y * 0.006) * 16;
+
+              let minDist1 = Infinity;
+              let minDist2 = Infinity;
               let nearestIdx = 0;
 
-              for (let i = 0; i < allCenters.length; i++) {
-                const dx = x - allCenters[i].x;
-                const dy = y - allCenters[i].y;
-                const dist = dx * dx + dy * dy;
-                if (dist < minDist) {
-                  minDist = dist;
+              for (let i = 0; i < allSeeds.length; i++) {
+                const dx = x - allSeeds[i].x;
+                const dy = y - allSeeds[i].y;
+                const dist = Math.sqrt(dx * dx + dy * dy) + warp;
+                if (dist < minDist1) {
+                  minDist2 = minDist1;
+                  minDist1 = dist;
                   nearestIdx = i;
+                } else if (dist < minDist2) {
+                  minDist2 = dist;
                 }
               }
 
-              gridMap[c][r] = nearestIdx;
-              ctx.fillStyle = flatColors[nearestIdx % flatColors.length];
-              ctx.fillRect(x, y, step, step);
-            }
-          }
+              const membraneWidth = 6.5;
+              const diff = minDist2 - minDist1;
 
-          // 2. Crisp 1px border lines between adjacent Voronoi cells (#27272A)
-          ctx.fillStyle = '#27272A';
-          for (let c = 0; c < cols; c++) {
-            for (let r = 0; r < rows; r++) {
-              const currentCell = gridMap[c][r];
-              if (c < cols - 1 && gridMap[c + 1][r] !== currentCell) {
-                ctx.fillRect((c + 1) * step, r * step, 1, step);
-              }
-              if (r < rows - 1 && gridMap[c][r + 1] !== currentCell) {
-                ctx.fillRect(c * step, (r + 1) * step, step, 1);
-              }
-            }
-          }
+              if (diff < membraneWidth) {
+                // Soft dark-slate rubberized membrane network over cell borders
+                ctx.fillStyle = '#0B0C10';
+                ctx.fillRect(x, y, step, step);
+              } else {
+                // Liquid gradient cell interior
+                const c1 = liquidColorsRGB[nearestIdx % liquidColorsRGB.length];
+                const c2 = liquidColorsRGB[(nearestIdx + 1) % liquidColorsRGB.length];
 
-          // Find hovered center
-          let hoveredCenterIdx = -1;
-          if (mActive) {
-            let minDist = Infinity;
-            for (let i = 0; i < allCenters.length; i++) {
-              const dx = mx - allCenters[i].x;
-              const dy = my - allCenters[i].y;
-              const dist = dx * dx + dy * dy;
-              if (dist < minDist) {
-                minDist = dist;
-                hoveredCenterIdx = i;
+                const blendRatio = (Math.sin(minDist1 * 0.03 - globalTime * 2 + nearestIdx) + 1) * 0.5;
+                const red = Math.round(c1.r + (c2.r - c1.r) * blendRatio);
+                const green = Math.round(c1.g + (c2.g - c1.g) * blendRatio);
+                const blue = Math.round(c1.b + (c2.b - c1.b) * blendRatio);
+
+                ctx.fillStyle = `rgb(${red},${green},${blue})`;
+                ctx.fillRect(x, y, step, step);
               }
             }
           }
 
-          // 3. Render CAD Crosshair (+) anchor symbols & Technical Hash Text Labels
-          allCenters.forEach((pt, i) => {
-            const isHovered = i === hoveredCenterIdx;
-
-            // CAD Crosshair (+) anchor symbol
-            ctx.strokeStyle = isHovered ? '#00E5FF' : '#FAFAFA';
-            ctx.lineWidth = 1.5;
-
-            // Horizontal crosshair arm
+          // Render shockwave ripple rings
+          activeShockwaves.forEach((sw) => {
+            const alpha = Math.max(0, (1 - sw.radius / sw.maxRadius) * 0.7);
+            ctx.strokeStyle = `rgba(0, 229, 255, ${alpha})`;
+            ctx.lineWidth = 2.5;
             ctx.beginPath();
-            ctx.moveTo(pt.x - 9, pt.y);
-            ctx.lineTo(pt.x + 9, pt.y);
+            ctx.arc(sw.x, sw.y, sw.radius, 0, Math.PI * 2);
             ctx.stroke();
-
-            // Vertical crosshair arm
-            ctx.beginPath();
-            ctx.moveTo(pt.x, pt.y - 9);
-            ctx.lineTo(pt.x, pt.y + 9);
-            ctx.stroke();
-
-            // Center square point
-            ctx.fillStyle = isHovered ? '#00E5FF' : primary;
-            ctx.fillRect(pt.x - 2, pt.y - 2, 4, 4);
-
-            // Technical Seed Hash & Coordinates Label
-            if (isHovered) {
-              const cellHash = `CELL//0x${((i + 1) * 0x389A).toString(16).toUpperCase()} [x:${Math.round(pt.x)}, y:${Math.round(pt.y)}]`;
-              ctx.font = '10px JetBrains Mono, monospace';
-              const textWidth = ctx.measureText(cellHash).width;
-
-              ctx.fillStyle = '#0B0B0F';
-              ctx.fillRect(pt.x + 12, pt.y - 14, textWidth + 12, 20);
-
-              ctx.strokeStyle = '#00E5FF';
-              ctx.lineWidth = 1;
-              ctx.strokeRect(pt.x + 12, pt.y - 14, textWidth + 12, 20);
-
-              ctx.fillStyle = '#00E5FF';
-              ctx.fillText(cellHash, pt.x + 18, pt.y,);
-            }
           });
         }
 
