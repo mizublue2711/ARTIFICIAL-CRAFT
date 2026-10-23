@@ -475,14 +475,14 @@ export default function PlugAndPlaySandbox() {
             const points: { x: number; y: number }[] = [];
             points.push({ x: cx, y: cy });
 
-            for (let step = 1; step <= numSteps; step++) {
+            for (let step = 15; step <= numSteps; step++) {
               const ratio = step / numSteps;
               const r = ratio * maxRadius;
 
               // Wave frequency reduced by 40% for calm, fluid motion
               const wave =
-                Math.sin(globalTime * 1.08 + i * 0.25 + ratio * 6) * 0.18 +
-                noise2D(i * 0.15 + ratio * 1.5, globalTime * 0.15) * 0.35;
+                Math.sin(globalTime * 1.08 + i * 0.25 + ratio * 6) * 0.81 +
+                noise2D(i * 0.15 + ratio * 1.5, globalTime * 0.15) * 0.42;
               const currentAngle = baseAngle + wave;
 
               let px = cx + Math.cos(currentAngle) * r;
