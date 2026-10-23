@@ -610,8 +610,8 @@ export default function PlugAndPlaySandbox() {
           const nextU = new Float32Array(gridU);
           const nextV = new Float32Array(gridV);
 
-          for (let x = 3; x < rdGridSize - 3; x++) {
-            for (let y = 3; y < rdGridSize - 3; y++) {
+          for (let x = 1; x < rdGridSize - 3; x++) {
+            for (let y = 3; y < rdGridSize - 1; y++) {
               const idx = x * rdGridSize + y;
               const u = gridU[idx];
               const v = gridV[idx];
