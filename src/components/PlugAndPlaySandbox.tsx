@@ -460,9 +460,9 @@ export default function PlugAndPlaySandbox() {
         if (selectedAlgoId === 'vector_field') {
           const cx = width / 2;
           const cy = height / 2;
-          const fiberCount = Math.min(45, Math.max(15, Math.floor(15 + (effectiveDensity / 500) * 30)));
-          const maxRadius = Math.min(width, height) * 0.42;
-          const numSteps = 28;
+          const fiberCount = Math.min(15, Math.max(15, Math.floor(15 + (effectiveDensity / 500) * 30)));
+          const maxRadius = Math.min(width, height) * 0.36;
+          const numSteps = 12;
 
           const pRgb = hexToRgb(primary);
           const sRgb = hexToRgb(secondary);
@@ -481,8 +481,8 @@ export default function PlugAndPlaySandbox() {
 
               // Wave frequency reduced by 40% for calm, fluid motion
               const wave =
-                Math.sin(globalTime * 1.08 + i * 0.25 + ratio * 6) * 0.18 +
-                noise2D(i * 0.15 + ratio * 1.5, globalTime * 0.15) * 0.35;
+                Math.sin(globalTime * 1 + i * 0.18 + ratio * 6) * 0.12 +
+                noise2D(i * 0.15 + ratio * 1.5, globalTime * 0.15) * 0.15;
               const currentAngle = baseAngle + wave;
 
               let px = cx + Math.cos(currentAngle) * r;
@@ -496,8 +496,8 @@ export default function PlugAndPlaySandbox() {
                 if (dist < 240 && dist > 1) {
                   const factor = (1 - dist / 240) * ratio;
                   const gravAngle = Math.atan2(my - py, mx - px) + Math.PI * 0.25;
-                  px += Math.cos(gravAngle) * 40 * factor * speed;
-                  py += Math.sin(gravAngle) * 40 * factor * speed;
+                  px += Math.cos(gravAngle) * 30 * factor * speed;
+                  py += Math.sin(gravAngle) * 30 * factor * speed;
                 }
               }
 
