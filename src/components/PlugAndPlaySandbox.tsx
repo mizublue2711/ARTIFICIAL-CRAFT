@@ -219,6 +219,7 @@ export default function PlugAndPlaySandbox() {
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const offscreenCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
   // Active objects derived from selection
   const activePalette = useMemo(() => {
@@ -710,9 +711,12 @@ export default function PlugAndPlaySandbox() {
           const bufW = Math.max(1, Math.ceil(width / renderStep));
           const bufH = Math.max(1, Math.ceil(height / renderStep));
 
-          const offCanvas = document.createElement('canvas');
-          offCanvas.width = bufW;
-          offCanvas.height = bufH;
+          if (!offscreenCanvasRef.current) {
+            offscreenCanvasRef.current = document.createElement('canvas');
+          }
+          const offCanvas = offscreenCanvasRef.current;
+          if (offCanvas.width !== bufW) offCanvas.width = bufW;
+          if (offCanvas.height !== bufH) offCanvas.height = bufH;
           const offCtx = offCanvas.getContext('2d');
 
           if (offCtx) {
