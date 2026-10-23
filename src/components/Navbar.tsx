@@ -14,6 +14,7 @@ export default function Navbar() {
 
   const links = [
     { label: t('nav_engine'), href: '#platform' },
+    { label: t('nav_playground'), href: '#playground' },
     { label: t('nav_architecture'), href: '#architecture' },
     { label: t('nav_blueprints'), href: '#blueprints' },
     { label: t('nav_blackbox'), href: '#existential-blackbox' },
