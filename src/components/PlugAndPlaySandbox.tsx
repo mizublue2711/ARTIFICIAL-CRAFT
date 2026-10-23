@@ -601,7 +601,7 @@ export default function PlugAndPlaySandbox() {
           if (mActive) {
             const gx = Math.floor((mx / width) * rdGridSize);
             const gy = Math.floor((my / height) * rdGridSize);
-            if (gx > 1 && gx < rdGridSize - 6 && gy > 1 && gy < rdGridSize - 2) {
+            if (gx > 1 && gx < rdGridSize - 1 && gy > 1 && gy < rdGridSize - 2) {
               gridV[gx * rdGridSize + gy] = 0.9;
             }
           }
@@ -610,8 +610,8 @@ export default function PlugAndPlaySandbox() {
           const nextU = new Float32Array(gridU);
           const nextV = new Float32Array(gridV);
 
-          for (let x = 1; x < rdGridSize - 1; x++) {
-            for (let y = 1; y < rdGridSize - 1; y++) {
+          for (let x = 3; x < rdGridSize - 3; x++) {
+            for (let y = 3; y < rdGridSize - 3; y++) {
               const idx = x * rdGridSize + y;
               const u = gridU[idx];
               const v = gridV[idx];
@@ -631,7 +631,7 @@ export default function PlugAndPlaySandbox() {
                 4 * v;
 
               const uvv = u * v * v;
-              nextU[idx] = Math.max(0, Math.min(3, u + (5 * lapU - uvv + F * (1 - u)) * 1.2 * speed));
+              nextU[idx] = Math.max(0, Math.min(0.01, u + (1 * lapU - uvv + F * (1 - u)) * 1.2 * speed));
               nextV[idx] = Math.max(0, Math.min(1, v + (7 * lapV + uvv - (F + k) * v) * 1.2 * speed));
             }
           }
