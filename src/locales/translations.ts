@@ -403,7 +403,7 @@ export const translations: Record<Language, Translations> = {
     terms: 'TERMS',
 
     // Plug & Play Sandbox
-    sandbox_section_label: 'PLUG & PLAY // SANDBOX',
+    sandbox_section_label: 'PLUG & PLAY // SANDBOX // HYPER-SPEED EXPERIMENTS // FULL SECURITY CONTROL',
     sandbox_title: 'GENERATIVE ALGORITHM LAB',
     sandbox_subtitle: 'Real-time parameter tuning & telemetry for generative craft algorithms.',
     sandbox_control_panel: 'CONTROL PANEL',
@@ -640,7 +640,7 @@ export const translations: Record<Language, Translations> = {
 
     // Plug & Play Sandbox
     sandbox_section_label: 'CẮM & CHẠY // MÔ PHỎNG',
-    sandbox_title: 'PHÒNG THÍ NGHIỆM THUẬT TOÁN MÃ TẠO',
+    sandbox_title: 'SÂN CHƠI THỬ NGHIỆM THUẬT TOÁN // TỐC ĐỘ CAO // AN TOÀN TUYỆT ĐỐI',
     sandbox_subtitle: 'Tinh chỉnh tham số và đo viễn thông thời gian thực cho các thuật toán sáng tạo.',
     sandbox_control_panel: 'BẢNG ĐIỀU KHIỂN',
     sandbox_cat_organic: 'Luồng & Hữu Cơ',
@@ -686,7 +686,7 @@ export const translations: Record<Language, Translations> = {
     blackbox_run: 'CHẠY',
     blackbox_awaiting: '[ ĐANG CHỜ THỰC THI LỆNH... NHẤP VÀO LỆNH BẤT KỲ Ở TRÊN ]',
     blackbox_manifesto_footer: 'TUYÊN NGÔN: SÁNG TẠO VIÊN KHÔNG ĐẦU ĐANG VẬN HÀNH',
-    blackbox_autonomous: 'TỰ TRỊ 100%',
+    blackbox_autonomous: 'ĐỘC LẬP // TỰ DO // HẠNH PHÚC 100%',
     blackbox_q1_q: 'Q1: Máy tính của tôi vừa nổ tung vì chập điện. Tôi có thể dùng lý do này để xin sếp hoãn deadline deploy sản phẩm sáng nay không?',
     blackbox_q1_a: 'A: Xin chia buồn, nhưng KHÔNG. Nếu bạn thiết kế kiến trúc hệ thống đúng cách, sự tồn tại vật lý của bạn lúc này là vô giá trị. Các asynchronous workers của bạn đang nằm cô lập trên cụm VPS Hetzner ở tận nước Đức xa xôi. Chúng không quan tâm cái laptop của bạn đã thành một cục gạch. Chúng vẫn đang liên tục cào payload, băm JSON và đẩy dữ liệu phẳng lỳ lên Cloudflare R2 trong lúc bạn đang đi mượn đèn pin. Hệ thống bất tử, chỉ có bạn là đang đứng ngoài cuộc chơi.',
     blackbox_q2_q: 'Q2: Nhưng nếu tôi đi ngủ, con AI tự trị chạy ngầm trên VPS có hoảng loạn và sập nguồn khi nó đụng phải giới hạn lượt gọi (Rate Limit HTTP 429) của API bên thứ ba không?',
