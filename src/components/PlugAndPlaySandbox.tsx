@@ -37,7 +37,7 @@ const ALGORITHMS: AlgorithmDef[] = [
     name: '01. Radiant Energy Fiber Core',
     category: 'organic',
     groupLabel: 'Group A: Flow & Organic Motion',
-    description: 'Central luminescent core with 80-120 organic tendril fibers & gravitational force field.',
+    description: 'Central luminescent core with 20-45 organic tendril fibers & gravitational force field.',
   },
   {
     id: 'fibonacci_spiral',
@@ -60,7 +60,7 @@ const ALGORITHMS: AlgorithmDef[] = [
     name: '04. Organic Fluid Voronoi Mesh',
     category: 'structure',
     groupLabel: 'Group B: Geometry & Structure',
-    description: 'Smooth rounded membrane cells with vivid liquid gradients & elastic shockwaves.',
+    description: 'Smooth membrane cells with crisp 1.5px zinc borders, liquid gradients & CAD anchors.',
   },
   {
     id: 'delaunay',
@@ -460,9 +460,12 @@ export default function PlugAndPlaySandbox() {
         if (selectedAlgoId === 'vector_field') {
           const cx = width / 2;
           const cy = height / 2;
-          const fiberCount = Math.min(120, Math.max(70, Math.floor(effectiveDensity * 0.35)));
+          const fiberCount = Math.min(45, Math.max(15, Math.floor(15 + (effectiveDensity / 500) * 30)));
           const maxRadius = Math.min(width, height) * 0.42;
           const numSteps = 28;
+
+          const pRgb = hexToRgb(primary);
+          const sRgb = hexToRgb(secondary);
 
           for (let i = 0; i < fiberCount; i++) {
             const baseAngle = (i / fiberCount) * Math.PI * 2;
@@ -476,9 +479,10 @@ export default function PlugAndPlaySandbox() {
               const ratio = step / numSteps;
               const r = ratio * maxRadius;
 
+              // Wave frequency reduced by 40% for calm, fluid motion
               const wave =
-                Math.sin(globalTime * 1.8 + i * 0.25 + ratio * 6) * 0.18 +
-                noise2D(i * 0.15 + ratio * 1.5, globalTime * 0.25) * 0.35;
+                Math.sin(globalTime * 1.08 + i * 0.25 + ratio * 6) * 0.18 +
+                noise2D(i * 0.15 + ratio * 1.5, globalTime * 0.15) * 0.35;
               const currentAngle = baseAngle + wave;
 
               let px = cx + Math.cos(currentAngle) * r;
@@ -504,13 +508,15 @@ export default function PlugAndPlaySandbox() {
               }
             }
 
-            // Continuous ultra-fine organic tendril fiber path with radiant linear gradient
+            // Progressive opacity fadeout toward fiber tips to enhance dark negative space
             if (points.length > 1) {
               const grad = ctx.createLinearGradient(cx, cy, tipX, tipY);
-              grad.addColorStop(0, '#FFFFFF');
-              grad.addColorStop(0.2, '#00E5FF');
-              grad.addColorStop(0.65, i % 2 === 0 ? primary : secondary);
-              grad.addColorStop(1.0, '#5322ff');
+              const cRgb = i % 2 === 0 ? pRgb : sRgb;
+              grad.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
+              grad.addColorStop(0.15, 'rgba(0, 229, 255, 0.8)');
+              grad.addColorStop(0.5, `rgba(${cRgb.r}, ${cRgb.g}, ${cRgb.b}, 0.5)`);
+              grad.addColorStop(0.85, `rgba(${cRgb.r}, ${cRgb.g}, ${cRgb.b}, 0.12)`);
+              grad.addColorStop(1.0, 'rgba(0, 0, 0, 0)');
 
               ctx.strokeStyle = grad;
               ctx.lineWidth = 1.2;
@@ -522,8 +528,8 @@ export default function PlugAndPlaySandbox() {
               ctx.stroke();
             }
 
-            // 1.5px Glowing Node Anchor at Fiber Tip
-            ctx.fillStyle = '#00E5FF';
+            // Subtle 1.5px Glowing Anchor Dot at Fiber Tip
+            ctx.fillStyle = 'rgba(0, 229, 255, 0.7)';
             ctx.beginPath();
             ctx.arc(tipX, tipY, 1.5, 0, Math.PI * 2);
             ctx.fill();
@@ -692,62 +698,109 @@ export default function PlugAndPlaySandbox() {
             hexToRgb(secondary),
           ];
 
-          const step = 8;
-          const cols = Math.ceil(width / step);
-          const rows = Math.ceil(height / step);
+          // Apply organic noise warp to seed positions once per frame (12 calls instead of 25,000)
+          const noisySeeds = allSeeds.map((sd, i) => ({
+            x: sd.x + noise2D(sd.x * 0.01 + globalTime * 0.2, i) * 14,
+            y: sd.y + noise2D(sd.y * 0.01 + globalTime * 0.2, i + 5) * 14,
+            idx: i,
+          }));
 
-          for (let c = 0; c < cols; c++) {
-            const x = c * step;
-            for (let r = 0; r < rows; r++) {
-              const y = r * step;
+          // Fast offscreen ImageData buffer rendering for 60 FPS performance
+          const renderStep = isMobile ? 4 : 3;
+          const bufW = Math.max(1, Math.ceil(width / renderStep));
+          const bufH = Math.max(1, Math.ceil(height / renderStep));
 
-              const warp = noise2D(x * 0.006 + globalTime * 0.1, y * 0.006) * 16;
+          const offCanvas = document.createElement('canvas');
+          offCanvas.width = bufW;
+          offCanvas.height = bufH;
+          const offCtx = offCanvas.getContext('2d');
 
-              let minDist1 = Infinity;
-              let minDist2 = Infinity;
-              let nearestIdx = 0;
+          if (offCtx) {
+            const imgData = offCtx.createImageData(bufW, bufH);
+            const data = imgData.data;
+            const borderThreshold = 2.4;
 
-              for (let i = 0; i < allSeeds.length; i++) {
-                const dx = x - allSeeds[i].x;
-                const dy = y - allSeeds[i].y;
-                const dist = Math.sqrt(dx * dx + dy * dy) + warp;
-                if (dist < minDist1) {
-                  minDist2 = minDist1;
-                  minDist1 = dist;
-                  nearestIdx = i;
-                } else if (dist < minDist2) {
-                  minDist2 = dist;
+            for (let py = 0; py < bufH; py++) {
+              const y = py * renderStep;
+              for (let px = 0; px < bufW; px++) {
+                const x = px * renderStep;
+
+                let minDistSq1 = Infinity;
+                let minDistSq2 = Infinity;
+                let nearestIdx = 0;
+
+                for (let i = 0; i < noisySeeds.length; i++) {
+                  const dx = x - noisySeeds[i].x;
+                  const dy = y - noisySeeds[i].y;
+                  const dSq = dx * dx + dy * dy;
+                  if (dSq < minDistSq1) {
+                    minDistSq2 = minDistSq1;
+                    minDistSq1 = dSq;
+                    nearestIdx = noisySeeds[i].idx;
+                  } else if (dSq < minDistSq2) {
+                    minDistSq2 = dSq;
+                  }
+                }
+
+                const dist1 = Math.sqrt(minDistSq1);
+                const dist2 = Math.sqrt(minDistSq2);
+                const diff = dist2 - dist1;
+
+                const pixelIdx = (py * bufW + px) * 4;
+
+                if (diff < borderThreshold) {
+                  // Crisp dark zinc border stroke (#18181b)
+                  data[pixelIdx] = 24;
+                  data[pixelIdx + 1] = 24;
+                  data[pixelIdx + 2] = 27;
+                  data[pixelIdx + 3] = 255;
+                } else {
+                  // Liquid gradient cell interior
+                  const c1 = liquidColorsRGB[nearestIdx % liquidColorsRGB.length];
+                  const c2 = liquidColorsRGB[(nearestIdx + 1) % liquidColorsRGB.length];
+
+                  const blendRatio = (Math.sin(dist1 * 0.03 - globalTime * 2 + nearestIdx) + 1) * 0.5;
+                  data[pixelIdx] = Math.round(c1.r + (c2.r - c1.r) * blendRatio);
+                  data[pixelIdx + 1] = Math.round(c1.g + (c2.g - c1.g) * blendRatio);
+                  data[pixelIdx + 2] = Math.round(c1.b + (c2.b - c1.b) * blendRatio);
+                  data[pixelIdx + 3] = 255;
                 }
               }
-
-              const membraneWidth = 6.5;
-              const diff = minDist2 - minDist1;
-
-              if (diff < membraneWidth) {
-                // Soft dark-slate rubberized membrane network over cell borders
-                ctx.fillStyle = '#0B0C10';
-                ctx.fillRect(x, y, step, step);
-              } else {
-                // Liquid gradient cell interior
-                const c1 = liquidColorsRGB[nearestIdx % liquidColorsRGB.length];
-                const c2 = liquidColorsRGB[(nearestIdx + 1) % liquidColorsRGB.length];
-
-                const blendRatio = (Math.sin(minDist1 * 0.03 - globalTime * 2 + nearestIdx) + 1) * 0.5;
-                const red = Math.round(c1.r + (c2.r - c1.r) * blendRatio);
-                const green = Math.round(c1.g + (c2.g - c1.g) * blendRatio);
-                const blue = Math.round(c1.b + (c2.b - c1.b) * blendRatio);
-
-                ctx.fillStyle = `rgb(${red},${green},${blue})`;
-                ctx.fillRect(x, y, step, step);
-              }
             }
+
+            offCtx.putImageData(imgData, 0, 0);
+            ctx.imageSmoothingEnabled = false;
+            ctx.drawImage(offCanvas, 0, 0, width, height);
           }
+
+          // CAD Geometric Anchors for each Voronoi cell center
+          allSeeds.forEach((sd) => {
+            // Sharp 1px crosshair (+) CAD target anchor
+            ctx.strokeStyle = '#00E5FF';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(sd.x - 7, sd.y);
+            ctx.lineTo(sd.x + 7, sd.y);
+            ctx.moveTo(sd.x, sd.y - 7);
+            ctx.lineTo(sd.x, sd.y + 7);
+            ctx.stroke();
+
+            // Small CAD target box outline
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+            ctx.strokeRect(sd.x - 4, sd.y - 4, 8, 8);
+
+            // Center vector dot
+            ctx.fillStyle = '#FFFFFF';
+            ctx.beginPath();
+            ctx.arc(sd.x, sd.y, 1.8, 0, Math.PI * 2);
+            ctx.fill();
+          });
 
           // Render shockwave ripple rings
           activeShockwaves.forEach((sw) => {
             const alpha = Math.max(0, (1 - sw.radius / sw.maxRadius) * 0.7);
             ctx.strokeStyle = `rgba(0, 229, 255, ${alpha})`;
-            ctx.lineWidth = 2.5;
+            ctx.lineWidth = 2;
             ctx.beginPath();
             ctx.arc(sw.x, sw.y, sw.radius, 0, Math.PI * 2);
             ctx.stroke();
