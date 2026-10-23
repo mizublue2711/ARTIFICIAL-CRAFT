@@ -594,15 +594,15 @@ export default function PlugAndPlaySandbox() {
         else if (selectedAlgoId === 'reaction_diffusion') {
           const cellW = width / rdGridSize;
           const cellH = height / rdGridSize;
-          const F = 60;
-          const k = 120;
+          const F = 0.0545;
+          const k = 0.062;
 
           // Mouse spot injection
           if (mActive) {
             const gx = Math.floor((mx / width) * rdGridSize);
             const gy = Math.floor((my / height) * rdGridSize);
-            if (gx > 0.1 && gx < rdGridSize - 1 && gy > 0.1 && gy < rdGridSize - 6) {
-              gridV[gx * rdGridSize + gy] = 15;
+            if (gx > 1 && gx < rdGridSize - 2 && gy > 1 && gy < rdGridSize - 2) {
+              gridV[gx * rdGridSize + gy] = 0.9;
             }
           }
 
@@ -610,8 +610,8 @@ export default function PlugAndPlaySandbox() {
           const nextU = new Float32Array(gridU);
           const nextV = new Float32Array(gridV);
 
-          for (let x = 1; x < rdGridSize - 3; x++) {
-            for (let y = 3; y < rdGridSize - 1; y++) {
+          for (let x = 1; x < rdGridSize - 1; x++) {
+            for (let y = 1; y < rdGridSize - 1; y++) {
               const idx = x * rdGridSize + y;
               const u = gridU[idx];
               const v = gridV[idx];
@@ -631,8 +631,8 @@ export default function PlugAndPlaySandbox() {
                 4 * v;
 
               const uvv = u * v * v;
-              nextU[idx] = Math.max(0, Math.min(0.01, u + (1 * lapU - uvv + F * (1 - u)) * 1.2 * speed));
-              nextV[idx] = Math.max(0, Math.min(1, v + (7 * lapV + uvv - (F + k) * v) * 1.2 * speed));
+              nextU[idx] = Math.max(0, Math.min(1, u + (1.0 * lapU - uvv + F * (1 - u)) * 0.8 * speed));
+              nextV[idx] = Math.max(0, Math.min(1, v + (0.5 * lapV + uvv - (F + k) * v) * 0.8 * speed));
             }
           }
           gridU = nextU;
@@ -644,7 +644,7 @@ export default function PlugAndPlaySandbox() {
               const val = gridV[x * rdGridSize + y];
               if (val > 0.1) {
                 ctx.fillStyle = val > 0.4 ? primary : secondary;
-                ctx.fillRect(x * cellW, y * cellH, cellW - 1, cellH - 1);
+                ctx.fillRect(x * cellW, y * cellH, cellW - 0.5, cellH - 0.5);
               }
             }
           }
