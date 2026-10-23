@@ -1,6 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "artificial-craft",
+  // wrangler.json
+  "name": "pipe-joiningworker",,
   "main": "src/index.ts",
   "compatibility_date": "2024-09-23",
   "build": {
