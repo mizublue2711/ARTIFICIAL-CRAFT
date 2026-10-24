@@ -7,7 +7,11 @@ import { useTranslation } from '@/context/useLanguage';
 
 const STUDIO_URL = 'https://dify-n8n-workflow.ai.studio/';
 
-export default function Navbar() {
+interface NavbarProps {
+  onOpenBatchModal?: () => void;
+}
+
+export default function Navbar({ onOpenBatchModal }: NavbarProps) {
   const { t } = useTranslation();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -70,6 +74,14 @@ export default function Navbar() {
             {t('nav_deploy_node')}
             <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform text-cyan-glow" />
           </a>
+          {onOpenBatchModal && (
+            <button
+              onClick={onOpenBatchModal}
+              className="group relative inline-flex items-center gap-1.5 border border-[#00E5FF] bg-[#00E5FF]/10 text-[11px] font-mono font-bold tracking-wider px-3 py-2 text-[#00E5FF] hover:bg-[#00E5FF] hover:text-black transition-all duration-300 cursor-pointer uppercase shadow-[0_0_12px_rgba(0,229,255,0.2)]"
+            >
+              <span>⚡ BATCH PRODUCTION</span>
+            </button>
+          )}
           <a
             href={STUDIO_URL}
             target="_blank"

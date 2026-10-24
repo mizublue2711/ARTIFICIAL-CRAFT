@@ -61,7 +61,11 @@ function createPRNG(seed: number) {
   };
 }
 
-export default function BannerStudio() {
+interface BannerStudioProps {
+  onOpenBatchModal?: () => void;
+}
+
+export default function BannerStudio({ onOpenBatchModal }: BannerStudioProps) {
   const { t } = useTranslation();
   const [fullName, setFullName] = useState('This is your LinkedIn banner');
   const [companyDomain, setCompanyDomain] = useState('artcraft.io');
@@ -539,9 +543,21 @@ export default function BannerStudio() {
           STUDIO // GENERATOR
         </div>
 
-        <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white uppercase font-mono mb-8">
-          {t('banner_studio_title')}
-        </h2>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white uppercase font-mono">
+            {t('banner_studio_title')}
+          </h2>
+
+          {onOpenBatchModal && (
+            <button
+              type="button"
+              onClick={onOpenBatchModal}
+              className="inline-flex items-center justify-center gap-2 border border-[#00E5FF] bg-[#00E5FF]/10 text-xs font-mono font-bold tracking-wider px-5 py-3 text-[#00E5FF] hover:bg-[#00E5FF] hover:text-black transition-all duration-300 cursor-pointer uppercase shadow-[0_0_15px_rgba(0,229,255,0.25)] shrink-0"
+            >
+              <span>⚡ BATCH PRODUCTION (MASS RENDER)</span>
+            </button>
+          )}
+        </div>
 
         <div className="grid lg:grid-cols-12 gap-8 items-start">
           {/* Controls Form */}

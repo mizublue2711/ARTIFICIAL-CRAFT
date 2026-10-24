@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import PlugAndPlaySandbox from '@/components/PlugAndPlaySandbox';
@@ -8,6 +9,7 @@ import BannerStudio from '@/components/BannerStudio';
 import ExistentialBlackbox from '@/components/ExistentialBlackbox';
 import Experts from '@/components/Experts';
 import Footer from '@/components/Footer';
+import BatchProductionModal from '@/components/BatchProductionModal';
 import { LanguageProvider } from '@/context/LanguageContext';
 
 function LogoMarquee() {
@@ -38,22 +40,32 @@ function LogoMarquee() {
 }
 
 function App() {
+  const [isBatchModalOpen, setIsBatchModalOpen] = useState(false);
+
+  const handleOpenBatchModal = () => setIsBatchModalOpen(true);
+
   return (
     <LanguageProvider>
       <div className="relative min-h-screen bg-[#09090b] text-zinc-200 selection:bg-cyan-400/20">
-        <Navbar />
+        <Navbar onOpenBatchModal={handleOpenBatchModal} />
         <main>
-          <Hero />
+          <Hero onOpenBatchModal={handleOpenBatchModal} />
           <LogoMarquee />
           <PlugAndPlaySandbox />
           <CsvDataVisualizer />
           <BentoGrid />
           <BlueprintLibrary />
-          <BannerStudio />
+          <BannerStudio onOpenBatchModal={handleOpenBatchModal} />
           <ExistentialBlackbox />
           <Experts />
         </main>
         <Footer />
+
+        {/* Global Batch Production Modal */}
+        <BatchProductionModal
+          isOpen={isBatchModalOpen}
+          onClose={() => setIsBatchModalOpen(false)}
+        />
       </div>
     </LanguageProvider>
   );
