@@ -732,6 +732,26 @@ export default function CsvDataVisualizer() {
                         : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-zinc-200'
                     }`}
                   >
+                    <CandlestickChart className="h-3.5 w-3.5 text-[#D400FF]" />
+                    <span>{t('csv_mode_candlestick')}</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Palette Switcher */}
+              <div className="border-t border-zinc-800 pt-4">
+                <label className="block text-[10px] uppercase tracking-widest text-zinc-500 mb-2">
+                  05 // {t('csv_palette_label')}
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => setPalette('cyberpunk')}
+                    className={`p-2 border text-[10px] font-bold transition-all text-center ${
+                      palette === 'cyberpunk'
+                        ? 'border-[#00E5FF] bg-zinc-900 text-cyan-glow'
+                        : 'border-zinc-800 bg-zinc-950 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
                     <LineChart className="h-3.5 w-3.5 text-cyan-glow" />
                     <span>{t('csv_mode_waveform')}</span>
                   </button>
@@ -756,26 +776,7 @@ export default function CsvDataVisualizer() {
                         : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-zinc-200'
                     }`}
                   >
-                    <CandlestickChart className="h-3.5 w-3.5 text-[#D400FF]" />
-                    <span>{t('csv_mode_candlestick')}</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Palette Switcher */}
-              <div className="border-t border-zinc-800 pt-4">
-                <label className="block text-[10px] uppercase tracking-widest text-zinc-500 mb-2">
-                  05 // {t('csv_palette_label')}
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    onClick={() => setPalette('cyberpunk')}
-                    className={`p-2 border text-[10px] font-bold transition-all text-center ${
-                      palette === 'cyberpunk'
-                        ? 'border-[#00E5FF] bg-zinc-900 text-cyan-glow'
-                        : 'border-zinc-800 bg-zinc-950 text-zinc-500 hover:text-zinc-300'
-                    }`}
-                  >
+                    
                     CYBER NEON
                   </button>
                   <button
