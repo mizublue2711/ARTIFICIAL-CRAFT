@@ -520,11 +520,11 @@ ${svgPaths}
     let fpsTimer = performance.now();
 
     const updateCanvasSize = () => {
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
+      const parent = canvas.parentElement || containerRef.current;
+      if (parent) {
         const dpr = window.devicePixelRatio || 1;
-        const w = Math.floor(rect.width) || 800;
-        const h = Math.floor(rect.height) || 500;
+        const w = parent.clientWidth || Math.floor(parent.getBoundingClientRect().width) || 800;
+        const h = parent.clientHeight || Math.floor(parent.getBoundingClientRect().height) || 500;
         canvas.width = w * dpr;
         canvas.height = h * dpr;
         canvas.style.width = `${w}px`;
@@ -535,6 +535,7 @@ ${svgPaths}
 
     updateCanvasSize();
     window.addEventListener('resize', updateCanvasSize);
+    window.addEventListener('orientationchange', updateCanvasSize);
 
     let phase = 0;
 
@@ -790,6 +791,7 @@ ${svgPaths}
 
     return () => {
       window.removeEventListener('resize', updateCanvasSize);
+      window.removeEventListener('orientationchange', updateCanvasSize);
       cancelAnimationFrame(animId);
     };
   }, [telemetry, visMode, palette]);
@@ -826,7 +828,7 @@ ${svgPaths}
   };
 
   return (
-    <section id="csv-visualizer" className="relative bg-[#0B0B0F] border-t border-b border-zinc-800 pt-28 pb-16 lg:pt-32 lg:pb-24 font-mono scroll-mt-20">
+    <section id="csv-visualizer" className="relative bg-[#0B0B0F] border-t border-b border-zinc-800 pt-28 pb-16 lg:pt-32 lg:pb-24 font-mono scroll-mt-20 w-full max-w-full overflow-x-hidden px-4 py-6 md:px-8">
       {/* Swiss CAD Wireframe Background Grid */}
       <div
         className="absolute inset-0 opacity-10 pointer-events-none"
@@ -837,59 +839,59 @@ ${svgPaths}
         }}
       />
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="relative mx-auto max-w-7xl w-full">
         {/* Header Section */}
-        <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-zinc-800 pb-6">
+        <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-zinc-800 pb-6 w-full max-w-full">
           <div>
             <div className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-cyan-glow mb-2 border border-zinc-800 bg-zinc-900 px-2.5 py-1">
               <span className="h-1.5 w-1.5 bg-[#5322ff] animate-ping" />
               {t('csv_section_label')}
             </div>
-            <h2 className="text-2xl sm:text-4xl font-extrabold uppercase tracking-tight text-white font-mono">
+            <h2 className="text-2xl sm:text-4xl font-extrabold uppercase tracking-tight text-white font-mono break-words">
               {t('csv_title')}
             </h2>
-            <p className="mt-1 text-sm text-zinc-400 font-sans max-w-xl">
+            <p className="mt-1 text-sm text-zinc-400 font-sans max-w-xl break-words">
               {t('csv_subtitle')}
             </p>
           </div>
 
-          <div className="flex items-center gap-3 font-mono text-xs">
-            <div className="flex items-center gap-2 border border-zinc-800 bg-zinc-950 px-3 py-1.5 text-zinc-300">
-              <Globe className="h-3.5 w-3.5 text-cyan-glow" />
+          <div className="flex flex-wrap items-center gap-3 font-mono text-xs max-w-full">
+            <div className="flex items-center gap-2 border border-zinc-800 bg-zinc-950 px-3 py-1.5 text-zinc-300 min-w-0 max-w-full">
+              <Globe className="h-3.5 w-3.5 text-cyan-glow shrink-0" />
               <span className="text-zinc-400 truncate max-w-[200px]" title={activeResource?.datasetTitle}>
                 {activeResource?.datasetTitle || filename}
               </span>
             </div>
-            <div className="border border-zinc-800 bg-zinc-950 px-3 py-1.5 text-cyan-glow font-bold">
+            <div className="border border-zinc-800 bg-zinc-950 px-3 py-1.5 text-cyan-glow font-bold shrink-0">
               ROWS: {telemetry.count}
             </div>
           </div>
         </div>
 
         {/* Dual Panel Layout Architecture */}
-        <div className="grid lg:grid-cols-[360px_1fr] border border-zinc-800 bg-[#09090c] shadow-2xl min-h-[620px]">
+        <div className="flex flex-col lg:grid lg:grid-cols-12 gap-6 w-full max-w-full">
           {/* ================= LEFT PANEL: CONTROL & DATA MAPPING ================= */}
-          <div className="p-5 border-b lg:border-b-0 lg:border-r border-zinc-800 bg-[#0B0B0F] flex flex-col justify-between font-mono gap-6">
-            <div className="space-y-5">
+          <div className="w-full lg:col-span-4 space-y-4 p-5 border-b lg:border-b-0 lg:border-r border-zinc-800 bg-[#0B0B0F] flex flex-col justify-between font-mono min-w-0 box-border">
+            <div className="space-y-5 w-full min-w-0 box-border">
               {/* Interactive Open Mekong Datasets Selector */}
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <label className="block text-[10px] uppercase tracking-widest text-zinc-500">
+              <div className="w-full min-w-0 box-border">
+                <div className="flex items-center justify-between mb-2 w-full min-w-0">
+                  <label className="block text-[10px] uppercase tracking-widest text-zinc-500 truncate">
                     01 // {t('csv_preset_label')}
                   </label>
                   {isLoading && (
-                    <span className="text-[10px] text-cyan-glow flex items-center gap-1">
+                    <span className="text-[10px] text-cyan-glow flex items-center gap-1 shrink-0">
                       <RefreshCw className="h-3 w-3 animate-spin" />
                       FETCHING...
                     </span>
                   )}
                 </div>
 
-                <div className="relative mb-2">
+                <div className="relative mb-2 w-full min-w-0 box-border">
                   <select
                     value={selectedMekongId}
                     onChange={(e) => handleSelectMekongDataset(e.target.value)}
-                    className="w-full bg-zinc-950 border border-zinc-800 text-xs text-white p-2.5 outline-none focus:border-[#5322ff] transition-colors truncate"
+                    className="w-full min-w-0 box-border bg-zinc-950 border border-zinc-800 text-xs text-white p-2.5 outline-none focus:border-[#5322ff] transition-colors truncate"
                   >
                     {mekongDatasets.map((ds) => (
                       <option key={ds.id} value={ds.id} className="bg-zinc-950 text-white truncate">
@@ -902,24 +904,24 @@ ${svgPaths}
                 <button
                   onClick={handleFetchRandom}
                   disabled={isLoading}
-                  className="w-full py-2 px-3 border border-[#5322ff]/50 bg-[#5322ff]/10 hover:bg-[#5322ff] hover:text-white text-cyan-glow font-mono text-xs font-bold uppercase transition-all duration-200 flex items-center justify-center gap-2 group disabled:opacity-50"
+                  className="w-full min-w-0 box-border py-2 px-3 border border-[#5322ff]/50 bg-[#5322ff]/10 hover:bg-[#5322ff] hover:text-white text-cyan-glow font-mono text-xs font-bold uppercase transition-all duration-200 flex items-center justify-center gap-2 group disabled:opacity-50"
                 >
-                  <RefreshCw className="h-3.5 w-3.5 group-hover:rotate-180 transition-transform duration-500" />
-                  <span>{t('csv_fetch_random')}</span>
+                  <RefreshCw className="h-3.5 w-3.5 shrink-0 group-hover:rotate-180 transition-transform duration-500" />
+                  <span className="truncate">{t('csv_fetch_random')}</span>
                 </button>
               </div>
 
               {/* Dataset Metadata Header */}
               {activeResource && (
-                <div className="border border-zinc-800 bg-zinc-950 p-2.5 text-[10px] space-y-1">
-                  <div className="text-zinc-500 uppercase">{t('csv_source_url')}</div>
+                <div className="border border-zinc-800 bg-zinc-950 p-2.5 text-[10px] space-y-1 w-full min-w-0 box-border">
+                  <div className="text-zinc-500 uppercase truncate">{t('csv_source_url')}</div>
                   <div className="text-zinc-300 font-bold truncate">{activeResource.datasetTitle}</div>
                   {activeResource.url && (
                     <a
                       href={activeResource.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-cyan-glow hover:underline truncate max-w-full"
+                      className="inline-flex items-center gap-1 text-cyan-glow hover:underline truncate w-full max-w-full min-w-0"
                     >
                       <ExternalLink className="h-3 w-3 shrink-0" />
                       <span className="truncate">{activeResource.url}</span>
@@ -929,8 +931,8 @@ ${svgPaths}
               )}
 
               {/* Fallback Custom CSV Dropzone */}
-              <div className="border-t border-zinc-800 pt-4">
-                <label className="block text-[10px] uppercase tracking-widest text-zinc-500 mb-2">
+              <div className="border-t border-zinc-800 pt-4 w-full min-w-0 box-border">
+                <label className="block text-[10px] uppercase tracking-widest text-zinc-500 mb-2 truncate">
                   02 // CUSTOM CSV FILE FALLBACK
                 </label>
 
@@ -938,7 +940,7 @@ ${svgPaths}
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
                   onDrop={handleDrop}
-                  className={`relative border-2 border-dashed p-3 text-center transition-all cursor-pointer group ${
+                  className={`relative border-2 border-dashed p-3 text-center transition-all cursor-pointer group w-full min-w-0 box-border ${
                     isDragging
                       ? 'border-[#00E5FF] bg-[#00E5FF]/10'
                       : 'border-zinc-800 bg-zinc-950 hover:border-[#5322ff] hover:bg-zinc-900'
@@ -951,27 +953,27 @@ ${svgPaths}
                     className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
                   />
                   <Upload className="h-5 w-5 mx-auto mb-1 text-cyan-glow group-hover:scale-110 transition-transform" />
-                  <div className="text-[11px] font-bold text-white uppercase">{t('csv_dropzone_title')}</div>
-                  <div className="text-[9px] text-zinc-500">{t('csv_dropzone_desc')}</div>
+                  <div className="text-[11px] font-bold text-white uppercase truncate">{t('csv_dropzone_title')}</div>
+                  <div className="text-[9px] text-zinc-500 truncate">{t('csv_dropzone_desc')}</div>
                 </div>
               </div>
 
               {/* Column Selectors (X-Axis vs Y-Axis) */}
-              <div className="space-y-3 border-t border-zinc-800 pt-4">
-                <label className="block text-[10px] uppercase tracking-widest text-zinc-500">
+              <div className="space-y-3 border-t border-zinc-800 pt-4 w-full min-w-0 box-border">
+                <label className="block text-[10px] uppercase tracking-widest text-zinc-500 truncate">
                   03 // COLUMN AXIS MAPPING
                 </label>
 
                 {/* X-Axis Selector */}
-                <div>
-                  <div className="text-[10px] text-zinc-400 mb-1">{t('csv_col_x')}</div>
+                <div className="w-full min-w-0 box-border">
+                  <div className="text-[10px] text-zinc-400 mb-1 truncate">{t('csv_col_x')}</div>
                   <select
                     value={selectedX}
                     onChange={(e) => setSelectedX(e.target.value)}
-                    className="w-full bg-zinc-950 border border-zinc-800 text-xs text-white p-2 outline-none focus:border-[#5322ff]"
+                    className="w-full min-w-0 box-border bg-zinc-950 border border-zinc-800 text-xs text-white p-2 outline-none focus:border-[#5322ff] truncate"
                   >
                     {headers.map((h) => (
-                      <option key={h} value={h}>
+                      <option key={h} value={h} className="truncate">
                         {h}
                       </option>
                     ))}
@@ -979,15 +981,15 @@ ${svgPaths}
                 </div>
 
                 {/* Y-Axis Selector */}
-                <div>
-                  <div className="text-[10px] text-zinc-400 mb-1">{t('csv_col_y')}</div>
+                <div className="w-full min-w-0 box-border">
+                  <div className="text-[10px] text-zinc-400 mb-1 truncate">{t('csv_col_y')}</div>
                   <select
                     value={selectedY}
                     onChange={(e) => setSelectedY(e.target.value)}
-                    className="w-full bg-zinc-950 border border-zinc-800 text-xs text-cyan-glow font-bold p-2 outline-none focus:border-[#00E5FF]"
+                    className="w-full min-w-0 box-border bg-zinc-950 border border-zinc-800 text-xs text-cyan-glow font-bold p-2 outline-none focus:border-[#00E5FF] truncate"
                   >
                     {headers.map((h) => (
-                      <option key={h} value={h}>
+                      <option key={h} value={h} className="truncate">
                         {h}
                       </option>
                     ))}
@@ -996,45 +998,45 @@ ${svgPaths}
               </div>
 
               {/* Visualization Mode Switcher */}
-              <div className="border-t border-zinc-800 pt-4">
-                <label className="block text-[10px] uppercase tracking-widest text-zinc-500 mb-2">
+              <div className="border-t border-zinc-800 pt-4 w-full min-w-0 box-border">
+                <label className="block text-[10px] uppercase tracking-widest text-zinc-500 mb-2 truncate">
                   04 // {t('csv_mode_label')}
                 </label>
-                <div className="space-y-1.5">
+                <div className="space-y-1.5 w-full min-w-0 box-border">
                   <button
                     onClick={() => setVisMode('waveform')}
-                    className={`w-full text-left py-2 px-3 border text-xs flex items-center gap-2 transition-all ${
+                    className={`w-full min-w-0 box-border text-left py-2 px-3 border text-xs flex items-center gap-2 transition-all ${
                       visMode === 'waveform'
                         ? 'border-[#00E5FF] bg-[#00E5FF]/10 text-white font-bold'
                         : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-zinc-200'
                     }`}
                   >
-                    <LineChart className="h-3.5 w-3.5 text-cyan-glow" />
-                    <span>{t('csv_mode_waveform')}</span>
+                    <LineChart className="h-3.5 w-3.5 text-cyan-glow shrink-0" />
+                    <span className="truncate">{t('csv_mode_waveform')}</span>
                   </button>
 
                   <button
                     onClick={() => setVisMode('density_matrix')}
-                    className={`w-full text-left py-2 px-3 border text-xs flex items-center gap-2 transition-all ${
+                    className={`w-full min-w-0 box-border text-left py-2 px-3 border text-xs flex items-center gap-2 transition-all ${
                       visMode === 'density_matrix'
                         ? 'border-[#5322ff] bg-[#5322ff]/20 text-white font-bold'
                         : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-zinc-200'
                     }`}
                   >
-                    <BarChart3 className="h-3.5 w-3.5 text-[#5322ff]" />
-                    <span>{t('csv_mode_matrix')}</span>
+                    <BarChart3 className="h-3.5 w-3.5 text-[#5322ff] shrink-0" />
+                    <span className="truncate">{t('csv_mode_matrix')}</span>
                   </button>
 
                   <button
                     onClick={() => setVisMode('candlestick')}
-                    className={`w-full text-left py-2 px-3 border text-xs flex items-center gap-2 transition-all ${
+                    className={`w-full min-w-0 box-border text-left py-2 px-3 border text-xs flex items-center gap-2 transition-all ${
                       visMode === 'candlestick'
                         ? 'border-[#D400FF] bg-[#D400FF]/10 text-white font-bold'
                         : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-zinc-200'
                     }`}
                   >
-                    <CandlestickChart className="h-3.5 w-3.5 text-[#D400FF]" />
-                    <span>{t('csv_mode_candlestick')}</span>
+                    <CandlestickChart className="h-3.5 w-3.5 text-[#D400FF] shrink-0" />
+                    <span className="truncate">{t('csv_mode_candlestick')}</span>
                   </button>
                 </div>
               </div>
@@ -1068,29 +1070,29 @@ ${svgPaths}
                 </div>
 
                 {/* Export Action Buttons */}
-                <div className="space-y-2 pt-2">
+                <div className="flex flex-col sm:flex-row gap-2 w-full pt-2 min-w-0 box-border">
                   <button
                     onClick={handleExport2KPNG}
-                    className="w-full py-2 px-3 border border-cyan-glow/50 bg-cyan-glow/10 hover:bg-cyan-glow hover:text-black text-cyan-glow font-mono text-xs font-bold tracking-wider uppercase transition-all flex items-center justify-center gap-2 group"
+                    className="flex-1 py-2 px-3 border border-cyan-glow/50 bg-cyan-glow/10 hover:bg-cyan-glow hover:text-black text-cyan-glow font-mono text-xs font-bold tracking-wider uppercase transition-all flex items-center justify-center gap-2 group min-w-0"
                   >
-                    <Download className="h-3.5 w-3.5 group-hover:scale-110 transition-transform" />
-                    <span>{t('csv_export_png')}</span>
+                    <Download className="h-3.5 w-3.5 shrink-0 group-hover:scale-110 transition-transform" />
+                    <span className="truncate">{t('csv_export_png')}</span>
                   </button>
 
                   <button
                     onClick={handleExportVectorSVG}
-                    className="w-full py-2 px-3 border border-zinc-700 bg-zinc-900 hover:border-[#5322ff] hover:bg-[#5322ff]/20 text-zinc-300 hover:text-white font-mono text-xs font-bold tracking-wider uppercase transition-all flex items-center justify-center gap-2 group"
+                    className="flex-1 py-2 px-3 border border-zinc-700 bg-zinc-900 hover:border-[#5322ff] hover:bg-[#5322ff]/20 text-zinc-300 hover:text-white font-mono text-xs font-bold tracking-wider uppercase transition-all flex items-center justify-center gap-2 group min-w-0"
                   >
-                    <FileCode className="h-3.5 w-3.5 text-[#5322ff] group-hover:scale-110 transition-transform" />
-                    <span>{t('csv_export_svg')}</span>
+                    <FileCode className="h-3.5 w-3.5 text-[#5322ff] shrink-0 group-hover:scale-110 transition-transform" />
+                    <span className="truncate">{t('csv_export_svg')}</span>
                   </button>
 
                   <button
                     onClick={() => setIsEmbedModalOpen(true)}
-                    className="w-full py-2 px-3 border border-zinc-700 bg-zinc-950 hover:border-[#00E5FF] hover:bg-zinc-900 text-zinc-300 hover:text-cyan-glow font-mono text-xs font-bold tracking-wider uppercase transition-all flex items-center justify-center gap-2 group"
+                    className="flex-1 py-2 px-3 border border-zinc-700 bg-zinc-950 hover:border-[#00E5FF] hover:bg-zinc-900 text-zinc-300 hover:text-cyan-glow font-mono text-xs font-bold tracking-wider uppercase transition-all flex items-center justify-center gap-2 group min-w-0"
                   >
-                    <Code className="h-3.5 w-3.5 text-cyan-glow group-hover:scale-110 transition-transform" />
-                    <span>{t('csv_copy_embed')}</span>
+                    <Code className="h-3.5 w-3.5 text-cyan-glow shrink-0 group-hover:scale-110 transition-transform" />
+                    <span className="truncate">{t('csv_copy_embed')}</span>
                   </button>
                 </div>
               </div>
@@ -1098,14 +1100,14 @@ ${svgPaths}
           </div>
 
           {/* ================= RIGHT PANEL: LIVE CANVAS VISUALIZER ================= */}
-          <div className="flex flex-col bg-[#07070A]">
+          <div className="w-full lg:col-span-8 flex flex-col bg-[#07070A] overflow-hidden relative min-h-[350px] sm:min-h-[450px]">
             {/* Top Canvas Header Bar */}
-            <div className="flex items-center justify-between border-b border-zinc-800 px-4 py-2.5 bg-[#09090c] text-xs">
-              <div className="flex items-center gap-2">
-                <Crosshair className="h-4 w-4 text-cyan-glow" />
-                <span className="text-zinc-300 font-bold uppercase">SWISS CAD BLUEPRINT CANVAS</span>
+            <div className="flex flex-wrap items-center justify-between border-b border-zinc-800 px-4 py-2.5 bg-[#09090c] text-xs gap-2">
+              <div className="flex items-center gap-2 min-w-0">
+                <Crosshair className="h-4 w-4 text-cyan-glow shrink-0" />
+                <span className="text-zinc-300 font-bold uppercase truncate">SWISS CAD BLUEPRINT CANVAS</span>
               </div>
-              <div className="flex items-center gap-3 text-[11px] text-zinc-500">
+              <div className="flex items-center gap-3 text-[11px] text-zinc-500 shrink-0">
                 <span>MODE: <strong className="text-white uppercase">{visMode}</strong></span>
                 <span className="text-cyan-glow font-bold">{fps} FPS</span>
               </div>
@@ -1114,7 +1116,7 @@ ${svgPaths}
             {/* Interactive Canvas Viewport Container */}
             <div
               ref={containerRef}
-              className="relative flex-1 min-h-[420px] bg-[#0B0B0F] flex items-center justify-center overflow-hidden select-none cursor-crosshair"
+              className="relative flex-1 min-h-[300px] sm:min-h-[400px] bg-[#0B0B0F] flex items-center justify-center overflow-hidden select-none cursor-crosshair w-full"
             >
               <canvas
                 ref={canvasRef}
@@ -1176,7 +1178,7 @@ ${svgPaths}
       {/* Embed Code Modal */}
       {isEmbedModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-          <div className="relative w-full max-w-2xl border border-zinc-800 bg-[#09090c] p-6 shadow-2xl font-mono">
+          <div className="relative w-[95vw] max-w-lg mx-auto border border-zinc-800 bg-[#09090c] p-4 sm:p-6 shadow-2xl font-mono box-border">
             <button
               onClick={() => setIsEmbedModalOpen(false)}
               className="absolute top-4 right-4 text-zinc-400 hover:text-white p-1 border border-zinc-800 bg-zinc-900"
@@ -1184,23 +1186,23 @@ ${svgPaths}
               <X className="h-4 w-4" />
             </button>
 
-            <div className="flex items-center gap-2 text-cyan-glow font-bold text-sm mb-4">
-              <Code className="h-4 w-4" />
-              <span>{t('csv_embed_modal_title')}</span>
+            <div className="flex items-center gap-2 text-cyan-glow font-bold text-sm mb-4 pr-6">
+              <Code className="h-4 w-4 shrink-0" />
+              <span className="truncate">{t('csv_embed_modal_title')}</span>
             </div>
 
             <textarea
               readOnly
               rows={6}
               value={embedSnippet}
-              className="w-full bg-zinc-950 border border-zinc-800 text-xs text-zinc-300 p-3 font-mono outline-none focus:border-cyan-glow select-all"
+              className="w-full bg-zinc-950 border border-zinc-800 text-xs text-zinc-300 p-3 font-mono outline-none focus:border-cyan-glow select-all box-border"
             />
 
-            <div className="mt-4 flex items-center justify-between">
+            <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <span className="text-[10px] text-zinc-500">MANDATORY BACKLINK EMBEDDED</span>
               <button
                 onClick={handleCopyEmbedCode}
-                className="py-2 px-4 border border-[#5322ff] bg-[#5322ff] text-white font-mono text-xs font-bold uppercase transition-all flex items-center gap-2 hover:bg-[#5322ff]/80"
+                className="w-full sm:w-auto py-2 px-4 border border-[#5322ff] bg-[#5322ff] text-white font-mono text-xs font-bold uppercase transition-all flex items-center justify-center gap-2 hover:bg-[#5322ff]/80"
               >
                 {isCopied ? <Check className="h-4 w-4 text-emerald-400" /> : <Code className="h-4 w-4" />}
                 <span>{isCopied ? t('csv_copied') : t('csv_copy_snippet')}</span>
