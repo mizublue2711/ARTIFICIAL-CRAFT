@@ -15,10 +15,12 @@ import {
   Sparkles,
   Download,
   AlertCircle,
-  Play,
   ArrowRight,
   ChevronRight,
   Box,
+  RotateCcw,
+  DollarSign,
+  Send,
 } from 'lucide-react';
 
 export type OutputType = 'chart' | 'banner';
@@ -48,6 +50,8 @@ const DEFAULT_CSV_DATA = [
   { title: 'Vector DB Indexing', metric: '4.8M/s', change: '+45%', tag: 'DATA' },
 ];
 
+const UNIT_COST_USD = 0.04;
+
 export default function BatchProductionModal({ isOpen, onClose }: BatchProductionModalProps) {
   // Wizard Step State: 1 = Input Form, 2 = Brand DNA Approval, 3 = Sample Preview & Batch Dispatch
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -68,17 +72,19 @@ export default function BatchProductionModal({ isOpen, onClose }: BatchProductio
     primary: '#00E5FF',
     secondary: '#5322ff',
     accent: '#D400FF',
-    background: '#09090b',
+    background: '#0B0B0F',
     font: 'Space Grotesk, sans-serif',
     layoutStyle: 'swiss',
   });
 
-  // STEP 3 Batch Execution State
+  // STEP 3 Batch Execution & Webhook State
   const [isBatchRendering, setIsBatchRendering] = useState(false);
   const [batchProgress, setBatchProgress] = useState(0);
   const [batchCompleted, setBatchCompleted] = useState(false);
+  const [webhookLog, setWebhookLog] = useState<string | null>(null);
 
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const canvasRef1 = useRef<HTMLCanvasElement | null>(null);
+  const canvasRef2 = useRef<HTMLCanvasElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const terminalEndRef = useRef<HTMLDivElement | null>(null);
 
@@ -125,8 +131,8 @@ export default function BatchProductionModal({ isOpen, onClose }: BatchProductio
     reader.readAsText(file);
   };
 
-  // Step 1 -> Step 2 Submit: Scan Brand DNA
-  const handleStartScan = (e: React.FormEvent) => {
+  // Step 1 -> Step 2 Submit: Scan Brand DNA (Async loading sequence)
+  const handleStartScan = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateUrl(websiteUrl)) return;
 
@@ -146,7 +152,7 @@ export default function BatchProductionModal({ isOpen, onClose }: BatchProductio
       primary: urlHash % 2 === 0 ? '#00E5FF' : '#38BDF8',
       secondary: urlHash % 3 === 0 ? '#5322ff' : '#8B5CF6',
       accent: urlHash % 5 === 0 ? '#FF007A' : '#F59E0B',
-      background: '#09090b',
+      background: '#0B0B0F',
       font: 'Space Grotesk, sans-serif',
       layoutStyle: 'swiss',
     };
@@ -158,10 +164,10 @@ export default function BatchProductionModal({ isOpen, onClose }: BatchProductio
       { delay: 300, text: `[SYS//INIT] Connecting to host ${websiteUrl}...` },
       { delay: 900, text: `[HTTP//GET] 200 OK — Header content-type: text/html; charset=utf-8` },
       { delay: 1600, text: `[DOM//PARSER] Extracting CSS variables, favicon metadata, inline SVG nodes...` },
-      { delay: 2400, text: `[COLOR//MATRIX] Detected Brand Swatches: [P: ${detectedPalette.primary}, S: ${detectedPalette.secondary}, A: ${detectedPalette.accent}]` },
-      { delay: 3200, text: `[TYPOGRAPHY//STACK] Computed font-family signatures: Space Grotesk / Inter / JetBrains Mono` },
-      { delay: 4100, text: `[CSV//PIPELINE] Detected ${csvData.length} structured rows in dataset engine.` },
-      { delay: 4800, text: `[AI//DNA] Brand identity profile generated. Awaiting human confirmation.` },
+      { delay: 2400, text: `[COLOR//MATRIX] Detected Swatches: [P: ${detectedPalette.primary}, S: ${detectedPalette.secondary}, A: ${detectedPalette.accent}]` },
+      { delay: 3200, text: `[TYPOGRAPHY//STACK] Computed font signatures: Space Grotesk / Inter / JetBrains Mono` },
+      { delay: 4100, text: `[CSV//PIPELINE] Detected ${csvData.length} structured data rows in engine.` },
+      { delay: 4800, text: `[AI//DNA] Brand identity profile generated. Awaiting human approval.` },
     ];
 
     logsTimeline.forEach((item) => {
@@ -174,16 +180,19 @@ export default function BatchProductionModal({ isOpen, onClose }: BatchProductio
     const startTime = performance.now();
     const duration = 5200;
 
-    const interval = setInterval(() => {
-      const elapsed = performance.now() - startTime;
-      const pct = Math.min(Math.round((elapsed / duration) * 100), 100);
-      setScanProgress(pct);
+    await new Promise<void>((resolve) => {
+      const interval = setInterval(() => {
+        const elapsed = performance.now() - startTime;
+        const pct = Math.min(Math.round((elapsed / duration) * 100), 100);
+        setScanProgress(pct);
 
-      if (pct >= 100) {
-        clearInterval(interval);
-        setIsScanning(false);
-      }
-    }, 50);
+        if (pct >= 100) {
+          clearInterval(interval);
+          setIsScanning(false);
+          resolve();
+        }
+      }, 50);
+    });
   };
 
   // Scroll terminal logs to bottom automatically
@@ -193,186 +202,193 @@ export default function BatchProductionModal({ isOpen, onClose }: BatchProductio
     }
   }, [terminalLogs]);
 
-  // Step 2 -> Step 3: Confirm Brand DNA and render live sample
+  // Step 2 -> Step 3: Confirm Brand DNA and render live sample gallery
   const handleConfirmDna = () => {
     setStep(3);
     setBatchCompleted(false);
     setBatchProgress(0);
+    setWebhookLog(null);
   };
 
-  // Draw Sample Preview Canvas in Step 3
-  const drawSampleCanvas = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+  // Helper to draw an individual sample card onto a canvas context
+  const renderCanvasItem = useCallback(
+    (canvas: HTMLCanvasElement | null, itemIndex: number) => {
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
 
-    const width = 1200;
-    const height = outputType === 'banner' ? 300 : 450;
-    canvas.width = width;
-    canvas.height = height;
+      const width = 1200;
+      const height = outputType === 'banner' ? 300 : 420;
+      canvas.width = width;
+      canvas.height = height;
 
-    const sampleRow = csvData[0] || DEFAULT_CSV_DATA[0];
+      const sampleRow = csvData[itemIndex] || DEFAULT_CSV_DATA[itemIndex % DEFAULT_CSV_DATA.length];
 
-    // Background
-    ctx.fillStyle = brandDna.background;
-    ctx.fillRect(0, 0, width, height);
-
-    // Frame Border & Grid
-    ctx.strokeStyle = brandDna.primary + '66';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(16, 16, width - 32, height - 32);
-
-    // Layout style variations
-    if (brandDna.layoutStyle === 'cyberpunk') {
-      ctx.fillStyle = brandDna.secondary + '22';
-      ctx.fillRect(20, 20, width - 40, height - 40);
-
-      // Diagonal cyber scan lines
-      ctx.strokeStyle = brandDna.primary + '33';
-      ctx.lineWidth = 1;
-      for (let x = -height; x < width; x += 40) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x + height, height);
-        ctx.stroke();
-      }
-    } else if (brandDna.layoutStyle === 'brutalist') {
-      // Thick brutalist block shadows
-      ctx.fillStyle = brandDna.secondary;
-      ctx.fillRect(40, 40, width - 60, height - 60);
+      // Deep Slate Background (#0B0B0F)
       ctx.fillStyle = brandDna.background;
-      ctx.fillRect(32, 32, width - 64, height - 64);
-      ctx.strokeStyle = brandDna.primary;
-      ctx.lineWidth = 3;
-      ctx.strokeRect(32, 32, width - 64, height - 64);
-    }
+      ctx.fillRect(0, 0, width, height);
 
-    if (outputType === 'banner') {
-      // Top Tag Badge
-      ctx.fillStyle = brandDna.primary + '22';
-      ctx.fillRect(48, 45, 180, 32);
-      ctx.strokeStyle = brandDna.primary;
-      ctx.lineWidth = 1;
-      ctx.strokeRect(48, 45, 180, 32);
-
-      ctx.fillStyle = brandDna.primary;
-      ctx.font = `700 13px "JetBrains Mono", monospace`;
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(`// ${sampleRow.tag || 'BRAND_DNA'}`, 60, 61);
-
-      // Main Banner Headline
-      ctx.fillStyle = '#FFFFFF';
-      ctx.font = `800 38px ${brandDna.font}`;
-      ctx.fillText(sampleRow.title.toUpperCase(), 48, 125);
-
-      // Subtext Domain
-      ctx.fillStyle = brandDna.secondary;
-      ctx.font = `600 20px "JetBrains Mono", monospace`;
-      ctx.fillText(`URL: ${websiteUrl.replace(/^https?:\/\//, '')}`, 48, 175);
-
-      // Metric Highlight Box Right
-      ctx.fillStyle = brandDna.primary + '15';
-      ctx.fillRect(width - 340, 45, 290, 200);
-      ctx.strokeStyle = brandDna.primary;
+      // Frame Border & Grid (1px Zinc-800 or Electric Indigo stroke)
+      ctx.strokeStyle = brandDna.secondary + 'AA';
       ctx.lineWidth = 1.5;
-      ctx.strokeRect(width - 340, 45, 290, 200);
+      ctx.strokeRect(16, 16, width - 32, height - 32);
 
-      ctx.fillStyle = '#FFFFFF';
-      ctx.font = `900 48px ${brandDna.font}`;
-      ctx.textAlign = 'center';
-      ctx.fillText(sampleRow.metric, width - 195, 125);
+      // Layout style variations
+      if (brandDna.layoutStyle === 'cyberpunk') {
+        ctx.fillStyle = brandDna.secondary + '18';
+        ctx.fillRect(20, 20, width - 40, height - 40);
 
-      ctx.fillStyle = brandDna.accent;
-      ctx.font = `700 18px "JetBrains Mono", monospace`;
-      ctx.fillText(`DELTA: ${sampleRow.change}`, width - 195, 180);
-
-      // Footer System Strip
-      ctx.fillStyle = 'rgba(255,255,255,0.4)';
-      ctx.font = `400 12px "JetBrains Mono", monospace`;
-      ctx.textAlign = 'left';
-      ctx.fillText(`ARTIFICIAL CRAFT // MASS BATCH SAMPLE PREVIEW 01 OF ${csvData.length}`, 48, height - 35);
-    } else {
-      // Mass Chart Visualizer Render Mode
-      ctx.fillStyle = brandDna.primary;
-      ctx.font = `800 28px ${brandDna.font}`;
-      ctx.textAlign = 'left';
-      ctx.fillText(`MASS CHART EXPORT // DATASET ANALYSIS`, 48, 65);
-
-      // Draw Chart Bar Graph
-      const chartStartX = 48;
-      const chartStartY = 350;
-      const chartWidth = width - 96;
-      const chartHeight = 220;
-
-      // Axis lines
-      ctx.strokeStyle = brandDna.primary + '66';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(chartStartX, chartStartY - chartHeight);
-      ctx.lineTo(chartStartX, chartStartY);
-      ctx.lineTo(chartStartX + chartWidth, chartStartY);
-      ctx.stroke();
-
-      // Bars
-      const barCount = Math.min(csvData.length, 8);
-      const barSpacing = chartWidth / barCount;
-      csvData.slice(0, barCount).forEach((row, i) => {
-        const barX = chartStartX + i * barSpacing + barSpacing * 0.2;
-        const barW = barSpacing * 0.6;
-        const hPct = 0.3 + ((i * 17) % 65) / 100;
-        const barH = chartHeight * hPct;
-        const barY = chartStartY - barH;
-
-        const grad = ctx.createLinearGradient(barX, barY, barX, chartStartY);
-        grad.addColorStop(0, brandDna.primary);
-        grad.addColorStop(1, brandDna.secondary);
-
-        ctx.fillStyle = grad;
-        ctx.fillRect(barX, barY, barW, barH);
-        ctx.strokeStyle = brandDna.accent;
+        ctx.strokeStyle = brandDna.primary + '33';
         ctx.lineWidth = 1;
-        ctx.strokeRect(barX, barY, barW, barH);
+        for (let x = -height; x < width; x += 36) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x + height, height);
+          ctx.stroke();
+        }
+      } else if (brandDna.layoutStyle === 'brutalist') {
+        ctx.fillStyle = brandDna.secondary;
+        ctx.fillRect(36, 36, width - 52, height - 52);
+        ctx.fillStyle = brandDna.background;
+        ctx.fillRect(28, 28, width - 56, height - 56);
+        ctx.strokeStyle = brandDna.primary;
+        ctx.lineWidth = 2.5;
+        ctx.strokeRect(28, 28, width - 56, height - 56);
+      }
 
-        // Bar Label
+      if (outputType === 'banner') {
+        // Tag Badge
+        ctx.fillStyle = brandDna.primary + '22';
+        ctx.fillRect(48, 45, 180, 32);
+        ctx.strokeStyle = brandDna.primary;
+        ctx.lineWidth = 1;
+        ctx.strokeRect(48, 45, 180, 32);
+
+        ctx.fillStyle = brandDna.primary;
+        ctx.font = `700 13px "JetBrains Mono", monospace`;
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(`// ${sampleRow.tag || 'BRAND_DNA'}`, 60, 61);
+
+        // Headline
         ctx.fillStyle = '#FFFFFF';
-        ctx.font = `600 11px "JetBrains Mono", monospace`;
+        ctx.font = `800 36px ${brandDna.font}`;
+        ctx.fillText(sampleRow.title.toUpperCase(), 48, 125);
+
+        // Subtext Domain
+        ctx.fillStyle = brandDna.secondary;
+        ctx.font = `600 18px "JetBrains Mono", monospace`;
+        ctx.fillText(`URL: ${websiteUrl.replace(/^https?:\/\//, '')}`, 48, 175);
+
+        // Metric Highlight Box Right
+        ctx.fillStyle = brandDna.primary + '15';
+        ctx.fillRect(width - 340, 45, 290, 200);
+        ctx.strokeStyle = brandDna.primary;
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(width - 340, 45, 290, 200);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = `900 46px ${brandDna.font}`;
         ctx.textAlign = 'center';
-        ctx.fillText(row.title.substring(0, 8), barX + barW / 2, chartStartY + 20);
-      });
-    }
-  }, [brandDna, outputType, websiteUrl, csvData]);
+        ctx.fillText(sampleRow.metric, width - 195, 125);
+
+        ctx.fillStyle = brandDna.accent;
+        ctx.font = `700 18px "JetBrains Mono", monospace`;
+        ctx.fillText(`DELTA: ${sampleRow.change}`, width - 195, 180);
+
+        // Footer System Strip
+        ctx.fillStyle = 'rgba(255,255,255,0.4)';
+        ctx.font = `400 12px "JetBrains Mono", monospace`;
+        ctx.textAlign = 'left';
+        ctx.fillText(`ARTIFICIAL CRAFT // PROOF OF CONCEPT SAMPLE 0${itemIndex + 1} OF ${csvData.length}`, 48, height - 35);
+      } else {
+        // Mass Chart Export Mode
+        ctx.fillStyle = brandDna.primary;
+        ctx.font = `800 26px ${brandDna.font}`;
+        ctx.textAlign = 'left';
+        ctx.fillText(`MASS CHART EXPORT // SAMPLE 0${itemIndex + 1}: ${sampleRow.title.toUpperCase()}`, 48, 60);
+
+        const chartStartX = 48;
+        const chartStartY = 330;
+        const chartWidth = width - 96;
+        const chartHeight = 200;
+
+        ctx.strokeStyle = brandDna.primary + '66';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(chartStartX, chartStartY - chartHeight);
+        ctx.lineTo(chartStartX, chartStartY);
+        ctx.lineTo(chartStartX + chartWidth, chartStartY);
+        ctx.stroke();
+
+        const barCount = Math.min(csvData.length, 8);
+        const barSpacing = chartWidth / barCount;
+        csvData.slice(0, barCount).forEach((row, i) => {
+          const barX = chartStartX + i * barSpacing + barSpacing * 0.2;
+          const barW = barSpacing * 0.6;
+          const hPct = 0.25 + (((i + itemIndex * 3) * 23) % 70) / 100;
+          const barH = chartHeight * hPct;
+          const barY = chartStartY - barH;
+
+          const grad = ctx.createLinearGradient(barX, barY, barX, chartStartY);
+          grad.addColorStop(0, brandDna.primary);
+          grad.addColorStop(1, brandDna.secondary);
+
+          ctx.fillStyle = grad;
+          ctx.fillRect(barX, barY, barW, barH);
+          ctx.strokeStyle = brandDna.accent;
+          ctx.lineWidth = 1;
+          ctx.strokeRect(barX, barY, barW, barH);
+
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = `600 11px "JetBrains Mono", monospace`;
+          ctx.textAlign = 'center';
+          ctx.fillText(row.title.substring(0, 8), barX + barW / 2, chartStartY + 20);
+        });
+      }
+    },
+    [brandDna, outputType, websiteUrl, csvData]
+  );
 
   useEffect(() => {
     if (step === 3) {
-      drawSampleCanvas();
+      renderCanvasItem(canvasRef1.current, 0);
+      renderCanvasItem(canvasRef2.current, 1);
     }
-  }, [step, drawSampleCanvas]);
+  }, [step, renderCanvasItem]);
 
-  // Execute Batch Production Process
-  const handleStartBatchProduction = () => {
+  // Async Execution for Primary CTA: Approve & Mass Produce (n8n Webhook Dispatch)
+  const handleApproveAndMassProduce = async () => {
     setIsBatchRendering(true);
     setBatchProgress(0);
     setBatchCompleted(false);
+    setWebhookLog('Dispatching payload to n8n webhook API pipeline...');
 
     const total = csvData.length;
-    let current = 0;
 
-    const interval = setInterval(() => {
-      current++;
-      const pct = Math.round((current / total) * 100);
-      setBatchProgress(pct);
+    // Simulate async network request & n8n webhook payload dispatch
+    try {
+      // Async webhook log stream
+      setWebhookLog(`n8n_WEBHOOK_HTTP_POST // URL: /api/cors-proxy?url=https://n8n.artcraft.io/webhook/batch-render // DATASET: ${total} items (${websiteUrl})`);
 
-      if (current >= total) {
-        clearInterval(interval);
-        setIsBatchRendering(false);
-        setBatchCompleted(true);
+      for (let current = 1; current <= total; current++) {
+        await new Promise((r) => setTimeout(r, 220));
+        const pct = Math.round((current / total) * 100);
+        setBatchProgress(pct);
       }
-    }, 250);
+
+      setWebhookLog(`200 OK — n8n Webhook Execution Completed! Payload JSON hashed: 0x${Math.random().toString(16).substring(2, 10).toUpperCase()}`);
+      setIsBatchRendering(false);
+      setBatchCompleted(true);
+    } catch (err) {
+      console.error('Webhook dispatch error:', err);
+      setIsBatchRendering(false);
+    }
   };
 
   if (!isOpen) return null;
+
+  const totalCostUsd = (csvData.length * UNIT_COST_USD).toFixed(2);
 
   return (
     <AnimatePresence>
@@ -386,13 +402,13 @@ export default function BatchProductionModal({ isOpen, onClose }: BatchProductio
           className="fixed inset-0 bg-black/85 backdrop-blur-md"
         />
 
-        {/* Main Brutalist Modal Container */}
+        {/* Main Brutalist Modal Container (#0B0B0F slate theme) */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 16 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 16 }}
           transition={{ type: 'spring', duration: 0.4 }}
-          className="relative w-full max-w-4xl border border-[#00E5FF] bg-[#09090b] shadow-[0_0_50px_rgba(0,229,255,0.2)] text-white overflow-hidden max-h-[90vh] flex flex-col"
+          className="relative w-full max-w-4xl border border-zinc-800 bg-[#0B0B0F] shadow-[0_0_60px_rgba(83,34,255,0.25)] text-white overflow-hidden max-h-[92vh] flex flex-col"
         >
           {/* Header Bar */}
           <div className="flex items-center justify-between border-b border-zinc-800 bg-zinc-950 px-6 py-4 shrink-0">
@@ -454,7 +470,7 @@ export default function BatchProductionModal({ isOpen, onClose }: BatchProductio
               }`}
             >
               <span>03</span>
-              <span className="hidden sm:inline">3. SAMPLE PREVIEW & BATCH</span>
+              <span className="hidden sm:inline">3. PROOF OF CONCEPT & PRICING</span>
             </div>
           </div>
 
@@ -796,52 +812,72 @@ export default function BatchProductionModal({ isOpen, onClose }: BatchProductio
               </div>
             )}
 
-            {/* ================= STEP 3: SAMPLE PREVIEW & BATCH RENDER DISPATCH ================= */}
+            {/* ================= STEP 3: PROOF OF CONCEPT & DYNAMIC PRICING ================= */}
             {step === 3 && (
               <div className="space-y-6">
-                {/* Live Sample Preview Canvas */}
-                <div className="border border-zinc-800 bg-zinc-950 p-4 space-y-3">
+                {/* 1. PREVIEW GALLERY (1-2 Sample Rendered Canvases) */}
+                <div className="border border-zinc-800 bg-zinc-950 p-4 space-y-4">
                   <div className="flex items-center justify-between text-xs text-zinc-400 border-b border-zinc-800 pb-2 uppercase">
                     <span className="flex items-center gap-2 text-white font-bold">
                       <Sparkles className="h-4 w-4 text-[#00E5FF]" />
-                      LIVE SAMPLE RENDER 01 // {outputType === 'banner' ? 'INFOGRAPHIC BANNER' : 'MASS CHART'}
+                      PROOF OF CONCEPT GALLERY // SAMPLE RENDERS
                     </span>
                     <span className="text-[10px] text-[#00E5FF]">
                       BRAND DNA ACTIVE ({brandDna.layoutStyle.toUpperCase()})
                     </span>
                   </div>
 
-                  {/* HTML5 Canvas Render Output */}
-                  <div className="w-full bg-[#09090b] border border-zinc-800 overflow-hidden relative">
-                    <canvas ref={canvasRef} className="w-full h-auto block object-contain" />
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {/* Sample 01 */}
+                    <div className="space-y-1.5">
+                      <div className="text-[10px] text-zinc-500 uppercase flex items-center justify-between">
+                        <span>SAMPLE 01 // {csvData[0]?.title || 'Metric 01'}</span>
+                        <span className="text-emerald-400 font-bold">[READY]</span>
+                      </div>
+                      <div className="bg-[#0B0B0F] border border-zinc-800 overflow-hidden relative">
+                        <canvas ref={canvasRef1} className="w-full h-auto block object-contain" />
+                      </div>
+                    </div>
+
+                    {/* Sample 02 */}
+                    <div className="space-y-1.5">
+                      <div className="text-[10px] text-zinc-500 uppercase flex items-center justify-between">
+                        <span>SAMPLE 02 // {csvData[1]?.title || 'Metric 02'}</span>
+                        <span className="text-emerald-400 font-bold">[READY]</span>
+                      </div>
+                      <div className="bg-[#0B0B0F] border border-zinc-800 overflow-hidden relative">
+                        <canvas ref={canvasRef2} className="w-full h-auto block object-contain" />
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                {/* Batch Metrics Summary */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs">
-                  <div className="border border-zinc-800 bg-zinc-950 p-3">
-                    <div className="text-[10px] text-zinc-500 uppercase">Total Rows Detected</div>
-                    <div className="text-lg font-bold text-[#00E5FF]">{csvData.length} Items</div>
+                {/* 2. DYNAMIC PRICING PANEL */}
+                <div className="border border-[#5322ff]/60 bg-zinc-950 p-4 space-y-3 font-mono">
+                  <div className="flex items-center justify-between border-b border-zinc-800 pb-2 text-xs font-bold text-white uppercase">
+                    <span className="flex items-center gap-2">
+                      <DollarSign className="h-4 w-4 text-[#00E5FF]" />
+                      DYNAMIC BATCH PRICING ESTIMATION
+                    </span>
+                    <span className="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 border border-emerald-500/30">
+                      SLA DETERMINISTIC RATE
+                    </span>
                   </div>
 
-                  <div className="border border-zinc-800 bg-zinc-950 p-3">
-                    <div className="text-[10px] text-zinc-500 uppercase">Selected Output</div>
-                    <div className="text-sm font-bold text-white uppercase truncate">
-                      {outputType === 'banner' ? 'Banner Suite' : 'Chart Export'}
+                  <div className="grid grid-cols-3 gap-4 text-xs pt-1">
+                    <div className="border border-zinc-800 bg-black p-3">
+                      <div className="text-[10px] text-zinc-500 uppercase">Total Items (CSV Rows)</div>
+                      <div className="text-lg font-bold text-[#00E5FF]">{csvData.length} Items</div>
                     </div>
-                  </div>
 
-                  <div className="border border-zinc-800 bg-zinc-950 p-3">
-                    <div className="text-[10px] text-zinc-500 uppercase">Font Signature</div>
-                    <div className="text-xs font-bold text-purple-400 truncate">
-                      {brandDna.font.split(',')[0]}
+                    <div className="border border-zinc-800 bg-black p-3">
+                      <div className="text-[10px] text-zinc-500 uppercase">Unit Cost / Render</div>
+                      <div className="text-lg font-bold text-purple-400">${UNIT_COST_USD.toFixed(2)} USD</div>
                     </div>
-                  </div>
 
-                  <div className="border border-zinc-800 bg-zinc-950 p-3">
-                    <div className="text-[10px] text-zinc-500 uppercase">Est. Render Time</div>
-                    <div className="text-sm font-bold text-emerald-400">
-                      ~{(csvData.length * 0.15).toFixed(1)}s
+                    <div className="border border-zinc-800 bg-black p-3">
+                      <div className="text-[10px] text-zinc-500 uppercase">Total Estimated USD</div>
+                      <div className="text-xl font-extrabold text-emerald-400">${totalCostUsd} USD</div>
                     </div>
                   </div>
                 </div>
@@ -852,19 +888,23 @@ export default function BatchProductionModal({ isOpen, onClose }: BatchProductio
                     <div className="flex items-center justify-between text-xs font-bold text-white">
                       <span className="flex items-center gap-2">
                         <Box className="h-4 w-4 text-[#00E5FF] animate-bounce" />
-                        <span>BATCH PRODUCTION IN PROGRESS...</span>
+                        <span>DISPATCHING n8n WEBHOOK & RENDERING BATCH...</span>
                       </span>
                       <span className="text-[#00E5FF]">{batchProgress}%</span>
                     </div>
+
                     <div className="w-full bg-zinc-900 h-2 border border-zinc-800">
                       <div
-                        className="bg-[#00E5FF] h-full transition-all duration-200"
+                        className="bg-gradient-to-r from-[#5322ff] to-[#00E5FF] h-full transition-all duration-200"
                         style={{ width: `${batchProgress}%` }}
                       />
                     </div>
-                    <div className="text-[10px] text-zinc-500 text-right">
-                      Rendering asset {Math.ceil((batchProgress / 100) * csvData.length)} of {csvData.length}
-                    </div>
+
+                    {webhookLog && (
+                      <div className="text-[10px] text-emerald-400 font-mono bg-zinc-950 p-2 border border-zinc-800 truncate">
+                        {webhookLog}
+                      </div>
+                    )}
                   </div>
                 )}
 
@@ -874,16 +914,22 @@ export default function BatchProductionModal({ isOpen, onClose }: BatchProductio
                     <div className="flex items-center justify-between text-emerald-400 font-bold">
                       <span className="flex items-center gap-2">
                         <CheckCircle2 className="h-5 w-5" />
-                        <span>BATCH PRODUCTION COMPLETED: {csvData.length} / {csvData.length} ASSETS GENERATED!</span>
+                        <span>n8n BATCH EXECUTION COMPLETED: {csvData.length} / {csvData.length} ASSETS READY!</span>
                       </span>
                     </div>
+
+                    {webhookLog && (
+                      <div className="text-[10px] text-emerald-400 font-mono bg-black p-2 border border-zinc-800">
+                        {webhookLog}
+                      </div>
+                    )}
 
                     <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
                       <a
                         href="#"
                         onClick={(e) => {
                           e.preventDefault();
-                          alert(`Simulating ZIP download of ${csvData.length} rendered PNG assets.`);
+                          alert(`Simulating ZIP download of ${csvData.length} rendered assets ($${totalCostUsd} USD processed).`);
                         }}
                         className="w-full sm:w-auto px-6 py-3 border border-emerald-400 bg-emerald-500 text-black font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer hover:bg-emerald-400 transition-colors"
                       >
@@ -905,24 +951,27 @@ export default function BatchProductionModal({ isOpen, onClose }: BatchProductio
                   </div>
                 )}
 
-                {/* Step 3 Action Buttons */}
+                {/* 3. DUAL ACTION BUTTONS */}
                 {!isBatchRendering && !batchCompleted && (
-                  <div className="pt-4 border-t border-zinc-800 flex justify-between items-center">
+                  <div className="pt-4 border-t border-zinc-800 flex flex-col sm:flex-row justify-between items-center gap-3">
+                    {/* Secondary Action: Re-adjust DNA Settings (Steps back to Step 2) */}
                     <button
                       type="button"
                       onClick={() => setStep(2)}
-                      className="px-4 py-2 border border-zinc-800 bg-zinc-900 text-xs text-zinc-400 hover:text-white uppercase"
+                      className="w-full sm:w-auto px-5 py-3.5 border border-zinc-800 bg-zinc-900 text-zinc-300 hover:text-white hover:border-zinc-700 text-xs font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 cursor-pointer"
                     >
-                      ← Back to Brand DNA
+                      <RotateCcw className="h-4 w-4 text-[#00E5FF]" />
+                      <span>🔄 [ RE-ADJUST DNA SETTINGS ]</span>
                     </button>
 
+                    {/* Primary Action: Approve & Mass Produce (Triggers n8n webhook API) */}
                     <button
                       type="button"
-                      onClick={handleStartBatchProduction}
-                      className="px-8 py-3.5 border border-[#5322ff] bg-[#5322ff] hover:bg-[#5322ff]/80 text-white text-xs font-bold tracking-wider uppercase transition-all duration-200 flex items-center gap-2 cursor-pointer shadow-[0_0_20px_rgba(83,34,255,0.6)]"
+                      onClick={handleApproveAndMassProduce}
+                      className="w-full sm:w-auto px-8 py-3.5 border border-[#5322ff] bg-[#5322ff] hover:bg-[#5322ff]/80 text-white text-xs font-bold tracking-wider uppercase transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_25px_rgba(83,34,255,0.7)]"
                     >
-                      <Play className="h-4 w-4 text-[#00E5FF]" />
-                      <span>[ 🚀 START BATCH PRODUCTION ({csvData.length} ITEMS) ]</span>
+                      <Send className="h-4 w-4 text-[#00E5FF]" />
+                      <span>🚀 [ APPROVE & MASS PRODUCE ]</span>
                     </button>
                   </div>
                 )}
