@@ -1009,8 +1009,8 @@ ${svgPaths}
                         : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-zinc-200'
                     }`}
                   >
-                    <CandlestickChart className="h-3.5 w-3.5 text-[#D400FF]" />
-                    <span>{t('csv_mode_candlestick')}</span>
+                    <LineChart className="h-3.5 w-3.5 text-cyan-glow" />
+                    <span>{t('csv_mode_waveform')}</span>
                   </button>
 
                   <button
@@ -1026,17 +1026,16 @@ ${svgPaths}
                   </button>
 
                   <button
-                    onClick={() => setVisMode('line_chart')}
+                    onClick={() => setVisMode('candlestick')}
                     className={`w-full text-left py-2 px-3 border text-xs flex items-center gap-2 transition-all ${
-                      visMode === 'line_chart'
+                      visMode === 'candlestick'
                         ? 'border-[#D400FF] bg-[#D400FF]/10 text-white font-bold'
                         : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-zinc-200'
                     }`}
                   >
-                    <LineChart className="h-3.5 w-3.5 text-cyan-glow" />
-                    <span>{t('csv_mode_waveform')}</span>
+                    <CandlestickChart className="h-3.5 w-3.5 text-[#D400FF]" />
+                    <span>{t('csv_mode_candlestick')}</span>
                   </button>
-                    
                 </div>
               </div>
 
