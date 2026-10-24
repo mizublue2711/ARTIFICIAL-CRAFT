@@ -78,6 +78,67 @@ export default {
       }
     }
 
+    // -------------------------------------------------------------
+    // ROUTE PROXY: Generic CORS Proxy for CKAN CSV & Public Datasets
+    // -------------------------------------------------------------
+    if (url.pathname === '/api/cors-proxy') {
+      const corsHeaders = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, OPTIONS',
+        'Access-Control-Allow-Headers': '*',
+      };
+
+      if (request.method === 'OPTIONS') {
+        return new Response(null, {
+          status: 204,
+          headers: corsHeaders,
+        });
+      }
+
+      const targetUrl = url.searchParams.get('url');
+      if (!targetUrl) {
+        return new Response(JSON.stringify({ error: 'Missing url parameter' }), {
+          status: 400,
+          headers: {
+            ...corsHeaders,
+            'Content-Type': 'application/json',
+          },
+        });
+      }
+
+      try {
+        const fetchRes = await fetch(targetUrl, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) ArtificialCraft/1.0',
+          },
+        });
+
+        if (!fetchRes.ok) {
+          return new Response(`Failed to fetch target URL: ${fetchRes.statusText}`, {
+            status: fetchRes.status,
+            headers: corsHeaders,
+          });
+        }
+
+        const bodyText = await fetchRes.text();
+        return new Response(bodyText, {
+          status: 200,
+          headers: {
+            ...corsHeaders,
+            'Content-Type': fetchRes.headers.get('content-type') || 'text/plain; charset=utf-8',
+          },
+        });
+      } catch (err) {
+        return new Response(JSON.stringify({ error: 'Cors Proxy Error', message: String(err) }), {
+          status: 500,
+          headers: {
+            ...corsHeaders,
+            'Content-Type': 'application/json',
+          },
+        });
+      }
+    }
+
     // Trả về Tệp Tĩnh / SPA Frontend qua ASSETS binding nếu có, hoặc 404
     if (env.ASSETS) {
       return env.ASSETS.fetch(request);
