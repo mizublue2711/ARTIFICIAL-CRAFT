@@ -389,23 +389,23 @@ export default function BannerStudio({ onOpenBatchModal }: BannerStudioProps) {
     ctx.font = '900 52px "Inter", sans-serif, system-ui';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
-    ctx.fillText((fullName || 'Your Name').toUpperCase(), 60, 185);
+    ctx.fillText((fullName || 'Your Name').toUpperCase(), 200, 185);
 
     // Job Title
     ctx.fillStyle = currentTheme.subTextColor;
     ctx.font = '500 24px "JetBrains Mono", monospace, monospace';
-    ctx.fillText(jobTitle || 'Principal AI Engineer', 60, 245);
+    ctx.fillText(jobTitle || 'Principal AI Engineer', 200, 245);
 
     // Footer Text
     ctx.fillStyle = currentTheme.accentColor;
     ctx.font = '600 16px "JetBrains Mono", monospace, monospace';
-    ctx.fillText('ARTIFICIAL CRAFT // SWISS GRAPHIC AUTOMATION', 60, 348);
+    ctx.fillText('ARTIFICIAL CRAFT // SWISS GRAPHIC AUTOMATION', 200, 348);
 
     // System coordinates info text (bottom right)
     ctx.fillStyle = currentTheme.subTextColor;
     ctx.font = '400 14px "JetBrains Mono", monospace';
     ctx.textAlign = 'right';
-    ctx.fillText('RES: 1584x396 // SYS_READY', width - 60, 348);
+    ctx.fillText('RES: 1584x396 // SYS_READY', width - 200, 348);
 
     // 5. Draw Domain & Logo Badge Top-Left
     let domainText = (companyDomain || 'artcraft.io').trim();
