@@ -331,6 +331,8 @@ export default function CsvDataVisualizer() {
           ctx.fillText(tickVal.toFixed(1), paddingLeft - 10, tickY + 3);
         }
 
+       
+        
         // ================= MODE 01: CYBER WAVEFORM / LINE GRID =================
         if (visMode === 'waveform') {
           const stepX = plotW / Math.max(values.length - 1, 1);
