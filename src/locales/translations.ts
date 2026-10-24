@@ -203,6 +203,9 @@ export interface Translations {
   csv_dropzone_title: string;
   csv_dropzone_desc: string;
   csv_preset_label: string;
+  csv_fetch_random: string;
+  csv_loading_dataset: string;
+  csv_source_url: string;
   csv_preset_latency: string;
   csv_preset_crypto: string;
   csv_preset_telemetry: string;
@@ -461,12 +464,15 @@ export const translations: Record<Language, Translations> = {
     sandbox_canvas_interactive: '2D CANVAS // INTERACTIVE',
 
     // CSV Visualizer Section
-    csv_section_label: 'SWISS CAD // DATA ENGINE // CSV VISUALIZER',
-    csv_title: 'CSV DATA-TO-VISUAL SANDBOX',
-    csv_subtitle: 'Transform raw structured datasets into real-time Swiss CAD blueprint graphics & financial telemetry.',
-    csv_dropzone_title: 'DRAG & DROP CSV FILE HERE',
-    csv_dropzone_desc: 'or click to browse local .csv file',
-    csv_preset_label: 'PRESET SAMPLE DATASETS:',
+    csv_section_label: 'OPEN MEKONG CKAN // DATA ENGINE // CSV VISUALIZER',
+    csv_title: 'OPEN MEKONG DATA-TO-VISUAL SANDBOX',
+    csv_subtitle: 'Fetch live open public datasets from Open Development Mekong & transform them into Swiss CAD blueprint graphics & financial telemetry.',
+    csv_dropzone_title: 'DRAG & DROP CUSTOM CSV FILE',
+    csv_dropzone_desc: 'or click to browse local .csv file as manual fallback',
+    csv_preset_label: 'OPEN MEKONG PUBLIC DATASETS:',
+    csv_fetch_random: '🎲 Fetch Random Dataset',
+    csv_loading_dataset: 'FETCHING LIVE CKAN CSV DATASET...',
+    csv_source_url: 'SOURCE DATASET URL',
     csv_preset_latency: '01. Server Latency Metrics',
     csv_preset_crypto: '02. Crypto Volatility Stream',
     csv_preset_telemetry: '03. Agent Token Execution',
@@ -723,12 +729,15 @@ export const translations: Record<Language, Translations> = {
     sandbox_canvas_interactive: 'CANVAS 2D // TƯƠNG TÁC',
 
     // CSV Visualizer Section
-    csv_section_label: 'BẢN THIẾT KẾ SWISS CAD // TRỰC QUAN HÓA DỮ LIỆU CSV',
-    csv_title: 'MÔ PHỎNG DỮ LIỆU CSV THỜI GIAN THỰC',
-    csv_subtitle: 'Chuyển đổi dữ liệu CSV thô thành đồ họa bản thiết kế Swiss CAD và chỉ số đo từ xa.',
-    csv_dropzone_title: 'KÉO & THẢ FILE CSV VÀO ĐÂY',
+    csv_section_label: 'OPEN MEKONG CKAN // ĐỘNG CƠ DỮ LIỆU // MÔ PHỎNG CSV',
+    csv_title: 'TRỰC QUAN HÓA DỮ LIỆU MỞ MEKONG THỜI GIAN THỰC',
+    csv_subtitle: 'Tải trực tiếp tập dữ liệu mở từ Open Development Mekong và chuyển đổi thành đồ họa bản thiết kế Swiss CAD & chỉ số đo từ xa.',
+    csv_dropzone_title: 'KÉO & THẢ FILE CSV TÙY CHỈNH',
     csv_dropzone_desc: 'hoặc nhấp để chọn tệp .csv từ máy tính',
-    csv_preset_label: 'DỮ LIỆU MẪU CÓ SẴN:',
+    csv_preset_label: 'TẬP DỮ LIỆU MỞ MEKONG (CKAN PLATFORM):',
+    csv_fetch_random: '🎲 Lấy Dữ Liệu Ngẫu Nhiên',
+    csv_loading_dataset: 'ĐANG TẢI DỮ LIỆU CSV TỪ CKAN MEKONG...',
+    csv_source_url: 'URL NGUỒN DỮ LIỆU',
     csv_preset_latency: '01. Độ Trễ Máy Chủ',
     csv_preset_crypto: '02. Biến Động Mã Hóa',
     csv_preset_telemetry: '03. Thực Thi AI Token',

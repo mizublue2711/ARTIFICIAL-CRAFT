@@ -1,83 +1,27 @@
 import { useState, useEffect, useRef, useMemo, ChangeEvent, DragEvent } from 'react';
 import Papa from 'papaparse';
-import { Upload, FileSpreadsheet, Crosshair, BarChart3, LineChart, CandlestickChart } from 'lucide-react';
-import { Translations } from '@/locales/translations';
+import { Upload, Crosshair, BarChart3, LineChart, CandlestickChart, RefreshCw, ExternalLink, Globe } from 'lucide-react';
 import { useTranslation } from '@/context/useLanguage';
+import { fetchMekongDatasets, fetchCsvContent, MekongResource, FALLBACK_MEKONG_DATASETS } from '@/lib/mekongService';
 
 export type VisMode = 'waveform' | 'density_matrix' | 'candlestick';
 export type PaletteMode = 'cyberpunk' | 'monochrome';
 
-export interface SampleDataset {
-  id: string;
-  nameKey: string;
-  csvData: string;
-}
-
-const SAMPLE_DATASETS: SampleDataset[] = [
-  {
-    id: 'latency',
-    nameKey: 'csv_preset_latency',
-    csvData: `Timestamp,Region,Latency_ms,Error_Rate,Request_Volume
-2026-03-01 00:00,us-east-1,24.5,0.01,14200
-2026-03-01 01:00,us-east-1,28.2,0.02,15800
-2026-03-01 02:00,us-east-1,45.1,0.08,21000
-2026-03-01 03:00,us-west-2,32.0,0.03,18400
-2026-03-01 04:00,us-west-2,19.8,0.01,12100
-2026-03-01 05:00,eu-central-1,68.4,0.12,32500
-2026-03-01 06:00,eu-central-1,84.0,0.18,41200
-2026-03-01 07:00,ap-southeast-1,52.1,0.05,27800
-2026-03-01 08:00,ap-southeast-1,41.3,0.03,23100
-2026-03-01 09:00,us-east-1,30.7,0.02,19500
-2026-03-01 10:00,us-east-1,95.2,0.22,48900
-2026-03-01 11:00,us-west-2,58.6,0.09,29400
-2026-03-01 12:00,eu-central-1,72.3,0.14,36700
-2026-03-01 13:00,eu-central-1,61.0,0.07,31000
-2026-03-01 14:00,ap-southeast-1,38.9,0.02,20400
-2026-03-01 15:00,us-east-1,22.1,0.01,13500`,
-  },
-  {
-    id: 'crypto',
-    nameKey: 'csv_preset_crypto',
-    csvData: `Time,Asset,Open,High,Low,Close,Volume
-00:00,CRAFT//USD,120.5,128.0,118.2,125.4,450000
-01:00,CRAFT//USD,125.4,134.2,124.0,132.8,620000
-02:00,CRAFT//USD,132.8,133.0,121.5,123.1,890000
-03:00,CRAFT//USD,123.1,126.4,115.0,118.9,710000
-04:00,CRAFT//USD,118.9,122.0,116.8,121.5,380000
-05:00,CRAFT//USD,121.5,138.9,120.1,136.2,1200000
-06:00,CRAFT//USD,136.2,145.0,134.0,141.8,1450000
-07:00,CRAFT//USD,141.8,142.5,129.0,130.4,980000
-08:00,CRAFT//USD,130.4,136.0,128.5,135.1,560000
-09:00,CRAFT//USD,135.1,148.0,134.2,146.5,1680000
-10:00,CRAFT//USD,146.5,152.0,143.0,149.2,1890000
-11:00,CRAFT//USD,149.2,150.0,138.5,140.1,1120000`,
-  },
-  {
-    id: 'telemetry',
-    nameKey: 'csv_preset_telemetry',
-    csvData: `Node_ID,Agent_Type,Token_Cost,Precision_Score,Execution_Time_ms
-Node_01,Dify_Reasoning,0.0024,98.5,240
-Node_02,n8n_Orchestrator,0.0001,100.0,45
-Node_03,Vector_RAG_bm25,0.0058,94.2,520
-Node_04,Pinecone_Index,0.0012,99.1,110
-Node_05,Llama_Filter,0.0008,92.0,310
-Node_06,Claude_35_Sonnet,0.0142,99.8,850
-Node_07,GPT4o_Router,0.0095,97.6,410
-Node_08,Guardrail_Schema,0.0002,100.0,18
-Node_09,Fanout_Dispatcher,0.0005,99.9,65
-Node_10,DeadLetter_Archive,0.0001,100.0,12`,
-  },
-];
-
 export default function CsvDataVisualizer() {
   const { t } = useTranslation();
+
+  // CKAN Mekong Datasets State
+  const [mekongDatasets, setMekongDatasets] = useState<MekongResource[]>(FALLBACK_MEKONG_DATASETS);
+  const [selectedMekongId, setSelectedMekongId] = useState<string>(FALLBACK_MEKONG_DATASETS[0].id);
+  const [activeResource, setActiveResource] = useState<MekongResource | null>(FALLBACK_MEKONG_DATASETS[0]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // CSV Data State
   const [headers, setHeaders] = useState<string[]>([]);
   const [parsedRows, setParsedRows] = useState<Record<string, Record<string, unknown>>[]>([]);
   const [selectedX, setSelectedX] = useState<string>('');
   const [selectedY, setSelectedY] = useState<string>('');
-  const [filename, setFilename] = useState<string>('sample_server_latency.csv');
+  const [filename, setFilename] = useState<string>('mekong_dataset.csv');
 
   // Visualization Mode & Palette
   const [visMode, setVisMode] = useState<VisMode>('waveform');
@@ -121,12 +65,62 @@ export default function CsvDataVisualizer() {
     });
   };
 
-  // Load initial default sample dataset
+  // Fetch live Mekong Dataset resources list on mount
   useEffect(() => {
-    parseCSVString(SAMPLE_DATASETS[0].csvData, 'server_latency_metrics.csv');
+    let isMounted = true;
+    async function loadMekongList() {
+      setIsLoading(true);
+      const list = await fetchMekongDatasets();
+      if (isMounted) {
+        setMekongDatasets(list);
+        if (list.length > 0) {
+          setSelectedMekongId(list[0].id);
+          loadDatasetResource(list[0]);
+        }
+      }
+      setIsLoading(false);
+    }
+    loadMekongList();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  // Handle file drop & upload
+  // Fetch content of selected Mekong CSV resource
+  const loadDatasetResource = async (res: MekongResource) => {
+    setIsLoading(true);
+    setActiveResource(res);
+    try {
+      const csvText = await fetchCsvContent(res.url);
+      parseCSVString(csvText, `${res.resourceName || res.datasetTitle}.csv`);
+    } catch (err) {
+      console.error('Failed to load CSV content from Mekong CKAN resource:', err);
+      // Fallback parse if fetch errors
+      parseCSVString(FALLBACK_MEKONG_DATASETS[0].url, `${res.datasetTitle}.csv`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Handle dropdown selection change
+  const handleSelectMekongDataset = (resId: string) => {
+    setSelectedMekongId(resId);
+    const target = mekongDatasets.find((d) => d.id === resId);
+    if (target) {
+      loadDatasetResource(target);
+    }
+  };
+
+  // Handle "Fetch Random Dataset"
+  const handleFetchRandom = () => {
+    if (mekongDatasets.length === 0) return;
+    const randomIndex = Math.floor(Math.random() * mekongDatasets.length);
+    const randomRes = mekongDatasets[randomIndex];
+    setSelectedMekongId(randomRes.id);
+    loadDatasetResource(randomRes);
+  };
+
+  // Handle manual file drop & upload
   const handleFileUpload = (file: File) => {
     if (!file.name.toLowerCase().endsWith('.csv')) {
       alert('Please upload a valid .csv file.');
@@ -136,6 +130,13 @@ export default function CsvDataVisualizer() {
     reader.onload = (e) => {
       const content = e.target?.result as string;
       if (content) {
+        setActiveResource({
+          id: `custom-${Date.now()}`,
+          datasetTitle: `User Custom Dataset (${file.name})`,
+          resourceName: file.name,
+          url: '',
+          format: 'CSV',
+        });
         parseCSVString(content, file.name);
       }
     };
@@ -394,7 +395,7 @@ export default function CsvDataVisualizer() {
             ctx.arc(pt.x, pt.y, 6, 0, Math.PI * 2);
             ctx.stroke();
 
-            // X-Axis labels (skip every 2nd or 3rd if dense)
+            // X-Axis labels
             const showLabel = values.length <= 15 || i % Math.ceil(values.length / 12) === 0;
             if (showLabel) {
               ctx.fillStyle = '#71717A';
@@ -461,7 +462,7 @@ export default function CsvDataVisualizer() {
           values.forEach((val, i) => {
             const cx = paddingLeft + candleGap + i * (candleW + candleGap) + candleW / 2;
 
-            // Synthetic Open/High/Low/Close derived deterministically from Y value & neighbor trends
+            // Synthetic Open/High/Low/Close derived deterministically from Y value
             const prevVal = i > 0 ? values[i - 1] : val;
             const openVal = prevVal;
             const closeVal = val;
@@ -577,8 +578,10 @@ export default function CsvDataVisualizer() {
 
           <div className="flex items-center gap-3 font-mono text-xs">
             <div className="flex items-center gap-2 border border-zinc-800 bg-zinc-950 px-3 py-1.5 text-zinc-300">
-              <FileSpreadsheet className="h-3.5 w-3.5 text-cyan-glow" />
-              <span className="text-zinc-400 truncate max-w-[160px]">{filename}</span>
+              <Globe className="h-3.5 w-3.5 text-cyan-glow" />
+              <span className="text-zinc-400 truncate max-w-[200px]" title={activeResource?.datasetTitle}>
+                {activeResource?.datasetTitle || filename}
+              </span>
             </div>
             <div className="border border-zinc-800 bg-zinc-950 px-3 py-1.5 text-cyan-glow font-bold">
               ROWS: {telemetry.count}
@@ -587,21 +590,78 @@ export default function CsvDataVisualizer() {
         </div>
 
         {/* Dual Panel Layout Architecture */}
-        <div className="grid lg:grid-cols-[340px_1fr] border border-zinc-800 bg-[#09090c] shadow-2xl min-h-[620px]">
+        <div className="grid lg:grid-cols-[360px_1fr] border border-zinc-800 bg-[#09090c] shadow-2xl min-h-[620px]">
           {/* ================= LEFT PANEL: CONTROL & DATA MAPPING ================= */}
           <div className="p-5 border-b lg:border-b-0 lg:border-r border-zinc-800 bg-[#0B0B0F] flex flex-col justify-between font-mono gap-6">
             <div className="space-y-5">
-              {/* Dropzone File Upload */}
+              {/* Interactive Open Mekong Datasets Selector */}
               <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-[10px] uppercase tracking-widest text-zinc-500">
+                    01 // {t('csv_preset_label')}
+                  </label>
+                  {isLoading && (
+                    <span className="text-[10px] text-cyan-glow flex items-center gap-1">
+                      <RefreshCw className="h-3 w-3 animate-spin" />
+                      FETCHING...
+                    </span>
+                  )}
+                </div>
+
+                <div className="relative mb-2">
+                  <select
+                    value={selectedMekongId}
+                    onChange={(e) => handleSelectMekongDataset(e.target.value)}
+                    className="w-full bg-zinc-950 border border-zinc-800 text-xs text-white p-2.5 outline-none focus:border-[#5322ff] transition-colors truncate"
+                  >
+                    {mekongDatasets.map((ds) => (
+                      <option key={ds.id} value={ds.id} className="bg-zinc-950 text-white truncate">
+                        {ds.datasetTitle}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <button
+                  onClick={handleFetchRandom}
+                  disabled={isLoading}
+                  className="w-full py-2 px-3 border border-[#5322ff]/50 bg-[#5322ff]/10 hover:bg-[#5322ff] hover:text-white text-cyan-glow font-mono text-xs font-bold uppercase transition-all duration-200 flex items-center justify-center gap-2 group disabled:opacity-50"
+                >
+                  <RefreshCw className="h-3.5 w-3.5 group-hover:rotate-180 transition-transform duration-500" />
+                  <span>{t('csv_fetch_random')}</span>
+                </button>
+              </div>
+
+              {/* Dataset Metadata Header */}
+              {activeResource && (
+                <div className="border border-zinc-800 bg-zinc-950 p-2.5 text-[10px] space-y-1">
+                  <div className="text-zinc-500 uppercase">{t('csv_source_url')}</div>
+                  <div className="text-zinc-300 font-bold truncate">{activeResource.datasetTitle}</div>
+                  {activeResource.url && (
+                    <a
+                      href={activeResource.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-cyan-glow hover:underline truncate max-w-full"
+                    >
+                      <ExternalLink className="h-3 w-3 shrink-0" />
+                      <span className="truncate">{activeResource.url}</span>
+                    </a>
+                  )}
+                </div>
+              )}
+
+              {/* Fallback Custom CSV Dropzone */}
+              <div className="border-t border-zinc-800 pt-4">
                 <label className="block text-[10px] uppercase tracking-widest text-zinc-500 mb-2">
-                  01 // CSV FILE UPLOAD
+                  02 // CUSTOM CSV FILE FALLBACK
                 </label>
 
                 <div
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
                   onDrop={handleDrop}
-                  className={`relative border-2 border-dashed p-4 text-center transition-all cursor-pointer group ${
+                  className={`relative border-2 border-dashed p-3 text-center transition-all cursor-pointer group ${
                     isDragging
                       ? 'border-[#00E5FF] bg-[#00E5FF]/10'
                       : 'border-zinc-800 bg-zinc-950 hover:border-[#5322ff] hover:bg-zinc-900'
@@ -613,27 +673,9 @@ export default function CsvDataVisualizer() {
                     onChange={handleFileInputChange}
                     className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
                   />
-                  <Upload className="h-6 w-6 mx-auto mb-2 text-cyan-glow group-hover:scale-110 transition-transform" />
-                  <div className="text-xs font-bold text-white uppercase">{t('csv_dropzone_title')}</div>
-                  <div className="text-[10px] text-zinc-500 mt-1">{t('csv_dropzone_desc')}</div>
-                </div>
-              </div>
-
-              {/* Sample Preset Datasets */}
-              <div>
-                <label className="block text-[10px] uppercase tracking-widest text-zinc-500 mb-2">
-                  02 // {t('csv_preset_label')}
-                </label>
-                <div className="grid grid-cols-1 gap-1.5">
-                  {SAMPLE_DATASETS.map((ds) => (
-                    <button
-                      key={ds.id}
-                      onClick={() => parseCSVString(ds.csvData, `${ds.id}_preset.csv`)}
-                      className="w-full text-left py-1.5 px-2.5 border border-zinc-800 bg-zinc-950 hover:border-[#5322ff] hover:bg-zinc-900 text-[11px] text-zinc-300 hover:text-white transition-colors truncate"
-                    >
-                      {t(ds.nameKey as keyof Translations)}
-                    </button>
-                  ))}
+                  <Upload className="h-5 w-5 mx-auto mb-1 text-cyan-glow group-hover:scale-110 transition-transform" />
+                  <div className="text-[11px] font-bold text-white uppercase">{t('csv_dropzone_title')}</div>
+                  <div className="text-[9px] text-zinc-500">{t('csv_dropzone_desc')}</div>
                 </div>
               </div>
 
@@ -776,6 +818,14 @@ export default function CsvDataVisualizer() {
                 onMouseLeave={handleCanvasMouseLeave}
                 className="block w-full h-full"
               />
+
+              {/* Loading Indicator Overlay */}
+              {isLoading && (
+                <div className="absolute inset-0 bg-black/70 backdrop-blur-sm z-30 flex flex-col items-center justify-center gap-2 font-mono text-xs text-cyan-glow">
+                  <RefreshCw className="h-6 w-6 animate-spin text-cyan-glow" />
+                  <span className="tracking-widest">{t('csv_loading_dataset')}</span>
+                </div>
+              )}
 
               {/* Crosshair Hover Telemetry Overlay */}
               {hoverData && (
