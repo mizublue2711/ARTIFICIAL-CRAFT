@@ -72,7 +72,11 @@ function MetricRow({
   );
 }
 
-export default function Hero() {
+interface HeroProps {
+  onOpenBatchModal?: () => void;
+}
+
+export default function Hero({ onOpenBatchModal }: HeroProps) {
   const { t } = useTranslation();
   const [activeIdx, setActiveIdx] = useState(0);
   const baseMode: WorkflowMode = WORKFLOW_MODES[activeIdx];
@@ -283,6 +287,16 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.18 }}
               className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 font-mono"
             >
+              {onOpenBatchModal && (
+                <button
+                  type="button"
+                  onClick={onOpenBatchModal}
+                  className="group relative inline-flex items-center justify-center gap-2 text-sm font-bold px-6 py-3.5 text-black transition-all duration-300 bg-[#00E5FF] hover:bg-[#00E5FF]/80 uppercase cursor-pointer shadow-[0_0_20px_rgba(0,229,255,0.4)]"
+                >
+                  <Zap className="h-4 w-4 text-black fill-black" />
+                  <span>⚡ BATCH PRODUCTION (MASS RENDER)</span>
+                </button>
+              )}
               <a
                 href={STUDIO_URL}
                 target="_blank"
