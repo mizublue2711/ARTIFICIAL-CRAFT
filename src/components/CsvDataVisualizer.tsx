@@ -1,11 +1,34 @@
 import { useState, useEffect, useRef, useMemo, ChangeEvent, DragEvent } from 'react';
 import Papa from 'papaparse';
-import { Upload, Crosshair, BarChart3, LineChart, CandlestickChart, RefreshCw, ExternalLink, Globe } from 'lucide-react';
+import {
+  Upload,
+  Crosshair,
+  BarChart3,
+  LineChart,
+  CandlestickChart,
+  RefreshCw,
+  ExternalLink,
+  Globe,
+  Download,
+  FileCode,
+  Code,
+  X,
+  Check,
+} from 'lucide-react';
 import { useTranslation } from '@/context/useLanguage';
 import { fetchMekongDatasets, fetchCsvContent, MekongResource, FALLBACK_MEKONG_DATASETS } from '@/lib/mekongService';
 
 export type VisMode = 'waveform' | 'density_matrix' | 'candlestick';
 export type PaletteMode = 'cyberpunk' | 'monochrome';
+
+function generateSeedHash(): string {
+  const chars = '0123456789ABCDEF';
+  let hash = '0x';
+  for (let i = 0; i < 8; i++) {
+    hash += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return hash;
+}
 
 export default function CsvDataVisualizer() {
   const { t } = useTranslation();
@@ -22,10 +45,15 @@ export default function CsvDataVisualizer() {
   const [selectedX, setSelectedX] = useState<string>('');
   const [selectedY, setSelectedY] = useState<string>('');
   const [filename, setFilename] = useState<string>('mekong_dataset.csv');
+  const [seedHash, setSeedHash] = useState<string>('0x89B4C2A1');
 
   // Visualization Mode & Palette
   const [visMode, setVisMode] = useState<VisMode>('waveform');
   const [palette, setPalette] = useState<PaletteMode>('cyberpunk');
+
+  // Embed Modal & Copy State
+  const [isEmbedModalOpen, setIsEmbedModalOpen] = useState<boolean>(false);
+  const [isCopied, setIsCopied] = useState<boolean>(false);
 
   // Drag & Drop visual feedback state
   const [isDragging, setIsDragging] = useState<boolean>(false);
@@ -90,12 +118,12 @@ export default function CsvDataVisualizer() {
   const loadDatasetResource = async (res: MekongResource) => {
     setIsLoading(true);
     setActiveResource(res);
+    setSeedHash(generateSeedHash());
     try {
       const csvText = await fetchCsvContent(res.url);
       parseCSVString(csvText, `${res.resourceName || res.datasetTitle}.csv`);
     } catch (err) {
       console.error('Failed to load CSV content from Mekong CKAN resource:', err);
-      // Fallback parse if fetch errors
       parseCSVString(FALLBACK_MEKONG_DATASETS[0].url, `${res.datasetTitle}.csv`);
     } finally {
       setIsLoading(false);
@@ -137,6 +165,7 @@ export default function CsvDataVisualizer() {
           url: '',
           format: 'CSV',
         });
+        setSeedHash(generateSeedHash());
         parseCSVString(content, file.name);
       }
     };
@@ -197,6 +226,288 @@ export default function CsvDataVisualizer() {
     return { min, max, avg, count: values.length, values, labels };
   }, [parsedRows, selectedX, selectedY]);
 
+  // Helper to render cryptographic watermark onto 2D canvas context
+  const drawCryptographicWatermark = (ctx: CanvasRenderingContext2D, width: number, height: number, seed: string) => {
+    const watermarkText = `ARTIFICIAL CRAFT // ARTIFACT_ID: 0x${seed.replace('0x', '')} // DETERMINISTIC VISUAL ENGINE`;
+    const fontSize = Math.max(12, Math.round(width * 0.015));
+    ctx.save();
+    ctx.font = `600 ${fontSize}px "JetBrains Mono", monospace`;
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'bottom';
+
+    const paddingX = Math.round(width * 0.03);
+    const paddingY = Math.round(height * 0.03);
+
+    const textMetrics = ctx.measureText(watermarkText);
+    const bgWidth = textMetrics.width + 20;
+    const bgHeight = fontSize + 10;
+
+    // Dark brutalist backing box
+    ctx.fillStyle = 'rgba(11, 11, 15, 0.9)';
+    ctx.fillRect(width - paddingX - bgWidth, height - paddingY - bgHeight, bgWidth, bgHeight);
+    ctx.strokeStyle = '#5322ff';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(width - paddingX - bgWidth, height - paddingY - bgHeight, bgWidth, bgHeight);
+
+    // Glowing cyan watermark text
+    ctx.fillStyle = '#00E5FF';
+    ctx.fillText(watermarkText, width - paddingX - 10, height - paddingY - 5);
+    ctx.restore();
+  };
+
+  // 📸 Export 2K PNG Engine (2048x2048 high resolution)
+  const handleExport2KPNG = () => {
+    const exportCanvas = document.createElement('canvas');
+    exportCanvas.width = 2048;
+    exportCanvas.height = 2048;
+    const ctx = exportCanvas.getContext('2d');
+    if (!ctx) return;
+
+    const size = 2048;
+    const isNeon = palette === 'cyberpunk';
+    const bg = '#0B0B0F';
+    const primaryColor = isNeon ? '#5322ff' : '#FFFFFF';
+    const secondaryColor = isNeon ? '#00E5FF' : '#A1A1AA';
+
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, size, size);
+
+    // CAD Grid lines
+    ctx.strokeStyle = 'rgba(39, 39, 42, 0.6)';
+    ctx.lineWidth = 2;
+    for (let x = 0; x < size; x += 64) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, size);
+      ctx.stroke();
+    }
+    for (let y = 0; y < size; y += 64) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(size, y);
+      ctx.stroke();
+    }
+
+    const { min, max, values } = telemetry;
+    const paddingLeft = 160;
+    const paddingRight = 100;
+    const paddingTop = 160;
+    const paddingBottom = 160;
+    const plotW = size - paddingLeft - paddingRight;
+    const plotH = size - paddingTop - paddingBottom;
+
+    if (values.length > 0) {
+      const valRange = max - min || 1;
+
+      if (visMode === 'waveform') {
+        const stepX = plotW / Math.max(values.length - 1, 1);
+        ctx.beginPath();
+        const points: { x: number; y: number }[] = [];
+
+        values.forEach((val, i) => {
+          const px = paddingLeft + i * stepX;
+          const normY = (val - min) / valRange;
+          const py = paddingTop + (1 - normY) * plotH;
+          points.push({ x: px, y: py });
+          if (i === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        });
+
+        const grad = ctx.createLinearGradient(0, paddingTop, 0, paddingTop + plotH);
+        grad.addColorStop(0, isNeon ? 'rgba(0, 229, 255, 0.35)' : 'rgba(255, 255, 255, 0.25)');
+        grad.addColorStop(1, 'rgba(11, 11, 15, 0.0)');
+
+        ctx.save();
+        const fillPath = new Path2D();
+        if (points.length > 0) {
+          fillPath.moveTo(points[0].x, paddingTop + plotH);
+          points.forEach((pt) => fillPath.lineTo(pt.x, pt.y));
+          fillPath.lineTo(points[points.length - 1].x, paddingTop + plotH);
+          fillPath.closePath();
+          ctx.fillStyle = grad;
+          ctx.fill(fillPath);
+        }
+        ctx.restore();
+
+        ctx.strokeStyle = secondaryColor;
+        ctx.lineWidth = 4;
+        ctx.stroke();
+
+        points.forEach((pt) => {
+          ctx.fillStyle = isNeon ? '#00E5FF' : '#FFFFFF';
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, 8, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.strokeStyle = primaryColor;
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, 14, 0, Math.PI * 2);
+          ctx.stroke();
+        });
+      } else if (visMode === 'density_matrix') {
+        const totalBars = values.length;
+        const barGap = 16;
+        const barWidth = Math.max((plotW - barGap * (totalBars + 1)) / totalBars, 12);
+
+        values.forEach((val, i) => {
+          const bx = paddingLeft + barGap + i * (barWidth + barGap);
+          const normY = (val - min) / valRange;
+          const barH = Math.max(normY * plotH, 10);
+          const by = paddingTop + plotH - barH;
+
+          ctx.fillStyle = primaryColor;
+          ctx.fillRect(bx, by, barWidth, barH);
+          ctx.strokeStyle = secondaryColor;
+          ctx.lineWidth = 2;
+          ctx.strokeRect(bx, by, barWidth, barH);
+        });
+      } else if (visMode === 'candlestick') {
+        const count = values.length;
+        const candleGap = 20;
+        const candleW = Math.max((plotW - candleGap * (count + 1)) / count, 16);
+
+        values.forEach((val, i) => {
+          const cx = paddingLeft + candleGap + i * (candleW + candleGap) + candleW / 2;
+          const prevVal = i > 0 ? values[i - 1] : val;
+          const openVal = prevVal;
+          const closeVal = val;
+          const isBullish = closeVal >= openVal;
+
+          const highVal = Math.max(openVal, closeVal) + (max - min) * 0.08;
+          const lowVal = Math.min(openVal, closeVal) - (max - min) * 0.08;
+
+          const highY = paddingTop + (1 - (highVal - min) / valRange) * plotH;
+          const lowY = paddingTop + (1 - (lowVal - min) / valRange) * plotH;
+          const openY = paddingTop + (1 - (openVal - min) / valRange) * plotH;
+          const closeY = paddingTop + (1 - (closeVal - min) / valRange) * plotH;
+
+          const candleTop = Math.min(openY, closeY);
+          const candleH = Math.max(Math.abs(closeY - openY), 6);
+
+          ctx.strokeStyle = isBullish ? (isNeon ? '#00E5FF' : '#FFFFFF') : '#FF007A';
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.moveTo(cx, highY);
+          ctx.lineTo(cx, lowY);
+          ctx.stroke();
+
+          ctx.fillStyle = isBullish ? (isNeon ? 'rgba(0, 229, 255, 0.7)' : '#FFFFFF') : 'rgba(255, 0, 122, 0.7)';
+          ctx.fillRect(cx - candleW / 2, candleTop, candleW, candleH);
+        });
+      }
+    }
+
+    // Embed Cryptographic Watermark
+    drawCryptographicWatermark(ctx, size, size, seedHash);
+
+    // Trigger PNG Download
+    const link = document.createElement('a');
+    link.download = `artificial-craft-mekong-${seedHash}.png`;
+    link.href = exportCanvas.toDataURL('image/png');
+    link.click();
+  };
+
+  // 📐 Export Vector SVG Engine
+  const handleExportVectorSVG = () => {
+    const width = 1200;
+    const height = 1200;
+    const isNeon = palette === 'cyberpunk';
+    const bg = '#0B0B0F';
+    const primaryColor = isNeon ? '#5322ff' : '#FFFFFF';
+    const secondaryColor = isNeon ? '#00E5FF' : '#A1A1AA';
+
+    const { min, max, values } = telemetry;
+    const paddingLeft = 100;
+    const paddingRight = 60;
+    const paddingTop = 100;
+    const paddingBottom = 100;
+    const plotW = width - paddingLeft - paddingRight;
+    const plotH = height - paddingTop - paddingBottom;
+
+    let svgPaths = '';
+
+    if (values.length > 0) {
+      const valRange = max - min || 1;
+
+      if (visMode === 'waveform') {
+        const stepX = plotW / Math.max(values.length - 1, 1);
+        let pathData = '';
+
+        values.forEach((val, i) => {
+          const px = paddingLeft + i * stepX;
+          const normY = (val - min) / valRange;
+          const py = paddingTop + (1 - normY) * plotH;
+
+          if (i === 0) pathData += `M ${px.toFixed(1)} ${py.toFixed(1)}`;
+          else pathData += ` L ${px.toFixed(1)} ${py.toFixed(1)}`;
+
+          svgPaths += `<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="4" fill="${secondaryColor}" />\n`;
+        });
+
+        svgPaths += `<path d="${pathData}" stroke="${secondaryColor}" stroke-width="3" fill="none" />\n`;
+      } else if (visMode === 'density_matrix') {
+        const totalBars = values.length;
+        const barGap = 10;
+        const barWidth = Math.max((plotW - barGap * (totalBars + 1)) / totalBars, 8);
+
+        values.forEach((val, i) => {
+          const bx = paddingLeft + barGap + i * (barWidth + barGap);
+          const normY = (val - min) / valRange;
+          const barH = Math.max(normY * plotH, 6);
+          const by = paddingTop + plotH - barH;
+
+          svgPaths += `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${barWidth.toFixed(1)}" height="${barH.toFixed(1)}" fill="${primaryColor}" stroke="${secondaryColor}" stroke-width="1.5" />\n`;
+        });
+      }
+    }
+
+    const watermarkText = `ARTIFICIAL CRAFT // ARTIFACT_ID: 0x${seedHash.replace('0x', '')} // DETERMINISTIC VISUAL ENGINE`;
+
+    const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" width="${width}" height="${height}">
+  <defs>
+    <style>
+      .watermark-text {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 16px;
+        font-weight: 600;
+        fill: #00E5FF;
+      }
+    </style>
+  </defs>
+  <rect width="${width}" height="${height}" fill="${bg}" />
+  <g id="data-paths">
+${svgPaths}
+  </g>
+  <!-- Cryptographic Artifact Watermark -->
+  <g id="watermark" transform="translate(${width - 40}, ${height - 40})">
+    <rect x="-720" y="-30" width="720" height="36" fill="#0B0B0F" fill-opacity="0.9" stroke="#5322ff" stroke-width="1.5" />
+    <text x="-12" y="-6" text-anchor="end" class="watermark-text">${watermarkText}</text>
+  </g>
+</svg>`;
+
+    const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+    const link = document.createElement('a');
+    link.download = `artificial-craft-mekong-${seedHash}.svg`;
+    link.href = URL.createObjectURL(blob);
+    link.click();
+  };
+
+  // 🔗 Embed Snippet HTML code generator
+  const embedSnippet = `<div class="ac-embed-container" style="position: relative; width: 100%; max-width: 800px; aspect-ratio: 16/9; background: #0B0B0F; border: 1px solid #27272A;">
+  <iframe src="https://artificialcraft.space/embed/csv-visualizer?seed=${seedHash}&visMode=${visMode}&palette=${palette}" width="100%" height="100%" frameborder="0" scrolling="no" loading="lazy"></iframe>
+  <div style="position: absolute; bottom: 8px; right: 12px; font-size: 10px; color: #71717A; pointer-events: auto;">
+    <a href="https://artificialcraft.space/?utm_source=embed_widget" target="_blank" rel="noopener" style="color: #00E5FF; text-decoration: none; font-weight: bold;">ARTIFICIAL CRAFT // ENGINE ↗</a>
+  </div>
+</div>`;
+
+  const handleCopyEmbedCode = () => {
+    navigator.clipboard.writeText(embedSnippet);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2500);
+  };
+
   // Render HTML5 2D Canvas Loop at 60fps
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -240,18 +551,16 @@ export default function CsvDataVisualizer() {
       const w = canvas.width / (window.devicePixelRatio || 1);
       const h = canvas.height / (window.devicePixelRatio || 1);
 
-      // Color Palette config
       const isNeon = palette === 'cyberpunk';
       const bg = '#0B0B0F';
-      const gridColor = 'rgba(39, 39, 42, 0.6)'; // zinc-800 grid lines
+      const gridColor = 'rgba(39, 39, 42, 0.6)';
       const primaryColor = isNeon ? '#5322ff' : '#FFFFFF';
       const secondaryColor = isNeon ? '#00E5FF' : '#A1A1AA';
 
-      // Clear Canvas Background
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, w, h);
 
-      // 1. Draw Swiss CAD Blueprint Grid (1px zinc-800 lines)
+      // Grid
       const gridSize = 40;
       ctx.strokeStyle = gridColor;
       ctx.lineWidth = 1;
@@ -270,11 +579,10 @@ export default function CsvDataVisualizer() {
         ctx.stroke();
       }
 
-      // 2. Draw CAD Crosshair Corner Anchors (+) & Dimension Indicators
+      // CAD Anchors
       ctx.strokeStyle = isNeon ? '#00E5FF' : '#FFFFFF';
       ctx.lineWidth = 1;
 
-      // Crosshairs at margins
       const crosshairs = [
         { x: 20, y: 20 },
         { x: w - 20, y: 20 },
@@ -291,13 +599,11 @@ export default function CsvDataVisualizer() {
         ctx.stroke();
       });
 
-      // Dimension Indicator text on border
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillStyle = '#71717A';
       ctx.fillText(`W: ${Math.round(w)}px`, 35, 16);
       ctx.fillText(`H: ${Math.round(h)}px`, w - 85, 16);
 
-      // Margin paddings for plot area
       const paddingLeft = 60;
       const paddingRight = 40;
       const paddingTop = 50;
@@ -311,7 +617,6 @@ export default function CsvDataVisualizer() {
       if (values.length > 0) {
         const valRange = max - min || 1;
 
-        // Draw Y-Axis Telemetry Scale Ticks
         const yTicks = 5;
         ctx.strokeStyle = 'rgba(63, 63, 70, 0.4)';
         ctx.fillStyle = '#A1A1AA';
@@ -331,38 +636,27 @@ export default function CsvDataVisualizer() {
           ctx.fillText(tickVal.toFixed(1), paddingLeft - 10, tickY + 3);
         }
 
-       
-        
-        // ================= MODE 01: CYBER WAVEFORM / LINE GRID =================
         if (visMode === 'waveform') {
           const stepX = plotW / Math.max(values.length - 1, 1);
-
-          // Path construction
           ctx.beginPath();
           const points: { x: number; y: number; val: number; label: string }[] = [];
 
           values.forEach((val, i) => {
             const px = paddingLeft + i * stepX;
             const normY = (val - min) / valRange;
-            // Subtle dynamic ambient pulse
             const waveOffset = Math.sin(phase + i * 0.4) * 3;
             const py = paddingTop + (1 - normY) * plotH + waveOffset;
 
             points.push({ x: px, y: py, val, label: labels[i] });
 
-            if (i === 0) {
-              ctx.moveTo(px, py);
-            } else {
-              ctx.lineTo(px, py);
-            }
+            if (i === 0) ctx.moveTo(px, py);
+            else ctx.lineTo(px, py);
           });
 
-          // Gradient area under waveform
           const grad = ctx.createLinearGradient(0, paddingTop, 0, paddingTop + plotH);
           grad.addColorStop(0, isNeon ? 'rgba(0, 229, 255, 0.35)' : 'rgba(255, 255, 255, 0.25)');
           grad.addColorStop(1, 'rgba(11, 11, 15, 0.0)');
 
-          // Draw fill under curve
           ctx.save();
           const fillPath = new Path2D();
           if (points.length > 0) {
@@ -375,17 +669,14 @@ export default function CsvDataVisualizer() {
           }
           ctx.restore();
 
-          // Stroke Waveform Line
           ctx.strokeStyle = secondaryColor;
           ctx.lineWidth = 2;
           ctx.stroke();
 
-          // Draw Node Anchors & X-Axis Labels
           ctx.textAlign = 'center';
           ctx.fillStyle = '#A1A1AA';
 
           points.forEach((pt, i) => {
-            // Anchor dot
             ctx.fillStyle = isNeon ? '#00E5FF' : '#FFFFFF';
             ctx.beginPath();
             ctx.arc(pt.x, pt.y, 3.5, 0, Math.PI * 2);
@@ -397,17 +688,13 @@ export default function CsvDataVisualizer() {
             ctx.arc(pt.x, pt.y, 6, 0, Math.PI * 2);
             ctx.stroke();
 
-            // X-Axis labels
             const showLabel = values.length <= 15 || i % Math.ceil(values.length / 12) === 0;
             if (showLabel) {
               ctx.fillStyle = '#71717A';
               ctx.fillText(pt.label, pt.x, paddingTop + plotH + 18);
             }
           });
-        }
-
-        // ================= MODE 02: BRUTALIST DENSITY MATRIX / BAR BLOCKS =================
-        else if (visMode === 'density_matrix') {
+        } else if (visMode === 'density_matrix') {
           const totalBars = values.length;
           const barGap = 6;
           const barWidth = Math.max((plotW - barGap * (totalBars + 1)) / totalBars, 4);
@@ -420,7 +707,6 @@ export default function CsvDataVisualizer() {
             const barH = Math.max(normY * plotH, 4);
             const by = paddingTop + plotH - barH;
 
-            // Draw Brutalist Block Bar with segmented grid matrix
             const segments = 10;
             const segH = barH / segments;
 
@@ -439,22 +725,17 @@ export default function CsvDataVisualizer() {
               ctx.fillRect(bx, segY, barWidth, segH - 1);
             }
 
-            // Outline
             ctx.strokeStyle = isNeon ? '#00E5FF' : '#FFFFFF';
             ctx.lineWidth = 1;
             ctx.strokeRect(bx, by, barWidth, barH);
 
-            // Label
             const showLabel = values.length <= 15 || i % Math.ceil(values.length / 12) === 0;
             if (showLabel) {
               ctx.fillStyle = '#71717A';
               ctx.fillText(labels[i], bx + barWidth / 2, paddingTop + plotH + 18);
             }
           });
-        }
-
-        // ================= MODE 03: ALGORITHMIC CANDLESTICK / FINANCIAL MESH =================
-        else if (visMode === 'candlestick') {
+        } else if (visMode === 'candlestick') {
           const count = values.length;
           const candleGap = 10;
           const candleW = Math.max((plotW - candleGap * (count + 1)) / count, 6);
@@ -464,7 +745,6 @@ export default function CsvDataVisualizer() {
           values.forEach((val, i) => {
             const cx = paddingLeft + candleGap + i * (candleW + candleGap) + candleW / 2;
 
-            // Synthetic Open/High/Low/Close derived deterministically from Y value
             const prevVal = i > 0 ? values[i - 1] : val;
             const openVal = prevVal;
             const closeVal = val;
@@ -481,7 +761,6 @@ export default function CsvDataVisualizer() {
             const candleTop = Math.min(openY, closeY);
             const candleH = Math.max(Math.abs(closeY - openY), 3);
 
-            // Wick Line
             ctx.strokeStyle = isBullish ? (isNeon ? '#00E5FF' : '#FFFFFF') : isNeon ? '#FF007A' : '#71717A';
             ctx.lineWidth = 1.5;
             ctx.beginPath();
@@ -489,14 +768,12 @@ export default function CsvDataVisualizer() {
             ctx.lineTo(cx, lowY);
             ctx.stroke();
 
-            // Candlestick Body Block
             ctx.fillStyle = isBullish ? (isNeon ? 'rgba(0, 229, 255, 0.6)' : '#FFFFFF') : isNeon ? 'rgba(255, 0, 122, 0.6)' : '#27272A';
             ctx.fillRect(cx - candleW / 2, candleTop, candleW, candleH);
 
             ctx.strokeStyle = isBullish ? (isNeon ? '#00E5FF' : '#FFFFFF') : isNeon ? '#FF007A' : '#A1A1AA';
             ctx.strokeRect(cx - candleW / 2, candleTop, candleW, candleH);
 
-            // Label
             const showLabel = values.length <= 15 || i % Math.ceil(values.length / 12) === 0;
             if (showLabel) {
               ctx.fillStyle = '#71717A';
@@ -517,7 +794,6 @@ export default function CsvDataVisualizer() {
     };
   }, [telemetry, visMode, palette]);
 
-  // Mouse hover event on Canvas to compute crosshair readout
   const handleCanvasMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -532,7 +808,6 @@ export default function CsvDataVisualizer() {
     const paddingRight = 40;
     const plotW = rect.width - paddingLeft - paddingRight;
 
-    // Find nearest data index based on X mouse position
     const relativeX = mx - paddingLeft;
     const index = Math.max(0, Math.min(values.length - 1, Math.round((relativeX / plotW) * (values.length - 1))));
 
@@ -734,26 +1009,6 @@ export default function CsvDataVisualizer() {
                         : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-zinc-200'
                     }`}
                   >
-                    <CandlestickChart className="h-3.5 w-3.5 text-[#D400FF]" />
-                    <span>{t('csv_mode_candlestick')}</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Palette Switcher */}
-              <div className="border-t border-zinc-800 pt-4">
-                <label className="block text-[10px] uppercase tracking-widest text-zinc-500 mb-2">
-                  05 // {t('csv_palette_label')}
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    onClick={() => setPalette('cyberpunk')}
-                    className={`p-2 border text-[10px] font-bold transition-all text-center ${
-                      palette === 'cyberpunk'
-                        ? 'border-[#00E5FF] bg-zinc-900 text-cyan-glow'
-                        : 'border-zinc-800 bg-zinc-950 text-zinc-500 hover:text-zinc-300'
-                    }`}
-                  >
                     <LineChart className="h-3.5 w-3.5 text-cyan-glow" />
                     <span>{t('csv_mode_waveform')}</span>
                   </button>
@@ -778,7 +1033,26 @@ export default function CsvDataVisualizer() {
                         : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-zinc-200'
                     }`}
                   >
-                    
+                    <CandlestickChart className="h-3.5 w-3.5 text-[#D400FF]" />
+                    <span>{t('csv_mode_candlestick')}</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Palette Switcher & Export Action Buttons */}
+              <div className="border-t border-zinc-800 pt-4 space-y-3">
+                <label className="block text-[10px] uppercase tracking-widest text-zinc-500 mb-1">
+                  05 // {t('csv_palette_label')} & EXPORT ENGINE
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => setPalette('cyberpunk')}
+                    className={`p-2 border text-[10px] font-bold transition-all text-center ${
+                      palette === 'cyberpunk'
+                        ? 'border-[#00E5FF] bg-zinc-900 text-cyan-glow'
+                        : 'border-zinc-800 bg-zinc-950 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
                     CYBER NEON
                   </button>
                   <button
@@ -790,6 +1064,33 @@ export default function CsvDataVisualizer() {
                     }`}
                   >
                     MONOCHROME
+                  </button>
+                </div>
+
+                {/* Export Action Buttons */}
+                <div className="space-y-2 pt-2">
+                  <button
+                    onClick={handleExport2KPNG}
+                    className="w-full py-2 px-3 border border-cyan-glow/50 bg-cyan-glow/10 hover:bg-cyan-glow hover:text-black text-cyan-glow font-mono text-xs font-bold tracking-wider uppercase transition-all flex items-center justify-center gap-2 group"
+                  >
+                    <Download className="h-3.5 w-3.5 group-hover:scale-110 transition-transform" />
+                    <span>{t('csv_export_png')}</span>
+                  </button>
+
+                  <button
+                    onClick={handleExportVectorSVG}
+                    className="w-full py-2 px-3 border border-zinc-700 bg-zinc-900 hover:border-[#5322ff] hover:bg-[#5322ff]/20 text-zinc-300 hover:text-white font-mono text-xs font-bold tracking-wider uppercase transition-all flex items-center justify-center gap-2 group"
+                  >
+                    <FileCode className="h-3.5 w-3.5 text-[#5322ff] group-hover:scale-110 transition-transform" />
+                    <span>{t('csv_export_svg')}</span>
+                  </button>
+
+                  <button
+                    onClick={() => setIsEmbedModalOpen(true)}
+                    className="w-full py-2 px-3 border border-zinc-700 bg-zinc-950 hover:border-[#00E5FF] hover:bg-zinc-900 text-zinc-300 hover:text-cyan-glow font-mono text-xs font-bold tracking-wider uppercase transition-all flex items-center justify-center gap-2 group"
+                  >
+                    <Code className="h-3.5 w-3.5 text-cyan-glow group-hover:scale-110 transition-transform" />
+                    <span>{t('csv_copy_embed')}</span>
                   </button>
                 </div>
               </div>
@@ -871,6 +1172,43 @@ export default function CsvDataVisualizer() {
           </div>
         </div>
       </div>
+
+      {/* Embed Code Modal */}
+      {isEmbedModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+          <div className="relative w-full max-w-2xl border border-zinc-800 bg-[#09090c] p-6 shadow-2xl font-mono">
+            <button
+              onClick={() => setIsEmbedModalOpen(false)}
+              className="absolute top-4 right-4 text-zinc-400 hover:text-white p-1 border border-zinc-800 bg-zinc-900"
+            >
+              <X className="h-4 w-4" />
+            </button>
+
+            <div className="flex items-center gap-2 text-cyan-glow font-bold text-sm mb-4">
+              <Code className="h-4 w-4" />
+              <span>{t('csv_embed_modal_title')}</span>
+            </div>
+
+            <textarea
+              readOnly
+              rows={6}
+              value={embedSnippet}
+              className="w-full bg-zinc-950 border border-zinc-800 text-xs text-zinc-300 p-3 font-mono outline-none focus:border-cyan-glow select-all"
+            />
+
+            <div className="mt-4 flex items-center justify-between">
+              <span className="text-[10px] text-zinc-500">MANDATORY BACKLINK EMBEDDED</span>
+              <button
+                onClick={handleCopyEmbedCode}
+                className="py-2 px-4 border border-[#5322ff] bg-[#5322ff] text-white font-mono text-xs font-bold uppercase transition-all flex items-center gap-2 hover:bg-[#5322ff]/80"
+              >
+                {isCopied ? <Check className="h-4 w-4 text-emerald-400" /> : <Code className="h-4 w-4" />}
+                <span>{isCopied ? t('csv_copied') : t('csv_copy_snippet')}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
