@@ -699,7 +699,7 @@ export const translations: Record<Language, Translations> = {
     // Plug & Play Sandbox
     sandbox_section_label: 'CẮM & CHẠY // MÔ PHỎNG',
     sandbox_title: 'SÂN CHƠI THỬ NGHIỆM THUẬT TOÁN // TỐC ĐỘ CAO // AN TOÀN TUYỆT ĐỐI',
-    sandbox_subtitle: 'Tinh chỉnh tham số và đo viễn thông thời gian thực cho các thuật toán sáng tạo.',
+    sandbox_subtitle: 'Ép xung tham số & Giám sát dữ liệu chuẩn xác cho các thuật toán sinh hình độc bản.',
     sandbox_control_panel: 'BẢNG ĐIỀU KHIỂN',
     sandbox_cat_organic: 'Luồng & Hữu Cơ',
     sandbox_cat_structure: 'Hình Học & Cấu Trúc',
@@ -765,7 +765,7 @@ export const translations: Record<Language, Translations> = {
     blackbox_framerate: 'TỐC ĐỘ KHUNG HÌNH: 60 FPS',
     blackbox_headless: 'SÁNG TẠO VIÊN KHÔNG ĐẦU: VẮNG MẶT',
     blackbox_core_logic: 'LÕI LÝ LUẬN: RUST // DIFY // N8N',
-    blackbox_manifesto_title: 'MỘT HÌNH THỨC //NHẤT NGUYÊN MỚI//',
+    blackbox_manifesto_title: 'MỘT HÌNH THỨC // NHẤT NGUYÊN MỚI //',
     blackbox_manifesto_quote: '"Chín năm căn chỉnh từng pixel hợp nhất vào hệ thống sáng tạo tự động. Tốc độ máy móc cùng tâm hồn con người chạy chung trong một đường dẫn."',
     blackbox_portfolio_btn: '[ ↗ XEM HỒ SƠ NĂNG LỰC CON NGƯỜI (2016-2025) CHỨNG THỰC NỀN TẢNG THIẾT KẾ ]',
     blackbox_terminal_title: '> BẢNG_ĐIỀU_KHIỂN_TERMINAL',
