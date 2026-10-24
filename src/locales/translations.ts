@@ -196,6 +196,32 @@ export interface Translations {
   sandbox_telemetry_resolution: string;
   sandbox_canvas_interactive: string;
 
+  // CSV Visualizer Section
+  csv_section_label: string;
+  csv_title: string;
+  csv_subtitle: string;
+  csv_dropzone_title: string;
+  csv_dropzone_desc: string;
+  csv_preset_label: string;
+  csv_preset_latency: string;
+  csv_preset_crypto: string;
+  csv_preset_telemetry: string;
+  csv_col_x: string;
+  csv_col_y: string;
+  csv_mode_label: string;
+  csv_mode_waveform: string;
+  csv_mode_matrix: string;
+  csv_mode_candlestick: string;
+  csv_palette_label: string;
+  csv_palette_neon: string;
+  csv_palette_mono: string;
+  csv_telemetry_title: string;
+  csv_telemetry_rows: string;
+  csv_telemetry_min: string;
+  csv_telemetry_max: string;
+  csv_telemetry_avg: string;
+  csv_telemetry_fps: string;
+
   // Existential Blackbox Section
   blackbox_title: string;
   blackbox_subtitle: string;
@@ -434,6 +460,32 @@ export const translations: Record<Language, Translations> = {
     sandbox_telemetry_resolution: 'CANVAS RES',
     sandbox_canvas_interactive: '2D CANVAS // INTERACTIVE',
 
+    // CSV Visualizer Section
+    csv_section_label: 'SWISS CAD // DATA ENGINE // CSV VISUALIZER',
+    csv_title: 'CSV DATA-TO-VISUAL SANDBOX',
+    csv_subtitle: 'Transform raw structured datasets into real-time Swiss CAD blueprint graphics & financial telemetry.',
+    csv_dropzone_title: 'DRAG & DROP CSV FILE HERE',
+    csv_dropzone_desc: 'or click to browse local .csv file',
+    csv_preset_label: 'PRESET SAMPLE DATASETS:',
+    csv_preset_latency: '01. Server Latency Metrics',
+    csv_preset_crypto: '02. Crypto Volatility Stream',
+    csv_preset_telemetry: '03. Agent Token Execution',
+    csv_col_x: 'X-AXIS HEADER (CATEGORIES / DATES)',
+    csv_col_y: 'Y-AXIS HEADER (METRICS / VALUES)',
+    csv_mode_label: 'VISUALIZATION MODE',
+    csv_mode_waveform: '01. Cyber Waveform / Line Grid',
+    csv_mode_matrix: '02. Brutalist Density Matrix / Bar Blocks',
+    csv_mode_candlestick: '03. Algorithmic Candlestick / Financial Mesh',
+    csv_palette_label: 'PALETTE PICKER',
+    csv_palette_neon: 'Cyberpunk Neon (#5322ff / #00E5FF)',
+    csv_palette_mono: 'Brutalist Monochrome (#FFFFFF)',
+    csv_telemetry_title: 'DATA TELEMETRY READOUT',
+    csv_telemetry_rows: 'TOTAL ROWS',
+    csv_telemetry_min: 'MIN VALUE',
+    csv_telemetry_max: 'MAX VALUE',
+    csv_telemetry_avg: 'AVERAGE',
+    csv_telemetry_fps: 'CANVAS FRAME RATE',
+
     // Existential Blackbox Section
     blackbox_title: 'THE SUBSTRATE // ENGINE 60FPS',
     blackbox_subtitle: 'THE EXISTENTIAL BLACKBOX',
@@ -669,6 +721,32 @@ export const translations: Record<Language, Translations> = {
     sandbox_telemetry_frametime: 'THỜI GIAN KHUNG',
     sandbox_telemetry_resolution: 'ĐỘ PHÂN GIẢI CANVAS',
     sandbox_canvas_interactive: 'CANVAS 2D // TƯƠNG TÁC',
+
+    // CSV Visualizer Section
+    csv_section_label: 'BẢN THIẾT KẾ SWISS CAD // TRỰC QUAN HÓA DỮ LIỆU CSV',
+    csv_title: 'MÔ PHỎNG DỮ LIỆU CSV THỜI GIAN THỰC',
+    csv_subtitle: 'Chuyển đổi dữ liệu CSV thô thành đồ họa bản thiết kế Swiss CAD và chỉ số đo từ xa.',
+    csv_dropzone_title: 'KÉO & THẢ FILE CSV VÀO ĐÂY',
+    csv_dropzone_desc: 'hoặc nhấp để chọn tệp .csv từ máy tính',
+    csv_preset_label: 'DỮ LIỆU MẪU CÓ SẴN:',
+    csv_preset_latency: '01. Độ Trễ Máy Chủ',
+    csv_preset_crypto: '02. Biến Động Mã Hóa',
+    csv_preset_telemetry: '03. Thực Thi AI Token',
+    csv_col_x: 'CỘT TRỤC X (DANH MỤC / NGÀY THÁNG)',
+    csv_col_y: 'CỘT TRỤC Y (CHỈ SỐ / GIÁ TRỊ)',
+    csv_mode_label: 'CHẾ ĐỘ TRỰC QUAN HÓA',
+    csv_mode_waveform: '01. Dạng Sóng Cyber / Lưới Đường',
+    csv_mode_matrix: '02. Ma Trận Mật Độ Brutalist / Khối Thanh',
+    csv_mode_candlestick: '03. Biểu Đồ Nến Thuật Toán / Lưới Tài Chính',
+    csv_palette_label: 'BẢNG MÀU',
+    csv_palette_neon: 'Cyberpunk Neon (#5322ff / #00E5FF)',
+    csv_palette_mono: 'Brutalist Monochrome (#FFFFFF)',
+    csv_telemetry_title: 'BẢNG ĐO VIỄN THÔNG DỮ LIỆU',
+    csv_telemetry_rows: 'TỔNG SỐ DÒNG',
+    csv_telemetry_min: 'GIÁ TRỊ TỐI THIỂU',
+    csv_telemetry_max: 'GIÁ TRỊ TỐI ĐA',
+    csv_telemetry_avg: 'GIÁ TRỊ TRUNG BÌNH',
+    csv_telemetry_fps: 'TỐC ĐỘ KHUNG HÌNH',
 
     // Existential Blackbox Section
     blackbox_title: 'BỀ MẶT NỀN // ĐỘNG CƠ 60FPS',
