@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Github, Menu, X, ArrowRight, Terminal } from 'lucide-react';
+import { Menu, X, ArrowRight, Terminal } from 'lucide-react'; // Đã bỏ import Github
 import BrutalistLogo from './BrutalistLogo';
 import LanguageToggle from './LanguageToggle';
 import { useTranslation } from '@/context/useLanguage';
@@ -39,54 +39,49 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
           : 'bg-transparent border-b border-zinc-800/40'
       }`}
     >
-      <nav className="mx-auto max-w-7xl px-6 lg:px-8 h-16 flex items-center justify-between">
-        <a href="#" className="flex items-center gap-3 group">
+      <nav className="mx-auto max-w-7xl px-4 lg:px-6 h-16 flex items-center justify-between">
+        {/* LOGO AREA (Đã ẩn thẻ span phiên bản V3.0) */}
+        <a href="#" className="flex items-center gap-3 group shrink-0">
           <BrutalistLogo size={32} subtag={t('logo_subtag')} />
-          <span className="hidden sm:inline-flex font-mono text-[9px] px-1.5 py-0.5 rounded border border-zinc-700 bg-zinc-900 text-cyan-glow tracking-widest ml-1">
-            {t('subtag_version')}
-          </span>
         </a>
 
-        <div className="hidden md:flex items-center gap-1">
+        {/* NAVIGATION LINKS */}
+        <div className="hidden lg:flex items-center gap-0.5">
           {links.map((l, idx) => (
             <a
               key={idx}
               href={l.href}
-              className="px-3.5 py-2 text-[12px] font-mono tracking-wider text-zinc-400 hover:text-white transition-colors rounded-none hover:bg-zinc-900 border border-transparent hover:border-zinc-800"
+              className="px-2.5 py-2 text-[11px] font-mono tracking-wider text-zinc-400 hover:text-white transition-colors rounded-none hover:bg-zinc-900 border border-transparent hover:border-zinc-800 whitespace-nowrap"
             >
               {l.label}
             </a>
           ))}
         </div>
 
-        <div className="hidden md:flex items-center gap-3">
-          <a
-            href="#"
-            className="text-zinc-400 hover:text-white transition-colors p-2 rounded border border-zinc-800 hover:border-zinc-700 bg-zinc-900/50"
-            aria-label="GitHub"
-          >
-            <Github className="h-[16px] w-[16px]" />
-          </a>
+        {/* ACTIONS / BUTTONS AREA (Đã ẩn nút GitHub) */}
+        <div className="hidden md:flex items-center gap-2">
           <a
             href="#platform"
-            className="group inline-flex items-center gap-1.5 border border-zinc-800 bg-zinc-950 text-[12px] font-mono text-zinc-300 px-4 py-2 hover:bg-zinc-900 hover:text-white hover:border-zinc-700 transition-colors"
+            className="group inline-flex items-center gap-1 border border-zinc-800 bg-zinc-950 text-[11px] font-mono text-zinc-300 px-3 py-1.5 hover:bg-zinc-900 hover:text-white hover:border-zinc-700 transition-colors whitespace-nowrap"
           >
             {t('nav_deploy_node')}
             <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform text-cyan-glow" />
           </a>
+
           {onOpenBatchModal && (
             <button
               onClick={onOpenBatchModal}
-              className="group relative inline-flex items-center gap-1.5 border border-[#00E5FF] bg-[#00E5FF]/10 text-[11px] font-mono font-bold tracking-wider px-3 py-2 text-[#00E5FF] hover:bg-[#00E5FF] hover:text-black transition-all duration-300 cursor-pointer uppercase shadow-[0_0_12px_rgba(0,229,255,0.2)]"
+              className="group relative inline-flex items-center gap-1 border border-[#00E5FF] bg-[#00E5FF]/10 text-[11px] font-mono font-bold tracking-wider px-2.5 py-1.5 text-[#00E5FF] hover:bg-[#00E5FF] hover:text-black transition-all duration-300 cursor-pointer uppercase shadow-[0_0_12px_rgba(0,229,255,0.2)] whitespace-nowrap"
             >
               <span>⚡ BATCH PRODUCTION</span>
             </button>
           )}
+
           <a
             href={STUDIO_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative inline-flex items-center gap-2 border border-[#5322ff] bg-[#5322ff]/10 text-[12px] font-mono font-bold tracking-wide px-4 py-2 text-white transition-all duration-300 hover:bg-[#5322ff]/20"
+            className="group relative inline-flex items-center gap-1.5 border border-[#5322ff] bg-[#5322ff]/10 text-[11px] font-mono font-bold tracking-wide px-3 py-1.5 text-white transition-all duration-300 hover:bg-[#5322ff]/20 whitespace-nowrap"
           >
             <span
               className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -97,9 +92,11 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
             <Terminal className="relative h-3.5 w-3.5 text-cyan-glow" />
             <span className="relative">{t('nav_studio_console')}</span>
           </a>
+
           <LanguageToggle />
         </div>
 
+        {/* MOBILE MENU TOGGLE */}
         <div className="flex md:hidden items-center gap-2">
           <LanguageToggle />
           <button
