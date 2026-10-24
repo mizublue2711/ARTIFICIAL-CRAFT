@@ -109,10 +109,10 @@ export default function Experts() {
           className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-px border border-zinc-800 bg-zinc-800 font-mono"
         >
           {[
-            { v: '4,200+', l: t('stat_workflows') },
-            { v: '180M+', l: t('stat_runs') },
-            { v: '14', l: t('stat_regions') },
-            { v: '99.99%', l: t('stat_sla') },
+            { v: '4,2+', l: t('stat_workflows') },
+            { v: '130+', l: t('stat_runs') },
+            { v: '5', l: t('stat_regions') },
+            { v: '79%', l: t('stat_sla') },
           ].map((s) => (
             <div key={s.l} className="bg-zinc-950 p-5">
               <div className="font-mono text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
