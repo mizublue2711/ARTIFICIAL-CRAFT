@@ -10,6 +10,7 @@ export interface Translations {
   nav_experts: string;
   nav_deploy_node: string;
   nav_studio_console: string;
+  nav_vibepath_studio: string;
   subtag_version: string;
   logo_subtag: string;
 
@@ -23,6 +24,8 @@ export interface Translations {
   heroTitleLine2: string;
   subtitle: string;
   ctaButton: string;
+  hero_cta_vibepath: string;
+  hero_cta_sandbox: string;
   cta_explore: string;
   exportBlueprint: string;
 
@@ -67,6 +70,9 @@ export interface Translations {
   bento_desc: string;
   card_hybrid_title: string;
   card_hybrid_desc: string;
+  card_vibepath_title: string;
+  card_vibepath_desc: string;
+  card_vibepath_link: string;
   node_trigger: string;
   node_reason: string;
   node_vector: string;
@@ -144,6 +150,7 @@ export interface Translations {
   col_engine: string;
   col_developers: string;
   col_craft: string;
+  link_vibepath_studio: string;
   link_architecture: string;
   link_blueprints: string;
   link_telemetry: string;
@@ -267,6 +274,7 @@ export const translations: Record<Language, Translations> = {
     nav_experts: 'EXPERTS',
     nav_deploy_node: 'DEPLOY//NODE',
     nav_studio_console: 'STUDIO//CONSOLE',
+    nav_vibepath_studio: 'VibePath Studio ↗',
     subtag_version: 'v3.0//BRUTALIST',
     logo_subtag: 'CRAFT//CODE',
 
@@ -280,6 +288,8 @@ export const translations: Record<Language, Translations> = {
     heroTitleLine2: 'CRAFT',
     subtitle: 'Where Meticulous Graphic Design Meets Deterministic AI Automation.',
     ctaButton: 'Launch Autopilot Studio',
+    hero_cta_vibepath: '🚀 Launch VibePath Studio',
+    hero_cta_sandbox: 'Try Live Sandbox',
     cta_explore: 'EXPLORE BLUEPRINTS',
     exportBlueprint: 'Export HD Diagram',
 
@@ -329,6 +339,9 @@ export const translations: Record<Language, Translations> = {
     card_hybrid_title: 'HYBRID CRAFT RUNTIME',
     card_hybrid_desc:
       'Reasoning engines call n8n workflows as typed Swiss design tools; n8n workflows execute Dify agents as deterministic code steps.',
+    card_vibepath_title: 'VibePath Automation Engine',
+    card_vibepath_desc: 'Next-Gen AI Workflow & Interactive Studio',
+    card_vibepath_link: 'Open VibePath Studio ↗',
     node_trigger: 'TRIGGER',
     node_reason: 'REASON',
     node_vector: 'VECTOR',
@@ -410,6 +423,7 @@ export const translations: Record<Language, Translations> = {
     col_engine: 'ENGINE',
     col_developers: 'DEVELOPERS',
     col_craft: 'CRAFT',
+    link_vibepath_studio: 'VibePath Studio',
     link_architecture: 'Architecture',
     link_blueprints: 'Blueprints',
     link_telemetry: 'Telemetry',
@@ -532,6 +546,7 @@ export const translations: Record<Language, Translations> = {
     nav_experts: 'CHUYÊN GIA',
     nav_deploy_node: 'TRIỂN KHAI//NÚT',
     nav_studio_console: 'STUDIO//ĐIỀU HÀNH',
+    nav_vibepath_studio: 'VibePath Studio ↗',
     subtag_version: 'v3.0//BRUTALIST',
     logo_subtag: 'CRAFT//CODE',
 
@@ -545,6 +560,8 @@ export const translations: Record<Language, Translations> = {
     heroTitleLine2: 'CRAFT',
     subtitle: 'Nơi Cây Cọ Thiết Kế Đồ Họa Gặp Đường Ống Tự Động Hóa AI.',
     ctaButton: 'Kích Hoạt Autopilot Studio',
+    hero_cta_vibepath: '🚀 Khởi Chạy VibePath Studio',
+    hero_cta_sandbox: 'Thử Nghiệm Sandbox Live',
     cta_explore: 'KHÁM PHÁ SƠ ĐỒ MẪU',
     exportBlueprint: 'Xuất Ảnh Sơ Đồ HD',
 
@@ -594,6 +611,9 @@ export const translations: Record<Language, Translations> = {
     card_hybrid_title: 'MÔI TRƯỜNG THỰC THI THIẾT KẾ LAI',
     card_hybrid_desc:
       'Nền tảng tư duy xử lý quy trình n8n dựa trên các kiểu dữ liệu rõ ràng, và vận hành các tác nhân Dify giống như các bước lập trình tuần tự',
+    card_vibepath_title: 'Động Cơ Tự Động Hóa VibePath',
+    card_vibepath_desc: 'Quy Trình AI Thế Hệ Mới & Studio Tương Tác',
+    card_vibepath_link: 'Mở VibePath Studio ↗',
     node_trigger: 'KÍCH HOẠT',
     node_reason: 'LÝ LUẬN',
     node_vector: 'VECTƠ',
@@ -675,6 +695,7 @@ export const translations: Record<Language, Translations> = {
     col_engine: 'ĐỘNG CƠ',
     col_developers: 'LẬP TRÌNH VIÊN',
     col_craft: 'THIẾT KẾ',
+    link_vibepath_studio: 'VibePath Studio',
     link_architecture: 'Kiến Trúc',
     link_blueprints: 'Sơ Đồ Mẫu',
     link_telemetry: 'Viễn Thông',

@@ -11,7 +11,10 @@ import {
   Layers,
   Terminal,
   Cpu,
+  ExternalLink,
 } from 'lucide-react';
+
+const VIBEPATH_URL = 'https://vibepath.mizu2711.workers.dev/';
 import { useTranslation } from '@/context/useLanguage';
 
 function SpotlightCard({
@@ -87,24 +90,39 @@ export default function BentoGrid() {
         </p>
 
         <div className="mt-10 grid grid-cols-1 md:grid-cols-6 gap-4 auto-rows-[minmax(180px,auto)]">
-          {/* Card 1 — Hybrid Architecture */}
+          {/* Card 1 — VibePath Automation Engine */}
           <SpotlightCard className="md:col-span-4 md:row-span-2" accent="cyan">
             <div className="relative h-full p-6 sm:p-8 flex flex-col font-mono">
-              <div className="flex items-center gap-2 mb-4 flex-wrap">
-                <div className="flex items-center gap-1.5 border border-zinc-700 bg-zinc-900 px-2 py-1">
-                  <Brain className="h-3.5 w-3.5 text-cyan-glow" />
-                  <span className="font-mono text-[11px] text-zinc-300">DIFY // REASONING CORE</span>
+              <div className="flex items-center justify-between gap-2 mb-4 flex-wrap">
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5 border border-zinc-700 bg-zinc-900 px-2 py-1">
+                    <Brain className="h-3.5 w-3.5 text-cyan-glow" />
+                    <span className="font-mono text-[11px] text-zinc-300">DIFY // REASONING CORE</span>
+                  </div>
+                  <span className="font-mono text-zinc-600 text-xs">+</span>
+                  <div className="flex items-center gap-1.5 border border-zinc-700 bg-zinc-900 px-2 py-1">
+                    <Workflow className="h-3.5 w-3.5 text-[#5322ff]" />
+                    <span className="font-mono text-[11px] text-zinc-300">N8N // ORCHESTRATOR</span>
+                  </div>
                 </div>
-                <span className="font-mono text-zinc-600 text-xs">+</span>
-                <div className="flex items-center gap-1.5 border border-zinc-700 bg-zinc-900 px-2 py-1">
-                  <Workflow className="h-3.5 w-3.5 text-[#5322ff]" />
-                  <span className="font-mono text-[11px] text-zinc-300">N8N // ORCHESTRATOR</span>
-                </div>
+
+                <a
+                  href={VIBEPATH_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 border border-[#00E5FF] bg-[#00E5FF]/10 text-cyan-glow hover:bg-[#00E5FF] hover:text-black transition-all px-3 py-1 text-xs font-bold font-mono uppercase shadow-[0_0_12px_rgba(0,229,255,0.2)]"
+                >
+                  <span>{t('card_vibepath_link')}</span>
+                  <ExternalLink className="h-3.5 w-3.5" />
+                </a>
               </div>
 
-              <h3 className="text-xl font-bold text-white uppercase tracking-tight font-mono">
-                {t('card_hybrid_title')}
+              <h3 className="text-xl font-bold text-white uppercase tracking-tight font-mono text-cyan-glow">
+                {t('card_vibepath_title')}
               </h3>
+              <p className="mt-1 text-sm font-semibold text-zinc-200 font-mono">
+                {t('card_vibepath_desc')}
+              </p>
               <p className="mt-2 text-[13.5px] text-zinc-400 leading-relaxed font-sans max-w-lg">
                 {t('card_hybrid_desc')}
               </p>

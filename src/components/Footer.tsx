@@ -2,6 +2,8 @@ import { Github, Mail, Linkedin, ArrowRight } from 'lucide-react';
 import BrutalistLogo from './BrutalistLogo';
 import { useTranslation } from '@/context/useLanguage';
 
+const VIBEPATH_URL = 'https://vibepath.mizu2711.workers.dev/';
+
 export default function Footer() {
   const { t } = useTranslation();
 
@@ -9,6 +11,7 @@ export default function Footer() {
     {
       title: t('col_engine'),
       links: [
+        { label: t('link_vibepath_studio'), href: VIBEPATH_URL, external: true },
         { label: t('link_architecture'), href: '#architecture' },
         { label: t('link_blueprints'), href: '#blueprints' },
         { label: t('link_telemetry'), href: '#platform' },
@@ -111,9 +114,12 @@ export default function Footer() {
                   <li key={l.label}>
                     <a
                       href={l.href}
+                      target={l.external ? '_blank' : undefined}
+                      rel={l.external ? 'noopener noreferrer' : undefined}
                       className="text-[12px] text-zinc-400 hover:text-white transition-colors"
                     >
                       {l.label}
+                      {l.external && ' ↗'}
                     </a>
                   </li>
                 ))}

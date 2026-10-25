@@ -6,6 +6,7 @@ import LanguageToggle from './LanguageToggle';
 import { useTranslation } from '@/context/useLanguage';
 
 const STUDIO_URL = 'https://dify-n8n-workflow.ai.studio/';
+const VIBEPATH_URL = 'https://vibepath.mizu2711.workers.dev/';
 
 interface NavbarProps {
   onOpenBatchModal?: () => void;
@@ -78,6 +79,22 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
           )}
 
           <a
+            href={VIBEPATH_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative inline-flex items-center gap-1.5 border border-[#00E5FF]/40 bg-zinc-950 text-[11px] font-mono font-bold tracking-wide px-3 py-1.5 text-white transition-all duration-300 hover:border-[#00E5FF] hover:shadow-[0_0_16px_rgba(0,229,255,0.4)] whitespace-nowrap"
+          >
+            <span className="relative flex h-2 w-2 shrink-0">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-[#00E5FF] opacity-75 animate-ping" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#00E5FF]" />
+            </span>
+            <span className="relative text-white group-hover:text-cyan-glow transition-colors">{t('nav_vibepath_studio')}</span>
+            <span className="bg-[#00E5FF] text-black text-[9px] font-extrabold px-1 py-0.2 rounded-none uppercase tracking-tighter">
+              NEW
+            </span>
+          </a>
+
+          <a
             href={STUDIO_URL}
             target="_blank"
             rel="noopener noreferrer"
@@ -135,6 +152,20 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                 className="inline-flex items-center justify-center gap-1.5 border border-zinc-800 bg-zinc-950 text-xs text-zinc-300 px-4 py-2.5 mt-2"
               >
                 {t('nav_deploy_node')} <ArrowRight className="h-4 w-4 text-cyan-glow" />
+              </a>
+              <a
+                href={VIBEPATH_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setOpen(false)}
+                className="inline-flex items-center justify-center gap-2 border border-[#00E5FF] bg-zinc-950 text-xs font-bold px-4 py-2.5 text-white shadow-[0_0_12px_rgba(0,229,255,0.3)]"
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-[#00E5FF] opacity-75 animate-ping" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-[#00E5FF]" />
+                </span>
+                <span>{t('nav_vibepath_studio')}</span>
+                <span className="bg-[#00E5FF] text-black text-[9px] font-extrabold px-1 py-0.2 uppercase">NEW</span>
               </a>
               <a
                 href={STUDIO_URL}
