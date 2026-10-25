@@ -22,6 +22,7 @@ import ThreeHookCanvas from '@/components/ThreeHookCanvas';
 import { useTranslation } from '@/context/useLanguage';
 
 const STUDIO_URL = 'https://dify-n8n-workflow.ai.studio/';
+const VIBEPATH_URL = 'https://vibepath.mizu2711.workers.dev/';
 const ELECTRIC_PURPLE = '#5322ff';
 const ELECTRIC_CYAN = '#00E5FF';
 
@@ -285,18 +286,18 @@ export default function Hero({ onOpenBatchModal }: HeroProps) {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.18 }}
-              className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 font-mono"
+              className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 font-mono flex-wrap"
             >
-              {onOpenBatchModal && (
-                <button
-                  type="button"
-                  onClick={onOpenBatchModal}
-                  className="group relative inline-flex items-center justify-center gap-2 text-sm font-bold px-6 py-3.5 text-black transition-all duration-300 bg-[#00E5FF] hover:bg-[#00E5FF]/80 uppercase cursor-pointer shadow-[0_0_20px_rgba(0,229,255,0.4)]"
-                >
-                  <Zap className="h-4 w-4 text-black fill-black" />
-                  <span>⚡ BATCH PRODUCTION (MASS RENDER)</span>
-                </button>
-              )}
+              <a
+                href={VIBEPATH_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative inline-flex items-center justify-center gap-2 text-sm font-bold px-6 py-3.5 text-black transition-all duration-300 bg-[#00E5FF] hover:bg-[#00E5FF]/90 uppercase cursor-pointer shadow-[0_0_20px_rgba(0,229,255,0.5)]"
+              >
+                <span>{t('hero_cta_vibepath')}</span>
+                <ChevronRight className="h-4 w-4 text-black group-hover:translate-x-1 transition-transform" />
+              </a>
+
               <a
                 href={STUDIO_URL}
                 target="_blank"
@@ -308,12 +309,23 @@ export default function Hero({ onOpenBatchModal }: HeroProps) {
                 }}
               >
                 <Terminal className="h-4 w-4 text-cyan-glow" />
-                <span>{t('ctaButton')}</span>
-                <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                <span>{t('hero_cta_sandbox')}</span>
               </a>
+
+              {onOpenBatchModal && (
+                <button
+                  type="button"
+                  onClick={onOpenBatchModal}
+                  className="group relative inline-flex items-center justify-center gap-2 text-xs font-bold px-4 py-3.5 text-zinc-300 hover:text-white border border-zinc-800 bg-zinc-950 hover:border-[#00E5FF] transition-all uppercase cursor-pointer"
+                >
+                  <Zap className="h-3.5 w-3.5 text-[#00E5FF]" />
+                  <span>⚡ BATCH PRODUCTION</span>
+                </button>
+              )}
+
               <a
                 href="#blueprints"
-                className="inline-flex items-center justify-center gap-2 border border-zinc-800 bg-zinc-900 text-sm font-semibold text-zinc-300 px-5 py-3.5 hover:bg-zinc-800 hover:text-white transition-colors"
+                className="inline-flex items-center justify-center gap-2 border border-zinc-800 bg-zinc-900 text-xs font-semibold text-zinc-300 px-4 py-3.5 hover:bg-zinc-800 hover:text-white transition-colors"
               >
                 {t('cta_explore')}
               </a>
