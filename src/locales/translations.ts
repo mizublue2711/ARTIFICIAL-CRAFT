@@ -11,6 +11,7 @@ export interface Translations {
   nav_deploy_node: string;
   nav_studio_console: string;
   nav_vibepath_studio: string;
+  nav_studios_hubs: string;
   subtag_version: string;
   logo_subtag: string;
 
@@ -275,6 +276,7 @@ export const translations: Record<Language, Translations> = {
     nav_deploy_node: 'DEPLOY//NODE',
     nav_studio_console: 'STUDIO//CONSOLE',
     nav_vibepath_studio: 'VibePath Studio ↗',
+    nav_studios_hubs: 'STUDIOS HUBS ▾',
     subtag_version: 'v3.0//BRUTALIST',
     logo_subtag: 'CRAFT//CODE',
 
@@ -547,6 +549,7 @@ export const translations: Record<Language, Translations> = {
     nav_deploy_node: 'TRIỂN KHAI//NÚT',
     nav_studio_console: 'STUDIO//ĐIỀU HÀNH',
     nav_vibepath_studio: 'VibePath Studio ↗',
+    nav_studios_hubs: 'STUDIOS HUBS ▾',
     subtag_version: 'v3.0//BRUTALIST',
     logo_subtag: 'CRAFT//CODE',
 
