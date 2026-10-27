@@ -1,0 +1,46 @@
+{
+  "theme": {
+    "style": "Swiss Brutalist / High-Tech Automation",
+    "fonts": {
+      "mono": "JetBrains Mono, Space Mono, monospace",
+      "sans": "Inter, Swiss Geometric, sans-serif"
+    },
+    "colors": {
+      "background": "#050505",
+      "border": "#222222",
+      "accent": "#00E5FF",
+      "primary": "#FFFFFF",
+      "muted": "#666666"
+    },
+    "grid": {
+      "borderWidth": "1px",
+      "borderRadius": "0px"
+    }
+  },
+  "camera": {
+    "type": "Kinetic Smooth Pan-Zoom",
+    "startScale": 1.0,
+    "endScale": 1.04,
+    "panX": [-10, 10],
+    "panY": [-5, 5],
+    "easing": "Easing.bezier(0.25, 0.1, 0.25, 1.0)"
+  },
+  "staggerTimeline": {
+    "backgroundGrid": { "startFrame": 0, "duration": 15 },
+    "bordersAndLines": { "startFrame": 3, "duration": 12 },
+    "titleReveal": { "startFrame": 6, "duration": 18 },
+    "appMockup3D": { "startFrame": 12, "duration": 22 },
+    "actionButtonAndMetrics": { "startFrame": 20, "duration": 15 }
+  },
+  "transforms3D": {
+    "perspective": "1200px",
+    "rotateX": "10deg",
+    "rotateY": "-12deg",
+    "boxShadow": "0px 25px 50px -12px rgba(0, 229, 255, 0.25)"
+  },
+  "velocityBlur": {
+    "enabled": true,
+    "maxBlurPx": 6,
+    "velocitySensitivity": 0.15
+  }
+}
