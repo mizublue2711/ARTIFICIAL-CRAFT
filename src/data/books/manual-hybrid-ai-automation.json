@@ -1,0 +1,65 @@
+{
+  "slug": "manual-hybrid-ai-automation",
+  "title": "HYBRID AI AUTOMATION BLUEPRINT",
+  "subtitle": "Tuyệt kỹ Nối Ống 0-Token: Tách Brain Dify & Muscle n8n",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.4",
+  "updatedAt": "2026-10-29",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "HYBRID AI AUTOMATION BLUEPRINT",
+      "subtitle": "Tuyệt kỹ Nối Ống 0-Token: Tách Brain Dify & Muscle n8n",
+      "version": "v1.0.4",
+      "tags": [
+        "DIFY",
+        "N8N",
+        "LLMOPS",
+        "ARCHITECTURE"
+      ],
+      "verified": true
+    },
+    {
+      "id": "p02_brain_and_muscle",
+      "type": "tech_doc",
+      "title": "01 // TRIẾT LÝ TÁCH NÃO VÀ CƠ BẮP",
+      "content": "Cử n8n đi suy luận LLM phức tạp là tự sát hạ tầng. Ngược lại, bắt Dify đi làm Webhook polling hay xử lý file nhị phân sẽ gây đứt gãy luồng.\n\nCông thức sống còn cho dân nối ống: Dify đóng vai Bộ Não (RAG, Prompt, LLMOps), còn n8n làm Cơ Bắp (Trigger, Retry 429, Commit DB).",
+      "code": "const res = await fetch('https://dify.local/v1/workflows/run', {\n  method: 'POST',\n  headers: { 'Authorization': `Bearer ${apiKey}` },\n  body: JSON.stringify({ inputs: { draft: cleanText } })\n});",
+      "language": "javascript"
+    },
+    {
+      "id": "p03_pipeline_flow",
+      "type": "diagram",
+      "title": "02 // LUỒNG NỐI ỐNG 0-TOKEN AN TOÀN",
+      "content": "Luồng xử lý khép kín: n8n Webhook -> Code Sanitizer 0-Token -> Dify Brain -> FLUX Render -> Cloudflare R2",
+      "imageUrl": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",
+      "caption": "Figure 3.1 — AUTOMATION_FLOW: Luồng xử lý khép kín: n8n Webhook -> Code Sanitizer 0-Token -> Dify Brain -> FLUX Render -> Cloudflare R2"
+    },
+    {
+      "id": "p04_data_hygiene",
+      "type": "tech_doc",
+      "title": "03 // BỘ LỌC RÁC DATA HYGIENE 0-TOKEN",
+      "content": "Cụm từ \"Lỗi 500 giữa đêm\" luôn là nỗi ám ảnh của anh em thợ ống. Nguyên nhân 90% đến từ payload rác, field null hoặc dính ký tự xuống dòng chưa escape làm vỡ JSON.\n\nHãy dựng một Node JavaScript gác cổng gắt gao ngay tại n8n để chặn đứng rác dữ liệu trước khi tốn tiền gọi API AI.",
+      "code": "const items = $input.all();\nconst raw = items.json.text || \"\";\nif (!raw.trim()) throw new Error(\"ERR_EMPTY_PAYLOAD\");\nconst clean = raw.replace(/\"/g, '\\\\\"').replace(/\\n/g, '\\\\n');\nreturn [{ json: { cleanText: clean } }];",
+      "language": "javascript"
+    },
+    {
+      "id": "p05_sanitizer_matrix",
+      "type": "diagram",
+      "title": "04 // MA TRẬN NẮN CHUẨN PAYLOAD",
+      "content": "Mô hình lọc rửa và nắn chuẩn JSON payload rác trước khi nạp vào LLM Context.",
+      "imageUrl": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80",
+      "caption": "Figure 5.1 — DATA_MATRIX: Mô hình lọc rửa và nắn chuẩn JSON payload rác trước khi nạp vào LLM Context."
+    },
+    {
+      "id": "p06_memory_offload",
+      "type": "tech_doc",
+      "title": "05 // CHỐNG OOM VPS BẰNG R2 OFFLOADING",
+      "content": "Đừng bao giờ để n8n ôm các file ảnh nhị phân hay chuỗi Base64 dài ngoẵng trong bộ nhớ tạm. Rủi ro tràn RAM (OOM Crash) trên VPS 4GB là cực kỳ cao.\n\nĐẩy ngay file vừa render sang Cloudflare R2 (Miễn phí Egress) và chỉ truyền duy nhất chuỗi Public CDN URL qua các node tiếp theo.",
+      "code": "# Offload binary to Cloudflare R2 (0 Egress Fee)\naws s3 cp /tmp/banner.png s3://artcraft-cdn/ \\\n  --endpoint-url https://<account_id>.r2.cloudflarestorage.com\nrm -rf /tmp/banner.png",
+      "language": "bash"
+    }
+  ]
+}
