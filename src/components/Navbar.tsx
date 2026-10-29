@@ -185,7 +185,7 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                   </Link>
 
                   <Link
-                    to="/flipbook/manual-sample-architecture"
+                    to="/flipbook/manual-hybrid-ai-automation"
                     onClick={() => setDocsOpen(false)}
                     className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs transition-colors mt-1"
                   >
@@ -287,7 +287,7 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                 📖 Flipbook Archive
               </Link>
               <Link
-                to="/flipbook/manual-sample-architecture"
+                to="/flipbook/manual-hybrid-ai-automation"
                 onClick={() => setMobileMenuOpen(false)}
                 className="py-1.5 text-xs text-zinc-300 hover:text-white"
               >
