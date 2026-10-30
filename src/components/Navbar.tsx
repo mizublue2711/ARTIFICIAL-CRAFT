@@ -7,6 +7,7 @@ import LanguageToggle from './LanguageToggle';
 import { useTranslation } from '@/context/useLanguage';
 
 const AUTOPILOT_URL = 'https://dify-n8n-workflow.ai.studio/';
+const VIBEPATH_URL = 'https://vibepath.mizu2711.workers.dev/';
 
 interface NavbarProps {
   onOpenBatchModal?: () => void;
@@ -130,6 +131,22 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                         🚀 Autopilot Studio
                       </span>
                       <span className="text-[10px] text-zinc-500">Dify + n8n Multi-Agent Workflow</span>
+                    </div>
+                    <ExternalLink className="h-3.5 w-3.5 text-zinc-500 group-hover:text-[#00E5FF] shrink-0 ml-2" />
+                  </a>
+
+                   <a
+                    href={VIBEPATH_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setStudiosOpen(false)}
+                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs transition-colors mt-1"
+                  >
+                    <div className="flex flex-col">
+                      <span className="font-bold text-white group-hover:text-[#00E5FF] flex items-center gap-1.5">
+                        🚀 VibePath Studio
+                      </span>
+                      <span className="text-[10px] text-zinc-500">VibePath automates 3D mapping</span>
                     </div>
                     <ExternalLink className="h-3.5 w-3.5 text-zinc-500 group-hover:text-[#00E5FF] shrink-0 ml-2" />
                   </a>
