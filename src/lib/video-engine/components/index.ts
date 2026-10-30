@@ -1,3 +1,7 @@
+// Orchestrator & Stage
+export * from './LegoVideoOrchestrator';
+export * from './PlaygroundStage';
+
 // 3D Objects
 export * from './3d/RubikCube3D';
 export * from './3d/LogarithmicSpiral3D';
