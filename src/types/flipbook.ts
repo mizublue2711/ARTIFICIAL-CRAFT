@@ -1,12 +1,20 @@
 export type BlockType = 'cover' | 'tech_doc' | 'diagram' | 'interactive';
 
 export type GraphicType =
+  | 'AUTOMATION_FLOW'
+  | 'DATA_MATRIX'
+  | 'REMOTION_TIMELINE'
+  | 'GEO_MAP'
+  | 'PORTFOLIO_ALLOCATOR'
+  | 'EXECUTIVE_PORTRAIT'
+  | 'RISK_RADAR'
+  | 'GLOBAL_GEO_NODES'
+  | 'CANDLESTICK_STREAM'
+  | 'WATERFALL_FLOW'
   | 'NEURAL_MESH'
   | 'ISOMETRIC_CAD'
   | 'ALGORITHMIC_WAVE'
   | 'INTERACTIVE_ANCHOR'
-  | 'AUTOMATION_FLOW'
-  | 'DATA_MATRIX'
   | string;
 
 export type TechDocLayout =
