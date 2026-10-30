@@ -1,0 +1,52 @@
+{
+  "slug": "tech-lib-05-fail-fast-zod-guardrails",
+  "title": "FAIL FAST OR DRIFT FOREVER",
+  "subtitle": "Why Zod Schema Guardrails Are Non-Negotiable in AI Agent Orchestration",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "FAIL FAST OR DRIFT FOREVER",
+      "subtitle": "Why Zod Schema Guardrails Are Non-Negotiable in AI Agent Orchestration",
+      "version": "v1.0.0",
+      "tags": [
+        "ZOD",
+        "FAIL-FAST",
+        "AI AGENTS",
+        "GUARDRAILS"
+      ],
+      "verified": true
+    },
+    {
+      "id": "p02_invisible_disaster",
+      "type": "tech_doc",
+      "title": "01 // THE INVISIBLE DISASTER",
+      "content": "A web crash gives you an error log. An automated video pipeline crash gives you 1,000 ruined renders.\n\nWithout schema guardrails, silent drift causes text overflow, missing hex colors, or 404 image URLs after hours of render time and spent cloud budget.",
+      "seed": "rubik-cube-matrix-01",
+      "graphicType": "NEURAL_MESH"
+    },
+    {
+      "id": "p03_three_window_pipeline",
+      "type": "tech_doc",
+      "title": "02 // THE THREE WINDOW PIPELINE",
+      "content": "Window 1 (Architect): Extracts JSON specs and defines Zod schemas.\nWindow 2 (Builder): Receives schemas and writes Remotion React code.\nWindow 3 (Engine): Executes headless rendering.\nRole collisions are forbidden.",
+      "code": "import { z } from 'zod';\n\nexport const RenderPropsSchema = z.object({\n  title: z.string().max(60),\n  primaryColor: z.string().regex(/^#[0-9A-Fa-f]{6}$/),\n  fps: z.literal(60),\n  seed: z.string()\n});",
+      "language": "typescript",
+      "seed": "swiss-grid-dot-matrix",
+      "graphicType": "DATA_MATRIX"
+    },
+    {
+      "id": "p04_doorstep_rule",
+      "type": "diagram",
+      "title": "03 // THE DOORSTEP RULE & SWISS GUARDRAILS",
+      "content": "Validate incoming data at the doorstep with Zod. If props fail validation, kill the job in 2 milliseconds ($0.00 cost) before spending compute.",
+      "seed": "master-director-orchestrator",
+      "graphicType": "AUTOMATION_FLOW",
+      "caption": "Figure 3.1 — Doorstep Zod schema guardrails blocking invalid payloads before cloud render execution"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "slug": "tech-lib-03-ffmpeg-heavy-lifter",
+  "title": "THE INVISIBLE HEAVY LIFTER",
+  "subtitle": "Why FFmpeg Remains the Unsung Backbone of Every High-Throughput Video Pipeline",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "THE INVISIBLE HEAVY LIFTER",
+      "subtitle": "Why FFmpeg Remains the Unsung Backbone of Every High-Throughput Video Pipeline",
+      "version": "v1.0.0",
+      "tags": [
+        "FFMPEG",
+        "MEDIA PIPELINE",
+        "STREAMING",
+        "CLI"
+      ],
+      "verified": true
+    },
+    {
+      "id": "p02_fancy_wrapper",
+      "type": "tech_doc",
+      "title": "01 // THE FANCY WRAPPER",
+      "content": "AI generates the prompt. React draws the DOM. FFmpeg does the dirty work.\n\nUnderneath fancy AI video generators and cloud dashboards sits a 25-year-old C program inside a Unix terminal. When React draws frame canvases and AI voice synthesizes raw PCM audio, FFmpeg combines, compresses, and encodes h264 bytes at 60fps.",
+      "seed": "ffmpeg-cli-code-editor-01",
+      "graphicType": "NEURAL_MESH"
+    },
+    {
+      "id": "p03_disk_write_suicide",
+      "type": "tech_doc",
+      "title": "02 // PIPES, NOT DISKS",
+      "content": "Writing temporary PNG files to disk explodes I/O, spikes server memory, and doubles cloud bills.\n\nSystems engineers open stdout pipes from Chrome directly into stdin of FFmpeg. Raw YUV420p bytes flow through RAM without disk writes or temporary files.",
+      "code": "cat frames/*.yuv | ffmpeg -f rawvideo -pixel_format yuv420p \\\n  -video_size 1920x1080 -framerate 60 -i pipe:0 \\\n  -c:v libx264 -pix_fmt yuv420p output.mp4",
+      "language": "bash",
+      "seed": "ffmpeg-pipe-marquee-ticker",
+      "graphicType": "DATA_MATRIX"
+    },
+    {
+      "id": "p04_zero_memory_leak",
+      "type": "diagram",
+      "title": "03 // ZERO MEMORY LEAK & HIGH THROUGHPUT",
+      "content": "While JS frameworks come and go, FFmpeg has been crunching bytes silently for 25 years. Respect the heavy lifter.",
+      "seed": "ffmpeg-zero-leak-metric",
+      "graphicType": "DATA_MATRIX",
+      "caption": "Figure 3.1 — Zero-disk-write YUV420p streaming pipeline into FFmpeg libx264 encoder"
+    }
+  ]
+}
