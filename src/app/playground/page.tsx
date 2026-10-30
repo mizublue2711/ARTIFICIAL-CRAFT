@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import {
   ChevronDown,
-  ChevronRight,
   Layers,
   Box,
   Crosshair,
@@ -18,6 +17,7 @@ import {
   X,
   Palette,
   Eye,
+  Sparkles,
 } from 'lucide-react';
 import PlaygroundStage from '@/lib/video-engine/components/PlaygroundStage';
 import { usePlaygroundStore, PRESET_TEMPLATES } from '@/lib/video-engine/store/usePlaygroundStore';
@@ -110,26 +110,26 @@ export default function PlaygroundAppPage() {
             {/* Quick-Load Preset Template Buttons */}
             <div>
               <div className="text-[10px] uppercase text-zinc-500 tracking-widest mb-2 font-bold">
-                QUICK-LOAD PRESET TEMPLATES
+                QUICK-LOAD PRESETS
               </div>
-              <div className="space-y-1.5">
+              <div className="grid grid-cols-1 gap-1.5">
                 {Object.entries(PRESET_TEMPLATES).map(([name, presetObj]) => (
                   <button
                     key={name}
                     type="button"
                     onClick={() => loadPresetRecipe(presetObj)}
-                    className="w-full text-left py-1.5 px-2.5 border border-zinc-800 bg-zinc-950 hover:border-[#00E5FF] hover:bg-[#00E5FF]/10 text-[11px] font-bold text-zinc-300 hover:text-cyan-glow transition-all flex items-center justify-between group cursor-pointer"
+                    className="w-full text-left py-1.5 px-2 border border-zinc-800 bg-zinc-950 hover:border-[#00E5FF] hover:bg-[#00E5FF]/10 text-[10px] font-bold text-zinc-300 hover:text-cyan-glow transition-all flex items-center justify-between group cursor-pointer"
                   >
                     <span>⚡ {name}</span>
-                    <ChevronRight className="h-3 w-3 text-zinc-600 group-hover:text-cyan-glow group-hover:translate-x-0.5 transition-transform" />
+                    <Sparkles className="h-3 w-3 text-zinc-600 group-hover:text-cyan-glow" />
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Accordion Categories Dynamically Populated from ASSET_PRESET_REGISTRY */}
+            {/* Accordion Categories & Interactive Slot Cards */}
             <div className="space-y-2 border-t border-zinc-800 pt-3">
-              {/* 1. Backgrounds */}
+              {/* 1. Backgrounds Slot Cards */}
               <div className="border border-zinc-800/80 bg-zinc-950">
                 <button
                   type="button"
@@ -138,7 +138,7 @@ export default function PlaygroundAppPage() {
                 >
                   <span className="flex items-center gap-1.5">
                     <Layers className="h-3.5 w-3.5 text-cyan-glow" />
-                    <span>Backgrounds ({Object.keys(ASSET_PRESET_REGISTRY.backgrounds).length})</span>
+                    <span>1. Backgrounds ({Object.keys(ASSET_PRESET_REGISTRY.backgrounds).length})</span>
                   </span>
                   <ChevronDown
                     className={`h-3.5 w-3.5 text-zinc-500 transition-transform ${
@@ -147,26 +147,34 @@ export default function PlaygroundAppPage() {
                   />
                 </button>
                 {openAccordions.backgrounds && (
-                  <div className="p-2 border-t border-zinc-800 space-y-1">
-                    <label className="block text-[9px] text-zinc-500 uppercase mb-1">
-                      Active Slot: backgroundId
-                    </label>
-                    <select
-                      value={slots.backgroundId}
-                      onChange={(e) => setSlot('backgroundId' as keyof LegoSlots, e.target.value)}
-                      className="w-full bg-[#09090b] border border-zinc-800 text-[11px] text-cyan-glow p-1.5 outline-none font-mono"
-                    >
-                      {Object.values(ASSET_PRESET_REGISTRY.backgrounds).map((item) => (
-                        <option key={item.id} value={item.id}>
-                          {item.label}
-                        </option>
-                      ))}
-                    </select>
+                  <div className="p-2 border-t border-zinc-800 space-y-1.5">
+                    <div className="grid grid-cols-1 gap-1">
+                      {Object.values(ASSET_PRESET_REGISTRY.backgrounds).map((item) => {
+                        const isActive = slots.backgroundId === item.id;
+                        return (
+                          <button
+                            key={item.id}
+                            type="button"
+                            onClick={() => setSlot('backgroundId' as keyof LegoSlots, item.id)}
+                            className={`p-1.5 border text-left text-[10px] font-bold transition-all flex items-center justify-between cursor-pointer ${
+                              isActive
+                                ? 'border-[#00E5FF] bg-[#00E5FF]/15 text-cyan-glow shadow-[0_0_10px_rgba(0,229,255,0.3)]'
+                                : 'border-zinc-800/80 bg-zinc-900/60 text-zinc-400 hover:border-zinc-700 hover:text-white'
+                            }`}
+                          >
+                            <span className="truncate">{item.label}</span>
+                            {isActive && (
+                              <span className="h-1.5 w-1.5 rounded-full bg-[#00E5FF] shrink-0 ml-1" />
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
                 )}
               </div>
 
-              {/* 2. 3D Meshes */}
+              {/* 2. 3D Meshes Slot Cards */}
               <div className="border border-zinc-800/80 bg-zinc-950">
                 <button
                   type="button"
@@ -175,7 +183,7 @@ export default function PlaygroundAppPage() {
                 >
                   <span className="flex items-center gap-1.5">
                     <Box className="h-3.5 w-3.5 text-[#5322FF]" />
-                    <span>3D Meshes ({Object.keys(ASSET_PRESET_REGISTRY.heroObjects).length})</span>
+                    <span>2. 3D Meshes ({Object.keys(ASSET_PRESET_REGISTRY.heroObjects).length})</span>
                   </span>
                   <ChevronDown
                     className={`h-3.5 w-3.5 text-zinc-500 transition-transform ${
@@ -184,26 +192,34 @@ export default function PlaygroundAppPage() {
                   />
                 </button>
                 {openAccordions.meshes && (
-                  <div className="p-2 border-t border-zinc-800 space-y-1">
-                    <label className="block text-[9px] text-zinc-500 uppercase mb-1">
-                      Active Slot: heroObjectId
-                    </label>
-                    <select
-                      value={slots.heroObjectId}
-                      onChange={(e) => setSlot('heroObjectId' as keyof LegoSlots, e.target.value)}
-                      className="w-full bg-[#09090b] border border-zinc-800 text-[11px] text-white p-1.5 outline-none font-mono"
-                    >
-                      {Object.values(ASSET_PRESET_REGISTRY.heroObjects).map((item) => (
-                        <option key={item.id} value={item.id}>
-                          {item.label}
-                        </option>
-                      ))}
-                    </select>
+                  <div className="p-2 border-t border-zinc-800 space-y-1.5">
+                    <div className="grid grid-cols-1 gap-1">
+                      {Object.values(ASSET_PRESET_REGISTRY.heroObjects).map((item) => {
+                        const isActive = slots.heroObjectId === item.id;
+                        return (
+                          <button
+                            key={item.id}
+                            type="button"
+                            onClick={() => setSlot('heroObjectId' as keyof LegoSlots, item.id)}
+                            className={`p-1.5 border text-left text-[10px] font-bold transition-all flex items-center justify-between cursor-pointer ${
+                              isActive
+                                ? 'border-[#00E5FF] bg-[#00E5FF]/15 text-white shadow-[0_0_10px_rgba(0,229,255,0.3)]'
+                                : 'border-zinc-800/80 bg-zinc-900/60 text-zinc-400 hover:border-zinc-700 hover:text-white'
+                            }`}
+                          >
+                            <span className="truncate">{item.label}</span>
+                            {isActive && (
+                              <span className="h-1.5 w-1.5 rounded-full bg-[#00E5FF] shrink-0 ml-1" />
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
                 )}
               </div>
 
-              {/* 3. HUD Overlays */}
+              {/* 3. HUD Overlays Slot Cards */}
               <div className="border border-zinc-800/80 bg-zinc-950">
                 <button
                   type="button"
@@ -212,7 +228,7 @@ export default function PlaygroundAppPage() {
                 >
                   <span className="flex items-center gap-1.5">
                     <Crosshair className="h-3.5 w-3.5 text-amber-400" />
-                    <span>HUD Overlays ({Object.keys(ASSET_PRESET_REGISTRY.overlays).length})</span>
+                    <span>3. HUD Overlays ({Object.keys(ASSET_PRESET_REGISTRY.overlays).length})</span>
                   </span>
                   <ChevronDown
                     className={`h-3.5 w-3.5 text-zinc-500 transition-transform ${
@@ -221,26 +237,34 @@ export default function PlaygroundAppPage() {
                   />
                 </button>
                 {openAccordions.overlays && (
-                  <div className="p-2 border-t border-zinc-800 space-y-1">
-                    <label className="block text-[9px] text-zinc-500 uppercase mb-1">
-                      Active Slot: overlayId
-                    </label>
-                    <select
-                      value={slots.overlayId}
-                      onChange={(e) => setSlot('overlayId' as keyof LegoSlots, e.target.value)}
-                      className="w-full bg-[#09090b] border border-zinc-800 text-[11px] text-amber-400 p-1.5 outline-none font-mono"
-                    >
-                      {Object.values(ASSET_PRESET_REGISTRY.overlays).map((item) => (
-                        <option key={item.id} value={item.id}>
-                          {item.label}
-                        </option>
-                      ))}
-                    </select>
+                  <div className="p-2 border-t border-zinc-800 space-y-1.5">
+                    <div className="grid grid-cols-1 gap-1">
+                      {Object.values(ASSET_PRESET_REGISTRY.overlays).map((item) => {
+                        const isActive = slots.overlayId === item.id;
+                        return (
+                          <button
+                            key={item.id}
+                            type="button"
+                            onClick={() => setSlot('overlayId' as keyof LegoSlots, item.id)}
+                            className={`p-1.5 border text-left text-[10px] font-bold transition-all flex items-center justify-between cursor-pointer ${
+                              isActive
+                                ? 'border-[#00E5FF] bg-[#00E5FF]/15 text-amber-400 shadow-[0_0_10px_rgba(0,229,255,0.3)]'
+                                : 'border-zinc-800/80 bg-zinc-900/60 text-zinc-400 hover:border-zinc-700 hover:text-white'
+                            }`}
+                          >
+                            <span className="truncate">{item.label}</span>
+                            {isActive && (
+                              <span className="h-1.5 w-1.5 rounded-full bg-[#00E5FF] shrink-0 ml-1" />
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
                 )}
               </div>
 
-              {/* 4. Kinetic Typography */}
+              {/* 4. Kinetic Typography Slot Cards */}
               <div className="border border-zinc-800/80 bg-zinc-950">
                 <button
                   type="button"
@@ -249,7 +273,7 @@ export default function PlaygroundAppPage() {
                 >
                   <span className="flex items-center gap-1.5">
                     <Type className="h-3.5 w-3.5 text-purple-400" />
-                    <span>Kinetic Typography ({Object.keys(ASSET_PRESET_REGISTRY.typography).length})</span>
+                    <span>4. Kinetic Typography ({Object.keys(ASSET_PRESET_REGISTRY.typography).length})</span>
                   </span>
                   <ChevronDown
                     className={`h-3.5 w-3.5 text-zinc-500 transition-transform ${
@@ -258,21 +282,29 @@ export default function PlaygroundAppPage() {
                   />
                 </button>
                 {openAccordions.typography && (
-                  <div className="p-2 border-t border-zinc-800 space-y-1">
-                    <label className="block text-[9px] text-zinc-500 uppercase mb-1">
-                      Active Slot: textId
-                    </label>
-                    <select
-                      value={slots.textId}
-                      onChange={(e) => setSlot('textId' as keyof LegoSlots, e.target.value)}
-                      className="w-full bg-[#09090b] border border-zinc-800 text-[11px] text-purple-300 p-1.5 outline-none font-mono"
-                    >
-                      {Object.values(ASSET_PRESET_REGISTRY.typography).map((item) => (
-                        <option key={item.id} value={item.id}>
-                          {item.label}
-                        </option>
-                      ))}
-                    </select>
+                  <div className="p-2 border-t border-zinc-800 space-y-1.5">
+                    <div className="grid grid-cols-1 gap-1">
+                      {Object.values(ASSET_PRESET_REGISTRY.typography).map((item) => {
+                        const isActive = slots.textId === item.id;
+                        return (
+                          <button
+                            key={item.id}
+                            type="button"
+                            onClick={() => setSlot('textId' as keyof LegoSlots, item.id)}
+                            className={`p-1.5 border text-left text-[10px] font-bold transition-all flex items-center justify-between cursor-pointer ${
+                              isActive
+                                ? 'border-[#00E5FF] bg-[#00E5FF]/15 text-purple-300 shadow-[0_0_10px_rgba(0,229,255,0.3)]'
+                                : 'border-zinc-800/80 bg-zinc-900/60 text-zinc-400 hover:border-zinc-700 hover:text-white'
+                            }`}
+                          >
+                            <span className="truncate">{item.label}</span>
+                            {isActive && (
+                              <span className="h-1.5 w-1.5 rounded-full bg-[#00E5FF] shrink-0 ml-1" />
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
                 )}
               </div>
@@ -280,7 +312,7 @@ export default function PlaygroundAppPage() {
           </div>
 
           <div className="text-[10px] text-zinc-600 border-t border-zinc-800 pt-2 flex justify-between">
-            <span>REGISTRY: ASSETS_BOUND</span>
+            <span>REGISTRY: 4_SLOTS_ACTIVE</span>
             <span>60 FPS</span>
           </div>
         </aside>
