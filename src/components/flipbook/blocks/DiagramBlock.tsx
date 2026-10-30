@@ -1,6 +1,7 @@
 import React from 'react';
 import { PageBlock } from '../../../types/flipbook';
-import { Network, Image as ImageIcon } from 'lucide-react';
+import { Network } from 'lucide-react';
+import { GenerativeVisual } from '../../GenerativeVisual';
 
 interface DiagramBlockProps {
   block: PageBlock;
@@ -49,22 +50,13 @@ export const DiagramBlock: React.FC<DiagramBlockProps> = ({ block }) => {
             <div className="w-12" /> {/* Spacer */}
           </div>
 
-          {/* Canvas Viewport */}
-          <div className="flex-1 p-6 flex items-center justify-center bg-radial from-zinc-900/40 to-black/90 min-h-[220px]">
-            {block.imageUrl ? (
-              <img
-                src={block.imageUrl}
-                alt={block.caption || block.title || 'Architecture Diagram'}
-                className="max-h-[300px] w-auto object-contain border border-zinc-800 shadow-xl"
-              />
-            ) : (
-              <div className="flex flex-col items-center justify-center gap-3 p-8 border border-dashed border-zinc-800 text-zinc-500">
-                <ImageIcon className="w-10 h-10 text-cyan-400/60" />
-                <span className="text-xs uppercase tracking-wider text-zinc-400">
-                  [ ARCHITECTURE SCHEMATIC CANVAS ]
-                </span>
-              </div>
-            )}
+          {/* Canvas Viewport with Generative Visual Engine */}
+          <div className="flex-1 p-2 sm:p-4 flex items-center justify-center bg-radial from-zinc-900/40 to-black/90 min-h-[220px]">
+            <GenerativeVisual
+              seed={block.seed || block.id}
+              mode={block.graphicType}
+              className="w-full h-full"
+            />
           </div>
         </div>
 
@@ -79,7 +71,7 @@ export const DiagramBlock: React.FC<DiagramBlockProps> = ({ block }) => {
       {/* Footer */}
       <div className="mt-6 pt-3 border-t border-zinc-800/80 flex justify-between text-[11px] text-zinc-500">
         <span>TYPE: SYSTEM_DIAGRAM</span>
-        <span>AC-DIAGRAM-ENGINE v1.0</span>
+        <span>AC-DIAGRAM-ENGINE v2.0</span>
       </div>
     </div>
   );

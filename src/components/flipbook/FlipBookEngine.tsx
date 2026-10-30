@@ -14,7 +14,9 @@ import {
   Maximize,
   Minimize,
   BookOpen,
-  Layers
+  Layers,
+  Columns,
+  Square
 } from 'lucide-react';
 
 /**
@@ -139,6 +141,7 @@ export const FlipBookEngine: React.FC<FlipBookEngineProps> = ({
 }) => {
   const soundFx = useRef<FlipBookSoundFX>(new FlipBookSoundFX());
   const containerRef = useRef<HTMLDivElement>(null);
+  const lastWheelTime = useRef<number>(0);
 
   // Load book data from prop or registry
   const resolvedBook = bookData || getBookBySlug(bookSlug);
@@ -148,10 +151,23 @@ export const FlipBookEngine: React.FC<FlipBookEngineProps> = ({
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [direction, setDirection] = useState<number>(1); // 1 = forward, -1 = backward
 
-  const totalPages = resolvedBook?.pages.length || 0;
-  const currentPage: PageBlock | undefined = resolvedBook?.pages[pageIndex];
+  // Responsive Spread Mode Detection (>= 1024px)
+  const [isSpread, setIsSpread] = useState<boolean>(
+    typeof window !== 'undefined' ? window.innerWidth >= 1024 : false
+  );
 
-  // Handle page turn navigation
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSpread(window.innerWidth >= 1024);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const totalPages = resolvedBook?.pages.length || 0;
+  const pageStep = isSpread ? 2 : 1;
+
+  // Navigation handlers
   const goToPage = useCallback((targetIndex: number) => {
     if (!resolvedBook || targetIndex < 0 || targetIndex >= totalPages) return;
     setDirection(targetIndex > pageIndex ? 1 : -1);
@@ -160,16 +176,37 @@ export const FlipBookEngine: React.FC<FlipBookEngineProps> = ({
   }, [pageIndex, resolvedBook, totalPages]);
 
   const nextPage = useCallback(() => {
-    if (pageIndex < totalPages - 1) {
-      goToPage(pageIndex + 1);
+    if (pageIndex < totalPages - (isSpread ? 2 : 1)) {
+      goToPage(pageIndex + (isSpread ? 2 : 1));
+    } else if (isSpread && pageIndex === totalPages - 2) {
+      goToPage(totalPages - 1);
     }
-  }, [goToPage, pageIndex, totalPages]);
+  }, [goToPage, isSpread, pageIndex, totalPages]);
 
   const prevPage = useCallback(() => {
     if (pageIndex > 0) {
-      goToPage(pageIndex - 1);
+      goToPage(Math.max(0, pageIndex - (isSpread ? 2 : 1)));
     }
-  }, [goToPage, pageIndex]);
+  }, [goToPage, isSpread, pageIndex]);
+
+  // Trackpad / Wheel Scroll Page Turning (300ms Debounce)
+  const handleWheel = useCallback(
+    (e: React.WheelEvent) => {
+      const now = Date.now();
+      if (now - lastWheelTime.current < 300) return;
+
+      if (Math.abs(e.deltaX) > 20 || Math.abs(e.deltaY) > 30) {
+        if (e.deltaX > 20 || e.deltaY > 30) {
+          lastWheelTime.current = now;
+          nextPage();
+        } else if (e.deltaX < -20 || e.deltaY < -30) {
+          lastWheelTime.current = now;
+          prevPage();
+        }
+      }
+    },
+    [nextPage, prevPage]
+  );
 
   const toggleMute = () => {
     const nextMute = !isMuted;
@@ -193,7 +230,6 @@ export const FlipBookEngine: React.FC<FlipBookEngineProps> = ({
   // Keyboard Navigation Listener
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't intercept if typing in inputs
       if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement)?.tagName)) return;
 
       if (e.key === 'ArrowRight' || e.key === ' ') {
@@ -248,9 +284,15 @@ export const FlipBookEngine: React.FC<FlipBookEngineProps> = ({
     }
   };
 
+  const leftPageBlock: PageBlock | undefined = resolvedBook.pages[pageIndex];
+  const rightPageBlock: PageBlock | undefined = isSpread
+    ? resolvedBook.pages[pageIndex + 1]
+    : undefined;
+
   return (
     <div
       ref={containerRef}
+      onWheel={handleWheel}
       className={`w-full bg-[#07070A] border border-zinc-800 p-4 sm:p-6 font-mono flex flex-col justify-between shadow-2xl relative select-none ${className}`}
     >
       {/* Top Header Controls Bar */}
@@ -269,6 +311,12 @@ export const FlipBookEngine: React.FC<FlipBookEngineProps> = ({
 
         {/* Action Toolbar */}
         <div className="flex items-center gap-2">
+          {/* Spread View Indicator Badge */}
+          <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 bg-zinc-900 border border-zinc-800 text-[10px] text-cyan-400">
+            {isSpread ? <Columns className="w-3.5 h-3.5 text-cyan-400" /> : <Square className="w-3.5 h-3.5 text-zinc-400" />}
+            <span>{isSpread ? '3D DUAL-PAGE SPREAD' : 'SINGLE PAGE'}</span>
+          </div>
+
           {/* Mute Toggle */}
           <button
             onClick={toggleMute}
@@ -293,19 +341,64 @@ export const FlipBookEngine: React.FC<FlipBookEngineProps> = ({
         </div>
       </div>
 
-      {/* Flipbook Content Viewport */}
-      <div className="relative flex-1 min-h-[520px] w-full overflow-hidden bg-black/40 border border-zinc-800/60 my-2">
+      {/* Flipbook 3D Content Viewport */}
+      <div className="relative flex-1 min-h-[540px] w-full overflow-hidden bg-black/60 border border-zinc-800/80 my-2 rounded-none shadow-2xl">
         <AnimatePresence initial={false} mode="wait" custom={direction}>
           <motion.div
             key={pageIndex}
             custom={direction}
-            initial={{ opacity: 0, x: direction * 40, rotateY: direction * 10 }}
+            initial={{ opacity: 0, x: direction * 50, rotateY: direction * 8 }}
             animate={{ opacity: 1, x: 0, rotateY: 0 }}
-            exit={{ opacity: 0, x: direction * -40, rotateY: direction * -10 }}
-            transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="w-full h-full"
+            exit={{ opacity: 0, x: direction * -50, rotateY: direction * -8 }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
+            className="w-full h-full relative flex flex-col lg:flex-row"
+            style={{ perspective: 1200 }}
           >
-            {currentPage && renderBlockComponent(currentPage)}
+            {/* Left Page (or Single Page) */}
+            <div className={`w-full ${isSpread ? 'lg:w-1/2' : 'w-full'} h-full relative group`}>
+              {leftPageBlock && renderBlockComponent(leftPageBlock)}
+
+              {/* Page-Curl Hover Corner (Top Left) */}
+              <div
+                onClick={prevPage}
+                className="absolute top-0 left-0 w-10 h-10 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity z-30 pointer-events-auto"
+                title="Previous Page Curl"
+              >
+                <div className="w-full h-full bg-gradient-to-br from-cyan-500/40 to-transparent border-t-2 border-l-2 border-cyan-400 transform -rotate-45 shadow-md" />
+              </div>
+            </div>
+
+            {/* Central Spine Shadow Gradient (Dual-Page Spread View) */}
+            {isSpread && (
+              <div
+                className="hidden lg:block absolute inset-y-0 left-1/2 -translate-x-1/2 w-12 z-20 pointer-events-none"
+                style={{
+                  background: 'linear-gradient(to right, rgba(0,0,0,0.6), transparent 15%, transparent 85%, rgba(0,0,0,0.6))'
+                }}
+              />
+            )}
+
+            {/* Right Page (Dual-Page Spread View) */}
+            {isSpread && (
+              <div className="w-full lg:w-1/2 h-full relative border-t lg:border-t-0 lg:border-l border-zinc-800/80 group">
+                {rightPageBlock ? (
+                  renderBlockComponent(rightPageBlock)
+                ) : (
+                  <div className="w-full h-full min-h-[500px] bg-[#0B0B0F] border border-zinc-800 p-8 flex items-center justify-center font-mono text-xs text-zinc-600 uppercase">
+                    [ END OF MANUAL SPECIFICATION ]
+                  </div>
+                )}
+
+                {/* Page-Curl Hover Corner (Top Right) */}
+                <div
+                  onClick={nextPage}
+                  className="absolute top-0 right-0 w-10 h-10 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity z-30 pointer-events-auto"
+                  title="Next Page Curl"
+                >
+                  <div className="w-full h-full bg-gradient-to-bl from-cyan-500/40 to-transparent border-t-2 border-r-2 border-cyan-400 transform rotate-45 shadow-md" />
+                </div>
+              </div>
+            )}
           </motion.div>
         </AnimatePresence>
       </div>
@@ -331,7 +424,15 @@ export const FlipBookEngine: React.FC<FlipBookEngineProps> = ({
 
         {/* Page Indicator Badge */}
         <div className="text-xs text-zinc-400 font-bold tracking-widest px-3 py-1 bg-zinc-900 border border-zinc-800">
-          PAGE <span className="text-cyan-400">{pageIndex + 1}</span> / {totalPages}
+          {isSpread ? (
+            <span>
+              PAGES <span className="text-cyan-400">{pageIndex + 1} - {Math.min(pageIndex + 2, totalPages)}</span> / {totalPages}
+            </span>
+          ) : (
+            <span>
+              PAGE <span className="text-cyan-400">{pageIndex + 1}</span> / {totalPages}
+            </span>
+          )}
         </div>
 
         {/* Prev & Next Buttons */}
@@ -346,7 +447,7 @@ export const FlipBookEngine: React.FC<FlipBookEngineProps> = ({
           </button>
           <button
             onClick={nextPage}
-            disabled={pageIndex === totalPages - 1}
+            disabled={pageIndex >= totalPages - pageStep}
             className="flex items-center gap-1 px-3 py-1.5 bg-cyan-950/80 border border-cyan-800 text-cyan-400 text-xs font-bold hover:bg-cyan-900 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           >
             <span>NEXT</span>
