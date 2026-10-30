@@ -1,43 +1,14 @@
 import { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
-import Hero from '@/components/Hero';
-import PlugAndPlaySandbox from '@/components/PlugAndPlaySandbox';
-import CsvDataVisualizer from '@/components/CsvDataVisualizer';
-import BentoGrid from '@/components/BentoGrid';
-import BlueprintLibrary from '@/components/BlueprintLibrary';
-import BannerStudio from '@/components/BannerStudio';
-import ExistentialBlackbox from '@/components/ExistentialBlackbox';
-import Experts from '@/components/Experts';
 import Footer from '@/components/Footer';
 import BatchProductionModal from '@/components/BatchProductionModal';
 import { LanguageProvider } from '@/context/LanguageContext';
 
-function LogoMarquee() {
-  const items = [
-    'Dify', 'n8n', 'Pinecone', 'GPT-4o', 'Claude', 'Llama', 'Telegram',
-    'Slack', 'HubSpot', 'Notion', 'Pipedrive', 'Mistral',
-  ];
-  return (
-    <div className="relative py-10 border-y border-zinc-800/60 bg-[#09090b] overflow-hidden">
-      <div className="text-center font-mono text-[10px] uppercase tracking-widest text-zinc-600 mb-6">
-        Native integrations across the stack
-      </div>
-      <div className="relative mask-fade-edges overflow-hidden">
-        <div className="flex gap-12 animate-[float_30s_linear_infinite] whitespace-nowrap" style={{ animation: 'marquee 32s linear infinite' }}>
-          {[...items, ...items].map((name, i) => (
-            <span
-              key={i}
-              className="font-mono text-[15px] font-medium text-zinc-600 hover:text-zinc-300 transition-colors"
-            >
-              {name}
-            </span>
-          ))}
-        </div>
-      </div>
-      <style>{`@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }`}</style>
-    </div>
-  );
-}
+import Home from '@/pages/Home';
+import Library from '@/pages/Library';
+import FlipbookReader from '@/pages/FlipbookReader';
+import Playground from '@/pages/Playground';
 
 function App() {
   const [isBatchModalOpen, setIsBatchModalOpen] = useState(false);
@@ -46,27 +17,26 @@ function App() {
 
   return (
     <LanguageProvider>
-      <div className="relative min-h-screen bg-[#09090b] text-zinc-200 selection:bg-cyan-400/20">
-        <Navbar onOpenBatchModal={handleOpenBatchModal} />
-        <main>
-          <Hero onOpenBatchModal={handleOpenBatchModal} />
-          <LogoMarquee />
-          <PlugAndPlaySandbox />
-          <CsvDataVisualizer />
-          <BentoGrid />
-          <BlueprintLibrary />
-          <BannerStudio onOpenBatchModal={handleOpenBatchModal} />
-          <ExistentialBlackbox />
-          <Experts />
-        </main>
-        <Footer />
+      <BrowserRouter>
+        <div className="relative min-h-screen bg-[#09090b] text-zinc-200 selection:bg-cyan-400/20 flex flex-col justify-between">
+          <Navbar onOpenBatchModal={handleOpenBatchModal} />
 
-        {/* Global Batch Production Modal */}
-        <BatchProductionModal
-          isOpen={isBatchModalOpen}
-          onClose={() => setIsBatchModalOpen(false)}
-        />
-      </div>
+          <Routes>
+            <Route path="/" element={<Home onOpenBatchModal={handleOpenBatchModal} />} />
+            <Route path="/playground" element={<Playground />} />
+            <Route path="/library" element={<Library />} />
+            <Route path="/flipbook/:slug" element={<FlipbookReader />} />
+          </Routes>
+
+          <Footer />
+
+          {/* Global Batch Production Modal */}
+          <BatchProductionModal
+            isOpen={isBatchModalOpen}
+            onClose={() => setIsBatchModalOpen(false)}
+          />
+        </div>
+      </BrowserRouter>
     </LanguageProvider>
   );
 }

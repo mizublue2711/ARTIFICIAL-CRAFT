@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "id": "artificial-craft-template-v1",
+  "version": "1.0.0",
+  "metadata": {
+    "title": "ARTIFICIAL CRAFT - Zero-Token Reference Dynamic Schema",
+    "description": "Standard zero-token page generation schema mapping Swiss Brutalist sections and parameter presets.",
+    "author": "Artificial Craft Studio",
+    "updatedAt": "2026-03-31"
+  },
+  "theme": {
+    "primaryColor": "#00E5FF",
+    "secondaryColor": "#5322ff",
+    "backgroundColor": "#09090b",
+    "textColor": "#f4f4f5"
+  },
+  "sections": [
+    {
+      "id": "section-hero",
+      "type": "HERO_3D",
+      "title": "ARTIFICIAL CRAFT",
+      "subtitle": "Where Meticulous Graphic Design Meets Deterministic AI Automation.",
+      "badge": "CRAFT // CODE",
+      "props": {
+        "interactive": true,
+        "speed": 1.0
+      },
+      "background": {
+        "id": "SWISS_GRID",
+        "name": "Swiss Grid Overlay",
+        "overlayType": "grid",
+        "opacity": 0.15,
+        "color": "#3f3f46",
+        "lineSpacing": 40
+      },
+      "motion": {
+        "duration": 0.6,
+        "delay": 0.05,
+        "initial": { "opacity": 0, "y": 20 },
+        "animate": { "opacity": 1, "y": 0 }
+      }
+    },
+    {
+      "id": "section-[#playground]",
+      "type": "PLUG_AND_PLAY",
+      "title": "PLUG & PLAY GENERATIVE SANDBOX",
+      "subtitle": "60 FPS Interactive HTML5 2D Canvas Algorithmic Engine",
+      "props": {
+        "category": "organic",
+        "density": 250,
+        "speed": 1.5,
+        "palette": "cyberpunk",
+        "seed": "0x71C8A93A"
+      },
+      "background": {
+        "id": "DOT_MATRIX",
+        "name": "Dot Matrix",
+        "overlayType": "dots",
+        "opacity": 0.2,
+        "color": "#5322ff"
+      }
+    },
+    {
+      "id": "section-[#csv-visualizer]",
+      "type": "CSV_VISUALIZER",
+      "title": "CSV DATA VISUALIZER ENGINE",
+      "subtitle": "Open Development Mekong CKAN Real-Time Data Pipeline Visualizer",
+      "props": {
+        "visMode": "waveform",
+        "palette": "cyberpunk",
+        "seed": "0x89B4C2A1"
+      },
+      "background": {
+        "id": "CAD_BLUEPRINT",
+        "name": "CAD Blueprint",
+        "overlayType": "cad_blueprint",
+        "opacity": 0.2,
+        "color": "#00E5FF"
+      }
+    },
+    {
+      "id": "section-generative-art",
+      "type": "GEOMETRIC_ART",
+      "title": "GENERATIVE LINE-ART MATRIX",
+      "visualBlock": {
+        "seed": "p01_default",
+        "mode": "NEURAL_MESH",
+        "speed": 1.0,
+        "interactive": true
+      }
+    },
+    {
+      "id": "section-[#existential-blackbox]",
+      "type": "TERMINAL_CONSOLE",
+      "title": "THE EXISTENTIAL BLACKBOX",
+      "subtitle": "Terminal Q&A Engine with 60 FPS Taiji Golden Spiral Visualizer",
+      "props": {
+        "seed": "0xSOUL_2026"
+      }
+    }
+  ]
+}

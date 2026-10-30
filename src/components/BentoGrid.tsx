@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   Brain,
@@ -12,6 +13,7 @@ import {
   Terminal,
   Cpu,
   ExternalLink,
+  BookOpen,
 } from 'lucide-react';
 
 const VIBEPATH_URL = 'https://vibepath.mizu2711.workers.dev/';
@@ -246,6 +248,33 @@ export default function BentoGrid() {
               <div className="mt-auto pt-3 font-mono text-[9px] text-zinc-400 bg-zinc-900 border border-zinc-800 px-2.5 py-1.5">
                 <span className="text-cyan-glow">SCHEMA:</span> z.object(&#123; craft: z.string().max(2000) &#125;)
               </div>
+            </div>
+          </SpotlightCard>
+
+          {/* Card 7 — Dedicated Technical Manual Archive Card */}
+          <SpotlightCard className="md:col-span-6 border-[#00E5FF]/40 bg-zinc-950" accent="cyan">
+            <div className="p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 font-mono">
+              <div className="flex flex-col gap-2 max-w-xl">
+                <div className="flex items-center gap-2">
+                  <BookOpen className="h-5 w-5 text-[#00E5FF]" />
+                  <span className="font-mono text-xs font-bold text-[#00E5FF] uppercase tracking-widest">
+                    DIGITAL FLIPBOOK ENGINE
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold text-white uppercase">
+                  TECHNICAL MANUAL ARCHIVE
+                </h3>
+                <p className="text-xs text-zinc-400 font-sans leading-relaxed">
+                  Interactive Swiss Brutalist system specifications, agent orchestration blueprints, and edge worker diagnostics in zero-latency flipbook format.
+                </p>
+              </div>
+
+              <Link
+                to="/library"
+                className="inline-flex items-center gap-2 border border-[#00E5FF] bg-[#00E5FF]/10 text-[#00E5FF] hover:bg-[#00E5FF] hover:text-black transition-all px-5 py-3 text-xs font-bold font-mono uppercase tracking-wider shadow-[0_0_16px_rgba(0,229,255,0.3)] shrink-0"
+              >
+                <span>[ 📖 EXPLORE LIBRARY ↗ ]</span>
+              </Link>
             </div>
           </SpotlightCard>
         </div>
