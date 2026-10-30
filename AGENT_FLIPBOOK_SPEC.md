@@ -224,5 +224,28 @@ Fix Target Block: Modify ONLY the specific JSON block inside src/data/books/<cat
 - **Parsing Phase (JSON Level)**: If a draft specifies an unmapped or unknown `graphicType`, the Agent MUST NOT write new TSX components or modify type files. Instead, it MUST automatically reassign `graphicType: "swiss-hud"` and derive a unique `seed` from the page title.
 - **Runtime Phase (Component Level)**: If `<GenerativeVisual />` receives an unrecognized key at runtime, it MUST gracefully fall back to render the default procedural Canvas pattern derived from `seed` so the page build NEVER crashes.
 
+--------------------------------------------------------------------------------
+
+🏷️ 9. WEALTH MANAGEMENT &amp; FINANCIAL METRICS EXPANSION CLAUSE
+
+### A. Extended GraphicType Enums (src/types/flipbook.ts)
+To support institutional private wealth reports, executive profiles, and asset allocation metrics (e.g., Hubbis Wealth Management Standards), Jules MUST register the following new graphic types:
+
+```typescript
+export type GraphicType =
+  | 'AUTOMATION_FLOW'
+  | 'DATA_MATRIX'
+  | 'REMOTION_TIMELINE'
+  | 'GEO_MAP'
+  // --- Wealth Management &amp; Financial Extensions ---
+  | 'PORTFOLIO_ALLOCATOR'  // 3D Donut/Layered Asset Allocation
+  | 'EXECUTIVE_PORTRAIT'   // Swiss Brutalism Leadership &amp; Philosophy Card
+  | 'RISK_RADAR'          // Multi-axis Risk &amp; ESG Compliance Radar
+  | 'GLOBAL_GEO_NODES'    // Cross-border Wealth Hub Constellation (SG/HK/Dubai)
+  | 'CANDLESTICK_STREAM'  // Market Dynamics &amp; Volatility Matrix
+  | 'WATERFALL_FLOW';     // Capital AUM Growth &amp; Inflow Waterfall
+
+```
+
 
 
