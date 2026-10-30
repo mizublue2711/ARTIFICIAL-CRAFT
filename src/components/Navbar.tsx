@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown, ExternalLink, BookOpen, Layers, Rocket } from 'lucide-react';
+import { Menu, X, ChevronDown, ExternalLink, BookOpen, Layers, Rocket, Sparkles } from 'lucide-react';
 import BrutalistLogo from './BrutalistLogo';
 import LanguageToggle from './LanguageToggle';
 import { useTranslation } from '@/context/useLanguage';
@@ -14,6 +14,7 @@ interface NavbarProps {
 
 export default function Navbar({ onOpenBatchModal }: NavbarProps) {
   const { t } = useTranslation();
+  const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -43,6 +44,8 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const isPlaygroundActive = location.pathname === '/playground';
+
   return (
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 font-mono ${
@@ -57,8 +60,25 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
           <BrutalistLogo size={32} subtag={t('logo_subtag')} />
         </Link>
 
-        {/* NAVIGATION DROPDOWNS (STUDIOS & DOCS) */}
+        {/* NAVIGATION DROPDOWNS & PLAYGROUND TAB */}
         <div className="hidden md:flex items-center gap-4 shrink-0">
+          {/* HIGH-TECH PLAYGROUND TAB */}
+          <Link
+            to="/playground"
+            className={`group relative inline-flex items-center gap-2 border text-xs font-mono font-bold tracking-wider px-3.5 py-1.5 transition-all cursor-pointer shadow-[0_0_12px_rgba(0,229,255,0.25)] ${
+              isPlaygroundActive
+                ? 'border-[#00E5FF] bg-[#00E5FF] text-black'
+                : 'border-[#00E5FF]/70 bg-zinc-950 text-[#00E5FF] hover:bg-[#00E5FF] hover:text-black'
+            }`}
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-[#00E5FF] opacity-75 animate-ping" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#00E5FF]" />
+            </span>
+            <span>PLAYGROUND</span>
+            <Sparkles className="h-3 w-3 text-cyan-glow group-hover:text-black transition-colors" />
+          </Link>
+
           {/* 1) STUDIOS DROPDOWN */}
           <div className="relative" ref={studiosRef}>
             <button
@@ -85,12 +105,25 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                     INTERACTIVE TOOLS
                   </div>
 
+                  <Link
+                    to="/playground"
+                    onClick={() => setStudiosOpen(false)}
+                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs transition-colors"
+                  >
+                    <div className="flex flex-col">
+                      <span className="font-bold text-[#00E5FF] flex items-center gap-1.5">
+                        ⚡ 3-Column Playground Studio
+                      </span>
+                      <span className="text-[10px] text-zinc-500">60FPS Remotion Stage & Live Inspector</span>
+                    </div>
+                  </Link>
+
                   <a
                     href={AUTOPILOT_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setStudiosOpen(false)}
-                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs transition-colors"
+                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs transition-colors mt-1"
                   >
                     <div className="flex flex-col">
                       <span className="font-bold text-white group-hover:text-[#00E5FF] flex items-center gap-1.5">
@@ -124,19 +157,6 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                         📊 CSV Data Sandbox
                       </span>
                       <span className="text-[10px] text-zinc-500">CKAN Mekong Open Data Visualizer</span>
-                    </div>
-                  </a>
-
-                  <a
-                    href="/#playground"
-                    onClick={() => setStudiosOpen(false)}
-                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs transition-colors mt-1"
-                  >
-                    <div className="flex flex-col">
-                      <span className="font-bold text-white group-hover:text-[#00E5FF]">
-                        ⚡ WebGL 3D Canvas
-                      </span>
-                      <span className="text-[10px] text-zinc-500">Real-time Particle Sandbox</span>
                     </div>
                   </a>
                 </motion.div>
@@ -197,19 +217,6 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                       <span className="text-[10px] text-zinc-500">Hybrid AI Engine Blueprint</span>
                     </div>
                   </Link>
-
-                  <a
-                    href="/#blueprints"
-                    onClick={() => setDocsOpen(false)}
-                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs transition-colors mt-1"
-                  >
-                    <div className="flex flex-col">
-                      <span className="font-bold text-white group-hover:text-[#00E5FF]">
-                        📜 Brandbook & Specs
-                      </span>
-                      <span className="text-[10px] text-zinc-500">Design System & Architecture</span>
-                    </div>
-                  </a>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -253,7 +260,14 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
             className="md:hidden overflow-hidden border-t border-zinc-800 bg-[#09090b]/98 backdrop-blur-xl font-mono"
           >
             <div className="px-6 py-4 flex flex-col gap-3">
-              <div className="text-[10px] uppercase text-zinc-500 font-bold tracking-widest">STUDIOS</div>
+              <div className="text-[10px] uppercase text-zinc-500 font-bold tracking-widest">NAVIGATION</div>
+              <Link
+                to="/playground"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-1.5 text-xs font-bold text-[#00E5FF] flex items-center gap-1.5"
+              >
+                ⚡ PLAYGROUND STUDIO
+              </Link>
               <a
                 href={AUTOPILOT_URL}
                 target="_blank"
@@ -263,35 +277,12 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
               >
                 🚀 Autopilot Studio
               </a>
-              <a
-                href="/#banner-studio"
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-1.5 text-xs text-zinc-300 hover:text-white"
-              >
-                🎨 LinkedIn Banner Studio
-              </a>
-              <a
-                href="/#csv-visualizer"
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-1.5 text-xs text-zinc-300 hover:text-white"
-              >
-                📊 CSV Data Sandbox
-              </a>
-
-              <div className="text-[10px] uppercase text-zinc-500 font-bold tracking-widest mt-2">DOCS</div>
               <Link
                 to="/library"
                 onClick={() => setMobileMenuOpen(false)}
                 className="py-1.5 text-xs text-zinc-300 hover:text-white"
               >
                 📖 Flipbook Archive
-              </Link>
-              <Link
-                to="/flipbook/manual-hybrid-ai-automation"
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-1.5 text-xs text-zinc-300 hover:text-white"
-              >
-                ⚡ Latest Blueprint Spec
               </Link>
 
               <button
