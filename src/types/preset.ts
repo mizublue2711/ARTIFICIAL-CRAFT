@@ -10,6 +10,19 @@ export type SectionType =
   | 'PLUG_AND_PLAY'
   | 'CSV_VISUALIZER'
   | 'TERMINAL_CONSOLE'
+  | 'EXPORT_ARTIFACT'
+  | 'EMBED_MODAL'
+  | string;
+
+export type GenerativeVisualMode =
+  | 'NEURAL_MESH'
+  | 'ISOMETRIC_CAD'
+  | 'ALGORITHMIC_WAVE'
+  | 'AUTOMATION_FLOW'
+  | 'DATA_MATRIX'
+  | 'REMOTION_TIMELINE'
+  | 'GEO_MAP'
+  | 'INTERACTIVE_ANCHOR'
   | string;
 
 export interface BaseComponentProps {
@@ -50,7 +63,7 @@ export interface BackgroundPreset {
 }
 
 export interface VisualBlockProps extends BaseComponentProps {
-  mode?: string;
+  mode?: GenerativeVisualMode;
   variant?: string;
   density?: number;
   palette?: string;

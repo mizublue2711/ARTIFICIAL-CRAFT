@@ -6,25 +6,44 @@ import CsvDataVisualizer from '@/components/CsvDataVisualizer';
 import ExistentialBlackbox from '@/components/ExistentialBlackbox';
 import ThreeHookCanvas from '@/components/ThreeHookCanvas';
 import ParticleCanvas from '@/components/ParticleCanvas';
+import ExportArtifactEngine from '@/components/utilities/ExportArtifactEngine';
+import EmbedWidgetModal from '@/components/utilities/EmbedWidgetModal';
 
 import {
   SectionType,
   BackgroundPreset,
   MotionParameters,
+  GenerativeVisualMode,
 } from '@/types/preset';
 
 /**
- * Component Registry Mapping for Dynamic Section Engines
+ * Component Registry Mapping for Dynamic Section Engines & Utilities
  */
 export const SECTION_REGISTRY: Record<string, React.ComponentType<Record<string, unknown>>> = {
-  HERO_3D: Hero as React.ComponentType<Record<string, unknown>>,
-  GEOMETRIC_ART: GenerativeVisual as React.ComponentType<Record<string, unknown>>,
-  PLUG_AND_PLAY: PlugAndPlaySandbox as React.ComponentType<Record<string, unknown>>,
-  CSV_VISUALIZER: CsvDataVisualizer as React.ComponentType<Record<string, unknown>>,
-  TERMINAL_CONSOLE: ExistentialBlackbox as React.ComponentType<Record<string, unknown>>,
-  THREE_CANVAS: ThreeHookCanvas as React.ComponentType<Record<string, unknown>>,
-  PARTICLE_CANVAS: ParticleCanvas as React.ComponentType<Record<string, unknown>>,
+  HERO_3D: Hero as unknown as React.ComponentType<Record<string, unknown>>,
+  GEOMETRIC_ART: GenerativeVisual as unknown as React.ComponentType<Record<string, unknown>>,
+  PLUG_AND_PLAY: PlugAndPlaySandbox as unknown as React.ComponentType<Record<string, unknown>>,
+  CSV_VISUALIZER: CsvDataVisualizer as unknown as React.ComponentType<Record<string, unknown>>,
+  TERMINAL_CONSOLE: ExistentialBlackbox as unknown as React.ComponentType<Record<string, unknown>>,
+  THREE_CANVAS: ThreeHookCanvas as unknown as React.ComponentType<Record<string, unknown>>,
+  PARTICLE_CANVAS: ParticleCanvas as unknown as React.ComponentType<Record<string, unknown>>,
+  EXPORT_ARTIFACT: ExportArtifactEngine as unknown as React.ComponentType<Record<string, unknown>>,
+  EMBED_MODAL: EmbedWidgetModal as unknown as React.ComponentType<Record<string, unknown>>,
 };
+
+/**
+ * Registered Generative Line-Art Visual Modes Manifest
+ */
+export const REGISTERED_VISUAL_MODES: GenerativeVisualMode[] = [
+  'NEURAL_MESH',
+  'ISOMETRIC_CAD',
+  'ALGORITHMIC_WAVE',
+  'AUTOMATION_FLOW',
+  'DATA_MATRIX',
+  'REMOTION_TIMELINE',
+  'GEO_MAP',
+  'INTERACTIVE_ANCHOR',
+];
 
 /**
  * Registered Background Line-Art & Blueprint Overlay Presets
@@ -118,7 +137,7 @@ export const CAD_UTILITIES = {
     height: number,
     seed: string
   ) => {
-    const watermarkText = `ARTIFICIAL CRAFT // SEED: ${seed} // CAD_ENGINE`;
+    const watermarkText = `ARTIFICIAL CRAFT // ARTIFACT_ID: 0x${seed.replace(/^0x/i, '').toUpperCase()}`;
     ctx.save();
     ctx.font = '10px "JetBrains Mono", monospace';
     ctx.fillStyle = '#00E5FF';
