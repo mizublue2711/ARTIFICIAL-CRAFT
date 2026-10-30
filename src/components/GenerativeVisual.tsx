@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { AutomationFlow } from './flipbook/illustrations/AutomationFlow';
 import { DataPipelineMatrix } from './flipbook/illustrations/DataPipelineMatrix';
 import { RemotionTimeline } from './flipbook/illustrations/RemotionTimeline';
@@ -32,9 +32,20 @@ export const GenerativeVisual: React.FC<GenerativeVisualProps> = ({
   className = ''
 }) => {
   const [hoveredNode, setHoveredNode] = useState<number | null>(null);
-  const hash = hashString(seed);
+  const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: 250, y: 80 });
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
+  const hash = hashString(seed);
   const normalizedMode = mode ? mode.toUpperCase() : 'NEURAL_MESH';
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = Math.max(0, Math.min(500, ((e.clientX - rect.left) / rect.width) * 500));
+      const y = Math.max(0, Math.min(160, ((e.clientY - rect.top) / rect.height) * 160));
+      setMousePos({ x, y });
+    }
+  };
 
   // Specific Registered Modes
   if (normalizedMode === 'AUTOMATION_FLOW') {
@@ -50,7 +61,7 @@ export const GenerativeVisual: React.FC<GenerativeVisualProps> = ({
     return <GeoSpatialMap seed={seed} className={className} />;
   }
 
-  // 1. NEURAL_MESH Mode
+  // 1. NEURAL_MESH Mode: Vector nodes with animated data pulses along connections
   if (normalizedMode === 'NEURAL_MESH') {
     const nodeCount = 6;
     const nodes = Array.from({ length: nodeCount }).map((_, i) => ({
@@ -59,38 +70,56 @@ export const GenerativeVisual: React.FC<GenerativeVisualProps> = ({
       label: `NODE_0${i + 1}`
     }));
 
+    const connections: { n1: typeof nodes[0]; n2: typeof nodes[0]; idx1: number; idx2: number }[] = [];
+    nodes.forEach((n1, idx1) => {
+      nodes.forEach((n2, idx2) => {
+        if (idx1 < idx2) {
+          const dist = Math.hypot(n1.x - n2.x, n1.y - n2.y);
+          if (dist <= 260) {
+            connections.push({ n1, n2, idx1, idx2 });
+          }
+        }
+      });
+    });
+
     return (
-      <div className={`w-full h-full min-h-[220px] bg-[#0B0B0F] border border-zinc-800 p-4 font-mono relative overflow-hidden flex flex-col justify-between ${className}`}>
+      <div
+        ref={containerRef}
+        onMouseMove={handleMouseMove}
+        className={`w-full h-full min-h-[220px] bg-[#0B0B0F] border border-zinc-800 p-4 font-mono relative overflow-hidden flex flex-col justify-between ${className}`}
+      >
         <div className="flex items-center justify-between border-b border-zinc-800/80 pb-2 z-10 text-[10px] text-zinc-400">
           <span className="text-[#00E5FF] font-bold">NEURAL_MESH // SEED: {seed}</span>
-          <span className="px-1.5 py-0.5 bg-zinc-900 border border-zinc-800 text-cyan-400 font-bold">MULTI-AGENT</span>
+          <span className="px-1.5 py-0.5 bg-zinc-900 border border-zinc-800 text-cyan-400 font-bold">MULTI-AGENT_PULSE</span>
         </div>
 
         <div className="flex-1 my-2 relative z-10 flex items-center justify-center">
           <svg viewBox="0 0 500 160" className="w-full h-auto max-h-[150px]">
-            {/* Connections */}
-            {nodes.map((n1, idx1) =>
-              nodes.map((n2, idx2) => {
-                if (idx1 >= idx2) return null;
-                const dist = Math.hypot(n1.x - n2.x, n1.y - n2.y);
-                if (dist > 260) return null;
-                return (
-                  <line
-                    key={`${idx1}-${idx2}`}
-                    x1={n1.x}
-                    y1={n1.y}
-                    x2={n2.x}
-                    y2={n2.y}
-                    stroke={idx1 === 0 ? '#00E5FF' : '#5322FF'}
-                    strokeWidth={idx1 === 0 ? 1.5 : 1}
-                    opacity={0.6}
-                    strokeDasharray={idx1 % 2 === 0 ? '4 4' : undefined}
+            {/* Connection Lines */}
+            {connections.map((conn, i) => (
+              <g key={`conn-${i}`}>
+                <line
+                  x1={conn.n1.x}
+                  y1={conn.n1.y}
+                  x2={conn.n2.x}
+                  y2={conn.n2.y}
+                  stroke={conn.idx1 === 0 ? '#00E5FF' : '#5322FF'}
+                  strokeWidth={conn.idx1 === 0 ? 1.5 : 1}
+                  opacity={0.6}
+                  strokeDasharray={conn.idx1 % 2 === 0 ? '4 4' : undefined}
+                />
+                {/* Animated Data Pulse along connection line */}
+                <circle r="3" fill="#00E5FF">
+                  <animateMotion
+                    path={`M ${conn.n1.x} ${conn.n1.y} L ${conn.n2.x} ${conn.n2.y}`}
+                    dur={`${2 + (i % 3)}s`}
+                    repeatCount="indefinite"
                   />
-                );
-              })
-            )}
+                </circle>
+              </g>
+            ))}
 
-            {/* Nodes */}
+            {/* Vector Nodes */}
             {nodes.map((node, idx) => (
               <g
                 key={idx}
@@ -117,10 +146,14 @@ export const GenerativeVisual: React.FC<GenerativeVisualProps> = ({
     );
   }
 
-  // 2. ISOMETRIC_CAD Mode
+  // 2. ISOMETRIC_CAD Mode: 3D wireframe bounding boxes with CAD crosshairs (+) and dimension text
   if (normalizedMode === 'ISOMETRIC_CAD') {
     return (
-      <div className={`w-full h-full min-h-[220px] bg-[#0B0B0F] border border-zinc-800 p-4 font-mono relative overflow-hidden flex flex-col justify-between ${className}`}>
+      <div
+        ref={containerRef}
+        onMouseMove={handleMouseMove}
+        className={`w-full h-full min-h-[220px] bg-[#0B0B0F] border border-zinc-800 p-4 font-mono relative overflow-hidden flex flex-col justify-between ${className}`}
+      >
         <div className="flex items-center justify-between border-b border-zinc-800/80 pb-2 z-10 text-[10px] text-zinc-400">
           <span className="text-[#00E5FF] font-bold">ISOMETRIC_CAD // SCHEMATIC</span>
           <span className="px-1.5 py-0.5 bg-zinc-900 border border-zinc-800 text-zinc-300 font-bold">CAD_3D</span>
@@ -128,7 +161,7 @@ export const GenerativeVisual: React.FC<GenerativeVisualProps> = ({
 
         <div className="flex-1 my-2 relative z-10 flex items-center justify-center">
           <svg viewBox="0 0 500 160" className="w-full h-auto max-h-[150px]">
-            {/* Crosshairs (+) */}
+            {/* CAD Crosshairs (+) Grid */}
             {[50, 150, 250, 350, 450].map((cx) =>
               [30, 80, 130].map((cy) => (
                 <g key={`${cx}-${cy}`} stroke="#27272A" strokeWidth="1">
@@ -138,7 +171,7 @@ export const GenerativeVisual: React.FC<GenerativeVisualProps> = ({
               ))
             )}
 
-            {/* Isometric Cube 1 */}
+            {/* Isometric Wireframe Cube 1 */}
             <g transform="translate(180, 80)">
               <polygon points="0,-30 40,-10 0,10 -40,-10" fill="#181824" stroke="#00E5FF" strokeWidth="1.5" />
               <polygon points="-40,-10 0,10 0,50 -40,30" fill="#12121A" stroke="#00E5FF" strokeWidth="1.5" />
@@ -146,7 +179,7 @@ export const GenerativeVisual: React.FC<GenerativeVisualProps> = ({
               <text x="0" y="-36" textAnchor="middle" fill="#00E5FF" fontSize="8" fontFamily="monospace">BLOCK_A</text>
             </g>
 
-            {/* Isometric Cube 2 */}
+            {/* Isometric Wireframe Cube 2 */}
             <g transform="translate(320, 60)">
               <polygon points="0,-25 35,-8 0,8 -35,-8" fill="#1E1B4B" stroke="#5322FF" strokeWidth="1.5" />
               <polygon points="-35,-8 0,8 0,40 -35,24" fill="#12121A" stroke="#5322FF" strokeWidth="1.5" />
@@ -154,7 +187,7 @@ export const GenerativeVisual: React.FC<GenerativeVisualProps> = ({
               <text x="0" y="-30" textAnchor="middle" fill="#A855F7" fontSize="8" fontFamily="monospace">BLOCK_B</text>
             </g>
 
-            {/* Dimension Lines */}
+            {/* Dimension Lines & CAD Annotation */}
             <line x1="140" y1="120" x2="355" y2="120" stroke="#00E5FF" strokeWidth="1" strokeDasharray="2 2" />
             <text x="250" y="135" textAnchor="middle" fill="#00E5FF" fontSize="8" fontFamily="monospace">ΔX = 215mm</text>
           </svg>
@@ -168,43 +201,55 @@ export const GenerativeVisual: React.FC<GenerativeVisualProps> = ({
     );
   }
 
-  // 3. ALGORITHMIC_WAVE Mode
+  // 3. ALGORITHMIC_WAVE Mode: Dot-matrix grid reacting to mouse movement
   if (normalizedMode === 'ALGORITHMIC_WAVE') {
     const wavePoints = Array.from({ length: 40 }).map((_, i) => {
       const x = i * 12 + 10;
-      const y = 80 + Math.sin(i * 0.3 + hash % 10) * 35 + Math.cos(i * 0.1) * 15;
+      const distToMouse = Math.hypot(x - mousePos.x, 80 - mousePos.y);
+      const mouseFactor = distToMouse < 100 ? (1 - distToMouse / 100) * 20 : 0;
+      const y = 80 + Math.sin(i * 0.3 + hash % 10) * 35 + Math.cos(i * 0.1) * 15 + mouseFactor;
       return `${x},${y}`;
     }).join(' ');
 
     return (
-      <div className={`w-full h-full min-h-[220px] bg-[#0B0B0F] border border-zinc-800 p-4 font-mono relative overflow-hidden flex flex-col justify-between ${className}`}>
+      <div
+        ref={containerRef}
+        onMouseMove={handleMouseMove}
+        className={`w-full h-full min-h-[220px] bg-[#0B0B0F] border border-zinc-800 p-4 font-mono relative overflow-hidden flex flex-col justify-between ${className}`}
+      >
         <div className="flex items-center justify-between border-b border-zinc-800/80 pb-2 z-10 text-[10px] text-zinc-400">
           <span className="text-[#00E5FF] font-bold">ALGORITHMIC_WAVE // FREQ_SYNTH</span>
-          <span className="px-1.5 py-0.5 bg-zinc-900 border border-zinc-800 text-[#00E5FF] font-bold">DSP_GRID</span>
+          <span className="px-1.5 py-0.5 bg-zinc-900 border border-zinc-800 text-[#00E5FF] font-bold">DSP_MOUSE_GRID</span>
         </div>
 
         <div className="flex-1 my-2 relative z-10 flex items-center justify-center">
           <svg viewBox="0 0 500 160" className="w-full h-auto max-h-[150px]">
-            {/* Dot Matrix Grid */}
+            {/* Interactive Dot Matrix Grid */}
             {Array.from({ length: 20 }).map((_, col) =>
-              Array.from({ length: 8 }).map((_, row) => (
-                <circle
-                  key={`${col}-${row}`}
-                  cx={col * 24 + 20}
-                  cy={row * 18 + 15}
-                  r="1.2"
-                  fill="#27272A"
-                />
-              ))
+              Array.from({ length: 8 }).map((_, row) => {
+                const cx = col * 24 + 20;
+                const cy = row * 18 + 15;
+                const dist = Math.hypot(cx - mousePos.x, cy - mousePos.y);
+                const isHovered = dist < 50;
+                return (
+                  <circle
+                    key={`${col}-${row}`}
+                    cx={cx}
+                    cy={cy}
+                    r={isHovered ? '2.5' : '1.2'}
+                    fill={isHovered ? '#00E5FF' : '#27272A'}
+                  />
+                );
+              })
             )}
 
-            {/* Wave Line */}
+            {/* Reactive Wave Polyline */}
             <polyline points={wavePoints} fill="none" stroke="#00E5FF" strokeWidth="2" />
           </svg>
         </div>
 
         <div className="flex items-center justify-between border-t border-zinc-800/80 pt-2 z-10 text-[9px] text-zinc-500">
-          <span>SAMPLING_RATE: 48kHz // HARMONICS: ACTIVE</span>
+          <span>SAMPLING_RATE: 48kHz // MOUSE_INTERACTION: ACTIVE</span>
           <span>WAVE_SYNTH_v1.0</span>
         </div>
       </div>
@@ -214,7 +259,11 @@ export const GenerativeVisual: React.FC<GenerativeVisualProps> = ({
   // 4. INTERACTIVE_ANCHOR Mode
   if (normalizedMode === 'INTERACTIVE_ANCHOR') {
     return (
-      <div className={`w-full h-full min-h-[220px] bg-[#0B0B0F] border border-zinc-800 p-4 font-mono relative overflow-hidden flex flex-col justify-between ${className}`}>
+      <div
+        ref={containerRef}
+        onMouseMove={handleMouseMove}
+        className={`w-full h-full min-h-[220px] bg-[#0B0B0F] border border-zinc-800 p-4 font-mono relative overflow-hidden flex flex-col justify-between ${className}`}
+      >
         <div className="flex items-center justify-between border-b border-zinc-800/80 pb-2 z-10 text-[10px] text-zinc-400">
           <span className="text-[#00E5FF] font-bold">INTERACTIVE_ANCHOR // VERTEX_PHYSICS</span>
           <span className="px-1.5 py-0.5 bg-emerald-950 border border-emerald-800 text-emerald-400 font-bold">SPRING_HOVER</span>
@@ -249,7 +298,11 @@ export const GenerativeVisual: React.FC<GenerativeVisualProps> = ({
   });
 
   return (
-    <div className={`w-full h-full min-h-[220px] bg-[#0B0B0F] border border-zinc-800 p-4 font-mono relative overflow-hidden flex flex-col justify-between ${className}`}>
+    <div
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      className={`w-full h-full min-h-[220px] bg-[#0B0B0F] border border-zinc-800 p-4 font-mono relative overflow-hidden flex flex-col justify-between ${className}`}
+    >
       <div className="flex items-center justify-between border-b border-zinc-800/80 pb-2 z-10 text-[10px] text-zinc-400">
         <span className="text-[#00E5FF] font-bold">GENERATIVE_PATTERN // {normalizedMode}</span>
         <span className="px-1.5 py-0.5 bg-zinc-900 border border-zinc-800 text-amber-400 font-bold">AUTO_EXPANSION_FALLBACK</span>
