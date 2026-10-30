@@ -156,3 +156,6 @@ export function registerSectionComponent(
 ) {
   SECTION_REGISTRY[type] = component;
 }
+
+export const componentRegistry = SECTION_REGISTRY;
+export type VisualComponentType = SectionType;
