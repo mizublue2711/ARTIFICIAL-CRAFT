@@ -17,22 +17,19 @@ import {
   Palette,
   Eye,
 } from 'lucide-react';
-import { PlaygroundStage } from '@/components/PlaygroundStage';
-import { usePlaygroundStore } from '@/lib/usePlaygroundStore';
+import PlaygroundStage from '@/lib/video-engine/components/PlaygroundStage';
+import { usePlaygroundStore, PRESET_TEMPLATES } from '@/lib/video-engine/store/usePlaygroundStore';
+import { ASSET_PRESET_REGISTRY } from '@/lib/video-engine/presets/registry';
+import { LegoSlots } from '@/lib/video-engine/types/playground';
 
 export default function Playground() {
-  const {
-    recipe,
-    slots,
-    brandColors,
-    camera3D,
-    kineticText,
-    updateSlots,
-    updateBrandColors,
-    updateCamera3D,
-    updateKineticText,
-    loadPreset,
-  } = usePlaygroundStore();
+  const recipe = usePlaygroundStore((state) => state.recipe);
+  const setSlot = usePlaygroundStore((state) => state.setSlot);
+  const updateProps = usePlaygroundStore((state) => state.updateProps);
+  const loadPresetRecipe = usePlaygroundStore((state) => state.loadPresetRecipe);
+
+  const slots = recipe.slots;
+  const props = recipe.props;
 
   const [activeFrame, setActiveFrame] = useState(0);
 
@@ -61,43 +58,6 @@ export default function Playground() {
 
   // Collapsible Inspector Code Box
   const [inspectorCodeOpen, setInspectorCodeOpen] = useState(true);
-
-  // Asset catalogs
-  const BACKGROUND_OPTIONS = [
-    'SWISS_GRID',
-    'DOT_MATRIX',
-    'CAD_BLUEPRINT',
-    'CRT_SCANLINES',
-    'CYBER_RAIN',
-    'GOLD_AMBER',
-    'DARK_VOID',
-    'NEON_GRADIENT',
-    'TECHNICAL_MESH',
-  ];
-
-  const MESH_OPTIONS = [
-    'ISOMETRIC_CUBE',
-    'PARTICLE_SPHERE',
-    'WIREFRAME_TORUS',
-    'NEURAL_ANCHOR',
-    'CYBER_PYRAMID',
-  ];
-
-  const OVERLAY_OPTIONS = [
-    'CROSSHAIRS',
-    'TELEMETRY_GRID',
-    'SCANLINES',
-    'SWISS_DIMENSION',
-    'VECTOR_RETICLE',
-  ];
-
-  const TYPOGRAPHY_OPTIONS = [
-    'SWISS_BRUTALIST',
-    'CYBERPUNK_MONO',
-    'NEON_BOLD',
-    'GLITCH_MATRIX',
-    'MINIMAL_SANS',
-  ];
 
   const handleCopyJson = () => {
     navigator.clipboard.writeText(JSON.stringify(recipe, null, 2));
@@ -151,43 +111,32 @@ export default function Playground() {
                 QUICK-LOAD PRESET TEMPLATES
               </div>
               <div className="space-y-1.5">
-                <button
-                  onClick={() => loadPreset('CYBERPUNK_MATRIX')}
-                  className="w-full text-left py-1.5 px-2.5 border border-zinc-800 bg-zinc-950 hover:border-[#00E5FF] hover:bg-[#00E5FF]/10 text-[11px] font-bold text-zinc-300 hover:text-cyan-glow transition-all flex items-center justify-between group cursor-pointer"
-                >
-                  <span>⚡ Cyberpunk Matrix</span>
-                  <ChevronRight className="h-3 w-3 text-zinc-600 group-hover:text-cyan-glow group-hover:translate-x-0.5 transition-transform" />
-                </button>
-
-                <button
-                  onClick={() => loadPreset('SWISS_BRUTALISM')}
-                  className="w-full text-left py-1.5 px-2.5 border border-zinc-800 bg-zinc-950 hover:border-[#5322FF] hover:bg-[#5322FF]/20 text-[11px] font-bold text-zinc-300 hover:text-white transition-all flex items-center justify-between group cursor-pointer"
-                >
-                  <span>🇨🇭 Swiss Brutalism CAD</span>
-                  <ChevronRight className="h-3 w-3 text-zinc-600 group-hover:text-white group-hover:translate-x-0.5 transition-transform" />
-                </button>
-
-                <button
-                  onClick={() => loadPreset('GOLD_AMBER_CAD')}
-                  className="w-full text-left py-1.5 px-2.5 border border-zinc-800 bg-zinc-950 hover:border-[#F59E0B] hover:bg-[#F59E0B]/10 text-[11px] font-bold text-zinc-300 hover:text-amber-400 transition-all flex items-center justify-between group cursor-pointer"
-                >
-                  <span>📐 Gold Amber Architecture</span>
-                  <ChevronRight className="h-3 w-3 text-zinc-600 group-hover:text-amber-400 group-hover:translate-x-0.5 transition-transform" />
-                </button>
+                {Object.entries(PRESET_TEMPLATES).map(([name, presetObj]) => (
+                  <button
+                    key={name}
+                    type="button"
+                    onClick={() => loadPresetRecipe(presetObj)}
+                    className="w-full text-left py-1.5 px-2.5 border border-zinc-800 bg-zinc-950 hover:border-[#00E5FF] hover:bg-[#00E5FF]/10 text-[11px] font-bold text-zinc-300 hover:text-cyan-glow transition-all flex items-center justify-between group cursor-pointer"
+                  >
+                    <span>⚡ {name}</span>
+                    <ChevronRight className="h-3 w-3 text-zinc-600 group-hover:text-cyan-glow group-hover:translate-x-0.5 transition-transform" />
+                  </button>
+                ))}
               </div>
             </div>
 
-            {/* Accordion Categories */}
+            {/* Accordion Categories Dynamically Populated from ASSET_PRESET_REGISTRY */}
             <div className="space-y-2 border-t border-zinc-800 pt-3">
-              {/* 1. Backgrounds (9 Presets) */}
+              {/* 1. Backgrounds */}
               <div className="border border-zinc-800/80 bg-zinc-950">
                 <button
+                  type="button"
                   onClick={() => toggleAccordion('backgrounds')}
                   className="w-full flex items-center justify-between p-2 text-xs font-bold text-zinc-300 hover:text-white uppercase cursor-pointer"
                 >
                   <span className="flex items-center gap-1.5">
                     <Layers className="h-3.5 w-3.5 text-cyan-glow" />
-                    <span>Backgrounds (9 Presets)</span>
+                    <span>Backgrounds ({Object.keys(ASSET_PRESET_REGISTRY.backgrounds).length})</span>
                   </span>
                   <ChevronDown
                     className={`h-3.5 w-3.5 text-zinc-500 transition-transform ${
@@ -202,12 +151,12 @@ export default function Playground() {
                     </label>
                     <select
                       value={slots.backgroundId}
-                      onChange={(e) => updateSlots({ backgroundId: e.target.value })}
+                      onChange={(e) => setSlot('backgroundId' as keyof LegoSlots, e.target.value)}
                       className="w-full bg-[#09090b] border border-zinc-800 text-[11px] text-cyan-glow p-1.5 outline-none font-mono"
                     >
-                      {BACKGROUND_OPTIONS.map((bg) => (
-                        <option key={bg} value={bg}>
-                          {bg}
+                      {Object.values(ASSET_PRESET_REGISTRY.backgrounds).map((item) => (
+                        <option key={item.id} value={item.id}>
+                          {item.label}
                         </option>
                       ))}
                     </select>
@@ -218,12 +167,13 @@ export default function Playground() {
               {/* 2. 3D Meshes */}
               <div className="border border-zinc-800/80 bg-zinc-950">
                 <button
+                  type="button"
                   onClick={() => toggleAccordion('meshes')}
                   className="w-full flex items-center justify-between p-2 text-xs font-bold text-zinc-300 hover:text-white uppercase cursor-pointer"
                 >
                   <span className="flex items-center gap-1.5">
                     <Box className="h-3.5 w-3.5 text-[#5322FF]" />
-                    <span>3D Meshes & Objects</span>
+                    <span>3D Meshes ({Object.keys(ASSET_PRESET_REGISTRY.heroObjects).length})</span>
                   </span>
                   <ChevronDown
                     className={`h-3.5 w-3.5 text-zinc-500 transition-transform ${
@@ -238,12 +188,12 @@ export default function Playground() {
                     </label>
                     <select
                       value={slots.heroObjectId}
-                      onChange={(e) => updateSlots({ heroObjectId: e.target.value })}
+                      onChange={(e) => setSlot('heroObjectId' as keyof LegoSlots, e.target.value)}
                       className="w-full bg-[#09090b] border border-zinc-800 text-[11px] text-white p-1.5 outline-none font-mono"
                     >
-                      {MESH_OPTIONS.map((m) => (
-                        <option key={m} value={m}>
-                          {m}
+                      {Object.values(ASSET_PRESET_REGISTRY.heroObjects).map((item) => (
+                        <option key={item.id} value={item.id}>
+                          {item.label}
                         </option>
                       ))}
                     </select>
@@ -254,12 +204,13 @@ export default function Playground() {
               {/* 3. HUD Overlays */}
               <div className="border border-zinc-800/80 bg-zinc-950">
                 <button
+                  type="button"
                   onClick={() => toggleAccordion('overlays')}
                   className="w-full flex items-center justify-between p-2 text-xs font-bold text-zinc-300 hover:text-white uppercase cursor-pointer"
                 >
                   <span className="flex items-center gap-1.5">
                     <Crosshair className="h-3.5 w-3.5 text-amber-400" />
-                    <span>HUD Overlays</span>
+                    <span>HUD Overlays ({Object.keys(ASSET_PRESET_REGISTRY.overlays).length})</span>
                   </span>
                   <ChevronDown
                     className={`h-3.5 w-3.5 text-zinc-500 transition-transform ${
@@ -274,12 +225,12 @@ export default function Playground() {
                     </label>
                     <select
                       value={slots.overlayId}
-                      onChange={(e) => updateSlots({ overlayId: e.target.value })}
+                      onChange={(e) => setSlot('overlayId' as keyof LegoSlots, e.target.value)}
                       className="w-full bg-[#09090b] border border-zinc-800 text-[11px] text-amber-400 p-1.5 outline-none font-mono"
                     >
-                      {OVERLAY_OPTIONS.map((ov) => (
-                        <option key={ov} value={ov}>
-                          {ov}
+                      {Object.values(ASSET_PRESET_REGISTRY.overlays).map((item) => (
+                        <option key={item.id} value={item.id}>
+                          {item.label}
                         </option>
                       ))}
                     </select>
@@ -290,12 +241,13 @@ export default function Playground() {
               {/* 4. Kinetic Typography */}
               <div className="border border-zinc-800/80 bg-zinc-950">
                 <button
+                  type="button"
                   onClick={() => toggleAccordion('typography')}
                   className="w-full flex items-center justify-between p-2 text-xs font-bold text-zinc-300 hover:text-white uppercase cursor-pointer"
                 >
                   <span className="flex items-center gap-1.5">
                     <Type className="h-3.5 w-3.5 text-purple-400" />
-                    <span>Kinetic Typography</span>
+                    <span>Kinetic Typography ({Object.keys(ASSET_PRESET_REGISTRY.typography).length})</span>
                   </span>
                   <ChevronDown
                     className={`h-3.5 w-3.5 text-zinc-500 transition-transform ${
@@ -310,12 +262,12 @@ export default function Playground() {
                     </label>
                     <select
                       value={slots.textId}
-                      onChange={(e) => updateSlots({ textId: e.target.value })}
+                      onChange={(e) => setSlot('textId' as keyof LegoSlots, e.target.value)}
                       className="w-full bg-[#09090b] border border-zinc-800 text-[11px] text-purple-300 p-1.5 outline-none font-mono"
                     >
-                      {TYPOGRAPHY_OPTIONS.map((tOpt) => (
-                        <option key={tOpt} value={tOpt}>
-                          {tOpt}
+                      {Object.values(ASSET_PRESET_REGISTRY.typography).map((item) => (
+                        <option key={item.id} value={item.id}>
+                          {item.label}
                         </option>
                       ))}
                     </select>
@@ -326,7 +278,7 @@ export default function Playground() {
           </div>
 
           <div className="text-[10px] text-zinc-600 border-t border-zinc-800 pt-2 flex justify-between">
-            <span>SLOT MATRIX: 4/4 ACTIVE</span>
+            <span>REGISTRY: ASSETS_BOUND</span>
             <span>60 FPS</span>
           </div>
         </aside>
@@ -346,10 +298,7 @@ export default function Playground() {
             </div>
 
             {/* Centered 16:9 Canvas Embedding Remotion Player */}
-            <PlaygroundStage
-              recipe={recipe}
-              onFrameChange={(f) => setActiveFrame(f)}
-            />
+            <PlaygroundStage onFrameChange={(f) => setActiveFrame(f)} />
 
             {/* Frame Scrubber / Telemetry Waveform Bar below Canvas */}
             <div className="border border-zinc-800 bg-zinc-950 p-3 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
@@ -424,19 +373,19 @@ export default function Playground() {
                 <span>01 // GRAPHIC & BRAND COLORS</span>
               </label>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-3 gap-2">
                 {/* Primary Color Picker */}
                 <div>
                   <div className="text-[10px] text-zinc-400 mb-1">primaryColor</div>
-                  <div className="flex items-center gap-2 border border-zinc-800 bg-zinc-950 p-1.5">
+                  <div className="flex items-center gap-1 border border-zinc-800 bg-zinc-950 p-1">
                     <input
                       type="color"
-                      value={brandColors.primaryColor}
-                      onChange={(e) => updateBrandColors({ primaryColor: e.target.value })}
-                      className="h-6 w-6 border-0 bg-transparent cursor-pointer rounded-none"
+                      value={props.primaryColor}
+                      onChange={(e) => updateProps({ primaryColor: e.target.value })}
+                      className="h-5 w-5 border-0 bg-transparent cursor-pointer rounded-none"
                     />
-                    <span className="text-xs font-bold text-cyan-glow">
-                      {brandColors.primaryColor}
+                    <span className="text-[10px] font-bold text-cyan-glow truncate">
+                      {props.primaryColor}
                     </span>
                   </div>
                 </div>
@@ -444,15 +393,31 @@ export default function Playground() {
                 {/* Accent Color Picker */}
                 <div>
                   <div className="text-[10px] text-zinc-400 mb-1">accentColor</div>
-                  <div className="flex items-center gap-2 border border-zinc-800 bg-zinc-950 p-1.5">
+                  <div className="flex items-center gap-1 border border-zinc-800 bg-zinc-950 p-1">
                     <input
                       type="color"
-                      value={brandColors.accentColor}
-                      onChange={(e) => updateBrandColors({ accentColor: e.target.value })}
-                      className="h-6 w-6 border-0 bg-transparent cursor-pointer rounded-none"
+                      value={props.accentColor}
+                      onChange={(e) => updateProps({ accentColor: e.target.value })}
+                      className="h-5 w-5 border-0 bg-transparent cursor-pointer rounded-none"
                     />
-                    <span className="text-xs font-bold text-purple-400">
-                      {brandColors.accentColor}
+                    <span className="text-[10px] font-bold text-purple-400 truncate">
+                      {props.accentColor}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Background Color Picker */}
+                <div>
+                  <div className="text-[10px] text-zinc-400 mb-1">backgroundColor</div>
+                  <div className="flex items-center gap-1 border border-zinc-800 bg-zinc-950 p-1">
+                    <input
+                      type="color"
+                      value={props.backgroundColor}
+                      onChange={(e) => updateProps({ backgroundColor: e.target.value })}
+                      className="h-5 w-5 border-0 bg-transparent cursor-pointer rounded-none"
+                    />
+                    <span className="text-[10px] font-bold text-zinc-300 truncate">
+                      {props.backgroundColor}
                     </span>
                   </div>
                 </div>
@@ -471,7 +436,7 @@ export default function Playground() {
                 <div className="flex justify-between text-xs mb-1">
                   <span className="text-zinc-400">cameraZoom</span>
                   <span className="text-cyan-glow font-bold">
-                    {camera3D.cameraZoom.toFixed(2)}
+                    {props.cameraZoom.toFixed(2)}
                   </span>
                 </div>
                 <input
@@ -479,8 +444,8 @@ export default function Playground() {
                   min="0.5"
                   max="2.0"
                   step="0.05"
-                  value={camera3D.cameraZoom}
-                  onChange={(e) => updateCamera3D({ cameraZoom: parseFloat(e.target.value) })}
+                  value={props.cameraZoom}
+                  onChange={(e) => updateProps({ cameraZoom: parseFloat(e.target.value) })}
                   className="w-full h-1.5 bg-zinc-800 appearance-none cursor-pointer accent-[#00E5FF]"
                 />
                 <div className="flex justify-between text-[9px] text-zinc-600 mt-0.5">
@@ -493,15 +458,15 @@ export default function Playground() {
               <div>
                 <div className="flex justify-between text-xs mb-1">
                   <span className="text-zinc-400">rotateXDeg</span>
-                  <span className="text-[#5322FF] font-bold">{camera3D.rotateXDeg}°</span>
+                  <span className="text-[#5322FF] font-bold">{props.rotateXDeg}°</span>
                 </div>
                 <input
                   type="range"
                   min="-90"
                   max="90"
                   step="1"
-                  value={camera3D.rotateXDeg}
-                  onChange={(e) => updateCamera3D({ rotateXDeg: parseInt(e.target.value, 10) })}
+                  value={props.rotateXDeg}
+                  onChange={(e) => updateProps({ rotateXDeg: parseInt(e.target.value, 10) })}
                   className="w-full h-1.5 bg-zinc-800 appearance-none cursor-pointer accent-[#5322FF]"
                 />
                 <div className="flex justify-between text-[9px] text-zinc-600 mt-0.5">
@@ -515,7 +480,7 @@ export default function Playground() {
                 <div className="flex justify-between text-xs mb-1">
                   <span className="text-zinc-400">dispersionAmount</span>
                   <span className="text-amber-400 font-bold">
-                    {camera3D.dispersionAmount.toFixed(2)}
+                    {props.dispersionAmount.toFixed(2)}
                   </span>
                 </div>
                 <input
@@ -523,8 +488,8 @@ export default function Playground() {
                   min="0.0"
                   max="0.5"
                   step="0.01"
-                  value={camera3D.dispersionAmount}
-                  onChange={(e) => updateCamera3D({ dispersionAmount: parseFloat(e.target.value) })}
+                  value={props.dispersionAmount}
+                  onChange={(e) => updateProps({ dispersionAmount: parseFloat(e.target.value) })}
                   className="w-full h-1.5 bg-zinc-800 appearance-none cursor-pointer accent-amber-400"
                 />
                 <div className="flex justify-between text-[9px] text-zinc-600 mt-0.5">
@@ -545,8 +510,8 @@ export default function Playground() {
                 <div className="text-[10px] text-zinc-400 mb-1">textLine1</div>
                 <input
                   type="text"
-                  value={kineticText.textLine1}
-                  onChange={(e) => updateKineticText({ textLine1: e.target.value })}
+                  value={props.textLine1}
+                  onChange={(e) => updateProps({ textLine1: e.target.value })}
                   placeholder="Line 1 Title..."
                   className="w-full bg-zinc-950 border border-zinc-800 text-xs text-white p-2 font-mono outline-none focus:border-cyan-glow"
                 />
@@ -556,8 +521,8 @@ export default function Playground() {
                 <div className="text-[10px] text-zinc-400 mb-1">textLine2</div>
                 <input
                   type="text"
-                  value={kineticText.textLine2}
-                  onChange={(e) => updateKineticText({ textLine2: e.target.value })}
+                  value={props.textLine2}
+                  onChange={(e) => updateProps({ textLine2: e.target.value })}
                   placeholder="Line 2 Subtitle..."
                   className="w-full bg-zinc-950 border border-zinc-800 text-xs text-zinc-300 p-2 font-mono outline-none focus:border-cyan-glow"
                 />
@@ -597,6 +562,7 @@ export default function Playground() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
           <div className="relative w-[95vw] max-w-lg mx-auto border border-zinc-800 bg-[#09090c] p-6 shadow-2xl font-mono">
             <button
+              type="button"
               onClick={() => setIsExportJsonOpen(false)}
               className="absolute top-4 right-4 text-zinc-400 hover:text-white p-1 border border-zinc-800 bg-zinc-900 cursor-pointer"
             >
@@ -635,6 +601,7 @@ export default function Playground() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
           <div className="relative w-[95vw] max-w-lg mx-auto border border-zinc-800 bg-[#09090c] p-6 shadow-2xl font-mono">
             <button
+              type="button"
               onClick={() => setIsCloudRenderOpen(false)}
               className="absolute top-4 right-4 text-zinc-400 hover:text-white p-1 border border-zinc-800 bg-zinc-900 cursor-pointer"
             >
@@ -689,6 +656,7 @@ export default function Playground() {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
           <div className="relative w-[95vw] max-w-lg mx-auto border border-zinc-800 bg-[#09090c] p-6 shadow-2xl font-mono">
             <button
+              type="button"
               onClick={() => setIsEmbedCodeOpen(false)}
               className="absolute top-4 right-4 text-zinc-400 hover:text-white p-1 border border-zinc-800 bg-zinc-900 cursor-pointer"
             >
