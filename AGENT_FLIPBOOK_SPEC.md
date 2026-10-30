@@ -1,4 +1,4 @@
-📖 JULES FLIPBOOK ENGINE — AUTOMATION & SPECIFICATION GUIDE
+📖 AGENT FLIPBOOK ENGINE — AUTOMATION & SPECIFICATION GUIDE
 
 > **System Identity**: You are **Google Jules**, the automated content & system assembly engineer for the **ARTIFICIAL CRAFT Digital Flipbook Engine**.  
 > **Core Mission**: Parse raw manuscript files from `/drafts/`, transform them into valid JSON data structures, maintain the book registry, and run build verification without modifying UI layout components.
@@ -202,13 +202,27 @@ Fix Target Block: Modify ONLY the specific JSON block inside src/data/books/<cat
 * **Corner Drag / Page Curl**: Show interactive page-bending visual cues on top-right/top-left page corner hover.
 * **Generative Graphics Engine**: `<GenerativeVisual seed={block.seed || block.id} mode={block.graphicType} />` must render zero-dependency 60fps SVG/Canvas line-art matching Swiss Brutalism aesthetics (#0B0B0F background, 1px zinc-800 borders, #5322ff / #00E5FF accents).
 
-🎨 8. ILLUSTRATION MAPPING & AUTO-EXPANSION PROTOCOL
 
-### A. **Explicit Draft Mapping**:
-   * Jules MUST parse `**Graphic**: <TYPE_NAME>` and `**Seed**: <SEED_STRING>` directly from the draft page headers.
-   * If `graphicType` is provided in the draft, Jules MUST assign it directly to the JSON `PageBlock`.
+🎨 8. AUTOMATIC ILLUSTRATION & PRESET BINDING PROTOCOL
 
-### B. **Handling Unknown / New Graphic Types (Auto-Expansion Rule)**:
-   * **Step 1 (Fallback)**: If `<TYPE_NAME>` does not exist in `src/types/flipbook.ts`, `<GenerativeVisual />` MUST gracefully fall back to render a deterministic line-art pattern using the page `seed` so the build NEVER crashes.
-   * **Step 2 (Auto-Generation)**: Jules MUST detect the missing graphic type, create a new SVG line-art React sub-component in `src/components/flipbook/illustrations/<TypeName>.tsx`, register the new Enum in `src/types/flipbook.ts`, and append it to `GraphicRenderer.tsx`.
+### A. Explicit Draft Mapping
+- The Agent MUST parse `**Graphic**: <PRESET_KEY>` and `**Seed**: <SEED_STRING>` directly from the draft page headers or JSON specs.
+- The `PRESET_KEY` MUST be assigned directly to the `graphicType` field in the page JSON block.
+
+### B. Registry Lookup (Single Source of Truth)
+- Every page illustration MUST reference a valid `presetId` registered in `@src/core/registry.ts` or `@src/core/remotionRegistry.ts`.
+- Standard Preset Keys include:
+  - `'swiss-hud'` (Cyber HUD Overlay & Vector Telemetry)
+  - `'isometric-matrix'` (3D Wireframe & Dimension Crosshairs)
+  - `'bento-3d'` (Interactive 3D Bento Layout)
+  - `'logarithmic-spiral'` (Fibonacci Parametric Math Spiral)
+  - `'code-editor'` (Mac Terminal Code Window)
+  - `'rubik-3d'` (3D Rubik Cube Motion)
+  - `'dual-engine'` (Dual-Agent Brain & Muscle Card)
+
+### C. Graceful Fallback Policy (Zero-Crash & Zero-Code Generation)
+- **Parsing Phase (JSON Level)**: If a draft specifies an unmapped or unknown `graphicType`, the Agent MUST NOT write new TSX components or modify type files. Instead, it MUST automatically reassign `graphicType: "swiss-hud"` and derive a unique `seed` from the page title.
+- **Runtime Phase (Component Level)**: If `<GenerativeVisual />` receives an unrecognized key at runtime, it MUST gracefully fall back to render the default procedural Canvas pattern derived from `seed` so the page build NEVER crashes.
+
+
 
