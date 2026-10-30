@@ -1,0 +1,52 @@
+{
+  "slug": "tech-lib-02-video-as-code",
+  "title": "THE TIMELINE IS DEAD",
+  "subtitle": "Why Video Production Is Moving from Mouse Clicks to Deterministic Code",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "THE TIMELINE IS DEAD",
+      "subtitle": "Why Video Production Is Moving from Mouse Clicks to Deterministic Code",
+      "version": "v1.0.0",
+      "tags": [
+        "REMOTION",
+        "VIDEO-AS-CODE",
+        "REACT",
+        "DETERMINISM"
+      ],
+      "verified": true
+    },
+    {
+      "id": "p02_mouse_click_trap",
+      "type": "tech_doc",
+      "title": "01 // THE GRAPHICAL USER INTERFACE TRAP",
+      "content": "Traditional video editing software was built for humans with mice. Dragging clips on a timeline works for one video. It fails for ten thousand videos. You cannot automate a GUI button.\n\nA human editor sits in a chair, drags clips 12 pixels left, tweaks color grading, and exports. Total time: 4 hours for 1 video. Video-as-Code turns pixels into pure functions.",
+      "seed": "hud-timeline-dead-01",
+      "graphicType": "NEURAL_MESH"
+    },
+    {
+      "id": "p03_video_as_code",
+      "type": "tech_doc",
+      "title": "02 // DECLARATIVE VIDEO AS CODE",
+      "content": "Frame 0 is a state object. Frame 60 is a CSS transform. Frame 120 is an audio node. You don't edit pixels; you declare rules.\n\nRemotion turns React components into video frames. TypeScript guarantees your props are valid. Headless Chrome renders each frame inside a controlled Virtual Time environment.",
+      "code": "import { Composition } from 'remotion';\nimport { HeroScene } from './HeroScene';\n\nexport const VideoRoot = () => (\n  <Composition\n    id=\"HeroVideo\"\n    component={HeroScene}\n    durationInFrames={180}\n    fps={60}\n    width={1920}\n    height={1080}\n  />\n);",
+      "language": "typescript",
+      "seed": "matrix-cad-virtual-time",
+      "graphicType": "ISOMETRIC_CAD"
+    },
+    {
+      "id": "p04_virtual_time",
+      "type": "diagram",
+      "title": "03 // VIRTUAL TIME & 60 FPS DETERMINISM",
+      "content": "React code + Headless Chrome + Virtual Time = 100% reproducible video frames without wall-clock lag. Every render produces 100% identical pixels with 0% silent drift.",
+      "seed": "kinetic-staccato-60fps",
+      "graphicType": "REMOTION_TIMELINE",
+      "caption": "Figure 3.1 — Pure Function UI = f(State) guaranteeing 0% silent drift across GCP clusters"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "slug": "tech-lib-01-dify-n8n-hybrid",
+  "title": "THE BRAIN AND THE MUSCLE",
+  "subtitle": "Why Hybrid AI Architecture Is the Only Way Out of Hallucination Loops",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "THE BRAIN AND THE MUSCLE",
+      "subtitle": "Why Hybrid AI Architecture Is the Only Way Out of Hallucination Loops",
+      "version": "v1.0.0",
+      "tags": [
+        "DIFY",
+        "N8N",
+        "HYBRID AI",
+        "LLMOPS"
+      ],
+      "verified": true
+    },
+    {
+      "id": "p02_monolith_trap",
+      "type": "tech_doc",
+      "title": "01 // THE MONOLITH TRAP",
+      "content": "Stop asking one AI model to think, reason, and hit external APIs all at once. Split the burden.\n\nYou want an AI assistant so you hire an LLM. You tell it to read, extract, call APIs, and update databases. Most times it hallucinates, forgets payload formats, or gets stuck in infinite retry loops because you asked one mind to do two conflicting jobs: think and lift heavy iron.",
+      "seed": "dify-n8n-cover-seed-01",
+      "graphicType": "NEURAL_MESH"
+    },
+    {
+      "id": "p03_the_split",
+      "type": "tech_doc",
+      "title": "02 // THE PROFESSOR AND THE WEIGHTLIFTER",
+      "content": "You don't ask a university professor to haul steel beams. You don't ask a powerlifter to prove quantum theorems.\n\nDify is the Brain: prompt chaining, RAG retrieval, context memory, and decision making.\n\nn8n is the Muscle: listening to webhooks, transforming JSON payloads, handling rate limits, and writing to Postgres. Dify outputs clean JSON intent; n8n executes with deterministic precision.",
+      "code": "const res = await fetch('https://dify.local/v1/workflows/run', {\n  method: 'POST',\n  headers: { 'Authorization': `Bearer ${apiKey}` },\n  body: JSON.stringify({ inputs: { draft: cleanText } })\n});",
+      "language": "javascript",
+      "seed": "dify-brain-n8n-muscle-node",
+      "graphicType": "ISOMETRIC_CAD"
+    },
+    {
+      "id": "p04_sla_paradox",
+      "type": "diagram",
+      "title": "03 // ZERO SILENT DRIFT & SLA PARADOX",
+      "content": "When reasoning is decoupled from execution, state drift drops to zero. That is how you hit 99.99% SLA. Frameworks break. Architecture survives.",
+      "seed": "sla-metric-badge-9999",
+      "graphicType": "AUTOMATION_FLOW",
+      "caption": "Figure 3.1 — Decoupled Reasoning & Execution Pipeline achieving 0% silent drift"
+    }
+  ]
+}
