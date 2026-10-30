@@ -3,6 +3,12 @@ import { AutomationFlow } from './flipbook/illustrations/AutomationFlow';
 import { DataPipelineMatrix } from './flipbook/illustrations/DataPipelineMatrix';
 import { RemotionTimeline } from './flipbook/illustrations/RemotionTimeline';
 import { GeoSpatialMap } from './flipbook/illustrations/GeoSpatialMap';
+import { PortfolioAllocator } from './flipbook/illustrations/PortfolioAllocator';
+import { ExecutivePortrait } from './flipbook/illustrations/ExecutivePortrait';
+import { RiskRadar } from './flipbook/illustrations/RiskRadar';
+import { GlobalGeoNodes } from './flipbook/illustrations/GlobalGeoNodes';
+import { CandlestickStream } from './flipbook/illustrations/CandlestickStream';
+import { WaterfallFlow } from './flipbook/illustrations/WaterfallFlow';
 
 interface GenerativeVisualProps {
   seed?: string;
@@ -59,6 +65,24 @@ export const GenerativeVisual: React.FC<GenerativeVisualProps> = ({
   }
   if (normalizedMode === 'GEO_MAP' || normalizedMode === 'GEOSPATIAL') {
     return <GeoSpatialMap seed={seed} className={className} />;
+  }
+  if (normalizedMode === 'PORTFOLIO_ALLOCATOR') {
+    return <PortfolioAllocator seed={seed} className={className} />;
+  }
+  if (normalizedMode === 'EXECUTIVE_PORTRAIT') {
+    return <ExecutivePortrait seed={seed} className={className} />;
+  }
+  if (normalizedMode === 'RISK_RADAR') {
+    return <RiskRadar seed={seed} className={className} />;
+  }
+  if (normalizedMode === 'GLOBAL_GEO_NODES' || normalizedMode === 'GEO_NODES') {
+    return <GlobalGeoNodes seed={seed} className={className} />;
+  }
+  if (normalizedMode === 'CANDLESTICK_STREAM' || normalizedMode === 'CANDLESTICK') {
+    return <CandlestickStream seed={seed} className={className} />;
+  }
+  if (normalizedMode === 'WATERFALL_FLOW' || normalizedMode === 'WATERFALL') {
+    return <WaterfallFlow seed={seed} className={className} />;
   }
 
   // 1. NEURAL_MESH Mode: Vector nodes with animated data pulses along connections

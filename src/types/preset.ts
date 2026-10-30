@@ -33,6 +33,8 @@ export interface BaseComponentProps {
   className?: string;
 }
 
+export type UniversalComponentProps = BaseComponentProps & Record<string, unknown>;
+
 export interface CanvasProps extends BaseComponentProps {
   width?: number;
   height?: number;
