@@ -227,11 +227,16 @@ export const CraftStudioConfigurator: React.FC = () => {
       // Realistic procedural AI response matching user mood
       await new Promise((r) => setTimeout(r, 800));
 
-      let mockAIPalette = {
+      let mockAIPalette: {
+        backgroundColor: string;
+        primaryColor: string;
+        accentColor: string;
+        fontFamily: 'JetBrains Mono' | 'Space Grotesk' | 'Inter';
+      } = {
         backgroundColor: '#09090B',
         primaryColor: '#5322FF',
         accentColor: '#00E5FF',
-        fontFamily: 'Space Grotesk' as const,
+        fontFamily: 'Space Grotesk',
       };
 
       const lower = userPrompt.toLowerCase();
