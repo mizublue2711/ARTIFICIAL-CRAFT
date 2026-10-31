@@ -1,0 +1,6 @@
+{
+  "name": "ArtificialCraft // Monolith Video Engine",
+  "description": "Studio-grade procedural 3D video engine & deterministic 60fps animation showcase featuring 5 distinct acts, exploded monolith architecture, and WebM video export.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
