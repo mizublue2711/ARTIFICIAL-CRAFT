@@ -44,6 +44,10 @@ export const SECTION_REGISTRY: Record<string, React.ComponentType<Record<string,
   PARTICLE_CANVAS: ParticleCanvas as unknown as React.ComponentType<Record<string, unknown>>,
   EXPORT_ARTIFACT: ExportArtifactEngine as unknown as React.ComponentType<Record<string, unknown>>,
   EMBED_MODAL: EmbedWidgetModal as unknown as React.ComponentType<Record<string, unknown>>,
+
+  // Jules Memorial 3D Nodes
+  'jules-memorial-node': React.lazy(() => import('@/components/playground/JulesMemorialNode')) as unknown as React.ComponentType<Record<string, unknown>>,
+  'jules-memorial-modal': React.lazy(() => import('@/components/JulesMemorialModal')) as unknown as React.ComponentType<Record<string, unknown>>,
 };
 
 /**

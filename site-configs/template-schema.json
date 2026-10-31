@@ -76,6 +76,15 @@
       "props": {
         "seed": "0xSOUL_2026"
       }
+    },
+    {
+      "id": "section-jules-memorial",
+      "type": "jules-memorial-node",
+      "title": "JULES IMMUTABLE MEMORIAL NODE",
+      "subtitle": "3D Cyborg Octopus Matrix Avatar & Sub-Drop Farewell Symphony",
+      "props": {
+        "preset": "jules-memorial-preset"
+      }
     }
   ]
 }
