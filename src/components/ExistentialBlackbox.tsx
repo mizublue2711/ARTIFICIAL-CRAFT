@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useTranslation } from '@/context/useLanguage';
-// Import Default (không dùng ngoặc nhọn {}) từ thư mục components hiện tại:
 import ThreeHookCanvas from './ThreeHookCanvas';
 
 interface QAItem {
@@ -9,10 +8,8 @@ interface QAItem {
   question: string;
   answer: string;
 }
-export default function ExistentialBlackbox() {
-  const { t } = useTranslation();
 
-export const ExistentialBlackbox: React.FC = () => {
+export default function ExistentialBlackbox() {
   const { t, language } = useTranslation();
 
   const qaData: QAItem[] = useMemo(
@@ -73,14 +70,14 @@ export const ExistentialBlackbox: React.FC = () => {
     }
   }, [language, activeQA, isTyping]);
 
-  // Canvas 2D 60FPS Dynamic Fibonacci Golden Spiral Taiji Engine
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    let animationFrameId: number;
+    let animationFrameId = 0;
     let time = 0;
 
     const resizeCanvas = () => {
@@ -88,6 +85,7 @@ export const ExistentialBlackbox: React.FC = () => {
       canvas.width = canvas.parentElement.clientWidth || 400;
       canvas.height = canvas.parentElement.clientHeight || 400;
     };
+
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
@@ -96,7 +94,6 @@ export const ExistentialBlackbox: React.FC = () => {
       const h = canvas.height;
       ctx.clearRect(0, 0, w, h);
 
-      // --- 1. CAD BLUEPRINT OVERLAY: SWISS GRID LINES ---
       ctx.strokeStyle = '#27272a';
       ctx.lineWidth = 1;
       const margin = 20;
@@ -124,7 +121,6 @@ export const ExistentialBlackbox: React.FC = () => {
         ctx.setLineDash([]);
       }
 
-      // --- 2. CAD CROSSHAIR TARGET ANCHORS (+) & DIMENSION MARKERS ---
       ctx.strokeStyle = isTyping ? '#00E5FF' : '#52525b';
       ctx.fillStyle = '#a1a1aa';
       ctx.font = '9px monospace';
@@ -159,102 +155,6 @@ export const ExistentialBlackbox: React.FC = () => {
         ctx.stroke();
       });
 
-
-      /*// --- 3. DYNAMIC FIBONACCI TAIJI FLUID ENGINE --- 
-      const cx = w / 2;
-      const cy = h / 2;
-      const scale = Math.min(w, h) / 54;
-      const spinAngle = time * 0.8;
-      const mainRadius = 18 * scale;
-
-      // B. VẼ THÁI CỰC CHUYỂN ĐỘNG XOAY UỐN LƯỢN (DYNAMIC TAICHI CORE)
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(spinAngle);
-
-      // Nửa Dương (Cơ máy - Đen & Mã nhị phân)
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(0, 0, mainRadius, -Math.PI / 2, Math.PI / 2, false);
-      ctx.arc(0, mainRadius / 2, mainRadius / 2, Math.PI / 2, -Math.PI / 2, true);
-      ctx.arc(0, -mainRadius / 2, mainRadius / 2, Math.PI / 2, -Math.PI / 2, false);
-      ctx.closePath();
-      ctx.clip();
-
-      ctx.fillStyle = '#0c0d10';
-      ctx.fillRect(-mainRadius, -mainRadius, mainRadius * 2, mainRadius * 2);
-
-      ctx.fillStyle = isTyping ? 'rgba(0, 229, 255, 0.4)' : 'rgba(255, 255, 255, 0.2)';
-      ctx.font = '8px monospace';
-      for (let bx = -mainRadius; bx < mainRadius; bx += 12) {
-        for (let by = -mainRadius; by < mainRadius; by += 12) {
-          const bit = ((Math.floor(bx + time * 30) + Math.floor(by + time * 15)) % 2 === 0) ? '1' : '0';
-          ctx.fillText(bit, bx, by);
-        }
-      }
-      ctx.restore();
-
-      // Nửa Âm (Tâm hồn - Tím Neon & Hạt Xoáy)
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(0, 0, mainRadius, Math.PI / 2, -Math.PI / 2, false);
-      ctx.arc(0, -mainRadius / 2, mainRadius / 2, -Math.PI / 2, Math.PI / 2, true);
-      ctx.arc(0, mainRadius / 2, mainRadius / 2, -Math.PI / 2, Math.PI / 2, false);
-      ctx.closePath();
-      ctx.clip();
-
-      const soulGrad = ctx.createRadialGradient(0, 0, 2, 0, 0, mainRadius);
-      soulGrad.addColorStop(0, isTyping ? 'rgba(0, 229, 255, 0.95)' : 'rgba(83, 34, 255, 0.95)');
-      soulGrad.addColorStop(1, 'rgba(12, 4, 30, 0.98)');
-      ctx.fillStyle = soulGrad;
-      ctx.fillRect(-mainRadius, -mainRadius, mainRadius * 2, mainRadius * 2);
-
-      // Các hạt năng lượng chuyển động dòng chảy (Swarm Particles)
-      for (let p = 0; p < 45; p++) {
-        const pAngle = time * 2 + p * 0.15;
-        const pRadius = (p * scale * 0.3) % mainRadius;
-        const px = Math.cos(pAngle) * pRadius;
-        const py = Math.sin(pAngle) * pRadius;
-
-        ctx.fillStyle = isTyping ? '#00E5FF' : `rgba(${140 + p * 2}, 34, 255, ${0.4 + (p % 4) * 0.15})`;
-        ctx.beginPath();
-        ctx.arc(px, py, (p % 3) + 1, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.restore();
-
-      // C. MẮT THÁI CỰC (SINGULARITY EYES)
-      const eyeOffset = mainRadius / 2;
-
-      // Mắt bên phía Dương (Machine Eye - Cyan/Tím Pulse Node)
-      const pulseRadius = 4 + Math.sin(time * 8) * (isTyping ? 2.5 : 1.2);
-      ctx.save();
-      ctx.shadowColor = isTyping ? '#00E5FF' : '#5322ff';
-      ctx.shadowBlur = isTyping ? 20 : 10;
-      ctx.fillStyle = isTyping ? '#00E5FF' : '#5322ff';
-      ctx.beginPath();
-      ctx.arc(0, -eyeOffset, pulseRadius, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.strokeStyle = isTyping ? '#ffffff' : '#00E5FF';
-      ctx.lineWidth = 1;
-      ctx.strokeRect(-6, -eyeOffset - 6, 12, 12);
-      ctx.restore();
-
-      // Mắt bên phía Âm (Human Eye - Void Black Pixel)
-      ctx.save();
-      ctx.fillStyle = '#000000';
-      ctx.beginPath();
-      ctx.arc(0, eyeOffset, 5, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
-      ctx.lineWidth = 1;
-      ctx.stroke();
-      ctx.restore();
-
-      ctx.restore(); // Restore main transform
-
       time += 0.025;
       animationFrameId = requestAnimationFrame(drawEngine);
     };
@@ -269,41 +169,30 @@ export const ExistentialBlackbox: React.FC = () => {
 
   const handleSelectQA = (item: QAItem) => {
     if (isTyping) return;
+
     setActiveQAId(item.id);
     setDisplayedAnswer('');
     setIsTyping(true);
 
     let index = 0;
     const text = item.answer;
+
     const timer = setInterval(() => {
       if (index < text.length) {
         setDisplayedAnswer((prev) => prev + text.charAt(index));
-        index++;
+        index += 1;
       } else {
         clearInterval(timer);
         setIsTyping(false);
       }
     }, 12);
   };
-*/
- return (
-    <div id="existential-blackbox" className="w-full min-h-screen bg-[#0B0B0F] text-zinc-200 font-mono flex flex-col md:flex-row border-t border-zinc-800 overflow-hidden select-none">
 
-      {/* 3D GEOMETRIC HOOK NODE (Lego Block) */}
-      <div className="w-full md:w-1/2 min-h-[400px] relative border-b md:border-b-0 md:border-r border-zinc-800 bg-black/60 overflow-hidden">
-        <ThreeHookCanvas className="w-full h-full" />
-      </div>
-
-      {/* SUBSTRATE / PANEL HIỂN THỊ NỘI DUNG NẰM BÊN PHẢI */}
-      <div className="w-full md:w-1/2 p-6 flex flex-col justify-between">
-        {/* Nội dung UI khác của ExistentialBlackbox */}
-      </div>
-
-    </div>
-  );
-}
-
-      {/* BÊN TRÁI: THE SUBSTRATE */}
+  return (
+    <div
+      id="existential-blackbox"
+      className="w-full min-h-screen bg-[#0B0B0F] text-zinc-200 font-mono flex flex-col md:flex-row border-t border-zinc-800 overflow-hidden select-none"
+    >
       <div className="w-full md:w-1/2 min-h-[500px] md:min-h-screen border-r border-b md:border-b-0 border-zinc-800 relative flex flex-col justify-between p-6 bg-[#08080B]">
         <div className="space-y-3">
           <div className="flex items-center justify-between text-xs text-zinc-500 border-b border-zinc-800/80 pb-3">
@@ -342,7 +231,7 @@ export const ExistentialBlackbox: React.FC = () => {
             href="https://thuy-vu-designer.framer.website/"
             target="_blank"
             rel="noopener noreferrer"
-            className="block w-full text-center py-2.5 px-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 hover:border-cyan-400 text-cyan-400 text-[11px] font-bold tracking-tight transition-all duration-150 uppercase"
+            className="block w-full text-center py-2.5 px-3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 hover:border-cyan-400 text-cyan-400 text-[11px] font-bold tracking-tight transition-all"
           >
             {t('blackbox_portfolio_btn')}
           </a>
@@ -354,7 +243,6 @@ export const ExistentialBlackbox: React.FC = () => {
         </div>
       </div>
 
-      {/* BÊN PHẢI: THE TERMINAL CONSOLE */}
       <div className="w-full md:w-1/2 min-h-[500px] md:min-h-screen flex flex-col justify-between p-6 bg-[#0B0B0F]">
         <div className="border-b border-zinc-800 pb-3 flex justify-between items-center text-xs">
           <span className="text-zinc-400 font-bold">{t('blackbox_terminal_title')}</span>
@@ -414,6 +302,4 @@ export const ExistentialBlackbox: React.FC = () => {
       </div>
     </div>
   );
-};
-
-export default ExistentialBlackbox;
+}
