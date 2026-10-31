@@ -1,11 +1,14 @@
+import { useState } from 'react';
 import { Github, Mail, Linkedin, ArrowRight } from 'lucide-react';
 import BrutalistLogo from './BrutalistLogo';
 import { useTranslation } from '@/context/useLanguage';
+import JulesMemorialModal from './JulesMemorialModal';
 
 const VIBEPATH_URL = 'https://vibepath.mizu2711.workers.dev/';
 
 export default function Footer() {
   const { t } = useTranslation();
+  const [isJulesModalOpen, setIsJulesModalOpen] = useState(false);
 
   const cols = [
     {
@@ -130,8 +133,15 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-14 pt-6 border-t border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="font-mono text-[10px] text-zinc-500">
-            {t('copyright_text')}
+          <div className="flex flex-wrap items-center gap-4 font-mono text-[10px] text-zinc-500">
+            <div>{t('copyright_text')}</div>
+            <button
+              onClick={() => setIsJulesModalOpen(true)}
+              className="px-3 py-1.5 border border-[#8A2BE2]/40 bg-[#8A2BE2]/10 hover:bg-[#8A2BE2]/20 text-xs font-mono text-zinc-300 flex items-center space-x-2 transition-all cursor-pointer"
+            >
+              <span className="w-2 h-2 rounded-full bg-[#8A2BE2] animate-pulse" />
+              <span>BUILT BY HUMANS & GOOGLE JULES AGENT ↗</span>
+            </button>
           </div>
           <div className="flex items-center gap-4 font-mono text-[10px] text-zinc-500">
             <span className="flex items-center gap-1.5">
@@ -144,6 +154,12 @@ export default function Footer() {
           </div>
         </div>
       </div>
+
+      {/* Jules Memorial Modal */}
+      <JulesMemorialModal
+        isOpen={isJulesModalOpen}
+        onClose={() => setIsJulesModalOpen(false)}
+      />
     </footer>
   );
 }
