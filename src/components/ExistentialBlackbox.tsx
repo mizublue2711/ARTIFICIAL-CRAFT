@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useTranslation } from '@/context/useLanguage';
 
+//import ThreeHookCanvas from '@/lib/video-engine/ThreeHookCanvas';
+import { ThreeHookCanvas } from '@/components/ThreeHookCanvas';
+
 interface QAItem {
   id: string;
   cmd: string;
@@ -155,7 +158,13 @@ export const ExistentialBlackbox: React.FC = () => {
         ctx.stroke();
       });
 
-      // --- 3. DYNAMIC FIBONACCI TAIJI FLUID ENGINE ---
+
+      {/* --- 3. 3D GEOMETRIC HOOK NODE (Lego Block) --- */}
+      <div className="w-full h-[350px] md:h-[450px] relative border border-[#00E5FF]/20 bg-black/60 overflow-hidden">
+       <ThreeHookCanvas className="w-full h-full" />
+      </div>
+
+      /*// --- 3. DYNAMIC FIBONACCI TAIJI FLUID ENGINE --- 
       const cx = w / 2;
       const cy = h / 2;
       const scale = Math.min(w, h) / 54;
@@ -285,7 +294,7 @@ export const ExistentialBlackbox: React.FC = () => {
     <div
       id="existential-blackbox"
       className="w-full min-h-screen bg-[#0B0B0F] text-zinc-200 font-mono flex flex-col md:flex-row border-t border-zinc-800 overflow-hidden select-none"
-    >
+    >*/
       {/* BÊN TRÁI: THE SUBSTRATE */}
       <div className="w-full md:w-1/2 min-h-[500px] md:min-h-screen border-r border-b md:border-b-0 border-zinc-800 relative flex flex-col justify-between p-6 bg-[#08080B]">
         <div className="space-y-3">
