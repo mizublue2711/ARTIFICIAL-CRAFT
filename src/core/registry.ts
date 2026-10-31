@@ -48,6 +48,9 @@ export const SECTION_REGISTRY: Record<string, React.ComponentType<Record<string,
   // Jules Memorial 3D Nodes
   'jules-memorial-node': React.lazy(() => import('@/components/playground/JulesMemorialNode')) as unknown as React.ComponentType<Record<string, unknown>>,
   'jules-memorial-modal': React.lazy(() => import('@/components/JulesMemorialModal')) as unknown as React.ComponentType<Record<string, unknown>>,
+
+  // Robotics Factory 3D Engine
+  'robotics-factory-node': React.lazy(() => import('@/components/robotics/sections/BentoRoboticsEcosystem')) as unknown as React.ComponentType<Record<string, unknown>>,
 };
 
 /**

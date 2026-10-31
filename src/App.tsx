@@ -9,6 +9,7 @@ import Home from '@/pages/Home';
 import Library from '@/pages/Library';
 import FlipbookReader from '@/pages/FlipbookReader';
 import PlaygroundPage from '@/pages/Playground';
+import RoboticsPage from '@/pages/Robotics';
 
 function App() {
   const [isBatchModalOpen, setIsBatchModalOpen] = useState(false);
@@ -26,6 +27,7 @@ function App() {
             <Route path="/library" element={<Library />} />
             <Route path="/flipbook/:slug" element={<FlipbookReader />} />
             <Route path="/playground" element={<PlaygroundPage />} />
+            <Route path="/robotics" element={<RoboticsPage />} />
           </Routes>
 
           <Footer />

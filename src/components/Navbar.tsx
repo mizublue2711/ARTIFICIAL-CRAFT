@@ -119,6 +119,24 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                     </div>
                   </Link>
 
+                  <Link
+                    to="/robotics"
+                    onClick={() => setStudiosOpen(false)}
+                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs transition-colors mt-1"
+                  >
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-2">
+                        <span className="font-bold text-white group-hover:text-[#00E5FF] flex items-center gap-1.5">
+                          🦾 Robotics Factory 3D
+                        </span>
+                        <span className="text-[9px] px-1 py-0.2 bg-[#00E5FF]/20 text-[#00E5FF] border border-[#00E5FF]/40 rounded-xs font-bold">
+                          NEW
+                        </span>
+                      </div>
+                      <span className="text-[10px] text-zinc-500">[3D KINEMATICS]</span>
+                    </div>
+                  </Link>
+
                   <a
                     href={AUTOPILOT_URL}
                     target="_blank"
@@ -284,6 +302,16 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                 className="py-1.5 text-xs font-bold text-[#00E5FF] flex items-center gap-1.5"
               >
                 ⚡ PLAYGROUND STUDIO
+              </Link>
+              <Link
+                to="/robotics"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-1.5 text-xs font-bold text-white hover:text-[#00E5FF] flex items-center justify-between"
+              >
+                <span>🦾 Robotics Factory 3D <span className="text-[10px] text-zinc-500">[3D KINEMATICS]</span></span>
+                <span className="text-[9px] px-1 py-0.2 bg-[#00E5FF]/20 text-[#00E5FF] border border-[#00E5FF]/40 rounded-xs font-bold">
+                  NEW
+                </span>
               </Link>
               <a
                 href={AUTOPILOT_URL}

@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { RobotArmScene } from '../3d/RobotArmScene';
 import { ExplodedControlDock } from '../hud/ExplodedControlDock';
 import { ComponentBlueprintModal } from '../hud/ComponentBlueprintModal';
-import { MechanicalComponent } from '../../types/telemetry';
-import { ShieldCheck, Cpu, ArrowDown, Activity, Sparkles } from 'lucide-react';
-import { sfx } from '../../utils/audio';
+import { MechanicalComponent } from '@/types/telemetry';
 
 export const HeroSection: React.FC = () => {
   const [explodeProgress, setExplodeProgress] = useState(0.0);

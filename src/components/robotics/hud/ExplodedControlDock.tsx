@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Volume2, VolumeX, Eye, Box, RotateCw, ChevronDown, ChevronUp, Crosshair } from 'lucide-react';
-import { sfx } from '../../utils/audio';
+import { Volume2, VolumeX, Box, RotateCw, ChevronDown, ChevronUp, Crosshair } from 'lucide-react';
+import { sfx } from '@/lib/video-engine/robotics/audio';
 
 interface ExplodedControlDockProps {
   explodeProgress: number; // 0.0 to 1.0

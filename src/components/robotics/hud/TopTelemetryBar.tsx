@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { INITIAL_TELEMETRY } from '../../data/robotAssembly';
-import { TelemetryNode } from '../../types/telemetry';
-
 export const TopTelemetryBar: React.FC = () => {
-  const [telemetry, setTelemetry] = useState<TelemetryNode[]>(INITIAL_TELEMETRY);
   const [liveGpuLoad, setLiveGpuLoad] = useState('14.2%');
   const [liveLatency, setLiveLatency] = useState('4.2 ms');
-  const [liveDrift, setLiveDrift] = useState('0.00%');
+  const [liveDrift] = useState('0.00%');
 
   // Subtle realistic industrial telemetry micro-fluctuations
   useEffect(() => {

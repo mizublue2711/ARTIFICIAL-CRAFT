@@ -58,6 +58,22 @@
       }
     },
     {
+      "id": "section-robotics-factory",
+      "type": "robotics-factory-node",
+      "title": "ROBOTICS FACTORY 3D // KINEMATIC SIMULATOR",
+      "subtitle": "Kinematic Arm Simulation & Industrial Telemetry",
+      "badge": "NODE_04 :: INDUSTRIAL AUTOMATION",
+      "props": {
+        "tag": "NODE_04 :: INDUSTRIAL AUTOMATION",
+        "title": "ROBOTICS FACTORY 3D // KINEMATIC SIMULATOR",
+        "subtitle": "Kinematic Arm Simulation & Industrial Telemetry",
+        "description": "Meticulous 3D industrial assembly line viewport featuring real-time inverse kinematics, automated mechanical arms, and factory floor telemetry.",
+        "route": "/robotics",
+        "ctaLabel": "ENTER FACTORY NODE ↗",
+        "status": "LIVE // 60FPS"
+      }
+    },
+    {
       "id": "section-generative-art",
       "type": "GEOMETRIC_ART",
       "title": "GENERATIVE LINE-ART MATRIX",
@@ -85,6 +101,19 @@
       "props": {
         "preset": "jules-memorial-preset"
       }
+    }
+  ],
+  "playgroundHubs": [
+    {
+      "id": "robotics-factory-node",
+      "componentKey": "robotics-factory-node",
+      "tag": "NODE_04 :: INDUSTRIAL AUTOMATION",
+      "title": "ROBOTICS FACTORY 3D // KINEMATIC SIMULATOR",
+      "subtitle": "Kinematic Arm Simulation & Industrial Telemetry",
+      "description": "Meticulous 3D industrial assembly line viewport featuring real-time inverse kinematics, automated mechanical arms, and factory floor telemetry.",
+      "route": "/robotics",
+      "ctaLabel": "ENTER FACTORY NODE ↗",
+      "status": "LIVE // 60FPS"
     }
   ]
 }

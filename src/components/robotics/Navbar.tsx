@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Volume2, VolumeX, Menu, X, ArrowUpRight, ShieldCheck, Box } from 'lucide-react';
-import { sfx } from '../utils/audio';
+import { Volume2, VolumeX, Menu, X, ArrowUpRight, Box } from 'lucide-react';
+import { sfx } from '@/lib/video-engine/robotics/audio';
 
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

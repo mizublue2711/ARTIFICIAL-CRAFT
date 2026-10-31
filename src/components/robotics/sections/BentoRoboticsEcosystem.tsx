@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { TACTILE_GRASP_MODES } from '../../data/robotAssembly';
-import { TactileGraspMode } from '../../types/telemetry';
-import { Cpu, Gauge, Hand, Layers, ShieldCheck, Activity, Zap, Compass } from 'lucide-react';
-import { sfx } from '../../utils/audio';
+import { TACTILE_GRASP_MODES } from '@/data/robotAssembly';
+import { TactileGraspMode } from '@/types/telemetry';
+import { Hand, Zap, Compass } from 'lucide-react';
+import { sfx } from '@/lib/video-engine/robotics/audio';
 
 export const BentoRoboticsEcosystem: React.FC = () => {
   // Card 2: Motor Actuator state
@@ -292,7 +292,7 @@ export const BentoRoboticsEcosystem: React.FC = () => {
                 SELECT INTERACTIVE GRASP MODE:
               </div>
 
-              {TACTILE_GRASP_MODES.map((mode) => (
+              {TACTILE_GRASP_MODES.map((mode: TactileGraspMode) => (
                 <button
                   key={mode.id}
                   onClick={() => {
@@ -412,3 +412,5 @@ export const BentoRoboticsEcosystem: React.FC = () => {
     </section>
   );
 };
+
+export default BentoRoboticsEcosystem;

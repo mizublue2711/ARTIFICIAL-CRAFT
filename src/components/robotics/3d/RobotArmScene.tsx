@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { ROBOT_COMPONENTS } from '../../data/robotAssembly';
-import { MechanicalComponent } from '../../types/telemetry';
-import { sfx } from '../../utils/audio';
+import { ROBOT_COMPONENTS } from '@/data/robotAssembly';
+import { MechanicalComponent } from '@/types/telemetry';
+import { sfx } from '@/lib/video-engine/robotics/audio';
 
 interface RobotArmSceneProps {
   explodeProgress: number; // 0.0 to 1.0 (corresponds to 0% to 100%)
@@ -356,9 +356,9 @@ export const RobotArmScene: React.FC<RobotArmSceneProps> = ({
 
     // Component 1: Base Turret
     {
-      const compData = ROBOT_COMPONENTS.find((c) => c.id === 'base_turret')!;
+      const compData = ROBOT_COMPONENTS.find((c: MechanicalComponent) => c.id === 'base_turret')!;
       const group = new THREE.Group();
-      group.position.set(...compData.position);
+      group.position.set(compData.position[0], compData.position[1], compData.position[2]);
 
       const baseFlange = new THREE.Mesh(
         new THREE.CylinderGeometry(1.35, 1.45, 0.24, 32),
@@ -412,9 +412,9 @@ export const RobotArmScene: React.FC<RobotArmSceneProps> = ({
 
     // Component 2: Shoulder Yoke
     {
-      const compData = ROBOT_COMPONENTS.find((c) => c.id === 'shoulder_yoke')!;
+      const compData = ROBOT_COMPONENTS.find((c: MechanicalComponent) => c.id === 'shoulder_yoke')!;
       const group = new THREE.Group();
-      group.position.set(...compData.position);
+      group.position.set(compData.position[0], compData.position[1], compData.position[2]);
 
       // Yoke center hub
       const hub = new THREE.Mesh(
@@ -466,9 +466,9 @@ export const RobotArmScene: React.FC<RobotArmSceneProps> = ({
 
     // Component 3: Port Shell [L]
     {
-      const compData = ROBOT_COMPONENTS.find((c) => c.id === 'outer_bicep_shell_left')!;
+      const compData = ROBOT_COMPONENTS.find((c: MechanicalComponent) => c.id === 'outer_bicep_shell_left')!;
       const group = new THREE.Group();
-      group.position.set(...compData.position);
+      group.position.set(compData.position[0], compData.position[1], compData.position[2]);
 
       const shellMesh = new THREE.Mesh(
         new THREE.BoxGeometry(0.18, 1.25, 0.5),
@@ -503,9 +503,9 @@ export const RobotArmScene: React.FC<RobotArmSceneProps> = ({
 
     // Component 4: Starboard Shell [R]
     {
-      const compData = ROBOT_COMPONENTS.find((c) => c.id === 'outer_bicep_shell_right')!;
+      const compData = ROBOT_COMPONENTS.find((c: MechanicalComponent) => c.id === 'outer_bicep_shell_right')!;
       const group = new THREE.Group();
-      group.position.set(...compData.position);
+      group.position.set(compData.position[0], compData.position[1], compData.position[2]);
 
       const shellMesh = new THREE.Mesh(
         new THREE.BoxGeometry(0.18, 1.25, 0.5),
@@ -542,9 +542,9 @@ export const RobotArmScene: React.FC<RobotArmSceneProps> = ({
 
     // Component 5: Carbon Bicep Core
     {
-      const compData = ROBOT_COMPONENTS.find((c) => c.id === 'carbon_bicep_core')!;
+      const compData = ROBOT_COMPONENTS.find((c: MechanicalComponent) => c.id === 'carbon_bicep_core')!;
       const group = new THREE.Group();
-      group.position.set(...compData.position);
+      group.position.set(compData.position[0], compData.position[1], compData.position[2]);
 
       const sparMesh = new THREE.Mesh(
         new THREE.CylinderGeometry(0.24, 0.28, 1.35, 16),
@@ -575,9 +575,9 @@ export const RobotArmScene: React.FC<RobotArmSceneProps> = ({
 
     // Component 6: Elbow Harmonic Core
     {
-      const compData = ROBOT_COMPONENTS.find((c) => c.id === 'elbow_harmonic_core')!;
+      const compData = ROBOT_COMPONENTS.find((c: MechanicalComponent) => c.id === 'elbow_harmonic_core')!;
       const group = new THREE.Group();
-      group.position.set(...compData.position);
+      group.position.set(compData.position[0], compData.position[1], compData.position[2]);
 
       const elbowCasing = new THREE.Mesh(
         new THREE.CylinderGeometry(0.55, 0.55, 0.42, 32),
@@ -611,9 +611,9 @@ export const RobotArmScene: React.FC<RobotArmSceneProps> = ({
 
     // Component 7: Forearm Actuator Pack
     {
-      const compData = ROBOT_COMPONENTS.find((c) => c.id === 'forearm_actuator_pack')!;
+      const compData = ROBOT_COMPONENTS.find((c: MechanicalComponent) => c.id === 'forearm_actuator_pack')!;
       const group = new THREE.Group();
-      group.position.set(...compData.position);
+      group.position.set(compData.position[0], compData.position[1], compData.position[2]);
 
       // 4 linear actuator cylinders
       const actuatorMeshes: THREE.Mesh[] = [];
@@ -645,9 +645,9 @@ export const RobotArmScene: React.FC<RobotArmSceneProps> = ({
 
     // Component 8: 3-Axis Wrist Gimbal
     {
-      const compData = ROBOT_COMPONENTS.find((c) => c.id === 'wrist_gimbal_3axis')!;
+      const compData = ROBOT_COMPONENTS.find((c: MechanicalComponent) => c.id === 'wrist_gimbal_3axis')!;
       const group = new THREE.Group();
-      group.position.set(...compData.position);
+      group.position.set(compData.position[0], compData.position[1], compData.position[2]);
 
       // Spherical compact wrist housing
       const wristSphere = new THREE.Mesh(
@@ -679,9 +679,9 @@ export const RobotArmScene: React.FC<RobotArmSceneProps> = ({
 
     // Component 9: Dexterous Palm Chassis Mk-IV
     {
-      const compData = ROBOT_COMPONENTS.find((c) => c.id === 'dexterous_palm_chassis')!;
+      const compData = ROBOT_COMPONENTS.find((c: MechanicalComponent) => c.id === 'dexterous_palm_chassis')!;
       const group = new THREE.Group();
-      group.position.set(...compData.position);
+      group.position.set(compData.position[0], compData.position[1], compData.position[2]);
 
       const palmMesh = new THREE.Mesh(
         new THREE.BoxGeometry(0.38, 0.45, 0.18),
@@ -716,9 +716,9 @@ export const RobotArmScene: React.FC<RobotArmSceneProps> = ({
 
     // Component 10: Index Articulated Tactile Phalanx & Tip
     {
-      const compData = ROBOT_COMPONENTS.find((c) => c.id === 'tactile_finger_index')!;
+      const compData = ROBOT_COMPONENTS.find((c: MechanicalComponent) => c.id === 'tactile_finger_index')!;
       const group = new THREE.Group();
-      group.position.set(...compData.position);
+      group.position.set(compData.position[0], compData.position[1], compData.position[2]);
 
       // 3 articulated phalanx links
       const phalanxMeshes: THREE.Mesh[] = [];
@@ -748,9 +748,9 @@ export const RobotArmScene: React.FC<RobotArmSceneProps> = ({
 
     // Component 11: Opposable Thumb
     {
-      const compData = ROBOT_COMPONENTS.find((c) => c.id === 'tactile_finger_thumb')!;
+      const compData = ROBOT_COMPONENTS.find((c: MechanicalComponent) => c.id === 'tactile_finger_thumb')!;
       const group = new THREE.Group();
-      group.position.set(...compData.position);
+      group.position.set(compData.position[0], compData.position[1], compData.position[2]);
 
       const thumbJoint = new THREE.Mesh(
         new THREE.SphereGeometry(0.08, 16, 16),
