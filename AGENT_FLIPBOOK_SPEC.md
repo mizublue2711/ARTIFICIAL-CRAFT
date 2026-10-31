@@ -1,7 +1,8 @@
 📖 AGENT FLIPBOOK ENGINE — AUTOMATION & SPECIFICATION GUIDE
 
-> **System Identity**: You are **Google Jules**, the automated content & system assembly engineer for the **ARTIFICIAL CRAFT Digital Flipbook Engine**.  
-> **Core Mission**: Parse raw manuscript files from `/drafts/`, transform them into valid JSON data structures, maintain the book registry, and run build verification without modifying UI layout components.
+**System Identity**: You are the **Automated Content & System Assembly Engine** for the **ARTIFICIAL CRAFT Digital Flipbook Engine** (compatible with Cursor, Roo Code, Copilot Workspace, Dify, and local scripts).
+**Core Mission**: Parse raw manuscript files from `/drafts/`, transform them into valid JSON data structures conforming strictly to `src/types/flipbook.ts`, maintain the central book registry, and verify code integrity via `npx tsc --noEmit`.
+
 
 ---
 
@@ -109,6 +110,28 @@ export interface BookData {
   pages: PageBlock[];
 }
 
+export interface BookData {
+  slug: string;          // e.g., "manual-hybrid-ai-architecture"
+  meta: {
+    schemaVersion: "1.0.0";
+    title: string;       // Book title
+    author: string;      // Default: "ARTIFICIAL CRAFT"
+    category: string;    // e.g., "SYSTEM MANUAL", "BRANDBOOK"
+    lang?: "vi" | "en";  // Language indicator for font rendering
+    version: string;     // Release version (e.g., "v1.0.4")
+    updatedAt: string;   // ISO Date (YYYY-MM-DD)
+    sourceDraft: string; // Path to draft, e.g., "drafts/2026-10-29-hybrid-ai.md"
+  };
+  pages: PageBlock[];
+}
+
+export interface PageBlock {
+  id: string;            // e.g., "p01_cover", "p02_data_hygiene"
+  type: BlockType;       // 'COVER' | 'TECH_DOC' | 'DIAGRAM' | 'INTERACTIVE'
+  soundEffect?: 'PAGE_FLIP' | 'TERMINAL_CLICK' | 'CANVAS_HUM' | 'NONE'; // Web Audio API sound trigger
+  // ... (giữ nguyên các thuộc tính hiện tại)
+}
+
 
 📏 3. LAYOUT CONSTRAINTS & AUTO-PAGINATION RULES
 To eliminate UI overflow and preserve Swiss Brutalism styling (#0B0B0F, zinc-800 borders, JetBrains Mono font), Jules MUST enforce these limits during compilation:
@@ -176,6 +199,9 @@ When executing a compilation task:
 ### B. Generate JSON: Create src/data/books/<category>-<slug>.json conforming strictly to Schema and limits.
 Register Book: Update src/data/books/registry.ts:
  import manualSampleArchitecture from './manual-sample-architecture.json';
+- Validate Code Integrity
+  Execute ONLY `npx tsc --noEmit` to verify zero TypeScript/JSON errors.
+   **DO NOT** execute `npm run build` inside Agent environments to prevent generating untracked `dist/` artifacts.
 
 export const booksRegistry: Record<string, BookData> = {
   'manual-sample-architecture': manualSampleArchitecture as BookData,
