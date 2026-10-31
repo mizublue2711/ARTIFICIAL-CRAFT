@@ -52,7 +52,71 @@ export interface StudioAstPayload {
   targetPlatforms: string[];
 }
 
-export function generateStudioAst(config: StudioConfigData): StudioAstPayload {
+export function normalizeStudioConfig(raw: any): StudioConfigData {
+  const brandName = raw?.compositionId || raw?.brandName || 'ARTIFICIAL_CRAFT';
+  const slogan = raw?.slogan || raw?.tagline || 'Robots for Everyone // Cybernetic Automation';
+  const logoUrl = raw?.logoUrl || 'https://raw.githubusercontent.com/artificial-craft/assets/main/logo-mark.svg';
+  const bg = raw?.backgroundColor || raw?.theme?.backgroundColor || '#09090B';
+  const primary = raw?.primaryColor || raw?.theme?.primaryColor || '#5322FF';
+  const accent = raw?.accentColor || raw?.theme?.accentColor || '#00E5FF';
+  const headlineFont = raw?.headlineFont || raw?.theme?.fontFamily || 'Space Grotesk';
+  const codeFont = raw?.codeFont || 'JetBrains Mono';
+  const motionTokens = Array.isArray(raw?.motionTokens) && raw.motionTokens.length > 0
+    ? raw.motionTokens
+    : ['kinetic-parallax', 'chromatic-aberration', 'magnetic-attraction'];
+  const modelType = raw?.modelType || 'preset';
+  const presetModel = raw?.presetModel || (raw?.roboticsNode?.modelType === 'industrial-arm' ? 'industrial-arm' : 'bipedal-robot');
+  const customModelUrl = raw?.customModelUrl || '';
+  const explodedProgress = typeof raw?.explodedProgress === 'number' ? raw.explodedProgress : 33;
+  const explodedStages = raw?.explodedStages || {
+    stage0: '0% // Assembled Unibody Core',
+    stage33: '33% // Tactical Outer Aerogel Shell',
+    stage66: '66% // High-Torque Brushless Motor Core',
+    stage100: '100% // Micro Tactile Haptic Sensor Array',
+  };
+  const raycastingLaser = raw?.raycastingLaser ?? true;
+  const telemetryFps = typeof raw?.telemetryFps === 'number' ? raw.telemetryFps : 60;
+  const torquePrecision = raw?.torquePrecision || '±0.01mm';
+  const dofSensorCount = raw?.dofSensorCount || '11 DOF';
+  const aiLatency = raw?.aiLatency || '<2ms';
+  const bentoModules = {
+    viewport3d: raw?.bentoModules?.viewport3d ?? true,
+    performanceGraph: raw?.bentoModules?.performanceGraph ?? true,
+    interactiveTactileMatrix: raw?.bentoModules?.interactiveTactileMatrix ?? true,
+  };
+  const spatialPointCloud = raw?.spatialPointCloud ?? true;
+  const sandboxLanguages = Array.isArray(raw?.sandboxLanguages) && raw.sandboxLanguages.length > 0
+    ? raw.sandboxLanguages
+    : ['typescript', 'python', 'ros2', 'cpp'];
+
+  return {
+    compositionId: brandName,
+    slogan,
+    logoUrl,
+    backgroundColor: bg,
+    primaryColor: primary,
+    accentColor: accent,
+    headlineFont,
+    codeFont,
+    motionTokens,
+    modelType,
+    presetModel,
+    customModelUrl,
+    explodedProgress,
+    explodedStages,
+    raycastingLaser,
+    telemetryFps,
+    torquePrecision,
+    dofSensorCount,
+    aiLatency,
+    bentoModules,
+    spatialPointCloud,
+    sandboxLanguages,
+  };
+}
+
+export function generateStudioAst(rawConfig: any): StudioAstPayload {
+  const config = normalizeStudioConfig(rawConfig);
   return {
     version: '2.5.0-BRUTALIST',
     schema: 'https://artificial-craft.com/schemas/studio-ast/v2.json',
@@ -96,8 +160,11 @@ export function generateStudioAst(config: StudioConfigData): StudioAstPayload {
   };
 }
 
-export function generateCodeSnippets(config: StudioConfigData) {
-  const tsCode = `// ARTIFICIAL CRAFT 3D CLIENT ENGINE // TypeScript & Three.js
+export function generateCodeSnippets(rawConfig: any) {
+  try {
+    const config = normalizeStudioConfig(rawConfig);
+    const safeCompId = (config.compositionId || 'artificial_craft').toLowerCase().replace(/[^a-z0-9_]/g, '_');
+    const tsCode = `// ARTIFICIAL CRAFT 3D CLIENT ENGINE // TypeScript & Three.js
 // Composition: ${config.compositionId}
 // SLA: ${config.telemetryFps}FPS | Latency: ${config.aiLatency}
 
@@ -223,7 +290,7 @@ if __name__ == "__main__":
 
   const ros2Code = `// ARTIFICIAL CRAFT // ROS2 Humble/Iron Tactical Telemetry Publisher
 // Package: artificial_craft_kinematics
-// Node: ${config.compositionId.toLowerCase()}_broadcaster
+// Node: ${safeCompId}_broadcaster
 
 #include <chrono>
 #include <memory>
@@ -235,7 +302,7 @@ using namespace std::chrono_literals;
 
 class CraftKinematicsNode : public rclcpp::Node {
 public:
-  CraftKinematicsNode() : Node("${config.compositionId.toLowerCase()}_node") {
+  CraftKinematicsNode() : Node("${safeCompId}_node") {
     publisher_ = this->create_publisher<std_msgs::msg::String>("/ac/telemetry", 10);
     timer_ = this->create_wall_timer(16ms, std::bind(&CraftKinematicsNode::publish_state, this));
     RCLCPP_INFO(this->get_logger(), "ARTIFICIAL CRAFT ROS2 BRIDGE ACTIVATED // SLA: %d FPS", ${config.telemetryFps});
@@ -285,12 +352,21 @@ namespace ArtificialCraft {
   };
 } // namespace ArtificialCraft`;
 
-  return {
-    typescript: tsCode,
-    python: pythonCode,
-    ros2: ros2Code,
-    cpp: cppCode,
-  };
+    return {
+      typescript: tsCode,
+      python: pythonCode,
+      ros2: ros2Code,
+      cpp: cppCode,
+    };
+  } catch (err) {
+    console.warn('[AST GENERATOR] Code snippet generation fallback:', err);
+    return {
+      typescript: '// TypeScript SDK generated in fallback mode',
+      python: '# Python telemetry node fallback',
+      ros2: '// ROS2 Humble node fallback',
+      cpp: '// C++20 controller fallback',
+    };
+  }
 }
 
 /**
@@ -799,6 +875,198 @@ export function generateLiveHtml(config: StudioConfigData): string {
         const activeIdx = Math.floor(Math.random() * cells.length);
         cells[activeIdx].classList.add('active');
       }, 400);
+    })();
+  </script>
+</body>
+</html>`;
+}
+
+/**
+ * High-performance Fallback Generator for real-time Single-File HTML/Three.js
+ */
+export function generateFallbackCyberneticHTML(rawConfig: any): string {
+  const config = normalizeStudioConfig(rawConfig);
+  const bg = config.backgroundColor || '#09090B';
+  const primary = config.primaryColor || '#5322FF';
+  const accent = config.accentColor || '#00E5FF';
+  const brand = config.compositionId || 'ARTIFICIAL CRAFT';
+  const tag = config.slogan || 'Brutalist Automation & Graphic Precision';
+  const speed = 1.5;
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${brand} // HYPERFRAME 60FPS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body, html {
+      width: 100%; height: 100%;
+      background-color: ${bg};
+      color: #F4F4F5;
+      font-family: 'JetBrains Mono', monospace;
+      overflow: hidden;
+    }
+    .hud-header {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 48px;
+      background: rgba(9, 9, 11, 0.7);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      z-index: 30;
+      font-size: 11px;
+    }
+    .badge {
+      background: rgba(83, 34, 255, 0.15);
+      border: 1px solid ${accent};
+      color: ${accent};
+      padding: 3px 8px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    #three-viewport {
+      width: 100%; height: 100%;
+      position: absolute;
+      top: 0; left: 0;
+    }
+    .hud-brand {
+      position: absolute;
+      bottom: 24px; left: 24px;
+      z-index: 20;
+      pointer-events: none;
+    }
+    .hud-brand h1 {
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .hud-brand p {
+      font-size: 0.8rem;
+      color: ${accent};
+      opacity: 0.85;
+      margin-top: 4px;
+      letter-spacing: 1px;
+    }
+    .hud-telemetry {
+      position: absolute;
+      top: 60px; right: 16px;
+      z-index: 20;
+      background: rgba(0,0,0,0.7);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 8px 12px;
+      font-size: 10px;
+      color: #a1a1aa;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+  </style>
+</head>
+<body>
+  <header class="hud-header">
+    <div style="display:flex; align-items:center; gap:8px;">
+      <span style="width:6px; height:6px; border-radius:50%; background:${accent}; box-shadow:0 0 8px ${accent};"></span>
+      <span style="font-weight:700; color:#fff;">${brand} // STUDIO RUNTIME</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <span class="badge">SLA: 60FPS</span>
+      <span class="badge" style="border-color:${primary}; color:${primary};">AST VALIDATED</span>
+    </div>
+  </header>
+
+  <div id="three-viewport"></div>
+
+  <div class="hud-brand">
+    <h1>${brand}</h1>
+    <p>${tag}</p>
+  </div>
+
+  <div class="hud-telemetry">
+    <div>NODE: <span style="color:#fff;">${config.presetModel.toUpperCase()}</span></div>
+    <div>EXPLODED: <span style="color:${accent};">${config.explodedProgress}%</span></div>
+    <div>SLA: <span style="color:${primary};">${config.telemetryFps} FPS</span></div>
+  </div>
+
+  <script>
+    (function() {
+      const container = document.getElementById('three-viewport');
+      if (!container) return;
+
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color('${bg}');
+      scene.fog = new THREE.FogExp2('${bg}', 0.05);
+
+      const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+      camera.position.set(3.2, 2.4, 4.0);
+      camera.lookAt(0, 0, 0);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.appendChild(renderer.domElement);
+
+      const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+      scene.add(ambient);
+
+      const keyLight = new THREE.DirectionalLight('${primary}', 2.5);
+      keyLight.position.set(5, 8, 5);
+      scene.add(keyLight);
+
+      const rimLight = new THREE.PointLight('${accent}', 3.0, 15);
+      rimLight.position.set(-4, -2, -4);
+      scene.add(rimLight);
+
+      // Procedural 3D Mesh Group
+      const group = new THREE.Group();
+      scene.add(group);
+
+      const mat = new THREE.MeshStandardMaterial({
+        color: new THREE.Color('${primary}'),
+        wireframe: true,
+        metalness: 0.8,
+        roughness: 0.2
+      });
+
+      // Assembly components with exploded displacement
+      const core = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.7, 1.2, 16), mat);
+      group.add(core);
+
+      const arm = new THREE.Mesh(new THREE.BoxGeometry(0.3, 1.8, 0.3), mat);
+      arm.position.set(0.6, 0.8 + (${config.explodedProgress} / 100.0) * 0.8, 0);
+      arm.rotation.z = -0.4;
+      group.add(arm);
+
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(1.1, 0.06, 16, 32), new THREE.MeshBasicMaterial({ color: '${accent}', wireframe: true }));
+      ring.position.y = (${config.explodedProgress} / 100.0) * 0.6;
+      ring.rotation.x = Math.PI / 2;
+      group.add(ring);
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      function animate() {
+        requestAnimationFrame(animate);
+        group.rotation.y += 0.008 * ${speed};
+        ring.rotation.z += 0.01;
+        renderer.render(scene, camera);
+      }
+      animate();
     })();
   </script>
 </body>
