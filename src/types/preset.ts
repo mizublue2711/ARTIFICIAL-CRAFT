@@ -6,9 +6,14 @@
 
 export type SectionType =
   | 'HERO_3D'
+  | 'monolith-3d-engine'
+  | 'node-01-3d-procedural'
   | 'GEOMETRIC_ART'
   | 'PLUG_AND_PLAY'
   | 'CSV_VISUALIZER'
+  | 'BANNER_STUDIO'
+  | 'VIDEO_SHOWCASE'
+  | 'INTERACTIVE_NODE_MATRIX'
   | 'TERMINAL_CONSOLE'
   | 'EXPORT_ARTIFACT'
   | 'EMBED_MODAL'

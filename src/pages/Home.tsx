@@ -1,9 +1,7 @@
 import Hero from '@/components/Hero';
-import PlugAndPlaySandbox from '@/components/PlugAndPlaySandbox';
-import CsvDataVisualizer from '@/components/CsvDataVisualizer';
 import BentoGrid from '@/components/BentoGrid';
 import BlueprintLibrary from '@/components/BlueprintLibrary';
-import BannerStudio from '@/components/BannerStudio';
+import InteractiveNodeMatrix from '@/components/playground/InteractiveNodeMatrix';
 import ExistentialBlackbox from '@/components/ExistentialBlackbox';
 import Experts from '@/components/Experts';
 
@@ -41,13 +39,15 @@ function LogoMarquee() {
 export default function Home({ onOpenBatchModal }: HomeProps) {
   return (
     <main>
-      <Hero onOpenBatchModal={onOpenBatchModal} />
+      {/* Hero section rendering 3D engine in compact mode */}
+      <Hero onOpenBatchModal={onOpenBatchModal} monolithMode="compact" />
       <LogoMarquee />
-      <PlugAndPlaySandbox />
-      <CsvDataVisualizer />
+
+      {/* Unified Interactive Node Matrix Teaser pointing to /playground */}
+      <InteractiveNodeMatrix />
+
       <BentoGrid />
       <BlueprintLibrary />
-      <BannerStudio onOpenBatchModal={onOpenBatchModal} />
       <ExistentialBlackbox />
       <Experts />
     </main>

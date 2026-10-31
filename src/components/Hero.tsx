@@ -19,6 +19,7 @@ import {
 import { WORKFLOW_MODES, type WorkflowMode } from '@/lib/data';
 import ParticleCanvas from '@/components/ParticleCanvas';
 import ThreeHookCanvas from '@/components/ThreeHookCanvas';
+import Monolith3DNode from '@/components/playground/Monolith3DNode';
 import { useTranslation } from '@/context/useLanguage';
 
 const STUDIO_URL = 'https://dify-n8n-workflow.ai.studio/';
@@ -75,9 +76,10 @@ function MetricRow({
 
 interface HeroProps {
   onOpenBatchModal?: () => void;
+  monolithMode?: 'compact' | 'studio';
 }
 
-export default function Hero({ onOpenBatchModal }: HeroProps) {
+export default function Hero({ onOpenBatchModal, monolithMode }: HeroProps) {
   const { t } = useTranslation();
   const [activeIdx, setActiveIdx] = useState(0);
   const baseMode: WorkflowMode = WORKFLOW_MODES[activeIdx];
@@ -332,20 +334,21 @@ export default function Hero({ onOpenBatchModal }: HeroProps) {
             </motion.div>
           </div>
 
-          {/* Right Column: 3D Three.js Interactive Hook Canvas */}
+          {/* Right Column: 3D Procedural Engine Canvas */}
           <div className="lg:col-span-5 relative h-[320px] sm:h-[400px] border border-zinc-800 bg-zinc-950/80 overflow-hidden group">
             {/* Corner Brutalist Frame Accents */}
-            <div className="absolute top-2 left-2 z-10 font-mono text-[9px] text-zinc-500 uppercase tracking-widest bg-zinc-900 px-1.5 py-0.5 border border-zinc-800">
+            <div className="absolute top-2 left-2 z-10 font-mono text-[9px] text-zinc-500 uppercase tracking-widest bg-zinc-900 px-1.5 py-0.5 border border-zinc-800 pointer-events-none">
               {t('canvas_hook_parallax')}
             </div>
-            <div className="absolute top-2 right-2 z-10 font-mono text-[9px] text-cyan-glow bg-zinc-900 px-1.5 py-0.5 border border-zinc-800">
+            <div className="absolute top-2 right-2 z-10 font-mono text-[9px] text-cyan-glow bg-zinc-900 px-1.5 py-0.5 border border-zinc-800 pointer-events-none">
               {t('canvas_fps_interactive')}
             </div>
-            <div className="absolute bottom-2 left-2 z-10 font-mono text-[9px] text-zinc-500">
-              {t('canvas_pos_mouse')}
-            </div>
 
-            <ThreeHookCanvas className="w-full h-full" />
+            {monolithMode === 'compact' ? (
+              <Monolith3DNode mode="compact" className="w-full h-full" />
+            ) : (
+              <ThreeHookCanvas className="w-full h-full" />
+            )}
           </div>
         </div>
 

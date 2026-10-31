@@ -1,8 +1,12 @@
 import React from 'react';
 import Hero from '@/components/Hero';
 import { GenerativeVisual } from '@/components/GenerativeVisual';
-import PlugAndPlaySandbox from '@/components/PlugAndPlaySandbox';
-import CsvDataVisualizer from '@/components/CsvDataVisualizer';
+import PlugAndPlaySandbox from '@/components/playground/PlugAndPlaySandbox';
+import CsvDataVisualizer from '@/components/playground/CsvDataVisualizer';
+import BannerStudio from '@/components/playground/BannerStudio';
+import VideoShowcase from '@/components/playground/VideoShowcase';
+import Monolith3DNode from '@/components/playground/Monolith3DNode';
+import InteractiveNodeMatrix from '@/components/playground/InteractiveNodeMatrix';
 import ExistentialBlackbox from '@/components/ExistentialBlackbox';
 import ThreeHookCanvas from '@/components/ThreeHookCanvas';
 import ParticleCanvas from '@/components/ParticleCanvas';
@@ -18,12 +22,23 @@ import {
 
 /**
  * Component Registry Mapping for Dynamic Section Engines & Utilities
+ * SSOT (Single Source of Truth) for all 0-Code operations
  */
 export const SECTION_REGISTRY: Record<string, React.ComponentType<Record<string, unknown>>> = {
+  // Monolith 3D Engine Registrations
+  'monolith-3d-engine': Monolith3DNode as unknown as React.ComponentType<Record<string, unknown>>,
+  'node-01-3d-procedural': Monolith3DNode as unknown as React.ComponentType<Record<string, unknown>>,
+
+  // Consolidated Playground Modules
   HERO_3D: Hero as unknown as React.ComponentType<Record<string, unknown>>,
   GEOMETRIC_ART: GenerativeVisual as unknown as React.ComponentType<Record<string, unknown>>,
   PLUG_AND_PLAY: PlugAndPlaySandbox as unknown as React.ComponentType<Record<string, unknown>>,
   CSV_VISUALIZER: CsvDataVisualizer as unknown as React.ComponentType<Record<string, unknown>>,
+  BANNER_STUDIO: BannerStudio as unknown as React.ComponentType<Record<string, unknown>>,
+  VIDEO_SHOWCASE: VideoShowcase as unknown as React.ComponentType<Record<string, unknown>>,
+  INTERACTIVE_NODE_MATRIX: InteractiveNodeMatrix as unknown as React.ComponentType<Record<string, unknown>>,
+
+  // Utilities & Interactive Canvases
   TERMINAL_CONSOLE: ExistentialBlackbox as unknown as React.ComponentType<Record<string, unknown>>,
   THREE_CANVAS: ThreeHookCanvas as unknown as React.ComponentType<Record<string, unknown>>,
   PARTICLE_CANVAS: ParticleCanvas as unknown as React.ComponentType<Record<string, unknown>>,
