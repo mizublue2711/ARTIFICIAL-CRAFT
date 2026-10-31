@@ -9,6 +9,7 @@ import { ASSET_PRESET_REGISTRY } from '@/lib/video-engine/presets/registry';
 import Monolith3DNode from '@/components/playground/Monolith3DNode';
 import BannerStudio from '@/components/playground/BannerStudio';
 import CsvDataVisualizer from '@/components/playground/CsvDataVisualizer';
+import CraftStudioConfigurator from '@/components/studio/CraftStudioConfigurator';
 import {
   Box,
   Film,
@@ -146,7 +147,7 @@ export const PlaygroundPage: React.FC = () => {
             }`}
           >
             <Sparkles className="w-3.5 h-3.5 text-[#5322ff]" />
-            <span>NODE 05: AUTO WEBAPP</span>
+            <span>NODE 05: STUDIO FACTORY</span>
           </button>
         </div>
       </header>
@@ -377,49 +378,10 @@ export const PlaygroundPage: React.FC = () => {
           </div>
         )}
 
-        {/* NODE 05 (Beta): Auto WebApp Generator Node */}
+        {/* NODE 05: Studio Configurator Node (Nhà máy sản xuất Web 3D No-Code/Low-Code) */}
         {activeTab === 'node-05' && (
-          <div className="flex-1 flex flex-col items-center justify-center p-8 bg-[#09090f] text-center font-mono">
-            <div className="max-w-2xl border border-[#5322ff] bg-zinc-950 p-8 shadow-[0_0_30px_rgba(83,34,255,0.25)]">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#5322ff]/20 text-purple-300 border border-[#5322ff]/40 text-xs font-bold uppercase mb-4">
-                <Sparkles className="w-3.5 h-3.5" />
-                NODE 05 // AUTONOMOUS WEBAPP COMPILER (BETA)
-              </div>
-              <h2 className="text-2xl md:text-3xl font-extrabold text-white uppercase tracking-tight mb-4">
-                0-TOKEN REACT & SHADCN AUTOMATION
-              </h2>
-              <p className="text-xs text-zinc-400 font-sans leading-relaxed mb-6">
-                Connect external OpenAPI schemas or Figma node blueprints to automatically generate typed, production-ready React micro-apps with full Swiss Brutalist visual constraints and Zod contract safety.
-              </p>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6 text-left">
-                <div className="p-3 border border-zinc-800 bg-zinc-900/60">
-                  <Terminal className="w-4 h-4 text-[#00E5FF] mb-1" />
-                  <div className="text-[11px] text-white font-bold">Contract Guardrails</div>
-                  <div className="text-[9px] text-zinc-500">Zod schema verification</div>
-                </div>
-                <div className="p-3 border border-zinc-800 bg-zinc-900/60">
-                  <Cpu className="w-4 h-4 text-purple-400 mb-1" />
-                  <div className="text-[11px] text-white font-bold">0-Code AST Engine</div>
-                  <div className="text-[9px] text-zinc-500">Deterministic TSX syntax</div>
-                </div>
-                <div className="p-3 border border-zinc-800 bg-zinc-900/60">
-                  <Layers className="w-4 h-4 text-emerald-400 mb-1" />
-                  <div className="text-[11px] text-white font-bold">Cloudflare Output</div>
-                  <div className="text-[9px] text-zinc-500">Edge Worker bundling</div>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-center gap-3">
-                <button
-                  onClick={() => alert('Node 05 compiler queue dispatched to n8n worker cluster.')}
-                  className="px-5 py-2.5 bg-[#5322ff] hover:bg-[#5322ff]/90 text-white font-bold text-xs uppercase transition shadow-[0_0_15px_rgba(83,34,255,0.4)] flex items-center gap-2"
-                >
-                  <span>REQUEST COMPILER ACCESS</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            </div>
+          <div className="flex-1 w-full h-full relative">
+            <CraftStudioConfigurator />
           </div>
         )}
       </main>
