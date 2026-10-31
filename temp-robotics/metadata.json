@@ -1,6 +1,0 @@
-{
-  "name": "VinDynamics - Physical AI & Robotics Industrial Plant",
-  "description": "Ultra-immersive 3D interactive landing page & industrial control dashboard for Next-Gen Physical AI & Robotics Manufacturing under the slogan 'Robots for Everyone'.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
