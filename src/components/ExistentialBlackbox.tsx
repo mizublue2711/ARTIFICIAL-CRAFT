@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from '@/context/useLanguage';
-
-//import ThreeHookCanvas from '@/lib/video-engine/ThreeHookCanvas';
-import { ThreeHookCanvas } from '@/components/ThreeHookCanvas';
+// Import Default (không dùng ngoặc nhọn {}) từ thư mục components hiện tại:
+import ThreeHookCanvas from './ThreeHookCanvas';
 
 interface QAItem {
   id: string;
@@ -10,6 +9,8 @@ interface QAItem {
   question: string;
   answer: string;
 }
+export default function ExistentialBlackbox() {
+  const { t } = useTranslation();
 
 export const ExistentialBlackbox: React.FC = () => {
   const { t, language } = useTranslation();
@@ -159,11 +160,6 @@ export const ExistentialBlackbox: React.FC = () => {
       });
 
 
-      {/* --- 3. 3D GEOMETRIC HOOK NODE (Lego Block) --- */}
-      <div className="w-full h-[350px] md:h-[450px] relative border border-[#00E5FF]/20 bg-black/60 overflow-hidden">
-       <ThreeHookCanvas className="w-full h-full" />
-      </div>
-
       /*// --- 3. DYNAMIC FIBONACCI TAIJI FLUID ENGINE --- 
       const cx = w / 2;
       const cy = h / 2;
@@ -289,12 +285,24 @@ export const ExistentialBlackbox: React.FC = () => {
       }
     }, 12);
   };
+*/
+ return (
+    <div id="existential-blackbox" className="w-full min-h-screen bg-[#0B0B0F] text-zinc-200 font-mono flex flex-col md:flex-row border-t border-zinc-800 overflow-hidden select-none">
 
-  return (
-    <div
-      id="existential-blackbox"
-      className="w-full min-h-screen bg-[#0B0B0F] text-zinc-200 font-mono flex flex-col md:flex-row border-t border-zinc-800 overflow-hidden select-none"
-    >*/
+      {/* 3D GEOMETRIC HOOK NODE (Lego Block) */}
+      <div className="w-full md:w-1/2 min-h-[400px] relative border-b md:border-b-0 md:border-r border-zinc-800 bg-black/60 overflow-hidden">
+        <ThreeHookCanvas className="w-full h-full" />
+      </div>
+
+      {/* SUBSTRATE / PANEL HIỂN THỊ NỘI DUNG NẰM BÊN PHẢI */}
+      <div className="w-full md:w-1/2 p-6 flex flex-col justify-between">
+        {/* Nội dung UI khác của ExistentialBlackbox */}
+      </div>
+
+    </div>
+  );
+}
+
       {/* BÊN TRÁI: THE SUBSTRATE */}
       <div className="w-full md:w-1/2 min-h-[500px] md:min-h-screen border-r border-b md:border-b-0 border-zinc-800 relative flex flex-col justify-between p-6 bg-[#08080B]">
         <div className="space-y-3">
