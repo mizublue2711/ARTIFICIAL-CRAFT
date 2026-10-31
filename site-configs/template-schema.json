@@ -141,14 +141,14 @@
       "status": "LIVE // 60FPS"
     },
     {
-      "id": "robotics-factory-node",
-      "componentKey": "robotics-factory-node",
-      "tag": "NODE_04 :: INDUSTRIAL AUTOMATION",
-      "title": "ROBOTICS FACTORY 3D // KINEMATIC SIMULATOR",
-      "subtitle": "Kinematic Arm Simulation & Industrial Telemetry",
-      "description": "Meticulous 3D industrial assembly line viewport featuring real-time inverse kinematics, automated mechanical arms, and factory floor telemetry.",
+      "id": "robotics-factory-3d",
+      "componentKey": "robotics-factory",
+      "tag": "NODE_02 :: KINEMATIC SIMULATOR",
+      "title": "ROBOTICS FACTORY 3D // PHYSICAL AI",
+      "subtitle": "Interactive 3D Kinematics & Assembly Sandbox",
+      "description": "Real-time 60FPS exploded view manipulator arm with inverse kinematics telemetry.",
       "route": "/robotics",
-      "ctaLabel": "ENTER FACTORY NODE ↗",
+      "ctaLabel": "LAUNCH SIMULATOR ↗",
       "status": "LIVE // 60FPS"
     }
   ]
