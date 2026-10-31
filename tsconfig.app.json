@@ -17,7 +17,10 @@
     /* Path alias — depth-invariant imports for src (@/foo === src/foo from any file) */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "zustand": ["src/lib/zustand-shim.ts"],
+      "zod": ["src/lib/zod-shim.ts"],
+      "next/server": ["src/lib/next-server-shim.ts"]
     },
 
     /* Linting */
