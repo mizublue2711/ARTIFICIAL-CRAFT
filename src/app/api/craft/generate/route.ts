@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { SwissDesignConfigSchema, CraftGenerateResponse } from '@/types/craft-studio';
-import { generateFallbackCyberneticHTML } from '@/lib/studioAstGenerator';
-
-export { generateFallbackCyberneticHTML };
+import { generateFallbackCyberneticHTML as fallbackHTML } from '@/lib/studioAstGenerator';
 
 // URL Endpoint của n8n Orchestrator / Dify AI Core (Đặt trong .env hoặc fallback)
 const N8N_WEBHOOK_URL =

@@ -1,45 +1,54 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Github, Mail, Linkedin, ArrowRight } from 'lucide-react';
 import BrutalistLogo from './BrutalistLogo';
 import { useTranslation } from '@/context/useLanguage';
 import JulesMemorialModal from './JulesMemorialModal';
 
 const VIBEPATH_URL = 'https://vibepath.mizu2711.workers.dev/';
+const GITHUB_DOCS_URL = 'https://github.com/mizublue2711/DIFY-N8N-AUTOMATION-DESIGN';
+
+interface FooterLinkItem {
+  label: string;
+  href: string;
+  external?: boolean;
+  isRouterLink?: boolean;
+}
 
 export default function Footer() {
   const { t } = useTranslation();
   const [isJulesModalOpen, setIsJulesModalOpen] = useState(false);
 
-  const cols = [
+  const cols: { title: string; links: FooterLinkItem[] }[] = [
     {
       title: t('col_engine'),
       links: [
+        { label: 'Studio Factory', href: '/studio', isRouterLink: true },
+        { label: 'Playground Studio', href: '/playground', isRouterLink: true },
+        { label: 'Robotics 3D', href: '/robotics', isRouterLink: true },
         { label: t('link_vibepath_studio'), href: VIBEPATH_URL, external: true },
-        { label: t('link_architecture'), href: '#architecture' },
-        { label: t('link_blueprints'), href: '#blueprints' },
-        { label: t('link_telemetry'), href: '#platform' },
-        { label: t('link_changelog'), href: '#' },
-        { label: t('link_status'), href: '#' },
+        { label: t('link_architecture'), href: '/#bento' },
+        { label: t('link_blueprints'), href: '/#blueprint-library' },
       ],
     },
     {
       title: t('col_developers'),
       links: [
-        { label: t('link_documentation'), href: '#' },
-        { label: t('link_api_reference'), href: '#' },
-        { label: t('link_cli_tool'), href: '#' },
-        { label: t('link_self_host'), href: '#' },
-        { label: t('link_github'), href: '#' },
+        { label: 'Documentation', href: GITHUB_DOCS_URL, external: true },
+        { label: 'Flipbook Archive', href: '/library', isRouterLink: true },
+        { label: 'API Reference', href: GITHUB_DOCS_URL, external: true },
+        { label: 'CLI Tool', href: '/playground', isRouterLink: true },
+        { label: 'About Us', href: '/about', isRouterLink: true },
       ],
     },
     {
       title: t('col_craft'),
       links: [
-        { label: t('link_about'), href: '#' },
-        { label: t('link_manifesto'), href: '#' },
-        { label: t('link_careers'), href: '#' },
-        { label: t('link_partners'), href: '#' },
-        { label: t('link_contact'), href: '#' },
+        { label: t('link_about'), href: '/about', isRouterLink: true },
+        { label: t('link_manifesto'), href: '/#existential-blackbox' },
+        { label: 'Autopilot Studio', href: 'https://dify-n8n-workflow.ai.studio/', external: true },
+        { label: 'GitHub Repo', href: GITHUB_DOCS_URL, external: true },
+        { label: t('link_contact'), href: 'mailto:mizu2711@gmail.com', external: true },
       ],
     },
   ];
@@ -61,13 +70,13 @@ export default function Footer() {
                 {t('footer_banner_desc')}
               </p>
             </div>
-            <a
-              href="#"
+            <Link
+              to="/studio"
               className="group inline-flex items-center gap-2 border border-zinc-200 bg-white text-black text-xs font-bold px-5 py-3 hover:bg-zinc-200 transition-colors shrink-0 uppercase"
             >
               {t('footer_start_building')}
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </a>
+            </Link>
           </div>
         </div>
 
@@ -80,7 +89,7 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-2 mt-5">
               <a
-                href="https://github.com/mizublue2711/DIFY-N8N-AUTOMATION-DESIGN"
+                href={GITHUB_DOCS_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="h-8 w-8 border border-zinc-800 bg-zinc-900 flex items-center justify-center text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors"
@@ -115,15 +124,24 @@ export default function Footer() {
               <ul className="space-y-2">
                 {col.links.map((l) => (
                   <li key={l.label}>
-                    <a
-                      href={l.href}
-                      target={l.external ? '_blank' : undefined}
-                      rel={l.external ? 'noopener noreferrer' : undefined}
-                      className="text-[12px] text-zinc-400 hover:text-white transition-colors"
-                    >
-                      {l.label}
-                      {l.external && ' ↗'}
-                    </a>
+                    {l.isRouterLink ? (
+                      <Link
+                        to={l.href}
+                        className="text-[12px] text-zinc-400 hover:text-white transition-colors"
+                      >
+                        {l.label}
+                      </Link>
+                    ) : (
+                      <a
+                        href={l.href}
+                        target={l.external ? '_blank' : undefined}
+                        rel={l.external ? 'noopener noreferrer' : undefined}
+                        className="text-[12px] text-zinc-400 hover:text-white transition-colors"
+                      >
+                        {l.label}
+                        {l.external && ' ↗'}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>

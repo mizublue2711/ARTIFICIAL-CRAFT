@@ -11,6 +11,7 @@ import FlipbookReader from '@/pages/FlipbookReader';
 import PlaygroundPage from '@/pages/Playground';
 import RoboticsPage from '@/pages/Robotics';
 import StudioPage from '@/app/studio/page';
+import AboutPage from '@/app/about/page';
 
 function App() {
   const [isBatchModalOpen, setIsBatchModalOpen] = useState(false);
@@ -30,6 +31,7 @@ function App() {
             <Route path="/playground" element={<PlaygroundPage />} />
             <Route path="/robotics" element={<RoboticsPage />} />
             <Route path="/studio" element={<StudioPage />} />
+            <Route path="/about" element={<AboutPage />} />
           </Routes>
 
           <Footer />
