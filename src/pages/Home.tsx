@@ -1,3 +1,4 @@
+import React from 'react';
 import Hero from '@/components/Hero';
 import BentoGrid from '@/components/BentoGrid';
 import BlueprintLibrary from '@/components/BlueprintLibrary';
@@ -5,6 +6,46 @@ import InteractiveNodeMatrix from '@/components/playground/InteractiveNodeMatrix
 import ExistentialBlackbox from '@/components/ExistentialBlackbox';
 import Experts from '@/components/Experts';
 import CraftStudioConfigurator from '@/components/studio/CraftStudioConfigurator';
+
+class StudioErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean; error: Error | null }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('[STUDIO BOUNDARY ERROR]:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="w-full min-h-[400px] flex flex-col items-center justify-center p-8 bg-[#09090B] border border-red-500/30 text-white font-mono">
+          <div className="text-red-400 text-sm font-bold mb-2">
+            [NODE 05] STUDIO CONFIGURATOR ENGINE RECOVERY MODE
+          </div>
+          <p className="text-xs text-zinc-400 mb-4 max-w-md text-center">
+            {this.state.error?.message || 'Component failed to initialize WebGL context.'}
+          </p>
+          <button
+            onClick={() => this.setState({ hasError: false, error: null })}
+            className="px-4 py-2 bg-[#5322FF] text-white text-xs font-mono font-bold hover:bg-[#5322FF]/80 transition"
+          >
+            REINITIALIZE NODE ↗
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 interface HomeProps {
   onOpenBatchModal?: () => void;
@@ -76,7 +117,9 @@ export default function Home({ onOpenBatchModal }: HomeProps) {
 
         {/* Embedded Studio Configurator */}
         <div className="w-full border-b border-zinc-800">
-          <CraftStudioConfigurator />
+          <StudioErrorBoundary>
+            <CraftStudioConfigurator />
+          </StudioErrorBoundary>
         </div>
       </section>
 

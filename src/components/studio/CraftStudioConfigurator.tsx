@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Sparkles,
@@ -38,8 +38,7 @@ import {
   SwissDesignConfig,
   CraftGenerateResponse,
 } from '@/types/craft-studio';
-import { generateFallbackCyberneticHTML } from '@/app/api/craft/generate/route';
-import { generateStudioAst, generateCodeSnippets } from '@/lib/studioAstGenerator';
+import { generateFallbackCyberneticHTML, generateStudioAst, generateCodeSnippets } from '@/lib/studioAstGenerator';
 
 // --- TYPES & INTERFACES ---
 export type ActiveWizardStep = 1 | 2 | 3 | 4 | 5;
@@ -47,6 +46,15 @@ export type DevicePreviewMode = 'desktop' | 'tablet' | 'mobile';
 
 export interface ExtendedStudioConfig extends SwissDesignConfig {
   // Extended Step 1 & 2 Attributes
+  compositionId?: string;
+  slogan?: string;
+  backgroundColor?: string;
+  primaryColor?: string;
+  accentColor?: string;
+  headlineFont?: string;
+  presetModel?: string;
+  modelType?: string;
+  customModelUrl?: string;
   logoUrl?: string;
   motionTokens: string[];
   secondaryAccentColor: string;
@@ -81,8 +89,17 @@ export interface ExtendedStudioConfig extends SwissDesignConfig {
 export const INITIAL_CONFIG: ExtendedStudioConfig = {
   presetId: 'cybernetic-brutalism-v1',
   layoutMode: 'two-column',
+  compositionId: 'ARTIFICIAL_CRAFT',
   brandName: 'ARTIFICIAL CRAFT',
+  slogan: 'Robots for Everyone // Cybernetic Automation',
   tagline: 'Robots for Everyone // Cybernetic Automation',
+  backgroundColor: '#09090B',
+  primaryColor: '#5322FF',
+  accentColor: '#00E5FF',
+  headlineFont: 'Space Grotesk',
+  presetModel: 'robot-arm',
+  modelType: 'preset',
+  customModelUrl: '',
   logoUrl: 'https://raw.githubusercontent.com/artificial-craft/assets/main/logo-mark.svg',
   theme: {
     backgroundColor: '#09090B',
@@ -392,7 +409,19 @@ export const CraftStudioConfigurator: React.FC = () => {
     setTimeout(() => setGeneratedHtml(current), 50);
   };
 
-  const snippets = generateCodeSnippets(formData as any);
+  const snippets = useMemo(() => {
+    try {
+      return generateCodeSnippets(formData as any);
+    } catch (err) {
+      console.warn('[CRAFT CONFIGURATOR] Snippets generation fallback:', err);
+      return {
+        typescript: '// TypeScript SDK generated in fallback mode',
+        python: '# Python telemetry node fallback',
+        ros2: '// ROS2 Humble node fallback',
+        cpp: '// C++20 controller fallback',
+      };
+    }
+  }, [formData]);
 
   return (
     <div className="relative w-full min-h-[calc(100vh-64px)] bg-[#09090B] text-zinc-100 font-mono flex flex-col selection:bg-[#00E5FF]/20">

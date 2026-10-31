@@ -14,6 +14,11 @@
     "backgroundColor": "#09090b",
     "textColor": "#f4f4f5"
   },
+  "navigation": [
+    { "label": "STUDIO FACTORY", "route": "/studio", "badge": "NEW // 3D" },
+    { "label": "ROBOTICS 3D", "route": "/robotics", "badge": "LIVE" },
+    { "label": "PLAYGROUND", "route": "/playground" }
+  ],
   "sections": [
     {
       "id": "section-hero",
@@ -124,6 +129,17 @@
     }
   ],
   "playgroundHubs": [
+    {
+      "id": "studio-configurator-node",
+      "componentKey": "studio-configurator",
+      "tag": "NODE_05 :: 3D NO-CODE FACTORY",
+      "title": "STUDIO CONFIGURATOR // VISUAL AI FACTORY",
+      "subtitle": "Autonomous 3D Web App Generator & Visual AI Studio",
+      "description": "Real-time 2-column no-code 3D factory with live iframe preview sandbox.",
+      "route": "/studio",
+      "ctaLabel": "OPEN FACTORY ↗",
+      "status": "LIVE // 60FPS"
+    },
     {
       "id": "robotics-factory-node",
       "componentKey": "robotics-factory-node",

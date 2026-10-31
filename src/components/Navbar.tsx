@@ -62,11 +62,41 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
         </Link>
 
         {/* NAVIGATION DROPDOWNS & PLAYGROUND TAB */}
-        <div className="hidden md:flex items-center gap-4 shrink-0">
+        <div className="hidden md:flex items-center gap-3 shrink-0">
+          {/* STUDIO FACTORY LINK */}
+          <Link
+            to="/studio"
+            className={`group relative inline-flex items-center gap-1.5 border text-xs font-mono font-bold tracking-wider px-3 py-1.5 transition-all cursor-pointer ${
+              location.pathname === '/studio'
+                ? 'border-[#5322FF] bg-[#5322FF]/20 text-[#00FF66] shadow-[0_0_12px_rgba(83,34,255,0.35)]'
+                : 'border-zinc-800 bg-zinc-950 text-zinc-300 hover:border-[#5322FF] hover:text-white'
+            }`}
+          >
+            <span>STUDIO FACTORY</span>
+            <span className="text-[9px] px-1.5 py-0.5 bg-[#5322FF]/30 border border-[#5322FF] text-[#00FF66]">
+              NEW // 3D
+            </span>
+          </Link>
+
+          {/* ROBOTICS 3D LINK */}
+          <Link
+            to="/robotics"
+            className={`group relative inline-flex items-center gap-1.5 border text-xs font-mono font-bold tracking-wider px-3 py-1.5 transition-all cursor-pointer ${
+              location.pathname === '/robotics'
+                ? 'border-[#00E5FF] bg-[#00E5FF]/20 text-[#00E5FF] shadow-[0_0_12px_rgba(0,229,255,0.25)]'
+                : 'border-zinc-800 bg-zinc-950 text-zinc-300 hover:border-[#00E5FF] hover:text-white'
+            }`}
+          >
+            <span>ROBOTICS 3D</span>
+            <span className="text-[9px] px-1 py-0.5 bg-[#00E5FF]/20 text-[#00E5FF] border border-[#00E5FF]/40">
+              LIVE
+            </span>
+          </Link>
+
           {/* HIGH-TECH PLAYGROUND TAB */}
           <Link
             to="/playground"
-            className={`group relative inline-flex items-center gap-2 border text-xs font-mono font-bold tracking-wider px-3.5 py-1.5 transition-all cursor-pointer shadow-[0_0_12px_rgba(0,229,255,0.25)] ${
+            className={`group relative inline-flex items-center gap-2 border text-xs font-mono font-bold tracking-wider px-3 py-1.5 transition-all cursor-pointer shadow-[0_0_12px_rgba(0,229,255,0.25)] ${
               isPlaygroundActive
                 ? 'border-[#00E5FF] bg-[#00E5FF] text-black'
                 : 'border-[#00E5FF]/70 bg-zinc-950 text-[#00E5FF] hover:bg-[#00E5FF] hover:text-black'
@@ -105,6 +135,17 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                   <div className="text-[9px] uppercase tracking-widest text-zinc-500 px-2.5 py-1 mb-1 border-b border-zinc-800/60">
                     INTERACTIVE TOOLS
                   </div>
+
+                  <Link
+                    to="/studio"
+                    onClick={() => setStudiosOpen(false)}
+                    className="flex items-center justify-between px-3 py-2 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs font-mono text-white/90 hover:text-white transition-colors"
+                  >
+                    <span className="font-bold flex items-center gap-1.5">⚡ Studio Configurator</span>
+                    <span className="text-[10px] px-1.5 py-0.5 bg-[#5322FF]/30 border border-[#5322FF] text-[#00FF66] font-bold">
+                      NO-CODE 3D
+                    </span>
+                  </Link>
 
                   <Link
                     to="/playground"
@@ -296,6 +337,16 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
           >
             <div className="px-6 py-4 flex flex-col gap-3">
               <div className="text-[10px] uppercase text-zinc-500 font-bold tracking-widest">NAVIGATION</div>
+              <Link
+                to="/studio"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-1.5 text-xs font-bold text-white hover:text-[#00E5FF] flex items-center justify-between"
+              >
+                <span>⚡ STUDIO FACTORY</span>
+                <span className="text-[9px] px-1.5 py-0.5 bg-[#5322FF]/30 border border-[#5322FF] text-[#00FF66] font-bold">
+                  NEW // 3D
+                </span>
+              </Link>
               <Link
                 to="/playground"
                 onClick={() => setMobileMenuOpen(false)}

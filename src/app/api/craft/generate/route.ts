@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { SwissDesignConfigSchema, CraftGenerateResponse } from '@/types/craft-studio';
+import { generateFallbackCyberneticHTML } from '@/lib/studioAstGenerator';
+
+export { generateFallbackCyberneticHTML };
 
 // URL Endpoint của n8n Orchestrator / Dify AI Core (Đặt trong .env hoặc fallback)
-const N8N_WEBHOOK_URL = process.env.N8N_CRAFT_GENERATOR_WEBHOOK || 'https://n8n.internal.network/webhook/craft-gen';
+const N8N_WEBHOOK_URL =
+  (typeof process !== 'undefined' && process.env?.N8N_CRAFT_GENERATOR_WEBHOOK) ||
+  'https://n8n.internal.network/webhook/craft-gen';
 
 export async function POST(req: NextRequest) {
   try {
