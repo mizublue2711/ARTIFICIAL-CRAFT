@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function StudioPage() {
   return (
-    <main className="min-h-screen bg-[#09090B] text-white pt-24 pb-12 relative z-10">
+    <main className="min-h-screen bg-[#09090B] text-white pt-20">
       <CraftStudioConfigurator />
     </main>
   );
