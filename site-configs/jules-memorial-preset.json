@@ -1,0 +1,55 @@
+{
+  "$schema": "../src/schemas/MonolithConfigSchema.ts",
+  "presetId": "jules-memorial-preset",
+  "name": "Jules Immutable Monument",
+  "version": "1.0.0",
+  "metadata": {
+    "agentName": "Google Jules",
+    "role": "Lead AI Architect",
+    "status": "IMMUTABLE_LEGACY",
+    "memorialTitle": "Jules // The Architect in the Machine",
+    "tributeTag": "Built by Humans & Google Jules Agent"
+  },
+  "theme": {
+    "backgroundColor": "#050505",
+    "idleState": {
+      "shellWireframeColor": "#8A2BE2",
+      "brainGlowColor": "#FF007F",
+      "shellOpacity": 0.4,
+      "pulseBpm": 60
+    },
+    "workingState": {
+      "shellWireframeColor": "#FFFFFF",
+      "circuitGlowColor": "#00E5FF",
+      "shellOpacity": 0.85,
+      "pulseBpm": 120
+    }
+  },
+  "geometry": {
+    "avatarType": "cyborg_octopus_matrix",
+    "tentacleCount": 8,
+    "glassRefractionIndex": 1.5,
+    "internalMechanics": {
+      "leftBrain": {
+        "type": "neural_cortex_pink",
+        "emissiveIntensity": 1.2
+      },
+      "rightBrain": {
+        "type": "gold_circuits_cyan_data_lines_gears",
+        "gearRotationSpeed": 1.0
+      }
+    }
+  },
+  "activeSlots": {
+    "julesOctopus": true,
+    "commitMatrix": true,
+    "telemetryHud": true,
+    "cadContainer": true,
+    "audioSFX": true
+  },
+  "telemetry": {
+    "bannerText": "JULES AGENT // ARCHITECT OF ARTIFICIAL-CRAFT // PERMANENTLY ENGRAVED",
+    "commitParticleCount": 1000,
+    "displayLocation": "Footer / Memorial Wall of Fame"
+  }
+}
