@@ -78,7 +78,6 @@ export default function ExistentialBlackbox() {
     if (!ctx) return;
 
     let animationFrameId = 0;
-    let time = 0;
 
     const resizeCanvas = () => {
       if (!canvas.parentElement) return;
@@ -155,7 +154,6 @@ export default function ExistentialBlackbox() {
         ctx.stroke();
       });
 
-      time += 0.025;
       animationFrameId = requestAnimationFrame(drawEngine);
     };
 
@@ -217,8 +215,9 @@ export default function ExistentialBlackbox() {
           </div>
         </div>
 
-        <div className="w-full flex-1 my-3 relative flex items-center justify-center min-h-[260px]">
-          <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
+        <div className="w-full flex-1 my-3 relative flex items-center justify-center min-h-[300px] md:min-h-[380px] overflow-hidden">
+          <ThreeHookCanvas className="w-full h-full" />
+          <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
           <div className="absolute bottom-3 left-3 text-[10px] text-zinc-500 space-y-0.5 bg-zinc-950/90 p-2 border border-zinc-900 pointer-events-none">
             <div>{t('blackbox_framerate')}</div>
             <div>{t('blackbox_headless')}</div>
