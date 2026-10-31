@@ -19,3 +19,16 @@
 - When prompt-engineering or instructing AI Workers:
   * ALWAYS refer to `@src/core/registry.ts` and `@src/types/preset.ts` for visual components.
   * DO NOT ask AI Workers to scan the entire codebase to find visual assets.
+
+## 5. ARCHITECTURE PATTERN:
+   - This project uses JSON-Driven Architecture (0-Code Operations).
+   - Prefer updating `site-configs/template-schema.json` for UI changes over rewriting TSX components.
+   - All 3D/UI nodes MUST be registered in `src/core/registry.ts`.
+
+## 6.TOKEN EFFICIENCY:
+   - Do NOT scan unneeded folders. Only read `src/components/`, `src/lib/`, and `site-configs/`.
+
+## 7. STRICT BUILD SAFETY:
+   - NEVER touch, create, or commit files in `dist/` or `build/`.
+   - Verify TypeScript integrity ONLY via: `npx tsc --noEmit`.
+   - Always output clean git commits or atomic Pull Requests
