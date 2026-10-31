@@ -1,0 +1,32 @@
+{
+  "$schema": "../../schemas/SwissDesignConfigSchema.ts",
+  "presetId": "node-05-digital-plumbing-swarm",
+  "compositionId": "NODE_05_MANUFACTURING_FACTORY",
+  "title": "DIGITAL PLUMBING TERMINAL // HEADLESS SWARM",
+  "slogan": "Autonomous 3D Manufacturing Pipeline & Multi-Agent Swarm",
+  "aesthetic": {
+    "themeStyle": "CYBERNETIC_BRUTALISM",
+    "backgroundColor": "#09090B",
+    "primaryColor": "#5322FF",
+    "accentColor": "#00E5FF",
+    "headlineFont": "Space Grotesk",
+    "codeFont": "JetBrains Mono"
+  },
+  "motionTokens": [
+    "kinetic-parallax",
+    "chromatic-aberration",
+    "text-clipping-reveal",
+    "magnetic-attraction",
+    "glitch-flicker"
+  ],
+  "hero3DEngine": {
+    "modelType": "kinematic_manipulator_arm",
+    "enableRaycasting": true,
+    "explodedStages": ["0%", "33%", "66%", "100%"]
+  },
+  "telemetryDock": {
+    "fps": 60,
+    "slaStatus": "ONLINE // 100% DETERMINISTIC",
+    "activeNodes": ["Dify Brain", "n8n Muscle", "Zod Valve", "Client GPU"]
+  }
+}
