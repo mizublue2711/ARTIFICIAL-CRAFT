@@ -1,0 +1,52 @@
+{
+  "slug": "tech-lib-09-brutalism-iframe-sandbox",
+  "title": "CYBERNETIC BRUTALISM & IFRAME SANDBOXING",
+  "subtitle": "Designing Resilient Web3D Architecture Without Shell Collisions or State Leaks",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "CYBERNETIC BRUTALISM & IFRAME SANDBOXING",
+      "subtitle": "Designing Resilient Web3D Architecture Without Shell Collisions or State Leaks",
+      "version": "v1.0.0",
+      "tags": [
+        "CYBERNETIC BRUTALISM",
+        "IFRAME SANDBOX",
+        "FAIL-FAST",
+        "ZOD"
+      ],
+      "verified": true
+    },
+    {
+      "id": "p02_ui_shell_nightmare",
+      "type": "tech_doc",
+      "title": "01 // THE UI SHELL NIGHTMARE",
+      "content": "Most modern web apps are bloated. You embed an interactive 3D tool into your main site; suddenly, the sub-component re-renders the navbar. Styles clash. CSS variables leak. The mobile viewport breaks, and the browser memory spikes to 2GB.\n\nCybernetic Brutalism strips away the fat. Obsidian #09090B, Electric Indigo #5322FF, 1px borders, JetBrains Mono precision. Form follows pure mechanical function.",
+      "seed": "cybernetic-brutalism-hud-09",
+      "graphicType": "NEURAL_MESH"
+    },
+    {
+      "id": "p03_in_memory_isolation",
+      "type": "tech_doc",
+      "title": "02 // THE STRIPPING SHELL STRATEGY",
+      "content": "How do you guarantee 100% security and zero style leakage? Enforce the Stripping Shell Strategy.\n\nThe CraftStudioConfigurator component never imports parent navigation UI. The generated Three.js code is injected into an in-memory iframe via srcdoc. No temporary files written to server disk, no cross-origin CORS vulnerabilities, and no CSS pollution in parent DOM.",
+      "code": "<iframe\n  srcDoc={htmlStream}\n  sandbox=\"allow-scripts allow-modals\"\n  className=\"w-full h-full border-0\"\n  title=\"Live AST Preview\"\n/>",
+      "language": "typescript",
+      "seed": "stripping-shell-dual-node",
+      "graphicType": "DATA_MATRIX"
+    },
+    {
+      "id": "p04_unbreakable_system",
+      "type": "diagram",
+      "title": "03 // THE UNBREAKABLE SYSTEM & FAIL-FAST GATES",
+      "content": "Before any code reaches production, it passes through four safety gates:\n1. Zod Client Gate: SwissDesignConfigSchema validates AST structures.\n2. Standard Alias Shield: Strict @/components/... mapping.\n3. Dynamic Stream Protocol: Pure string piping to client memory.\n4. Build Gate Verification: Zero-tolerance npx tsc --noEmit check.",
+      "seed": "fail-fast-safety-badge-100",
+      "graphicType": "AUTOMATION_FLOW",
+      "caption": "Figure 3.1 — 4-Gate Cybernetic Brutalism isolation pipeline ensuring 0% state drift"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "slug": "tech-lib-06-robotics-factory-3d",
+  "title": "THE EXPLODED FACTORY",
+  "subtitle": "Why Static CAD Models Are Dead and Immersive 3D Kinematics Win",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "THE EXPLODED FACTORY",
+      "subtitle": "Why Static CAD Models Are Dead and Immersive 3D Kinematics Win",
+      "version": "v1.0.0",
+      "tags": [
+        "ROBOTICS",
+        "3D KINEMATICS",
+        "PHYSICAL AI",
+        "EXPLODED VIEW"
+      ],
+      "verified": true
+    },
+    {
+      "id": "p02_blueprint_illusion",
+      "type": "tech_doc",
+      "title": "01 // THE BLUEPRINT ILLUSION",
+      "content": "A client asks to see your robot. You send a PDF blueprint.\n\nThe client looks at flat lines. They don't see the harmonic drive. They don't see the 11-DOF tactile fingers. They don't see the 60 FPS real-time kinematics. They see wallpaper.\n\nPDFs don't sell industrial robotics. Experiences sell industrial robotics.\n\nDon't show a drawing of a machine. Step inside the factory floor.",
+      "seed": "robotics-factory-cover-seed-06",
+      "graphicType": "ISOMETRIC_CAD"
+    },
+    {
+      "id": "p03_stage_deconstruction",
+      "type": "tech_doc",
+      "title": "02 // 4-STAGE MECHANICAL DECONSTRUCTION",
+      "content": "How do you prove precision engineering? You explode the machine in real time.\n\n0% — Fully integrated bipedal chassis. Sleek. Operating at 60 FPS idle.\n33% — Outer shell peels away. Structural titanium skeleton exposed.\n66% — Harmonic drive motors detach along smooth Bezier curves.\n100% — Dexterous 11-DOF hands expand. 1,024 tactile pressure sensors visible.\n\nYou don't tell them your motors are precise. You pull the motor out of the casing in front of their eyes.",
+      "seed": "bipedal-kinematics-4stage-slider",
+      "graphicType": "NEURAL_MESH"
+    },
+    {
+      "id": "p04_raycasting_truth",
+      "type": "diagram",
+      "title": "03 // RAYCASTING TRUTH & HARMONIC KINEMATICS",
+      "content": "Hover a laser over a joint node. 1px Cyan wireframe locks in. Depth-of-field blurs the background. Swiss CAD blueprint HUD overlays the surface.\n\nTelemetry stream:\nTorque Accuracy: ±0.01mm.\nHarmonic Ratio: 1:100.\nMax Velocity: 4.5 m/s.\n\nNo marketing fluff. Just raw, immutable, 60 FPS mechanical reality.",
+      "seed": "harmonic-torque-badge-001mm",
+      "graphicType": "AUTOMATION_FLOW",
+      "caption": "Figure 3.1 — 60 FPS real-time raycasted kinematics and harmonic drive torque telemetry"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "slug": "tech-lib-08-studio-configurator-ast",
+  "title": "THE NO-CODE 3D AST ENGINE",
+  "subtitle": "How Studio Configurator Transforms No-Code Actions into Real-Time 60FPS Web3D",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "THE NO-CODE 3D AST ENGINE",
+      "subtitle": "How Studio Configurator Transforms No-Code Actions into Real-Time 60FPS Web3D",
+      "version": "v1.0.0",
+      "tags": [
+        "STUDIO CONFIGURATOR",
+        "AST ENGINE",
+        "WEB3D",
+        "THREE.JS"
+      ],
+      "verified": true
+    },
+    {
+      "id": "p02_b2b_conversion_wall",
+      "type": "tech_doc",
+      "title": "01 // THE B2B CONVERSION WALL",
+      "content": "You want to sell complex B2B products: Robotics arms, Physical AI nodes, Industrial hardware. So you build a website, upload static PNG renders, write marketing text, and add a 'Request a Demo' button.\n\nNobody clicks. Static images don't build trust; they look like wallpaper. Prospects want to touch the machine, dismantle components, and configure specs in real time.",
+      "seed": "studio-configurator-cover-08",
+      "graphicType": "NEURAL_MESH"
+    },
+    {
+      "id": "p03_gpu_render_architecture",
+      "type": "tech_doc",
+      "title": "02 // THE $0 GPU RENDER ARCHITECTURE",
+      "content": "How do you build a custom 3D Web App for every client?\nOption A: Hire five Three.js developers and spend three months per build.\nOption B: Spin up heavy GPU server clusters that charge $5 per render.\nOption C: Build the Studio Configurator Engine.\n\nEmit a lightweight JSON AST payload, validate through a Zod client gate, and stream directly into the browser.",
+      "code": "export const SwissDesignConfigSchema = z.object({\n  presetId: z.string().default('cybernetic-brutalism-v1'),\n  layoutMode: z.enum(['two-column', 'fullscreen-canvas']),\n  theme: z.object({ primaryColor: z.string() })\n});",
+      "language": "typescript",
+      "seed": "ast-proxy-code-snippet",
+      "graphicType": "ISOMETRIC_CAD"
+    },
+    {
+      "id": "p04_instant_stream",
+      "type": "diagram",
+      "title": "03 // ZERO SERVER RENDER FEE & INSTANT STREAM",
+      "content": "The backend returns a clean HTML/GSAP/Three.js stream. The browser feeds it directly to an in-memory iframe (srcdoc). Client-side GPU renders at 60FPS. Server compute cost: $0.00. Latency: Under 500ms.",
+      "seed": "zero-cost-gpu-render-mockup",
+      "graphicType": "AUTOMATION_FLOW",
+      "caption": "Figure 3.1 — In-memory srcdoc iframe architecture offloading 60 FPS WebGL to client GPU"
+    }
+  ]
+}
