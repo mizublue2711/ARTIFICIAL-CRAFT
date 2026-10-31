@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { SPEC_MODELS } from '../../data/robotAssembly';
-import { SpecModel } from '../../types/telemetry';
-import { Code, Terminal, Copy, Check, Play, CheckCircle2, ShieldCheck, Cpu } from 'lucide-react';
-import { sfx } from '../../utils/audio';
+import { SPEC_MODELS } from '@/data/robotAssembly';
+import { SpecModel } from '@/types/telemetry';
+import { Code, Terminal, Copy, Check, Play, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { sfx } from '@/lib/video-engine/robotics/audio';
 
 const CODE_SNIPPETS = {
   python: `import rclpy
@@ -80,7 +80,7 @@ export const SpecsAndSandboxSection: React.FC = () => {
   const [simRunning, setSimRunning] = useState(false);
   const [simOutput, setSimOutput] = useState<string[]>([]);
 
-  const filteredModels = SPEC_MODELS.filter((m) => {
+  const filteredModels = SPEC_MODELS.filter((m: SpecModel) => {
     if (selectedFilter === 'all') return true;
     if (selectedFilter === 'arm') return m.id.includes('arm');
     if (selectedFilter === 'hand') return m.id.includes('hand');
@@ -187,7 +187,7 @@ export const SpecsAndSandboxSection: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {filteredModels.map((model) => (
+              {filteredModels.map((model: SpecModel) => (
                 <tr key={model.id} className="hover:bg-white/[0.02] transition-colors group">
                   <td className="py-4 pr-4">
                     <div className="font-bold text-white group-hover:text-[#00E5FF] transition-colors">

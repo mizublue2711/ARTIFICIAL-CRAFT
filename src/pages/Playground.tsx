@@ -66,7 +66,7 @@ export const PlaygroundPage: React.FC = () => {
   if (isEmbed) {
     return (
       <div className="w-screen h-screen bg-[#050505] flex items-center justify-center overflow-hidden">
-        <PlaygroundStage className="w-full h-full" autoPlay loop controls />
+        <PlaygroundStage className="w-full h-full" />
       </div>
     );
   }
@@ -277,7 +277,7 @@ export const PlaygroundPage: React.FC = () => {
               </div>
 
               <div className="w-full flex-1 flex items-center justify-center p-2 bg-black/50 border border-zinc-800 rounded overflow-hidden shadow-2xl relative">
-                <PlaygroundStage className="w-full max-w-4xl" autoPlay loop controls />
+                <PlaygroundStage className="w-full max-w-4xl" />
                 {toastMessage && (
                   <div className="absolute top-4 bg-[#00E5FF] text-black font-mono text-xs font-bold px-4 py-2 rounded-full shadow-2xl animate-bounce z-30">
                     {toastMessage}

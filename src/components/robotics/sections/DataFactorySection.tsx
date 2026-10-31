@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PointCloudCanvas } from '../3d/PointCloudCanvas';
-import { Terminal, Database, Cpu, ArrowRight, Play, Pause, Activity, Radio } from 'lucide-react';
-import { sfx } from '../../utils/audio';
+import { Terminal, Database, Cpu, Play, Pause, Activity, Radio } from 'lucide-react';
+import { sfx } from '@/lib/video-engine/robotics/audio';
 
 const INITIAL_LOGS = [
   '[01:47:02.102] INGEST_OCTREE: Received LiDAR chunk #48291 (300,214 pts) - Hash: 0x8F9C2B',

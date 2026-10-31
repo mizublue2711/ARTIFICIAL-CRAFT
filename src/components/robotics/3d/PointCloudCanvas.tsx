@@ -1,18 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { sfx } from '../../utils/audio';
-
 interface PointCloudCanvasProps {
   magneticForce?: number;
   streamingActive?: boolean;
 }
 
-export const PointCloudCanvas: React.FC<PointCloudCanvasProps> = ({
-  streamingActive = true,
-}) => {
+export const PointCloudCanvas: React.FC<PointCloudCanvasProps> = () => {
   const mountRef = useRef<HTMLDivElement>(null);
   const [pointCount] = useState(14400);
-  const [activeCluster, setActiveCluster] = useState('VOXEL_OCTREE_LIDAR_CH_64');
   const [fps, setFps] = useState(60);
 
   const pointerPosRef = useRef<THREE.Vector3>(new THREE.Vector3(999, 999, 0));
@@ -195,7 +190,7 @@ export const PointCloudCanvas: React.FC<PointCloudCanvasProps> = ({
     let lastTime = 0;
 
     const tick = () => {
-      const dt = Math.min(clock.getDelta(), 0.1);
+      clock.getDelta();
       const elapsed = clock.getElapsedTime();
 
       frames++;
@@ -215,9 +210,6 @@ export const PointCloudCanvas: React.FC<PointCloudCanvasProps> = ({
       const posAttr = geometry.attributes.position as THREE.BufferAttribute;
       const pArray = posAttr.array as Float32Array;
 
-      const pX = pointerPosRef.current.x;
-      const pY = pointerPosRef.current.y;
-      const pZ = pointerPosRef.current.z;
       const isAttracting = isHoveredRef.current;
 
       const rotMatrix = new THREE.Matrix4().makeRotationY(-pointsMesh.rotation.y);

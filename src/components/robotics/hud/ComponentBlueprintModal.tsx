@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { X, Cpu, Layers, Activity, Download, Copy, Check } from 'lucide-react';
-import { MechanicalComponent } from '../../types/telemetry';
-import { sfx } from '../../utils/audio';
+import { X, Cpu, Layers, Activity, Copy, Check } from 'lucide-react';
+import { MechanicalComponent } from '@/types/telemetry';
+import { sfx } from '@/lib/video-engine/robotics/audio';
 
 interface ComponentBlueprintModalProps {
   component: MechanicalComponent | null;

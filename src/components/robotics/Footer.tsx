@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Github, FileText, Globe, Shield, Terminal } from 'lucide-react';
-import { sfx } from '../utils/audio';
+import { Box, FileText, Shield, Terminal } from 'lucide-react';
+import { sfx } from '@/lib/video-engine/robotics/audio';
 
 export const Footer: React.FC = () => {
   return (
