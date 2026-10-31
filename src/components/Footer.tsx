@@ -34,11 +34,11 @@ export default function Footer() {
     {
       title: t('col_developers'),
       links: [
-        { label: t('link_documentation'), href: GITHUB_DOCS_URL, external: true },
+        { label: 'Documentation', href: GITHUB_DOCS_URL, external: true },
         { label: 'Flipbook Archive', href: '/library', isRouterLink: true },
-        { label: t('link_api_reference'), href: `${GITHUB_DOCS_URL}#api`, external: true },
-        { label: t('link_cli_tool'), href: `${GITHUB_DOCS_URL}#cli`, external: true },
-        { label: t('link_github'), href: GITHUB_DOCS_URL, external: true },
+        { label: 'API Reference', href: GITHUB_DOCS_URL, external: true },
+        { label: 'CLI Tool', href: '/playground', isRouterLink: true },
+        { label: 'About Us', href: '/about', isRouterLink: true },
       ],
     },
     {
@@ -47,6 +47,7 @@ export default function Footer() {
         { label: t('link_about'), href: '/about', isRouterLink: true },
         { label: t('link_manifesto'), href: '/#existential-blackbox' },
         { label: 'Autopilot Studio', href: 'https://dify-n8n-workflow.ai.studio/', external: true },
+        { label: 'GitHub Repo', href: GITHUB_DOCS_URL, external: true },
         { label: t('link_contact'), href: 'mailto:mizu2711@gmail.com', external: true },
       ],
     },
