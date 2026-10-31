@@ -17,6 +17,8 @@ export type SectionType =
   | 'TERMINAL_CONSOLE'
   | 'EXPORT_ARTIFACT'
   | 'EMBED_MODAL'
+  | 'STUDIO_CONFIGURATOR'
+  | 'studio-configurator-node'
   | string;
 
 export type GenerativeVisualMode =

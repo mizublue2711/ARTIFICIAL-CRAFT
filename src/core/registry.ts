@@ -12,6 +12,7 @@ import ThreeHookCanvas from '@/components/ThreeHookCanvas';
 import ParticleCanvas from '@/components/ParticleCanvas';
 import ExportArtifactEngine from '@/components/utilities/ExportArtifactEngine';
 import EmbedWidgetModal from '@/components/utilities/EmbedWidgetModal';
+import CraftStudioConfigurator from '@/components/studio/CraftStudioConfigurator';
 
 import {
   SectionType,
@@ -37,6 +38,8 @@ export const SECTION_REGISTRY: Record<string, React.ComponentType<Record<string,
   BANNER_STUDIO: BannerStudio as unknown as React.ComponentType<Record<string, unknown>>,
   VIDEO_SHOWCASE: VideoShowcase as unknown as React.ComponentType<Record<string, unknown>>,
   INTERACTIVE_NODE_MATRIX: InteractiveNodeMatrix as unknown as React.ComponentType<Record<string, unknown>>,
+  STUDIO_CONFIGURATOR: CraftStudioConfigurator as unknown as React.ComponentType<Record<string, unknown>>,
+  'studio-configurator-node': CraftStudioConfigurator as unknown as React.ComponentType<Record<string, unknown>>,
 
   // Utilities & Interactive Canvases
   TERMINAL_CONSOLE: ExistentialBlackbox as unknown as React.ComponentType<Record<string, unknown>>,

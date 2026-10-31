@@ -14,6 +14,11 @@
     "backgroundColor": "#09090b",
     "textColor": "#f4f4f5"
   },
+  "navigation": [
+    { "label": "STUDIO FACTORY", "route": "/studio", "badge": "NEW // 3D" },
+    { "label": "ROBOTICS 3D", "route": "/robotics", "badge": "LIVE" },
+    { "label": "PLAYGROUND", "route": "/playground" }
+  ],
   "sections": [
     {
       "id": "section-hero",
@@ -101,9 +106,40 @@
       "props": {
         "preset": "jules-memorial-preset"
       }
+    },
+    {
+      "id": "studio-configurator-node",
+      "type": "STUDIO_CONFIGURATOR",
+      "tag": "NODE_05 :: 3D MANUFACTURING FACTORY",
+      "title": "STUDIO CONFIGURATOR // NO-CODE 3D FACTORY",
+      "subtitle": "Autonomous No-Code/Low-Code Cybernetic Brutalism 3D WebApp Manufacturing Factory",
+      "route": "/studio",
+      "cta": "ENTER FACTORY NODE ↗",
+      "props": {
+        "interactive": true,
+        "theme": "cybernetic-brutalism"
+      },
+      "background": {
+        "id": "CAD_BLUEPRINT",
+        "name": "CAD Blueprint",
+        "overlayType": "cad_blueprint",
+        "opacity": 0.15,
+        "color": "#5322FF"
+      }
     }
   ],
   "playgroundHubs": [
+    {
+      "id": "studio-configurator-node",
+      "componentKey": "studio-configurator",
+      "tag": "NODE_05 :: 3D NO-CODE FACTORY",
+      "title": "STUDIO CONFIGURATOR // VISUAL AI FACTORY",
+      "subtitle": "Autonomous 3D Web App Generator & Visual AI Studio",
+      "description": "Real-time 2-column no-code 3D factory with live iframe preview sandbox.",
+      "route": "/studio",
+      "ctaLabel": "OPEN FACTORY ↗",
+      "status": "LIVE // 60FPS"
+    },
     {
       "id": "robotics-factory-node",
       "componentKey": "robotics-factory-node",
