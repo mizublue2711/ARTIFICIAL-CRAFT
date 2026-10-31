@@ -15,9 +15,10 @@
     "textColor": "#f4f4f5"
   },
   "navigation": [
-    { "label": "STUDIO FACTORY", "route": "/studio", "badge": "NEW // 3D" },
+    { "label": "STUDIO FACTORY", "route": "/studio", "badge": "NEW // 3D", "defaultPreset": "node-05-digital-plumbing-swarm" },
     { "label": "ROBOTICS 3D", "route": "/robotics", "badge": "LIVE" },
-    { "label": "PLAYGROUND", "route": "/playground" }
+    { "label": "PLAYGROUND", "route": "/playground" },
+    { "label": "NODE 05", "route": "/studio", "badge": "SWARM", "defaultPreset": "node-05-digital-plumbing-swarm" }
   ],
   "sections": [
     {
@@ -115,9 +116,11 @@
       "subtitle": "Autonomous No-Code/Low-Code Cybernetic Brutalism 3D WebApp Manufacturing Factory",
       "route": "/studio",
       "cta": "ENTER FACTORY NODE ↗",
+      "defaultPreset": "node-05-digital-plumbing-swarm",
       "props": {
         "interactive": true,
-        "theme": "cybernetic-brutalism"
+        "theme": "cybernetic-brutalism",
+        "defaultPreset": "node-05-digital-plumbing-swarm"
       },
       "background": {
         "id": "CAD_BLUEPRINT",
@@ -138,7 +141,8 @@
       "description": "Real-time 2-column no-code 3D factory with live iframe preview sandbox.",
       "route": "/studio",
       "ctaLabel": "OPEN FACTORY ↗",
-      "status": "LIVE // 60FPS"
+      "status": "LIVE // 60FPS",
+      "defaultPreset": "node-05-digital-plumbing-swarm"
     },
     {
       "id": "robotics-factory-3d",
