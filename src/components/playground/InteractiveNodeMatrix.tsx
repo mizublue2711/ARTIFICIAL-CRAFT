@@ -56,14 +56,14 @@ const NODES: NodeCardProps[] = [
     to: '/playground?tab=node-04',
   },
   {
-    nodeId: 'node-05',
-    number: 'NODE 05',
-    title: 'Auto WebApp Generator Node',
-    subtitle: 'Autonomous full-stack application prototyping with deterministic guardrails.',
-    techStack: 'LLM Orchestration • Zod • React',
+    nodeId: 'studio-configurator-node',
+    number: 'NODE_05 :: 3D MANUFACTURING FACTORY',
+    title: 'STUDIO CONFIGURATOR // NO-CODE 3D FACTORY',
+    subtitle: 'Autonomous 3D WebApp manufacturing factory with 5-step wizard dock and 60FPS WebGL preview.',
+    techStack: 'React • Three.js • Zod • AI Stylist',
     icon: Sparkles,
-    badge: 'BETA RELEASE',
-    to: '/playground?tab=node-05',
+    badge: 'FACTORY NODE',
+    to: '/studio',
   },
 ];
 
