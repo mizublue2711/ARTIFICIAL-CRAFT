@@ -1,9 +1,17 @@
 import React from 'react';
+import Hero from '@/components/Hero';
+import HeadlessSwarmSection from '@/components/home/HeadlessSwarmSection';
 import CraftStudioConfigurator from '@/components/studio/CraftStudioConfigurator';
 
 export default function HomePage() {
   return (
     <div className="w-full min-h-screen bg-[#09090B]">
+      {/* Main Hero Section */}
+      <Hero monolithMode="compact" />
+
+      {/* Zone 03 Headless Swarm Workbench & $0.00 Cloud Render Showcase Section */}
+      <HeadlessSwarmSection />
+
       {/* Fixed Section: Studio Configurator Node (Nhà máy sản xuất Web 3D No-Code/Low-Code) */}
       <section id="studio-configurator" className="relative w-full border-t border-zinc-800 bg-[#09090B]">
         <div className="max-w-7xl mx-auto px-6 pt-16 pb-6">
