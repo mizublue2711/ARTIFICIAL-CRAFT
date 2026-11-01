@@ -889,35 +889,41 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
   const bg = config.backgroundColor || '#09090B';
   const primary = config.primaryColor || '#5322FF';
   const accent = config.accentColor || '#00E5FF';
-  const brand = config.compositionId || 'NODE_05_MANUFACTURING_FACTORY';
+  const brand = config.compositionId || 'ARTIFICIAL CRAFT';
   const tag = config.slogan || 'Autonomous 3D Manufacturing Pipeline & Multi-Agent Swarm';
-  const speed = 1.5;
-  const isNode05 = brand.includes('NODE_05') || config.presetModel === 'kinematic_manipulator_arm';
+  const headlineFont = config.headlineFont || 'Space Grotesk';
+  const codeFont = config.codeFont || 'JetBrains Mono';
+  const explodedProgress = typeof config.explodedProgress === 'number' ? config.explodedProgress : 33;
+  const raycastLaser = config.raycastingLaser !== false;
+  const targetFps = config.telemetryFps || 60;
+  const torque = config.torquePrecision || '0.01mm';
+  const dof = config.dofSensorCount || '11 DOF';
 
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${brand} // HYPERFRAME 60FPS</title>
+  <title>${brand} // NODE 05 KINEMATIC MANIPULATOR ARM 60FPS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=${encodeURIComponent(headlineFont)}:wght@700;900&family=${encodeURIComponent(codeFont)}:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body, html {
       width: 100%; height: 100%;
       background-color: ${bg};
       color: #F4F4F5;
-      font-family: 'JetBrains Mono', monospace;
+      font-family: '${codeFont}', monospace;
       overflow: hidden;
     }
     .hud-header {
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 48px;
-      background: rgba(9, 9, 11, 0.7);
+      background: rgba(9, 9, 11, 0.75);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       display: flex;
@@ -953,12 +959,12 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
       letter-spacing: 2px;
       text-transform: uppercase;
       color: #fff;
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: '${headlineFont}', sans-serif;
     }
     .hud-brand p {
       font-size: 0.8rem;
       color: ${accent};
-      opacity: 0.9;
+      opacity: 0.95;
       margin-top: 4px;
       letter-spacing: 1px;
     }
@@ -966,27 +972,44 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
       position: absolute;
       top: 60px; right: 16px;
       z-index: 20;
-      background: rgba(0,0,0,0.75);
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 8px 12px;
+      background: rgba(0,0,0,0.8);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 10px 14px;
       font-size: 10px;
       color: #a1a1aa;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 5px;
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.1);
+    }
+    .hud-telemetry div {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .pulse-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: ${accent};
+      box-shadow: 0 0 8px ${accent};
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.2); }
     }
   </style>
 </head>
 <body>
   <header class="hud-header">
     <div style="display:flex; align-items:center; gap:8px;">
-      <span style="width:6px; height:6px; border-radius:50%; background:${accent}; box-shadow:0 0 8px ${accent};"></span>
-      <span style="font-weight:700; color:#fff;">${brand} // STUDIO RUNTIME</span>
-      ${isNode05 ? '<span style="color:#a855f7; font-size:9px; border:1px solid #5322FF; padding:1px 4px; background:rgba(83,34,255,0.2);">NODE 05 PRESET</span>' : ''}
+      <span class="pulse-dot"></span>
+      <span style="font-weight:700; color:#fff;">${brand} // NODE 05 MANUFACTURING FACTORY</span>
+      <span style="color:#a855f7; font-size:9px; border:1px solid #5322FF; padding:1px 6px; background:rgba(83,34,255,0.2); font-weight:700;">KINEMATIC MANIPULATOR ARM</span>
     </div>
     <div style="display:flex; align-items:center; gap:8px;">
-      <span class="badge">SLA: 60FPS</span>
-      <span class="badge" style="border-color:${primary}; color:${primary};">AST VALIDATED</span>
+      <span class="badge">SLA: ${targetFps}FPS</span>
+      <span class="badge" style="border-color:${primary}; color:#d8b4fe;">PLUMBING SWARM ONLINE</span>
     </div>
   </header>
 
@@ -998,10 +1021,16 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
   </div>
 
   <div class="hud-telemetry">
-    <div>NODE: <span style="color:#fff;">${config.presetModel.toUpperCase()}</span></div>
-    <div>EXPLODED: <span style="color:${accent};">${config.explodedProgress}%</span></div>
-    <div>SLA: <span style="color:${primary};">${config.telemetryFps} FPS</span></div>
-    <div>PIPELINE: <span style="color:#10b981;">DIFY + N8N SWARM</span></div>
+    <div><span>ACTUATOR:</span><span style="color:#fff; font-weight:700;">KINEMATIC MANIPULATOR ARM</span></div>
+    <div><span>EXPLODED STAGE:</span><span style="color:${accent}; font-weight:700;">${explodedProgress}% // ${
+      explodedProgress < 25 ? 'STAGE 0' :
+      explodedProgress < 50 ? 'STAGE 1' :
+      explodedProgress < 80 ? 'STAGE 2' : 'STAGE 3'
+    }</span></div>
+    <div><span>TORQUE PRECISION:</span><span style="color:#fff;">${torque}</span></div>
+    <div><span>SENSOR DOF:</span><span style="color:${accent}; font-weight:700;">${dof}</span></div>
+    <div><span>LASER RAYCAST:</span><span style="color:${raycastLaser ? '#10b981' : '#71717a'}; font-weight:700;">${raycastLaser ? 'CYAN LOCK [ACTIVE]' : 'STANDBY'}</span></div>
+    <div><span>SWARM BUS:</span><span style="color:#a855f7; font-weight:700;">DIFY + N8N SYNCHRONIZED</span></div>
   </div>
 
   <script>
@@ -1011,52 +1040,225 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
 
       const scene = new THREE.Scene();
       scene.background = new THREE.Color('${bg}');
-      scene.fog = new THREE.FogExp2('${bg}', 0.05);
+      scene.fog = new THREE.FogExp2('${bg}', 0.038);
 
-      const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
-      camera.position.set(3.2, 2.4, 4.0);
-      camera.lookAt(0, 0, 0);
+      const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
+      camera.position.set(4.2, 3.4, 5.2);
+      camera.lookAt(0, 1.8, 0);
 
       const renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       container.appendChild(renderer.domElement);
 
-      const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+      const controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+      controls.target.set(0, 1.8, 0);
+
+      // Studio Lighting
+      const ambient = new THREE.AmbientLight(0xffffff, 0.6);
       scene.add(ambient);
 
-      const keyLight = new THREE.DirectionalLight('${primary}', 2.5);
-      keyLight.position.set(5, 8, 5);
+      const keyLight = new THREE.DirectionalLight('${primary}', 2.8);
+      keyLight.position.set(6, 12, 8);
       scene.add(keyLight);
 
-      const rimLight = new THREE.PointLight('${accent}', 3.0, 15);
-      rimLight.position.set(-4, -2, -4);
-      scene.add(rimLight);
+      const cyanRim = new THREE.DirectionalLight('${accent}', 2.2);
+      cyanRim.position.set(-8, 6, -6);
+      scene.add(cyanRim);
 
-      // Procedural 3D Mesh Group
-      const group = new THREE.Group();
-      scene.add(group);
+      // Tactile Floor CAD Grid & Measurement Rings
+      const floorGrid = new THREE.GridHelper(30, 30, '${accent}', 0x27272a);
+      floorGrid.position.y = 0;
+      floorGrid.material.transparent = true;
+      floorGrid.material.opacity = 0.28;
+      scene.add(floorGrid);
 
-      const mat = new THREE.MeshStandardMaterial({
+      const ringMat = new THREE.MeshBasicMaterial({ color: '${accent}', side: THREE.DoubleSide, transparent: true, opacity: 0.35 });
+      const ring1 = new THREE.Mesh(new THREE.RingGeometry(1.6, 1.62, 48), ringMat);
+      ring1.rotation.x = -Math.PI / 2;
+      ring1.position.y = 0.01;
+      scene.add(ring1);
+
+      const ring2 = new THREE.Mesh(new THREE.RingGeometry(3.2, 3.22, 48), ringMat);
+      ring2.rotation.x = -Math.PI / 2;
+      ring2.position.y = 0.01;
+      scene.add(ring2);
+
+      // Materials for Node 05 Kinematic Manipulator Arm
+      const primaryWireMat = new THREE.MeshStandardMaterial({
         color: new THREE.Color('${primary}'),
         wireframe: true,
-        metalness: 0.8,
-        roughness: 0.2
+        metalness: 0.85,
+        roughness: 0.25,
       });
 
-      // Assembly components with exploded displacement
-      const core = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.7, 1.2, 16), mat);
-      group.add(core);
+      const titaniumMat = new THREE.MeshStandardMaterial({
+        color: 0x141417,
+        metalness: 0.92,
+        roughness: 0.25,
+      });
 
-      const arm = new THREE.Mesh(new THREE.BoxGeometry(0.3, 1.8, 0.3), mat);
-      arm.position.set(0.6, 0.8 + (${config.explodedProgress} / 100.0) * 0.8, 0);
-      arm.rotation.z = -0.4;
-      group.add(arm);
+      const accentMat = new THREE.MeshBasicMaterial({
+        color: new THREE.Color('${accent}'),
+        wireframe: true,
+      });
 
-      const ring = new THREE.Mesh(new THREE.TorusGeometry(1.1, 0.06, 16, 32), new THREE.MeshBasicMaterial({ color: '${accent}', wireframe: true }));
-      ring.position.y = (${config.explodedProgress} / 100.0) * 0.6;
-      ring.rotation.x = Math.PI / 2;
-      group.add(ring);
+      const goldMat = new THREE.MeshStandardMaterial({
+        color: 0xd97706,
+        metalness: 0.9,
+        roughness: 0.2,
+      });
+
+      // Assembly Root Group
+      const armAssembly = new THREE.Group();
+      scene.add(armAssembly);
+
+      const progress = ${explodedProgress} / 100.0;
+
+      // 1. Base Turret Flange & Rotary Turntable
+      const baseTurretGroup = new THREE.Group();
+      const baseFlange = new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.4, 0.24, 32), titaniumMat);
+      baseFlange.position.y = 0.12;
+      baseTurretGroup.add(baseFlange);
+
+      const statusRing = new THREE.Mesh(new THREE.CylinderGeometry(1.32, 1.32, 0.04, 32), new THREE.MeshBasicMaterial({ color: '${accent}' }));
+      statusRing.position.y = 0.24;
+      baseTurretGroup.add(statusRing);
+
+      const turretHousing = new THREE.Mesh(new THREE.CylinderGeometry(0.9, 1.1, 0.4, 32), primaryWireMat);
+      turretHousing.position.y = 0.46;
+      baseTurretGroup.add(turretHousing);
+      armAssembly.add(baseTurretGroup);
+
+      // 2. Shoulder Yoke & Harmonic Drive Core
+      const shoulderGroup = new THREE.Group();
+      shoulderGroup.position.set(0, 0.75 + progress * 0.4, 0);
+
+      const shoulderHub = new THREE.Mesh(new THREE.CylinderGeometry(0.65, 0.65, 0.5, 32), titaniumMat);
+      shoulderHub.rotation.x = Math.PI / 2;
+      shoulderGroup.add(shoulderHub);
+
+      const hdRing = new THREE.Mesh(new THREE.CylinderGeometry(0.72, 0.72, 0.14, 32), goldMat);
+      hdRing.rotation.x = Math.PI / 2;
+      shoulderGroup.add(hdRing);
+
+      const yokeL = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.7, 0.2), primaryWireMat);
+      yokeL.position.set(-0.42, 0.3, 0);
+      shoulderGroup.add(yokeL);
+
+      const yokeR = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.7, 0.2), primaryWireMat);
+      yokeR.position.set(0.42, 0.3, 0);
+      shoulderGroup.add(yokeR);
+      armAssembly.add(shoulderGroup);
+
+      // 3. Bicep Spar & Swarm Plumbing Bus Conduits
+      const bicepGroup = new THREE.Group();
+      bicepGroup.position.set(0, 1.35 + progress * 0.8, 0);
+
+      const bicepSpar = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.3, 1.3, 16), titaniumMat);
+      bicepSpar.position.y = 0.65;
+      bicepGroup.add(bicepSpar);
+
+      // Swarm Plumbing Bus conduits (Purple / Cyan tactical bus lines)
+      for (let i = 0; i < 4; i++) {
+        const angle = (i * Math.PI * 2) / 4;
+        const conduit = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 1.35, 12), i % 2 === 0 ? primaryWireMat : accentMat);
+        conduit.position.set(Math.cos(angle) * 0.35, 0.65, Math.sin(angle) * 0.35);
+        bicepGroup.add(conduit);
+      }
+
+      // Tactical Aerogel Outer Shell Plates (Exploded displacement)
+      const shellLeft = new THREE.Mesh(new THREE.BoxGeometry(0.12, 1.2, 0.45), primaryWireMat);
+      shellLeft.position.set(-0.5 - progress * 0.6, 0.65, 0);
+      bicepGroup.add(shellLeft);
+
+      const shellRight = new THREE.Mesh(new THREE.BoxGeometry(0.12, 1.2, 0.45), primaryWireMat);
+      shellRight.position.set(0.5 + progress * 0.6, 0.65, 0);
+      bicepGroup.add(shellRight);
+      armAssembly.add(bicepGroup);
+
+      // 4. Elbow Harmonic Joint
+      const elbowGroup = new THREE.Group();
+      elbowGroup.position.set(0, 2.75 + progress * 1.3, 0);
+
+      const elbowJoint = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.45, 0.4, 24), goldMat);
+      elbowJoint.rotation.z = Math.PI / 2;
+      elbowGroup.add(elbowJoint);
+      armAssembly.add(elbowGroup);
+
+      // 5. Forearm Actuator Pack & 3-Axis Wrist Gimbal
+      const forearmGroup = new THREE.Group();
+      forearmGroup.position.set(0, 3.25 + progress * 1.7, 0);
+
+      for (let i = 0; i < 4; i++) {
+        const angle = (i * Math.PI * 2) / 4 + Math.PI / 4;
+        const actuator = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.75, 16), primaryWireMat);
+        actuator.position.set(Math.cos(angle) * 0.18, 0.35, Math.sin(angle) * 0.18);
+        forearmGroup.add(actuator);
+      }
+
+      const wristSphere = new THREE.Mesh(new THREE.SphereGeometry(0.3, 20, 20), titaniumMat);
+      wristSphere.position.y = 0.8;
+      forearmGroup.add(wristSphere);
+
+      const wristCollar = new THREE.Mesh(new THREE.TorusGeometry(0.34, 0.04, 12, 24), accentMat);
+      wristCollar.rotation.x = Math.PI / 2;
+      wristCollar.position.y = 0.8;
+      forearmGroup.add(wristCollar);
+      armAssembly.add(forearmGroup);
+
+      // 6. Dexterous End-Effector & Tactile Sensor Phalanx Array (11-DOF Hand)
+      const endEffectorGroup = new THREE.Group();
+      endEffectorGroup.position.set(0, 4.25 + progress * 2.2, 0);
+
+      const palmChassis = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.4, 0.16), primaryWireMat);
+      endEffectorGroup.add(palmChassis);
+
+      // Tactile matrix faceplate
+      const matrixPlate = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.34, 0.02), accentMat);
+      matrixPlate.position.set(0, 0, 0.09);
+      endEffectorGroup.add(matrixPlate);
+
+      // Articulated Phalanx fingers
+      for (let f = -1; f <= 1; f++) {
+        const finger = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.3, 0.06), f === 0 ? goldMat : primaryWireMat);
+        finger.position.set(f * 0.12, 0.32, 0);
+        endEffectorGroup.add(finger);
+      }
+
+      const thumb = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.04, 0.22, 12), accentMat);
+      thumb.position.set(0.18, 0.1, 0.06);
+      thumb.rotation.z = -Math.PI / 3;
+      endEffectorGroup.add(thumb);
+      armAssembly.add(endEffectorGroup);
+
+      ${raycastLaser ? `
+      // Laser Inspection Beam & Target Reticle
+      const laserPoints = [new THREE.Vector3(2.5, 5.0, 3.0), new THREE.Vector3(0, 4.25 + progress * 2.2, 0)];
+      const laserGeo = new THREE.BufferGeometry().setFromPoints(laserPoints);
+      const laserLine = new THREE.Line(laserGeo, new THREE.LineBasicMaterial({ color: '${accent}', linewidth: 2 }));
+      scene.add(laserLine);
+
+      const reticle = new THREE.Mesh(new THREE.RingGeometry(0.12, 0.14, 24), new THREE.MeshBasicMaterial({ color: '${accent}', side: THREE.DoubleSide }));
+      reticle.rotation.x = -Math.PI / 2;
+      reticle.position.copy(laserPoints[1]);
+      scene.add(reticle);
+      ` : ''}
+
+      // Spatial Swarm Point Cloud
+      const swarmParticles = 600;
+      const swarmPositions = new Float32Array(swarmParticles * 3);
+      for (let i = 0; i < swarmParticles * 3; i += 3) {
+        swarmPositions[i] = (Math.random() - 0.5) * 8;
+        swarmPositions[i + 1] = Math.random() * 6;
+        swarmPositions[i + 2] = (Math.random() - 0.5) * 8;
+      }
+      const swarmGeo = new THREE.BufferGeometry();
+      swarmGeo.setAttribute('position', new THREE.BufferAttribute(swarmPositions, 3));
+      const swarmCloud = new THREE.Points(swarmGeo, new THREE.PointsMaterial({ size: 0.02, color: '${accent}', transparent: true, opacity: 0.5 }));
+      scene.add(swarmCloud);
 
       window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
@@ -1064,10 +1266,35 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
         renderer.setSize(window.innerWidth, window.innerHeight);
       });
 
+      const clock = new THREE.Clock();
       function animate() {
         requestAnimationFrame(animate);
-        group.rotation.y += 0.008 * ${speed};
-        ring.rotation.z += 0.01;
+        const t = clock.getElapsedTime();
+
+        controls.update();
+
+        // 60FPS Kinematic joint oscillation
+        baseTurretGroup.rotation.y = Math.sin(t * 0.4) * 0.25;
+        shoulderGroup.rotation.z = Math.sin(t * 0.8) * 0.08;
+        bicepGroup.rotation.z = -Math.sin(t * 0.8) * 0.05;
+        elbowGroup.rotation.x = Math.sin(t * 1.2) * 0.1;
+        forearmGroup.rotation.y = Math.sin(t * 0.6) * 0.15;
+        endEffectorGroup.rotation.z = Math.sin(t * 1.5) * 0.08;
+
+        armAssembly.rotation.y += 0.003;
+        swarmCloud.rotation.y = t * 0.02;
+
+        ${raycastLaser ? `
+        laserPoints[1].set(
+          Math.sin(t * 1.2) * 0.2,
+          4.25 + progress * 2.2 + Math.cos(t * 1.5) * 0.1,
+          Math.cos(t * 1.2) * 0.2
+        );
+        laserLine.geometry.setFromPoints(laserPoints);
+        reticle.position.copy(laserPoints[1]);
+        reticle.rotation.z = t * 2.0;
+        ` : ''}
+
         renderer.render(scene, camera);
       }
       animate();

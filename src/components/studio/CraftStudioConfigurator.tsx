@@ -93,47 +93,52 @@ export interface ExtendedStudioConfig extends SwissDesignConfig {
 }
 
 export const INITIAL_CONFIG: ExtendedStudioConfig = {
-  presetId: 'node-05-digital-plumbing-swarm',
+  presetId: digitalPlumbingSwarm.presetId,
   layoutMode: 'two-column',
-  compositionId: 'NODE_05_MANUFACTURING_FACTORY',
+  compositionId: digitalPlumbingSwarm.compositionId,
   brandName: 'ARTIFICIAL CRAFT',
-  slogan: 'Robots for Everyone // Cybernetic Automation',
-  tagline: 'Robots for Everyone // Cybernetic Automation',
-  backgroundColor: '#09090B',
-  primaryColor: '#5322FF',
-  accentColor: '#00E5FF',
-  headlineFont: 'Space Grotesk',
-  presetModel: 'robot-arm',
-  modelType: 'preset',
+  slogan: digitalPlumbingSwarm.slogan,
+  tagline: digitalPlumbingSwarm.slogan,
+  backgroundColor: digitalPlumbingSwarm.aesthetic.backgroundColor,
+  primaryColor: digitalPlumbingSwarm.aesthetic.primaryColor,
+  accentColor: digitalPlumbingSwarm.aesthetic.accentColor,
+  headlineFont: digitalPlumbingSwarm.aesthetic.headlineFont,
+  presetModel: digitalPlumbingSwarm.hero3DEngine.modelType,
+  modelType: digitalPlumbingSwarm.hero3DEngine.modelType,
   customModelUrl: '',
   logoUrl: 'https://raw.githubusercontent.com/artificial-craft/assets/main/logo-mark.svg',
   theme: {
-    backgroundColor: '#09090B',
-    primaryColor: '#5322FF',
+    backgroundColor: digitalPlumbingSwarm.aesthetic.backgroundColor,
+    primaryColor: digitalPlumbingSwarm.aesthetic.primaryColor,
     textColor: '#F4F4F5',
-    accentColor: '#00E5FF',
-    fontFamily: 'JetBrains Mono',
+    accentColor: digitalPlumbingSwarm.aesthetic.accentColor,
+    fontFamily: digitalPlumbingSwarm.aesthetic.headlineFont as any,
   },
   secondaryAccentColor: '#00FF66',
-  codeFont: 'JetBrains Mono',
-  motionTokens: ['kinetic-parallax', 'chromatic-aberration', 'magnetic-attraction'],
+  codeFont: digitalPlumbingSwarm.aesthetic.codeFont,
+  motionTokens: [...digitalPlumbingSwarm.motionTokens],
+  hero3DEngine: {
+    modelType: digitalPlumbingSwarm.hero3DEngine.modelType,
+    enableRaycasting: digitalPlumbingSwarm.hero3DEngine.enableRaycasting,
+    explodedStages: [...digitalPlumbingSwarm.hero3DEngine.explodedStages],
+  },
   roboticsNode: {
-    modelType: 'robot-arm',
+    modelType: 'kinematic_manipulator_arm',
     wireframe: true,
     rotationSpeed: 1.5,
     autoAnimate: true,
     telemetryHud: true,
   },
-  explodedProgress: 33,
+  explodedProgress: 33, // STAGE_1 (33%)
   explodedStages: {
-    stage0: '0% // Assembled Unibody Core',
-    stage33: '33% // Tactical Aerogel Shell',
-    stage66: '66% // High-Torque Motor Stator',
-    stage100: '100% // Micro Tactile Sensor Array',
+    stage0: `${digitalPlumbingSwarm.hero3DEngine.explodedStages[0] || '0%'} // Assembled Core Manipulator`,
+    stage33: `${digitalPlumbingSwarm.hero3DEngine.explodedStages[1] || '33%'} // Swarm Plumbing Bus`,
+    stage66: `${digitalPlumbingSwarm.hero3DEngine.explodedStages[2] || '66%'} // Kinematic Actuators`,
+    stage100: `${digitalPlumbingSwarm.hero3DEngine.explodedStages[3] || '100%'} // End-Effector Array`,
   },
-  raycastingLaser: true,
-  telemetryFps: 60,
-  torquePrecision: '±0.01mm',
+  raycastingLaser: digitalPlumbingSwarm.hero3DEngine.enableRaycasting,
+  telemetryFps: digitalPlumbingSwarm.telemetryDock.fps,
+  torquePrecision: '0.01mm',
   dofSensorCount: '11 DOF',
   aiLatency: '<2ms',
   bentoModules: {
@@ -214,16 +219,16 @@ export const CraftStudioConfigurator: React.FC = () => {
   // Node selection locked strictly to Node 05 Manufacturing Factory
   const selectedNodeId = 'NODE_05_MANUFACTURING_FACTORY';
 
-  const handleSelectNodePreset = useCallback((nodeKey: string = 'NODE_05_MANUFACTURING_FACTORY') => {
+  const applyFlagshipPreset = useCallback(() => {
     setSelectedNodePreset('NODE_05_MANUFACTURING_FACTORY');
-    const preset = node05Preset || digitalPlumbingSwarm;
+    const preset = digitalPlumbingSwarm;
     setFormData((prev) => ({
       ...prev,
       presetId: preset.presetId,
-      compositionId: 'NODE_05_MANUFACTURING_FACTORY',
-      brandName: prev.brandName || preset.compositionId,
-      slogan: prev.slogan || preset.slogan,
-      tagline: prev.tagline || preset.slogan,
+      compositionId: preset.compositionId,
+      brandName: 'ARTIFICIAL CRAFT',
+      slogan: preset.slogan,
+      tagline: preset.slogan,
       backgroundColor: preset.aesthetic.backgroundColor,
       primaryColor: preset.aesthetic.primaryColor,
       accentColor: preset.aesthetic.accentColor,
@@ -244,7 +249,7 @@ export const CraftStudioConfigurator: React.FC = () => {
       },
       roboticsNode: {
         ...prev.roboticsNode,
-        modelType: 'kinematic-assembler',
+        modelType: 'kinematic_manipulator_arm',
         wireframe: true,
         rotationSpeed: 1.5,
         autoAnimate: true,
@@ -253,6 +258,7 @@ export const CraftStudioConfigurator: React.FC = () => {
       raycastingLaser: preset.hero3DEngine.enableRaycasting,
       presetModel: preset.hero3DEngine.modelType,
       modelType: preset.hero3DEngine.modelType,
+      explodedProgress: 33, // STAGE_1 (33%)
       explodedStages: {
         stage0: `${preset.hero3DEngine.explodedStages[0] || '0%'} // Assembled Core Manipulator`,
         stage33: `${preset.hero3DEngine.explodedStages[1] || '33%'} // Swarm Plumbing Bus`,
@@ -260,8 +266,15 @@ export const CraftStudioConfigurator: React.FC = () => {
         stage100: `${preset.hero3DEngine.explodedStages[3] || '100%'} // End-Effector Array`,
       },
       telemetryFps: preset.telemetryDock.fps || 60,
+      torquePrecision: '0.01mm',
+      dofSensorCount: '11 DOF',
     }));
   }, []);
+
+  // Auto-populate form state on component mount with flagship preset
+  useEffect(() => {
+    applyFlagshipPreset();
+  }, [applyFlagshipPreset]);
 
   // Synchronize initial & updated live HTML
   const refreshLiveHtml = useCallback((cfg: ExtendedStudioConfig) => {
@@ -941,16 +954,18 @@ export const CraftStudioConfigurator: React.FC = () => {
                   </label>
                   <div className="grid grid-cols-2 gap-2">
                     {[
+                      { id: 'kinematic_manipulator_arm', label: 'Kinematic Manipulator Arm' },
                       { id: 'robot-arm', label: 'Industrial Robot Arm' },
                       { id: 'kinematic-assembler', label: 'Kinematic Assembler' },
-                      { id: 'point-cloud-node', label: 'Point Cloud Drone' },
-                      { id: 'holographic-core', label: 'Cyber Monolith Core' },
+                      { id: 'point-cloud-node', label: 'Spatial Point Cloud Arm' },
                     ].map((model) => (
                       <button
                         key={model.id}
                         onClick={() =>
                           setFormData((prev) => ({
                             ...prev,
+                            presetModel: model.id,
+                            modelType: model.id,
                             roboticsNode: {
                               ...prev.roboticsNode,
                               modelType: model.id as any,
@@ -958,8 +973,8 @@ export const CraftStudioConfigurator: React.FC = () => {
                           }))
                         }
                         className={`p-2 border text-left text-[11px] font-bold transition ${
-                          formData.roboticsNode.modelType === model.id
-                            ? 'border-[#5322FF] bg-[#5322FF]/20 text-white'
+                          formData.roboticsNode.modelType === model.id || formData.modelType === model.id
+                            ? 'border-[#5322FF] bg-[#5322FF]/20 text-white shadow-[0_0_10px_rgba(83,34,255,0.3)]'
                             : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-white'
                         }`}
                       >
