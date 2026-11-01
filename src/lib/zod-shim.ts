@@ -164,6 +164,19 @@ export class ZodEnum<U extends string, T extends [U, ...U[]]> extends ZodType<T[
   }
 }
 
+export class ZodArray<T extends ZodType> extends ZodType<Array<T['_output']>> {
+  constructor(public element: T) {
+    super();
+  }
+
+  parse(val: unknown): Array<T['_output']> {
+    if (!Array.isArray(val)) {
+      throw new Error('Expected array');
+    }
+    return val.map((item) => this.element.parse(item));
+  }
+}
+
 export class ZodObject<T extends Record<string, ZodType>> extends ZodType<{ [K in keyof T]: T[K]['_output'] }> {
   constructor(public shape: T) {
     super();
@@ -190,6 +203,7 @@ export const z = {
   string: () => new ZodString(),
   number: () => new ZodNumber(),
   boolean: () => new ZodBoolean(),
+  array: <T extends ZodType>(element: T) => new ZodArray(element),
   enum: <U extends string, T extends [U, ...U[]]>(values: T) => new ZodEnum(values),
   object: <T extends Record<string, ZodType>>(shape: T) => new ZodObject(shape),
 };

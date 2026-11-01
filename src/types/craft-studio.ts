@@ -10,8 +10,10 @@ export const SwissDesignConfigSchema = z.object({
   layoutMode: z.enum(['two-column', 'fullscreen-canvas', 'split-horizontal']).default('two-column'),
   
   // Step 2: Brand & Identity
+  compositionId: z.string().optional().default('ARTIFICIAL_CRAFT'),
   brandName: z.string().min(1, 'Brand name is required').default('ARTIFICIAL CRAFT'),
   tagline: z.string().default('Brutalist Automation & Graphic Precision'),
+  slogan: z.string().optional(),
   logoUrl: z.string().url().optional(),
 
   // Step 3: Color Palette & Typography
@@ -31,7 +33,7 @@ export const SwissDesignConfigSchema = z.object({
 
   // Step 4: 3D Model & Kinematics Configuration
   roboticsNode: z.object({
-    modelType: z.enum(['robot-arm', 'kinematic-assembler', 'point-cloud-node', 'holographic-core']).default('robot-arm'),
+    modelType: z.enum(['robot-arm', 'kinematic-assembler', 'point-cloud-node', 'holographic-core', 'kinematic_manipulator_arm']).default('robot-arm'),
     wireframe: z.boolean().default(true),
     rotationSpeed: z.number().min(0).max(10).default(1.5),
     autoAnimate: z.boolean().default(true),
@@ -43,6 +45,14 @@ export const SwissDesignConfigSchema = z.object({
     autoAnimate: true,
     telemetryHud: true,
   }),
+
+  hero3DEngine: z.object({
+    modelType: z.string().default('kinematic_manipulator_arm'),
+    enableRaycasting: z.boolean().default(true),
+    explodedStages: z.array(z.string()).default(['0%', '33%', '66%', '100%']),
+  }).optional(),
+
+  motionTokens: z.array(z.string()).optional(),
 
   // Step 5: Visual AI Stylist Prompt & Feature Toggles
   aiStylist: z.object({
@@ -59,8 +69,10 @@ export const SwissDesignConfigSchema = z.object({
 export type SwissDesignConfig = {
   presetId: string;
   layoutMode: 'two-column' | 'fullscreen-canvas' | 'split-horizontal';
+  compositionId?: string;
   brandName: string;
   tagline: string;
+  slogan?: string;
   logoUrl?: string;
   theme: {
     backgroundColor: string;
@@ -70,12 +82,18 @@ export type SwissDesignConfig = {
     fontFamily: 'JetBrains Mono' | 'Space Grotesk' | 'Inter';
   };
   roboticsNode: {
-    modelType: 'robot-arm' | 'kinematic-assembler' | 'point-cloud-node' | 'holographic-core';
+    modelType: 'robot-arm' | 'kinematic-assembler' | 'point-cloud-node' | 'holographic-core' | 'kinematic_manipulator_arm';
     wireframe: boolean;
     rotationSpeed: number;
     autoAnimate: boolean;
     telemetryHud: boolean;
   };
+  hero3DEngine?: {
+    modelType: string;
+    enableRaycasting: boolean;
+    explodedStages: string[];
+  };
+  motionTokens?: string[];
   aiStylist: {
     customPrompt?: string;
     enableGSAPAnimations: boolean;

@@ -4,7 +4,7 @@ import { generateFallbackCyberneticHTML as fallbackHTML } from '@/lib/studioAstG
 
 // URL Endpoint của n8n Orchestrator / Dify AI Core (Đặt trong .env hoặc fallback)
 const N8N_WEBHOOK_URL =
-  (typeof process !== 'undefined' && process.env?.N8N_CRAFT_GENERATOR_WEBHOOK) ||
+  (typeof process !== 'undefined' && (process.env?.N8N_CRAFT_WEBHOOK_URL || process.env?.N8N_CRAFT_GENERATOR_WEBHOOK)) ||
   'https://n8n.internal.network/webhook/craft-gen';
 
 export async function POST(req: NextRequest) {
@@ -31,14 +31,18 @@ export async function POST(req: NextRequest) {
     let htmlStream = '';
 
     try {
+      const compositionId = validatedConfig.compositionId || body.compositionId || 'NODE_05_MANUFACTURING_FACTORY';
       const backendResponse = await fetch(N8N_WEBHOOK_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-Source-App': 'ARTIFICIAL-CRAFT-CONFIGURATOR',
+          'X-Composition-Id': compositionId,
         },
         body: JSON.stringify({
+          compositionId,
           config: validatedConfig,
+          ast: body.ast || body,
           timestamp: new Date().toISOString(),
         }),
       });
@@ -79,12 +83,12 @@ export async function POST(req: NextRequest) {
 export function generateFallbackCyberneticHTML(config: any): string {
   const bg = config?.theme?.backgroundColor || '#09090B';
   const primary = config?.theme?.primaryColor || '#5322FF';
-  const accent = config?.theme?.accentColor || '#00FF66';
+  const accent = config?.theme?.accentColor || '#00E5FF';
   const text = config?.theme?.textColor || '#F4F4F5';
-  const font = config?.theme?.fontFamily || 'JetBrains Mono';
-  const brand = config?.brandName || 'ARTIFICIAL CRAFT';
-  const tag = config?.tagline || 'Brutalist Automation & Graphic Precision';
-  const modelType = config?.roboticsNode?.modelType || 'robot-arm';
+  const font = config?.theme?.fontFamily || 'Space Grotesk';
+  const brand = config?.compositionId || config?.brandName || 'NODE_05_MANUFACTURING_FACTORY';
+  const tag = config?.slogan || config?.tagline || 'Autonomous 3D Manufacturing Pipeline & Multi-Agent Swarm';
+  const modelType = config?.roboticsNode?.modelType || config?.hero3DEngine?.modelType || 'kinematic_manipulator_arm';
   const speed = config?.roboticsNode?.rotationSpeed || 1.5;
   const isWireframe = config?.roboticsNode?.wireframe !== false;
 
