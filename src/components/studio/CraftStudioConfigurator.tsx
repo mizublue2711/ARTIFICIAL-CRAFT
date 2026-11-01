@@ -93,9 +93,9 @@ export interface ExtendedStudioConfig extends SwissDesignConfig {
 }
 
 export const INITIAL_CONFIG: ExtendedStudioConfig = {
-  presetId: 'cybernetic-brutalism-v1',
+  presetId: 'node-05-digital-plumbing-swarm',
   layoutMode: 'two-column',
-  compositionId: 'ARTIFICIAL_CRAFT',
+  compositionId: 'NODE_05_MANUFACTURING_FACTORY',
   brandName: 'ARTIFICIAL CRAFT',
   slogan: 'Robots for Everyone // Cybernetic Automation',
   tagline: 'Robots for Everyone // Cybernetic Automation',
@@ -192,7 +192,7 @@ const PRESET_PALETTES = [
 export const CraftStudioConfigurator: React.FC = () => {
   // State: Config Data
   const [formData, setFormData] = useState<ExtendedStudioConfig>(INITIAL_CONFIG);
-  const [selectedNodePreset, setSelectedNodePreset] = useState<string>('node-05-digital-plumbing-swarm');
+  const [selectedNodePreset, setSelectedNodePreset] = useState<string>('NODE_05_MANUFACTURING_FACTORY');
   const [activeStep, setActiveStep] = useState<ActiveWizardStep>(1);
   const [deviceMode, setDeviceMode] = useState<DevicePreviewMode>('desktop');
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -211,100 +211,56 @@ export const CraftStudioConfigurator: React.FC = () => {
   const [generatedHtml, setGeneratedHtml] = useState<string>('');
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  // Select and apply Node preset
-  const handleSelectNodePreset = useCallback((nodeKey: string) => {
-    setSelectedNodePreset(nodeKey);
-    if (nodeKey === 'node-05-digital-plumbing-swarm' || nodeKey === 'NODE_05_MANUFACTURING_FACTORY') {
-      const preset = node05Preset || digitalPlumbingSwarm;
-      setFormData((prev) => ({
-        ...prev,
-        presetId: preset.presetId,
-        compositionId: preset.compositionId,
-        brandName: preset.compositionId,
-        slogan: preset.slogan,
-        tagline: preset.slogan,
+  // Node selection locked strictly to Node 05 Manufacturing Factory
+  const selectedNodeId = 'NODE_05_MANUFACTURING_FACTORY';
+
+  const handleSelectNodePreset = useCallback((nodeKey: string = 'NODE_05_MANUFACTURING_FACTORY') => {
+    setSelectedNodePreset('NODE_05_MANUFACTURING_FACTORY');
+    const preset = node05Preset || digitalPlumbingSwarm;
+    setFormData((prev) => ({
+      ...prev,
+      presetId: preset.presetId,
+      compositionId: 'NODE_05_MANUFACTURING_FACTORY',
+      brandName: prev.brandName || preset.compositionId,
+      slogan: prev.slogan || preset.slogan,
+      tagline: prev.tagline || preset.slogan,
+      backgroundColor: preset.aesthetic.backgroundColor,
+      primaryColor: preset.aesthetic.primaryColor,
+      accentColor: preset.aesthetic.accentColor,
+      headlineFont: preset.aesthetic.headlineFont,
+      codeFont: preset.aesthetic.codeFont,
+      theme: {
+        ...prev.theme,
         backgroundColor: preset.aesthetic.backgroundColor,
         primaryColor: preset.aesthetic.primaryColor,
         accentColor: preset.aesthetic.accentColor,
-        headlineFont: preset.aesthetic.headlineFont,
-        codeFont: preset.aesthetic.codeFont,
-        theme: {
-          ...prev.theme,
-          backgroundColor: preset.aesthetic.backgroundColor,
-          primaryColor: preset.aesthetic.primaryColor,
-          accentColor: preset.aesthetic.accentColor,
-          fontFamily: preset.aesthetic.headlineFont as any,
-        },
-        motionTokens: [...preset.motionTokens],
-        hero3DEngine: {
-          modelType: preset.hero3DEngine.modelType,
-          enableRaycasting: preset.hero3DEngine.enableRaycasting,
-          explodedStages: [...preset.hero3DEngine.explodedStages],
-        },
-        roboticsNode: {
-          ...prev.roboticsNode,
-          modelType: 'kinematic-assembler',
-          wireframe: true,
-          rotationSpeed: 1.5,
-          autoAnimate: true,
-          telemetryHud: true,
-        },
-        raycastingLaser: preset.hero3DEngine.enableRaycasting,
-        presetModel: preset.hero3DEngine.modelType,
+        fontFamily: preset.aesthetic.headlineFont as any,
+      },
+      motionTokens: [...preset.motionTokens],
+      hero3DEngine: {
         modelType: preset.hero3DEngine.modelType,
-        explodedStages: {
-          stage0: `${preset.hero3DEngine.explodedStages[0] || '0%'} // Assembled Core Manipulator`,
-          stage33: `${preset.hero3DEngine.explodedStages[1] || '33%'} // Swarm Plumbing Bus`,
-          stage66: `${preset.hero3DEngine.explodedStages[2] || '66%'} // Kinematic Actuators`,
-          stage100: `${preset.hero3DEngine.explodedStages[3] || '100%'} // End-Effector Array`,
-        },
-        telemetryFps: preset.telemetryDock.fps || 60,
-      }));
-    } else if (nodeKey === 'node-01') {
-      setFormData((prev) => ({
-        ...prev,
-        presetId: 'node-01-3d-procedural',
-        compositionId: 'NODE_01_3D_MONOLITH',
-        brandName: 'NODE_01_3D_MONOLITH',
-        slogan: 'Procedural 3D Render Engine & Monolith Visualizer',
-        tagline: 'Procedural 3D Render Engine & Monolith Visualizer',
-        roboticsNode: {
-          ...prev.roboticsNode,
-          modelType: 'holographic-core',
-        },
-      }));
-    } else if (nodeKey === 'node-02') {
-      setFormData((prev) => ({
-        ...prev,
-        presetId: 'node-02-remotion-motion',
-        compositionId: 'NODE_02_REMOTION_MOTION',
-        brandName: 'NODE_02_REMOTION_MOTION',
-        slogan: 'Deterministic Programmatic Video Generation Engine',
-        tagline: 'Deterministic Programmatic Video Generation Engine',
-      }));
-    } else if (nodeKey === 'node-03') {
-      setFormData((prev) => ({
-        ...prev,
-        presetId: 'node-03-banner-studio',
-        compositionId: 'NODE_03_BANNER_STUDIO',
-        brandName: 'NODE_03_BANNER_STUDIO',
-        slogan: 'Automated Brand Asset & Banner Studio',
-        tagline: 'Automated Brand Asset & Banner Studio',
-      }));
-    } else if (nodeKey === 'node-04') {
-      setFormData((prev) => ({
-        ...prev,
-        presetId: 'node-04-mekong-cad',
-        compositionId: 'NODE_04_MEKONG_CAD',
-        brandName: 'NODE_04_MEKONG_CAD',
-        slogan: 'Open Mekong CAD Telemetry & Water Data Visualizer',
-        tagline: 'Open Mekong CAD Telemetry & Water Data Visualizer',
-        roboticsNode: {
-          ...prev.roboticsNode,
-          modelType: 'point-cloud-node',
-        },
-      }));
-    }
+        enableRaycasting: preset.hero3DEngine.enableRaycasting,
+        explodedStages: [...preset.hero3DEngine.explodedStages],
+      },
+      roboticsNode: {
+        ...prev.roboticsNode,
+        modelType: 'kinematic-assembler',
+        wireframe: true,
+        rotationSpeed: 1.5,
+        autoAnimate: true,
+        telemetryHud: true,
+      },
+      raycastingLaser: preset.hero3DEngine.enableRaycasting,
+      presetModel: preset.hero3DEngine.modelType,
+      modelType: preset.hero3DEngine.modelType,
+      explodedStages: {
+        stage0: `${preset.hero3DEngine.explodedStages[0] || '0%'} // Assembled Core Manipulator`,
+        stage33: `${preset.hero3DEngine.explodedStages[1] || '33%'} // Swarm Plumbing Bus`,
+        stage66: `${preset.hero3DEngine.explodedStages[2] || '66%'} // Kinematic Actuators`,
+        stage100: `${preset.hero3DEngine.explodedStages[3] || '100%'} // End-Effector Array`,
+      },
+      telemetryFps: preset.telemetryDock.fps || 60,
+    }));
   }, []);
 
   // Synchronize initial & updated live HTML
@@ -546,7 +502,7 @@ export const CraftStudioConfigurator: React.FC = () => {
             STUDIO CONFIGURATOR // NO-CODE 3D FACTORY
           </span>
           <span className="hidden sm:inline-block px-2 py-0.5 border border-zinc-700 bg-zinc-900 text-[10px] text-zinc-400">
-            NODE 05 :: SSOT ENGINE
+            NODE 05 :: 3D MANUFACTURING FACTORY
           </span>
         </div>
 
@@ -607,77 +563,28 @@ export const CraftStudioConfigurator: React.FC = () => {
                     <span>STEP 1 // NODE SELECTION & BRAND IDENTITY</span>
                   </div>
                   <span className="text-[10px] text-zinc-400 font-mono">
-                    {selectedNodePreset === 'node-05-digital-plumbing-swarm' ? 'FLAGSHIP' : 'CUSTOM'}
+                    FLAGSHIP
                   </span>
                 </div>
 
-                {/* Node Flagship Presets Selector Dock */}
+                {/* Node Flagship Presets Selector Dock: Locked Single Static Flagship Badge */}
                 <div className="space-y-2">
                   <label className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider flex items-center justify-between">
                     <span>Target Node Pipeline Preset</span>
                     <span className="text-[#00E5FF] text-[9px]">DIFY + N8N PIPELINE</span>
                   </label>
-                  <div className="grid grid-cols-1 gap-1.5">
-                    {[
-                      {
-                        id: 'node-05-digital-plumbing-swarm',
-                        number: 'NODE 05 // 3D MANUFACTURING FACTORY',
-                        subtitle: 'Headless Digital Plumbing Swarm • Autonomous 3D Kinematics',
-                        highlight: true,
-                      },
-                      {
-                        id: 'node-01',
-                        number: 'NODE 01 // PROCEDURAL 3D ENGINE',
-                        subtitle: 'Procedural Shader Monolith • Audio Reactive',
-                        highlight: false,
-                      },
-                      {
-                        id: 'node-02',
-                        number: 'NODE 02 // REMOTION MOTION STUDIO',
-                        subtitle: 'Programmatic Video Pipeline • 4-Layer Stacking',
-                        highlight: false,
-                      },
-                      {
-                        id: 'node-03',
-                        number: 'NODE 03 // BANNER ASSET STUDIO',
-                        subtitle: 'Automated Multi-Format Canvas • SVG Pipeline',
-                        highlight: false,
-                      },
-                      {
-                        id: 'node-04',
-                        number: 'NODE 04 // MEKONG CAD VISUALIZER',
-                        subtitle: 'Open Data Telemetry Pipeline • PapaParse Stream',
-                        highlight: false,
-                      },
-                    ].map((node) => {
-                      const isSelected = selectedNodePreset === node.id;
-                      return (
-                        <button
-                          key={node.id}
-                          type="button"
-                          onClick={() => handleSelectNodePreset(node.id)}
-                          className={`p-2.5 border text-left transition flex flex-col gap-0.5 ${
-                            isSelected
-                              ? 'border-[#5322FF] bg-[#5322FF]/20 text-white shadow-[0_0_12px_rgba(83,34,255,0.3)]'
-                              : 'border-zinc-800 bg-zinc-950/80 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200'
-                          }`}
-                        >
-                          <div className="flex items-center justify-between">
-                            <span className="text-[11px] font-bold tracking-wider">
-                              {node.number}
-                            </span>
-                            {node.highlight && (
-                              <span className="text-[9px] px-1.5 py-0.2 bg-[#00E5FF]/20 text-[#00E5FF] border border-[#00E5FF]/40 font-bold uppercase">
-                                SWARM FLAGSHIP
-                              </span>
-                            )}
-                          </div>
-                          <span className="text-[9px] text-zinc-500 font-sans">
-                            {node.subtitle}
-                          </span>
-                        </button>
-                      );
-                    })}
+                  <div className="p-3 border border-[#5322FF] bg-[#5322FF]/15 shadow-[0_0_15px_rgba(83,34,255,0.25)] flex flex-col gap-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold tracking-wider text-white">
+                        NODE 05 // 3D MANUFACTURING FACTORY (Autonomous 3D Kinematics)
+                      </span>
+                      <span className="text-[9px] px-2 py-0.5 bg-[#00E5FF]/20 text-[#00E5FF] border border-[#00E5FF]/40 font-bold uppercase tracking-wider shrink-0">
+                        LOCKED FLAGSHIP
+                      </span>
+                    </div>
+                    <span className="text-[10px] text-zinc-400 font-sans">
+                      Headless Digital Plumbing Swarm • Kinematic Manipulator & Telemetry SLA 60FPS
+                    </span>
                   </div>
                 </div>
 
