@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import React, { lazy, Suspense, useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+
+const DigitalPlumbingSwarm = lazy(() => import('@/components/studio/templates/DigitalPlumbingSwarm'));
 import {
   Sparkles,
   Layers,
@@ -493,9 +495,9 @@ export const CraftStudioConfigurator: React.FC = () => {
   }, [formData]);
 
   return (
-    <div className="relative w-full min-h-[calc(100vh-64px)] bg-[#09090B] text-zinc-100 font-mono flex flex-col selection:bg-[#00E5FF]/20">
+    <div className="h-full w-full flex flex-col overflow-hidden bg-[#09090B] text-zinc-100 font-mono selection:bg-[#00E5FF]/20">
       {/* Tactical Sub-Header Bar */}
-      <div className="w-full bg-[#09090D] border-b border-zinc-800/80 px-4 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs z-20">
+      <div className="w-full bg-[#09090D] border-b border-zinc-800/80 px-4 py-2 flex flex-wrap items-center justify-between gap-3 text-xs z-20 shrink-0">
         <div className="flex items-center gap-3">
           <div className="w-2.5 h-2.5 rounded-full bg-[#5322FF] animate-pulse" />
           <span className="font-bold tracking-widest text-zinc-100 uppercase">
@@ -517,11 +519,11 @@ export const CraftStudioConfigurator: React.FC = () => {
       </div>
 
       {/* Main Two-Column Split Layout */}
-      <div className="flex-1 flex flex-col lg:flex-row w-full overflow-hidden">
+      <div className="h-full w-full flex overflow-hidden">
         {/* ======================================================== */}
-        {/* LEFT COLUMN: 5-STEP CONFIGURATOR WIZARD DOCK (440px - 480px) */}
+        {/* LEFT COLUMN: 5-STEP CONFIGURATOR WIZARD DOCK */}
         {/* ======================================================== */}
-        <aside className="w-full lg:w-[460px] xl:w-[480px] bg-[#09090B] border-r border-zinc-800/90 flex flex-col h-auto lg:h-[calc(100vh-108px)] overflow-y-auto">
+        <aside className="w-[420px] h-full overflow-y-auto border-r border-white/10 p-6 flex-shrink-0">
           {/* Step Indicator Navigation */}
           <div className="p-3 border-b border-zinc-800 bg-zinc-950/70 sticky top-0 z-30">
             <div className="grid grid-cols-5 gap-1 text-center">
@@ -1373,15 +1375,15 @@ export const CraftStudioConfigurator: React.FC = () => {
         </aside>
 
         {/* ======================================================== */}
-        {/* RIGHT COLUMN: 60FPS REAL-TIME LIVE PREVIEW STAGE (FLEX-1) */}
+        {/* RIGHT COLUMN: 3D STAGE */}
         {/* ======================================================== */}
         <main
-          className={`flex-1 flex flex-col bg-[#050508] relative ${
-            isFullscreen ? 'fixed inset-0 z-50 bg-black' : 'h-[600px] lg:h-[calc(100vh-108px)]'
+          className={`flex-1 h-full relative overflow-hidden bg-[#09090B] flex flex-col ${
+            isFullscreen ? 'fixed inset-0 z-50 bg-black' : ''
           }`}
         >
           {/* Top Viewport Header Dock */}
-          <div className="px-4 py-2 border-b border-zinc-800 bg-[#09090D] flex flex-wrap items-center justify-between gap-3 text-xs z-20">
+          <div className="px-4 py-2 border-b border-zinc-800 bg-[#09090D] flex flex-wrap items-center justify-between gap-3 text-xs z-20 shrink-0">
             {/* Viewport Status & SLA */}
             <div className="flex items-center gap-3">
               <span className="flex items-center gap-1.5 font-bold text-zinc-200">
@@ -1468,7 +1470,7 @@ export const CraftStudioConfigurator: React.FC = () => {
             </div>
           </div>
 
-          {/* Central Canvas Viewport Frame */}
+          {/* Central 3D Stage Viewport Frame */}
           <div className="flex-1 w-full h-full p-2 flex items-center justify-center overflow-hidden bg-black relative">
             <div
               className={`h-full transition-all duration-300 relative border border-white/10 ${
@@ -1479,16 +1481,29 @@ export const CraftStudioConfigurator: React.FC = () => {
                   : 'w-[375px] max-w-full'
               }`}
             >
-              <iframe
-                ref={iframeRef}
-                srcDoc={generatedHtml}
-                sandbox="allow-scripts allow-modals allow-same-origin"
-                title="ARTIFICIAL CRAFT 3D Viewport"
-                className="w-full h-full bg-black rounded-none border-0"
-              />
+              <Suspense
+                fallback={
+                  <div className="w-full h-full flex flex-col items-center justify-center bg-[#09090B] text-zinc-400 gap-3">
+                    <div className="w-8 h-8 border-2 border-[#5322FF] border-t-[#00E5FF] rounded-full animate-spin" />
+                    <span className="text-xs uppercase tracking-widest font-mono text-[#00E5FF]">
+                      INITIALIZING 3D ENGINE...
+                    </span>
+                  </div>
+                }
+              >
+                <DigitalPlumbingSwarm
+                  projectName={formData.brandName}
+                  slogan={formData.tagline}
+                  primaryColor={formData.theme.primaryColor}
+                  accentColor={formData.theme.accentColor}
+                  backgroundColor={formData.theme.backgroundColor}
+                  enableRaycasting={formData.raycastingLaser}
+                  className="w-full h-full"
+                />
+              </Suspense>
 
               {/* Floating Glassmorphic HUD overlay */}
-              <div className="absolute top-3 left-3 pointer-events-none flex items-center gap-2">
+              <div className="absolute top-3 left-3 pointer-events-none flex items-center gap-2 z-10">
                 <span className="px-2 py-0.5 bg-black/60 backdrop-blur-md border border-white/10 text-[10px] text-zinc-300">
                   {formData.brandName}
                 </span>
