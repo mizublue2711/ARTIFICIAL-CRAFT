@@ -40,6 +40,7 @@ import {
 } from '@/types/craft-studio';
 import { generateFallbackCyberneticHTML, generateStudioAst, generateCodeSnippets } from '@/lib/studioAstGenerator';
 import { digitalPlumbingSwarm, 'node-05-digital-plumbing-swarm' as node05Preset } from '@/data/presets/registry';
+import { DigitalPlumbingSwarm } from '@/components/studio/templates/DigitalPlumbingSwarm';
 
 // --- TYPES & INTERFACES ---
 export type ActiveWizardStep = 1 | 2 | 3 | 4 | 5;
@@ -47,6 +48,7 @@ export type DevicePreviewMode = 'desktop' | 'tablet' | 'mobile';
 
 export interface ExtendedStudioConfig extends SwissDesignConfig {
   // Extended Step 1 & 2 Attributes
+  projectName?: string;
   compositionId?: string;
   slogan?: string;
   backgroundColor?: string;
@@ -96,6 +98,7 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
   presetId: 'node-05-digital-plumbing-swarm',
   layoutMode: 'two-column',
   compositionId: 'NODE_05_MANUFACTURING_FACTORY',
+  projectName: 'ARTIFICIAL CRAFT',
   brandName: 'ARTIFICIAL CRAFT',
   slogan: 'Robots for Everyone // Cybernetic Automation',
   tagline: 'Robots for Everyone // Cybernetic Automation',
@@ -221,6 +224,7 @@ export const CraftStudioConfigurator: React.FC = () => {
       ...prev,
       presetId: preset.presetId,
       compositionId: 'NODE_05_MANUFACTURING_FACTORY',
+      projectName: prev.projectName || prev.brandName || preset.compositionId,
       brandName: prev.brandName || preset.compositionId,
       slogan: prev.slogan || preset.slogan,
       tagline: prev.tagline || preset.slogan,
@@ -576,7 +580,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                   <div className="p-3 border border-[#5322FF] bg-[#5322FF]/15 shadow-[0_0_15px_rgba(83,34,255,0.25)] flex flex-col gap-1.5">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold tracking-wider text-white">
-                        NODE 05 // 3D MANUFACTURING FACTORY (Autonomous 3D Kinematics)
+                        NODE 05 // DIGITAL PLUMBING TERMINAL (Autonomous 3D Kinematics)
                       </span>
                       <span className="text-[9px] px-2 py-0.5 bg-[#00E5FF]/20 text-[#00E5FF] border border-[#00E5FF]/40 font-bold uppercase tracking-wider shrink-0">
                         LOCKED FLAGSHIP
@@ -595,9 +599,9 @@ export const CraftStudioConfigurator: React.FC = () => {
                   </label>
                   <input
                     type="text"
-                    value={formData.brandName}
+                    value={formData.projectName || formData.brandName}
                     onChange={(e) =>
-                      setFormData((p) => ({ ...p, brandName: e.target.value }))
+                      setFormData((p) => ({ ...p, projectName: e.target.value, brandName: e.target.value }))
                     }
                     placeholder="ARTIFICIAL CRAFT"
                     className="w-full px-3 py-2 bg-zinc-900/90 border border-zinc-800 text-white text-xs focus:outline-none focus:border-[#5322FF] transition"
@@ -614,9 +618,9 @@ export const CraftStudioConfigurator: React.FC = () => {
                   </label>
                   <input
                     type="text"
-                    value={formData.tagline}
+                    value={formData.slogan || formData.tagline}
                     onChange={(e) =>
-                      setFormData((p) => ({ ...p, tagline: e.target.value }))
+                      setFormData((p) => ({ ...p, slogan: e.target.value, tagline: e.target.value }))
                     }
                     placeholder="Robots for Everyone // Cybernetic Automation"
                     className="w-full px-3 py-2 bg-zinc-900/90 border border-zinc-800 text-white text-xs focus:outline-none focus:border-[#5322FF] transition"
@@ -1479,23 +1483,15 @@ export const CraftStudioConfigurator: React.FC = () => {
                   : 'w-[375px] max-w-full'
               }`}
             >
-              <iframe
-                ref={iframeRef}
-                srcDoc={generatedHtml}
-                sandbox="allow-scripts allow-modals allow-same-origin"
-                title="ARTIFICIAL CRAFT 3D Viewport"
-                className="w-full h-full bg-black rounded-none border-0"
+              <DigitalPlumbingSwarm
+                projectName={formData.projectName || formData.brandName}
+                slogan={formData.slogan || formData.tagline}
+                primaryColor={formData.theme.primaryColor || formData.primaryColor || '#5322FF'}
+                accentColor={formData.theme.accentColor || formData.accentColor || '#00E5FF'}
+                backgroundColor={formData.theme.backgroundColor || formData.backgroundColor || '#09090B'}
+                enableRaycasting={formData.raycastingLaser}
+                className="w-full h-full"
               />
-
-              {/* Floating Glassmorphic HUD overlay */}
-              <div className="absolute top-3 left-3 pointer-events-none flex items-center gap-2">
-                <span className="px-2 py-0.5 bg-black/60 backdrop-blur-md border border-white/10 text-[10px] text-zinc-300">
-                  {formData.brandName}
-                </span>
-                <span className="px-2 py-0.5 bg-black/60 backdrop-blur-md border border-[#00E5FF]/30 text-[10px] text-[#00E5FF]">
-                  STAGE: {formData.explodedProgress}%
-                </span>
-              </div>
             </div>
           </div>
         </main>
