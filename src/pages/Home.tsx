@@ -6,6 +6,7 @@ import InteractiveNodeMatrix from '@/components/playground/InteractiveNodeMatrix
 import ExistentialBlackbox from '@/components/ExistentialBlackbox';
 import Experts from '@/components/Experts';
 import CraftStudioConfigurator from '@/components/studio/CraftStudioConfigurator';
+import HeadlessSwarmSection from '@/components/home/HeadlessSwarmSection';
 
 class StudioErrorBoundary extends React.Component<
   { children: React.ReactNode },
@@ -84,6 +85,9 @@ export default function Home({ onOpenBatchModal }: HomeProps) {
       {/* Hero section rendering 3D engine in compact mode */}
       <Hero onOpenBatchModal={onOpenBatchModal} monolithMode="compact" />
       <LogoMarquee />
+
+      {/* Zone 03 Headless Swarm Workbench & $0.00 Cloud Render Showcase Section */}
+      <HeadlessSwarmSection />
 
       {/* Unified Interactive Node Matrix Teaser pointing to /playground */}
       <InteractiveNodeMatrix />
