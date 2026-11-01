@@ -15,6 +15,11 @@ import {
 
 export interface Node02RemotionStudioProps {
   className?: string;
+  config?: any;
+  onChange?: (config: any) => void;
+  primaryColor?: string;
+  accentColor?: string;
+  [key: string]: unknown;
 }
 
 export const Node02RemotionStudio: React.FC<Node02RemotionStudioProps> = ({

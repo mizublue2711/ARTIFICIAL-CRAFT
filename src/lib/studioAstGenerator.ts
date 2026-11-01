@@ -892,7 +892,8 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
   const brand = config.compositionId || 'NODE_05_MANUFACTURING_FACTORY';
   const tag = config.slogan || 'Autonomous 3D Manufacturing Pipeline & Multi-Agent Swarm';
   const speed = 1.5;
-  const isNode05 = brand.includes('NODE_05') || config.presetModel === 'kinematic_manipulator_arm';
+  const isNode05 = brand.includes('NODE_05') || (config.presetModel as string) === 'kinematic_manipulator_arm' || (rawConfig?.selectedNodeId === 'node-05');
+  const isNode01 = !isNode05 && (brand.includes('NODE_01') || (config.presetModel as string) === 'holographic-core' || (rawConfig?.selectedNodeId === 'node-01'));
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -982,7 +983,7 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
     <div style="display:flex; align-items:center; gap:8px;">
       <span style="width:6px; height:6px; border-radius:50%; background:${accent}; box-shadow:0 0 8px ${accent};"></span>
       <span style="font-weight:700; color:#fff;">${brand} // STUDIO RUNTIME</span>
-      ${isNode05 ? '<span style="color:#a855f7; font-size:9px; border:1px solid #5322FF; padding:1px 4px; background:rgba(83,34,255,0.2);">NODE 05 PRESET</span>' : ''}
+      ${isNode05 ? '<span style="color:#a855f7; font-size:9px; border:1px solid #5322FF; padding:1px 4px; background:rgba(83,34,255,0.2);">NODE 05 FLAGSHIP</span>' : ''}
     </div>
     <div style="display:flex; align-items:center; gap:8px;">
       <span class="badge">SLA: 60FPS</span>
@@ -1001,7 +1002,7 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
     <div>NODE: <span style="color:#fff;">${config.presetModel.toUpperCase()}</span></div>
     <div>EXPLODED: <span style="color:${accent};">${config.explodedProgress}%</span></div>
     <div>SLA: <span style="color:${primary};">${config.telemetryFps} FPS</span></div>
-    <div>PIPELINE: <span style="color:#10b981;">DIFY + N8N SWARM</span></div>
+    <div>PIPELINE: <span style="color:#10b981;">${isNode05 ? 'DIFY + N8N SWARM' : 'PROCEDURAL ENGINE'}</span></div>
   </div>
 
   <script>
@@ -1014,7 +1015,7 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
       scene.fog = new THREE.FogExp2('${bg}', 0.05);
 
       const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
-      camera.position.set(3.2, 2.4, 4.0);
+      ${isNode05 ? 'camera.position.set(3.8, 2.8, 4.5);' : 'camera.position.set(3.2, 2.4, 4.0);'}
       camera.lookAt(0, 0, 0);
 
       const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -1037,6 +1038,71 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
       const group = new THREE.Group();
       scene.add(group);
 
+      ${isNode05 ? `
+      // --- NODE 05: KINEMATIC MANIPULATOR ARM & DIGITAL PLUMBING SWARM ---
+      const baseMat = new THREE.MeshStandardMaterial({
+        color: new THREE.Color('${primary}'),
+        wireframe: true,
+        metalness: 0.9,
+        roughness: 0.1
+      });
+      const jointMat = new THREE.MeshStandardMaterial({
+        color: new THREE.Color('${accent}'),
+        wireframe: false,
+        metalness: 0.8,
+        roughness: 0.2
+      });
+
+      // Turntable Base
+      const baseMesh = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.4, 0.35, 32), baseMat);
+      baseMesh.position.y = -1.2;
+      group.add(baseMesh);
+
+      // Swarm Plumbing Bus Ring
+      const plumbingRing = new THREE.Mesh(new THREE.TorusGeometry(1.5, 0.05, 16, 48), new THREE.MeshBasicMaterial({ color: '${accent}', wireframe: true }));
+      plumbingRing.position.y = -1.0 + (${config.explodedProgress} / 100.0) * 0.4;
+      plumbingRing.rotation.x = Math.PI / 2;
+      group.add(plumbingRing);
+
+      // Articulated Arm Joint 1
+      const joint1 = new THREE.Mesh(new THREE.SphereGeometry(0.35, 16, 16), jointMat);
+      joint1.position.set(0, -0.9 + (${config.explodedProgress} / 100.0) * 0.3, 0);
+      group.add(joint1);
+
+      // Arm Segment 1
+      const arm1 = new THREE.Mesh(new THREE.BoxGeometry(0.28, 1.6, 0.28), baseMat);
+      arm1.position.set(0.4, -0.1 + (${config.explodedProgress} / 100.0) * 0.6, 0);
+      arm1.rotation.z = -0.45;
+      group.add(arm1);
+
+      // Articulated Arm Joint 2
+      const joint2 = new THREE.Mesh(new THREE.SphereGeometry(0.28, 16, 16), jointMat);
+      joint2.position.set(0.75, 0.6 + (${config.explodedProgress} / 100.0) * 0.9, 0);
+      group.add(joint2);
+
+      // Arm Segment 2 (End-effector forearm)
+      const arm2 = new THREE.Mesh(new THREE.BoxGeometry(0.2, 1.2, 0.2), baseMat);
+      arm2.position.set(0.35, 1.1 + (${config.explodedProgress} / 100.0) * 1.2, 0);
+      arm2.rotation.z = 0.5;
+      group.add(arm2);
+
+      // Kinematic Gripper Claw
+      const clawL = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.4, 0.08), jointMat);
+      clawL.position.set(-0.05, 1.6 + (${config.explodedProgress} / 100.0) * 1.5, 0.1);
+      clawL.rotation.z = -0.2;
+      group.add(clawL);
+      const clawR = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.4, 0.08), jointMat);
+      clawR.position.set(-0.05, 1.6 + (${config.explodedProgress} / 100.0) * 1.5, -0.1);
+      clawR.rotation.z = -0.2;
+      group.add(clawR);
+
+      // Raycast laser
+      const laserPoints = [new THREE.Vector3(-0.05, 1.7 + (${config.explodedProgress} / 100.0) * 1.5, 0), new THREE.Vector3(0, -1.2, 0)];
+      const laserGeo = new THREE.BufferGeometry().setFromPoints(laserPoints);
+      const laserLine = new THREE.Line(laserGeo, new THREE.LineBasicMaterial({ color: '${accent}', linewidth: 2 }));
+      group.add(laserLine);
+      ` : `
+      // --- NODE 01: PROCEDURAL 3D SHADER MONOLITH ---
       const mat = new THREE.MeshStandardMaterial({
         color: new THREE.Color('${primary}'),
         wireframe: true,
@@ -1044,7 +1110,6 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
         roughness: 0.2
       });
 
-      // Assembly components with exploded displacement
       const core = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.7, 1.2, 16), mat);
       group.add(core);
 
@@ -1057,6 +1122,7 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
       ring.position.y = (${config.explodedProgress} / 100.0) * 0.6;
       ring.rotation.x = Math.PI / 2;
       group.add(ring);
+      `}
 
       window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
@@ -1067,7 +1133,7 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
       function animate() {
         requestAnimationFrame(animate);
         group.rotation.y += 0.008 * ${speed};
-        ring.rotation.z += 0.01;
+        ${isNode05 ? 'plumbingRing.rotation.z += 0.015;' : 'ring.rotation.z += 0.01;'}
         renderer.render(scene, camera);
       }
       animate();

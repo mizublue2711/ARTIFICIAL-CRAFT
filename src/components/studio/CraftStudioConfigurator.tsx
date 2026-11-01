@@ -31,6 +31,9 @@ import {
   RefreshCw,
   SlidersHorizontal,
   Compass,
+  Film,
+  Image as ImageIcon,
+  BarChart3,
 } from 'lucide-react';
 
 import {
@@ -40,10 +43,28 @@ import {
 } from '@/types/craft-studio';
 import { generateFallbackCyberneticHTML, generateStudioAst, generateCodeSnippets } from '@/lib/studioAstGenerator';
 import { digitalPlumbingSwarm, 'node-05-digital-plumbing-swarm' as node05Preset } from '@/data/presets/registry';
+import {
+  Node01ProceduralEngine,
+  Node02RemotionStudio,
+  Node03BannerStudio,
+  Node04MekongCad,
+  Node05ManufacturingFactory,
+} from '@/components/playground/nodes';
 
 // --- TYPES & INTERFACES ---
 export type ActiveWizardStep = 1 | 2 | 3 | 4 | 5;
 export type DevicePreviewMode = 'desktop' | 'tablet' | 'mobile';
+export type StudioNodeId = 'node-01' | 'node-02' | 'node-03' | 'node-04' | 'node-05';
+
+export interface CraftStudioConfiguratorProps {
+  config?: ExtendedStudioConfig;
+  onChange?: (config: ExtendedStudioConfig) => void;
+  primaryColor?: string;
+  accentColor?: string;
+  isSubAdapter?: boolean;
+  subStep?: 3 | 4;
+  [key: string]: unknown;
+}
 
 export interface ExtendedStudioConfig extends SwissDesignConfig {
   // Extended Step 1 & 2 Attributes
@@ -93,18 +114,18 @@ export interface ExtendedStudioConfig extends SwissDesignConfig {
 }
 
 export const INITIAL_CONFIG: ExtendedStudioConfig = {
-  presetId: 'cybernetic-brutalism-v1',
+  presetId: 'node-05-digital-plumbing-swarm',
   layoutMode: 'two-column',
-  compositionId: 'ARTIFICIAL_CRAFT',
-  brandName: 'ARTIFICIAL CRAFT',
-  slogan: 'Robots for Everyone // Cybernetic Automation',
-  tagline: 'Robots for Everyone // Cybernetic Automation',
+  compositionId: 'NODE_05_MANUFACTURING_FACTORY',
+  brandName: 'NODE_05_MANUFACTURING_FACTORY',
+  slogan: 'Autonomous 3D Manufacturing Pipeline & Multi-Agent Swarm',
+  tagline: 'Autonomous 3D Manufacturing Pipeline & Multi-Agent Swarm',
   backgroundColor: '#09090B',
   primaryColor: '#5322FF',
   accentColor: '#00E5FF',
   headlineFont: 'Space Grotesk',
-  presetModel: 'robot-arm',
-  modelType: 'preset',
+  presetModel: 'kinematic_manipulator_arm',
+  modelType: 'kinematic_manipulator_arm',
   customModelUrl: '',
   logoUrl: 'https://raw.githubusercontent.com/artificial-craft/assets/main/logo-mark.svg',
   theme: {
@@ -112,13 +133,13 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
     primaryColor: '#5322FF',
     textColor: '#F4F4F5',
     accentColor: '#00E5FF',
-    fontFamily: 'JetBrains Mono',
+    fontFamily: 'Space Grotesk',
   },
   secondaryAccentColor: '#00FF66',
   codeFont: 'JetBrains Mono',
   motionTokens: ['kinetic-parallax', 'chromatic-aberration', 'magnetic-attraction'],
   roboticsNode: {
-    modelType: 'robot-arm',
+    modelType: 'kinematic_manipulator_arm',
     wireframe: true,
     rotationSpeed: 1.5,
     autoAnimate: true,
@@ -126,10 +147,10 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
   },
   explodedProgress: 33,
   explodedStages: {
-    stage0: '0% // Assembled Unibody Core',
-    stage33: '33% // Tactical Aerogel Shell',
-    stage66: '66% // High-Torque Motor Stator',
-    stage100: '100% // Micro Tactile Sensor Array',
+    stage0: '0% // Assembled Core Manipulator',
+    stage33: '33% // Swarm Plumbing Bus',
+    stage66: '66% // Kinematic Actuators',
+    stage100: '100% // End-Effector Array',
   },
   raycastingLaser: true,
   telemetryFps: 60,
@@ -189,10 +210,44 @@ const PRESET_PALETTES = [
   },
 ];
 
-export const CraftStudioConfigurator: React.FC = () => {
+export const CraftStudioConfigurator: React.FC<CraftStudioConfiguratorProps> = ({
+  config: externalConfig,
+  onChange: externalOnChange,
+  primaryColor: externalPrimaryColor,
+  accentColor: externalAccentColor,
+  isSubAdapter = false,
+  subStep,
+}) => {
   // State: Config Data
-  const [formData, setFormData] = useState<ExtendedStudioConfig>(INITIAL_CONFIG);
-  const [selectedNodePreset, setSelectedNodePreset] = useState<string>('node-05-digital-plumbing-swarm');
+  const [formData, setFormDataState] = useState<ExtendedStudioConfig>(externalConfig || INITIAL_CONFIG);
+
+  const updateFormData = useCallback((updater: (prev: ExtendedStudioConfig) => ExtendedStudioConfig) => {
+    setFormDataState((prev) => {
+      const next = updater(prev);
+      if (externalOnChange) {
+        externalOnChange(next);
+      }
+      return next;
+    });
+  }, [externalOnChange]);
+
+  const setFormData = updateFormData;
+
+  useEffect(() => {
+    if (externalConfig) {
+      setFormDataState(externalConfig);
+    }
+  }, [externalConfig]);
+
+  const [selectedNodePreset, setSelectedNodePreset] = useState<string>(() => {
+    if (externalConfig?.presetId) return externalConfig.presetId;
+    if (externalConfig?.compositionId?.includes('NODE_01')) return 'node-01';
+    if (externalConfig?.compositionId?.includes('NODE_02')) return 'node-02';
+    if (externalConfig?.compositionId?.includes('NODE_03')) return 'node-03';
+    if (externalConfig?.compositionId?.includes('NODE_04')) return 'node-04';
+    return 'node-05-digital-plumbing-swarm';
+  });
+
   const [activeStep, setActiveStep] = useState<ActiveWizardStep>(1);
   const [deviceMode, setDeviceMode] = useState<DevicePreviewMode>('desktop');
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -211,10 +266,23 @@ export const CraftStudioConfigurator: React.FC = () => {
   const [generatedHtml, setGeneratedHtml] = useState<string>('');
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
+  // Derive standardized selectedNodeId ('node-01' through 'node-05')
+  const selectedNodeId = useMemo<StudioNodeId>(() => {
+    if (selectedNodePreset === 'node-01' || selectedNodePreset === 'NODE_01_3D_MONOLITH' || formData.compositionId === 'NODE_01_3D_MONOLITH') return 'node-01';
+    if (selectedNodePreset === 'node-02' || selectedNodePreset === 'NODE_02_REMOTION_MOTION' || formData.compositionId === 'NODE_02_REMOTION_MOTION') return 'node-02';
+    if (selectedNodePreset === 'node-03' || selectedNodePreset === 'NODE_03_BANNER_STUDIO' || formData.compositionId === 'NODE_03_BANNER_STUDIO') return 'node-03';
+    if (selectedNodePreset === 'node-04' || selectedNodePreset === 'NODE_04_MEKONG_CAD' || formData.compositionId === 'NODE_04_MEKONG_CAD') return 'node-04';
+    return 'node-05';
+  }, [selectedNodePreset, formData.compositionId]);
+
   // Select and apply Node preset
   const handleSelectNodePreset = useCallback((nodeKey: string) => {
     setSelectedNodePreset(nodeKey);
-    if (nodeKey === 'node-05-digital-plumbing-swarm' || nodeKey === 'NODE_05_MANUFACTURING_FACTORY') {
+    if (
+      nodeKey === 'node-05-digital-plumbing-swarm' ||
+      nodeKey === 'node-05' ||
+      nodeKey === 'NODE_05_MANUFACTURING_FACTORY'
+    ) {
       const preset = node05Preset || digitalPlumbingSwarm;
       setFormData((prev) => ({
         ...prev,
@@ -243,7 +311,7 @@ export const CraftStudioConfigurator: React.FC = () => {
         },
         roboticsNode: {
           ...prev.roboticsNode,
-          modelType: 'kinematic-assembler',
+          modelType: 'kinematic_manipulator_arm',
           wireframe: true,
           rotationSpeed: 1.5,
           autoAnimate: true,
@@ -261,6 +329,7 @@ export const CraftStudioConfigurator: React.FC = () => {
         telemetryFps: preset.telemetryDock.fps || 60,
       }));
     } else if (nodeKey === 'node-01') {
+      // Cleanly reset node-specific parameters while preserving global styling
       setFormData((prev) => ({
         ...prev,
         presetId: 'node-01-3d-procedural',
@@ -268,10 +337,24 @@ export const CraftStudioConfigurator: React.FC = () => {
         brandName: 'NODE_01_3D_MONOLITH',
         slogan: 'Procedural 3D Render Engine & Monolith Visualizer',
         tagline: 'Procedural 3D Render Engine & Monolith Visualizer',
+        presetModel: 'holographic-core',
+        modelType: 'holographic-core',
+        explodedProgress: 0,
+        raycastingLaser: false,
+        hero3DEngine: {
+          modelType: 'holographic-core',
+          enableRaycasting: false,
+          explodedStages: ['0%', '25%', '50%', '100%'],
+        },
         roboticsNode: {
           ...prev.roboticsNode,
           modelType: 'holographic-core',
+          wireframe: true,
+          rotationSpeed: 1.0,
+          autoAnimate: true,
+          telemetryHud: true,
         },
+        telemetryFps: 60,
       }));
     } else if (nodeKey === 'node-02') {
       setFormData((prev) => ({
@@ -281,6 +364,8 @@ export const CraftStudioConfigurator: React.FC = () => {
         brandName: 'NODE_02_REMOTION_MOTION',
         slogan: 'Deterministic Programmatic Video Generation Engine',
         tagline: 'Deterministic Programmatic Video Generation Engine',
+        presetModel: 'video-canvas',
+        modelType: 'video-canvas',
       }));
     } else if (nodeKey === 'node-03') {
       setFormData((prev) => ({
@@ -290,6 +375,8 @@ export const CraftStudioConfigurator: React.FC = () => {
         brandName: 'NODE_03_BANNER_STUDIO',
         slogan: 'Automated Brand Asset & Banner Studio',
         tagline: 'Automated Brand Asset & Banner Studio',
+        presetModel: 'multi-format-canvas',
+        modelType: 'multi-format-canvas',
       }));
     } else if (nodeKey === 'node-04') {
       setFormData((prev) => ({
@@ -299,35 +386,344 @@ export const CraftStudioConfigurator: React.FC = () => {
         brandName: 'NODE_04_MEKONG_CAD',
         slogan: 'Open Mekong CAD Telemetry & Water Data Visualizer',
         tagline: 'Open Mekong CAD Telemetry & Water Data Visualizer',
+        presetModel: 'point-cloud-node',
+        modelType: 'point-cloud-node',
         roboticsNode: {
           ...prev.roboticsNode,
           modelType: 'point-cloud-node',
         },
       }));
     }
-  }, []);
+  }, [setFormData]);
 
   // Synchronize initial & updated live HTML
   const refreshLiveHtml = useCallback((cfg: ExtendedStudioConfig) => {
     // Generate high-precision standalone HTML
-    const html = generateFallbackCyberneticHTML(cfg);
+    const html = generateFallbackCyberneticHTML({
+      ...cfg,
+      selectedNodeId,
+    });
     setGeneratedHtml(html);
-  }, []);
+  }, [selectedNodeId]);
 
   useEffect(() => {
     refreshLiveHtml(formData);
   }, [formData, refreshLiveHtml]);
+
+  // --- SUB-ADAPTER RENDER HELPER FOR NODE 05 ---
+  const renderNode05SubPanel = (step: 3 | 4) => {
+    if (step === 3) {
+      return (
+        <div className="space-y-5">
+          {/* Model Selector */}
+          <div className="space-y-2">
+            <label className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
+              Actuator Model Preset
+            </label>
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                { id: 'kinematic_manipulator_arm', label: 'Kinematic Arm (Flagship)' },
+                { id: 'robot-arm', label: 'Industrial Robot Arm' },
+                { id: 'kinematic-assembler', label: 'Kinematic Assembler' },
+                { id: 'point-cloud-node', label: 'Point Cloud Drone' },
+              ].map((model) => (
+                <button
+                  key={model.id}
+                  onClick={() =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      presetModel: model.id,
+                      modelType: model.id,
+                      roboticsNode: {
+                        ...prev.roboticsNode,
+                        modelType: model.id as any,
+                      },
+                    }))
+                  }
+                  className={`p-2 border text-left text-[11px] font-bold transition ${
+                    formData.roboticsNode.modelType === model.id || formData.presetModel === model.id
+                      ? 'border-[#5322FF] bg-[#5322FF]/20 text-white'
+                      : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  {model.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* 4-Stage Exploded Assembly Text Inputs & Slider */}
+          <div className="space-y-3 p-3 border border-zinc-800 bg-zinc-950/70">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] text-white font-bold uppercase">
+                Exploded Assembly Progress
+              </span>
+              <span className="text-xs font-bold text-[#00E5FF]">
+                {formData.explodedProgress}%
+              </span>
+            </div>
+
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value={formData.explodedProgress}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  explodedProgress: parseInt(e.target.value, 10),
+                }))
+              }
+              className="w-full accent-[#00E5FF] cursor-pointer"
+            />
+
+            {/* 4 Stage Labels */}
+            <div className="grid grid-cols-2 gap-2 pt-2 text-[9px]">
+              <div className="space-y-1">
+                <span className="text-zinc-500">STAGE 0 (0%)</span>
+                <input
+                  type="text"
+                  value={formData.explodedStages.stage0}
+                  onChange={(e) =>
+                    setFormData((p) => ({
+                      ...p,
+                      explodedStages: { ...p.explodedStages, stage0: e.target.value },
+                    }))
+                  }
+                  className="w-full px-1.5 py-1 bg-zinc-900 border border-zinc-800 text-zinc-300 text-[10px]"
+                />
+              </div>
+              <div className="space-y-1">
+                <span className="text-zinc-500">STAGE 1 (33%)</span>
+                <input
+                  type="text"
+                  value={formData.explodedStages.stage33}
+                  onChange={(e) =>
+                    setFormData((p) => ({
+                      ...p,
+                      explodedStages: { ...p.explodedStages, stage33: e.target.value },
+                    }))
+                  }
+                  className="w-full px-1.5 py-1 bg-zinc-900 border border-zinc-800 text-zinc-300 text-[10px]"
+                />
+              </div>
+              <div className="space-y-1">
+                <span className="text-zinc-500">STAGE 2 (66%)</span>
+                <input
+                  type="text"
+                  value={formData.explodedStages.stage66}
+                  onChange={(e) =>
+                    setFormData((p) => ({
+                      ...p,
+                      explodedStages: { ...p.explodedStages, stage66: e.target.value },
+                    }))
+                  }
+                  className="w-full px-1.5 py-1 bg-zinc-900 border border-zinc-800 text-zinc-300 text-[10px]"
+                />
+              </div>
+              <div className="space-y-1">
+                <span className="text-zinc-500">STAGE 3 (100%)</span>
+                <input
+                  type="text"
+                  value={formData.explodedStages.stage100}
+                  onChange={(e) =>
+                    setFormData((p) => ({
+                      ...p,
+                      explodedStages: { ...p.explodedStages, stage100: e.target.value },
+                    }))
+                  }
+                  className="w-full px-1.5 py-1 bg-zinc-900 border border-zinc-800 text-zinc-300 text-[10px]"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Laser & Wireframe Toggles */}
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              onClick={() =>
+                setFormData((prev) => ({
+                  ...prev,
+                  raycastingLaser: !prev.raycastingLaser,
+                }))
+              }
+              className={`p-2.5 border text-left flex items-center justify-between text-xs font-bold transition ${
+                formData.raycastingLaser
+                  ? 'border-[#00E5FF] bg-[#00E5FF]/10 text-white'
+                  : 'border-zinc-800 bg-zinc-950 text-zinc-500'
+              }`}
+            >
+              <span>Raycast Cyan Laser</span>
+              <span className="text-[10px]">{formData.raycastingLaser ? 'ON' : 'OFF'}</span>
+            </button>
+
+            <button
+              onClick={() =>
+                setFormData((prev) => ({
+                  ...prev,
+                  roboticsNode: {
+                    ...prev.roboticsNode,
+                    wireframe: !prev.roboticsNode.wireframe,
+                  },
+                }))
+              }
+              className={`p-2.5 border text-left flex items-center justify-between text-xs font-bold transition ${
+                formData.roboticsNode.wireframe
+                  ? 'border-[#5322FF] bg-[#5322FF]/10 text-white'
+                  : 'border-zinc-800 bg-zinc-950 text-zinc-500'
+              }`}
+            >
+              <span>CAD Wireframe</span>
+              <span className="text-[10px]">
+                {formData.roboticsNode.wireframe ? 'ON' : 'OFF'}
+              </span>
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-6">
+        {/* Telemetry Inputs */}
+        <div className="grid grid-cols-2 gap-3">
+          <div className="space-y-1">
+            <label className="text-[10px] text-zinc-400 font-bold uppercase">
+              Target SLA FPS
+            </label>
+            <input
+              type="number"
+              value={formData.telemetryFps}
+              onChange={(e) =>
+                setFormData((p) => ({
+                  ...p,
+                  telemetryFps: parseInt(e.target.value, 10) || 60,
+                }))
+              }
+              className="w-full px-2.5 py-1.5 bg-zinc-900 border border-zinc-800 text-white text-xs"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-[10px] text-zinc-400 font-bold uppercase">
+              Torque Precision
+            </label>
+            <input
+              type="text"
+              value={formData.torquePrecision}
+              onChange={(e) =>
+                setFormData((p) => ({ ...p, torquePrecision: e.target.value }))
+              }
+              className="w-full px-2.5 py-1.5 bg-zinc-900 border border-zinc-800 text-white text-xs"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-[10px] text-zinc-400 font-bold uppercase">
+              Sensor DOF
+            </label>
+            <input
+              type="text"
+              value={formData.dofSensorCount}
+              onChange={(e) =>
+                setFormData((p) => ({ ...p, dofSensorCount: e.target.value }))
+              }
+              className="w-full px-2.5 py-1.5 bg-zinc-900 border border-zinc-800 text-white text-xs"
+            />
+          </div>
+
+          <div className="space-y-1">
+            <label className="text-[10px] text-zinc-400 font-bold uppercase">
+              AI Latency
+            </label>
+            <input
+              type="text"
+              value={formData.aiLatency}
+              onChange={(e) =>
+                setFormData((p) => ({ ...p, aiLatency: e.target.value }))
+              }
+              className="w-full px-2.5 py-1.5 bg-zinc-900 border border-zinc-800 text-white text-xs"
+            />
+          </div>
+        </div>
+
+        {/* Node-specific Telemetry & Bento Grid Toggles */}
+        <div className="space-y-2">
+          <label className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
+            Bento Grid Modules
+          </label>
+          <div className="space-y-2">
+            {[
+              { key: 'viewport3d', label: 'Module 01: 3D Actuator Viewport' },
+              { key: 'performanceGraph', label: 'Module 02: Kinematics Wave Graph' },
+              { key: 'interactiveTactileMatrix', label: 'Module 03: Tactile Matrix (16 DOF)' },
+            ].map((mod) => {
+              const isEnabled = (formData.bentoModules as any)[mod.key];
+              return (
+                <div
+                  key={mod.key}
+                  onClick={() =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      bentoModules: {
+                        ...prev.bentoModules,
+                        [mod.key]: !isEnabled,
+                      },
+                    }))
+                  }
+                  className={`p-2.5 border flex items-center justify-between cursor-pointer transition text-xs ${
+                    isEnabled
+                      ? 'border-zinc-700 bg-zinc-900 text-white'
+                      : 'border-zinc-800 bg-zinc-950 text-zinc-600'
+                  }`}
+                >
+                  <span>{mod.label}</span>
+                  <span className={`text-[10px] font-bold ${isEnabled ? 'text-emerald-400' : 'text-zinc-600'}`}>
+                    {isEnabled ? 'ENABLED' : 'DISABLED'}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Spatial Point Cloud Toggle */}
+        <div
+          onClick={() =>
+            setFormData((p) => ({ ...p, spatialPointCloud: !p.spatialPointCloud }))
+          }
+          className={`p-3 border flex items-center justify-between cursor-pointer transition text-xs font-bold ${
+            formData.spatialPointCloud
+              ? 'border-[#00E5FF] bg-[#00E5FF]/10 text-white'
+              : 'border-zinc-800 bg-zinc-950 text-zinc-500'
+          }`}
+        >
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-[#00E5FF]" />
+            <span>Spatial Point Cloud (1200+ Magnetic Particles)</span>
+          </div>
+          <span className="text-[10px]">
+            {formData.spatialPointCloud ? 'ACTIVE' : 'OFF'}
+          </span>
+        </div>
+      </div>
+    );
+  };
+
+  // If used as a sub-adapter directly (e.g. inside another wrapper)
+  if (isSubAdapter) {
+    return (
+      <div className="w-full">
+        {renderNode05SubPanel(subStep === 4 ? 4 : 3)}
+      </div>
+    );
+  }
 
   // --- AI VISUAL STYLIST API HOOK (PLUG-AND-PLAY) ---
   const handleAIGeneratePalette = async (userPrompt: string) => {
     if (!userPrompt.trim()) return;
     setIsAIGenerating(true);
     try {
-      // Plug-and-play hook: AI backend endpoint
-      // const res = await fetch('/api/ai/stylist', { method: 'POST', body: JSON.stringify({ prompt: userPrompt }) });
-      // const data = await res.json();
-
-      // Realistic procedural AI response matching user mood
       await new Promise((r) => setTimeout(r, 800));
 
       let mockAIPalette: {
@@ -391,7 +787,6 @@ export const CraftStudioConfigurator: React.FC = () => {
   const handleExtractFromLogo = (logoUrlInput?: string) => {
     setIsAIGenerating(true);
     setTimeout(() => {
-      // Deterministic palette extraction
       setFormData((prev) => ({
         ...prev,
         theme: {
@@ -414,7 +809,6 @@ export const CraftStudioConfigurator: React.FC = () => {
     ]);
 
     try {
-      // 1. Client-Side Zod Gate Validation
       await new Promise((r) => setTimeout(r, 350));
       setCompileLogs((prev) => [
         ...prev,
@@ -435,7 +829,6 @@ export const CraftStudioConfigurator: React.FC = () => {
         return;
       }
 
-      // 2. Transmit to API Route / n8n Webhook
       await new Promise((r) => setTimeout(r, 450));
       setCompileLogs((prev) => [
         ...prev,
@@ -460,9 +853,9 @@ export const CraftStudioConfigurator: React.FC = () => {
       let htmlResult = '';
       if (response.ok) {
         const data: CraftGenerateResponse = await response.json();
-        htmlResult = data.htmlStream || generateFallbackCyberneticHTML(formData);
+        htmlResult = data.htmlStream || generateFallbackCyberneticHTML({ ...formData, selectedNodeId });
       } else {
-        htmlResult = generateFallbackCyberneticHTML(formData);
+        htmlResult = generateFallbackCyberneticHTML({ ...formData, selectedNodeId });
       }
 
       await new Promise((r) => setTimeout(r, 400));
@@ -475,7 +868,7 @@ export const CraftStudioConfigurator: React.FC = () => {
       setGeneratedHtml(htmlResult);
     } catch (err: any) {
       console.warn('Compilation fallback to local engine:', err);
-      const fallbackHtml = generateFallbackCyberneticHTML(formData);
+      const fallbackHtml = generateFallbackCyberneticHTML({ ...formData, selectedNodeId });
       setGeneratedHtml(fallbackHtml);
       setCompileLogs((prev) => [
         ...prev,
@@ -499,7 +892,7 @@ export const CraftStudioConfigurator: React.FC = () => {
   };
 
   const handleDownloadSingleFileHtml = () => {
-    const html = generatedHtml || generateFallbackCyberneticHTML(formData);
+    const html = generatedHtml || generateFallbackCyberneticHTML({ ...formData, selectedNodeId });
     const blob = new Blob([html], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -516,7 +909,6 @@ export const CraftStudioConfigurator: React.FC = () => {
   };
 
   const resetCamera = () => {
-    // Re-inject iframe srcdoc to reset Three.js scene
     const current = generatedHtml;
     setGeneratedHtml('');
     setTimeout(() => setGeneratedHtml(current), 50);
@@ -546,7 +938,7 @@ export const CraftStudioConfigurator: React.FC = () => {
             STUDIO CONFIGURATOR // NO-CODE 3D FACTORY
           </span>
           <span className="hidden sm:inline-block px-2 py-0.5 border border-zinc-700 bg-zinc-900 text-[10px] text-zinc-400">
-            NODE 05 :: SSOT ENGINE
+            {selectedNodeId === 'node-05' ? 'NODE 05 :: SSOT ENGINE' : `${selectedNodeId.toUpperCase()} :: ACTIVE ENGINE`}
           </span>
         </div>
 
@@ -607,7 +999,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                     <span>STEP 1 // NODE SELECTION & BRAND IDENTITY</span>
                   </div>
                   <span className="text-[10px] text-zinc-400 font-mono">
-                    {selectedNodePreset === 'node-05-digital-plumbing-swarm' ? 'FLAGSHIP' : 'CUSTOM'}
+                    {selectedNodeId === 'node-05' ? 'FLAGSHIP' : 'CUSTOM'}
                   </span>
                 </div>
 
@@ -620,42 +1012,47 @@ export const CraftStudioConfigurator: React.FC = () => {
                   <div className="grid grid-cols-1 gap-1.5">
                     {[
                       {
-                        id: 'node-05-digital-plumbing-swarm',
+                        id: 'node-05',
+                        key: 'node-05-digital-plumbing-swarm',
                         number: 'NODE 05 // 3D MANUFACTURING FACTORY',
                         subtitle: 'Headless Digital Plumbing Swarm • Autonomous 3D Kinematics',
                         highlight: true,
                       },
                       {
                         id: 'node-01',
+                        key: 'node-01',
                         number: 'NODE 01 // PROCEDURAL 3D ENGINE',
                         subtitle: 'Procedural Shader Monolith • Audio Reactive',
                         highlight: false,
                       },
                       {
                         id: 'node-02',
+                        key: 'node-02',
                         number: 'NODE 02 // REMOTION MOTION STUDIO',
                         subtitle: 'Programmatic Video Pipeline • 4-Layer Stacking',
                         highlight: false,
                       },
                       {
                         id: 'node-03',
+                        key: 'node-03',
                         number: 'NODE 03 // BANNER ASSET STUDIO',
                         subtitle: 'Automated Multi-Format Canvas • SVG Pipeline',
                         highlight: false,
                       },
                       {
                         id: 'node-04',
+                        key: 'node-04',
                         number: 'NODE 04 // MEKONG CAD VISUALIZER',
                         subtitle: 'Open Data Telemetry Pipeline • PapaParse Stream',
                         highlight: false,
                       },
                     ].map((node) => {
-                      const isSelected = selectedNodePreset === node.id;
+                      const isSelected = selectedNodeId === node.id || selectedNodePreset === node.key;
                       return (
                         <button
                           key={node.id}
                           type="button"
-                          onClick={() => handleSelectNodePreset(node.id)}
+                          onClick={() => handleSelectNodePreset(node.key)}
                           className={`p-2.5 border text-left transition flex flex-col gap-0.5 ${
                             isSelected
                               ? 'border-[#5322FF] bg-[#5322FF]/20 text-white shadow-[0_0_12px_rgba(83,34,255,0.3)]'
@@ -772,6 +1169,33 @@ export const CraftStudioConfigurator: React.FC = () => {
                     Lớp 1: Signature Palettes (1-Click)
                   </div>
                   <div className="grid grid-cols-2 gap-2">
+                    {/* Flagship Preset Quick-Apply Swatch */}
+                    <button
+                      type="button"
+                      onClick={() => handleSelectNodePreset('node-05-digital-plumbing-swarm')}
+                      className={`p-2.5 border text-left transition flex flex-col gap-1.5 col-span-2 ${
+                        selectedNodeId === 'node-05' &&
+                        formData.compositionId === 'NODE_05_MANUFACTURING_FACTORY'
+                          ? 'border-[#5322FF] bg-[#5322FF]/15 shadow-[0_0_12px_rgba(83,34,255,0.3)]'
+                          : 'border-zinc-800 bg-zinc-950/80 hover:border-zinc-700'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-[#5322FF] animate-pulse" />
+                          <span className="text-[10px] font-bold text-white tracking-wider">
+                            NODE 05 FLAGSHIP // DIGITAL PLUMBING SWARM
+                          </span>
+                        </div>
+                        <span className="text-[8px] px-1.5 py-0.5 bg-[#00E5FF]/20 text-[#00E5FF] border border-[#00E5FF]/40 font-bold">
+                          1-CLICK AUTO-FILL
+                        </span>
+                      </div>
+                      <span className="text-[8px] text-zinc-400">
+                        Space Grotesk • Electric Indigo (#5322FF) • Laser Cyan (#00E5FF) • Kinematic Arm
+                      </span>
+                    </button>
+
                     {PRESET_PALETTES.map((p) => (
                       <button
                         key={p.id}
@@ -1015,316 +1439,137 @@ export const CraftStudioConfigurator: React.FC = () => {
               </motion.div>
             )}
 
-            {/* STEP 3: 3D ENGINE & EXPLODED ASSEMBLY */}
+            {/* STEP 3: DYNAMIC ADAPTER SUB-RENDERING // ENGINE CONTROL */}
             {activeStep === 3 && (
               <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 className="space-y-6"
               >
-                <div className="flex items-center gap-2 text-zinc-100 text-xs font-bold border-b border-zinc-800 pb-2">
-                  <Layers className="w-4 h-4 text-[#5322FF]" />
-                  <span>STEP 3 // 3D ENGINE & EXPLODED ASSEMBLY</span>
+                <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
+                  <div className="flex items-center gap-2 text-zinc-100 text-xs font-bold">
+                    <Layers className="w-4 h-4 text-[#5322FF]" />
+                    <span>STEP 3 // ENGINE CONTROL [{selectedNodeId.toUpperCase()}]</span>
+                  </div>
+                  <span className="text-[9px] px-1.5 py-0.5 bg-[#5322FF]/20 text-purple-300 border border-[#5322FF]/40 font-mono">
+                    MODULAR ADAPTER
+                  </span>
                 </div>
 
-                {/* Model Selector */}
-                <div className="space-y-2">
-                  <label className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
-                    Actuator Model Preset
-                  </label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {[
-                      { id: 'robot-arm', label: 'Industrial Robot Arm' },
-                      { id: 'kinematic-assembler', label: 'Kinematic Assembler' },
-                      { id: 'point-cloud-node', label: 'Point Cloud Drone' },
-                      { id: 'holographic-core', label: 'Cyber Monolith Core' },
-                    ].map((model) => (
-                      <button
-                        key={model.id}
-                        onClick={() =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            roboticsNode: {
-                              ...prev.roboticsNode,
-                              modelType: model.id as any,
-                            },
-                          }))
-                        }
-                        className={`p-2 border text-left text-[11px] font-bold transition ${
-                          formData.roboticsNode.modelType === model.id
-                            ? 'border-[#5322FF] bg-[#5322FF]/20 text-white'
-                            : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-white'
-                        }`}
-                      >
-                        {model.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* 4-Stage Exploded Assembly Text Inputs & Slider */}
-                <div className="space-y-3 p-3 border border-zinc-800 bg-zinc-950/70">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] text-white font-bold uppercase">
-                      Exploded Assembly Progress
-                    </span>
-                    <span className="text-xs font-bold text-[#00E5FF]">
-                      {formData.explodedProgress}%
-                    </span>
-                  </div>
-
-                  <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={formData.explodedProgress}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        explodedProgress: parseInt(e.target.value, 10),
-                      }))
-                    }
-                    className="w-full accent-[#00E5FF] cursor-pointer"
-                  />
-
-                  {/* 4 Stage Labels */}
-                  <div className="grid grid-cols-2 gap-2 pt-2 text-[9px]">
-                    <div className="space-y-1">
-                      <span className="text-zinc-500">STAGE 0 (0%)</span>
-                      <input
-                        type="text"
-                        value={formData.explodedStages.stage0}
-                        onChange={(e) =>
-                          setFormData((p) => ({
-                            ...p,
-                            explodedStages: { ...p.explodedStages, stage0: e.target.value },
-                          }))
-                        }
-                        className="w-full px-1.5 py-1 bg-zinc-900 border border-zinc-800 text-zinc-300 text-[10px]"
-                      />
+                {/* Dynamic Node Adapter for Step 3 */}
+                {selectedNodeId === 'node-01' && (
+                  <div className="space-y-4">
+                    <div className="p-3 bg-zinc-950 border border-zinc-800 text-xs text-zinc-400 flex items-center gap-2">
+                      <Box className="w-4 h-4 text-[#00E5FF]" />
+                      <span>Node 01 Procedural Engine: Audio Synthesizer & WebGL Shaders</span>
                     </div>
-                    <div className="space-y-1">
-                      <span className="text-zinc-500">STAGE 1 (33%)</span>
-                      <input
-                        type="text"
-                        value={formData.explodedStages.stage33}
-                        onChange={(e) =>
-                          setFormData((p) => ({
-                            ...p,
-                            explodedStages: { ...p.explodedStages, stage33: e.target.value },
-                          }))
-                        }
-                        className="w-full px-1.5 py-1 bg-zinc-900 border border-zinc-800 text-zinc-300 text-[10px]"
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <span className="text-zinc-500">STAGE 2 (66%)</span>
-                      <input
-                        type="text"
-                        value={formData.explodedStages.stage66}
-                        onChange={(e) =>
-                          setFormData((p) => ({
-                            ...p,
-                            explodedStages: { ...p.explodedStages, stage66: e.target.value },
-                          }))
-                        }
-                        className="w-full px-1.5 py-1 bg-zinc-900 border border-zinc-800 text-zinc-300 text-[10px]"
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <span className="text-zinc-500">STAGE 3 (100%)</span>
-                      <input
-                        type="text"
-                        value={formData.explodedStages.stage100}
-                        onChange={(e) =>
-                          setFormData((p) => ({
-                            ...p,
-                            explodedStages: { ...p.explodedStages, stage100: e.target.value },
-                          }))
-                        }
-                        className="w-full px-1.5 py-1 bg-zinc-900 border border-zinc-800 text-zinc-300 text-[10px]"
+                    <div className="h-64 border border-zinc-800 bg-black relative overflow-hidden">
+                      <Node01ProceduralEngine
+                        mode="compact"
+                        config={formData}
+                        onChange={setFormData}
+                        primaryColor={formData.theme.primaryColor}
+                        accentColor={formData.theme.accentColor}
                       />
                     </div>
                   </div>
-                </div>
+                )}
 
-                {/* Laser & Wireframe Toggles */}
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    onClick={() =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        raycastingLaser: !prev.raycastingLaser,
-                      }))
-                    }
-                    className={`p-2.5 border text-left flex items-center justify-between text-xs font-bold transition ${
-                      formData.raycastingLaser
-                        ? 'border-[#00E5FF] bg-[#00E5FF]/10 text-white'
-                        : 'border-zinc-800 bg-zinc-950 text-zinc-500'
-                    }`}
-                  >
-                    <span>Raycast Cyan Laser</span>
-                    <span className="text-[10px]">{formData.raycastingLaser ? 'ON' : 'OFF'}</span>
-                  </button>
+                {selectedNodeId === 'node-02' && (
+                  <div className="space-y-3">
+                    <div className="p-3 bg-zinc-950 border border-zinc-800 text-xs text-zinc-400 flex items-center gap-2">
+                      <Film className="w-4 h-4 text-[#00E5FF]" />
+                      <span>Node 02 Remotion Studio: 4-Layer Stacking Pipeline & Parametric Inspector</span>
+                    </div>
+                    <div className="p-2 border border-zinc-800 bg-zinc-950 max-h-[440px] overflow-y-auto">
+                      <Node02RemotionStudio
+                        config={formData}
+                        onChange={setFormData}
+                        primaryColor={formData.theme.primaryColor}
+                        accentColor={formData.theme.accentColor}
+                      />
+                    </div>
+                  </div>
+                )}
 
-                  <button
-                    onClick={() =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        roboticsNode: {
-                          ...prev.roboticsNode,
-                          wireframe: !prev.roboticsNode.wireframe,
-                        },
-                      }))
-                    }
-                    className={`p-2.5 border text-left flex items-center justify-between text-xs font-bold transition ${
-                      formData.roboticsNode.wireframe
-                        ? 'border-[#5322FF] bg-[#5322FF]/10 text-white'
-                        : 'border-zinc-800 bg-zinc-950 text-zinc-500'
-                    }`}
-                  >
-                    <span>CAD Wireframe</span>
-                    <span className="text-[10px]">
-                      {formData.roboticsNode.wireframe ? 'ON' : 'OFF'}
-                    </span>
-                  </button>
-                </div>
+                {selectedNodeId === 'node-03' && (
+                  <div className="space-y-3">
+                    <div className="p-3 bg-zinc-950 border border-zinc-800 text-xs text-zinc-400 flex items-center gap-2">
+                      <ImageIcon className="w-4 h-4 text-[#00E5FF]" />
+                      <span>Node 03 Banner Studio: Automated Multi-Format Canvas & SVG Pipeline</span>
+                    </div>
+                    <div className="border border-zinc-800 bg-zinc-950 p-3 max-h-[440px] overflow-y-auto">
+                      <Node03BannerStudio
+                        config={formData}
+                        onChange={setFormData}
+                        primaryColor={formData.theme.primaryColor}
+                        accentColor={formData.theme.accentColor}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {selectedNodeId === 'node-04' && (
+                  <div className="space-y-3">
+                    <div className="p-3 bg-zinc-950 border border-zinc-800 text-xs text-zinc-400 flex items-center gap-2">
+                      <BarChart3 className="w-4 h-4 text-[#00E5FF]" />
+                      <span>Node 04 Mekong CAD: Open Mekong Data Telemetry & Point Cloud Stream</span>
+                    </div>
+                    <div className="border border-zinc-800 bg-zinc-950 p-2 max-h-[440px] overflow-y-auto">
+                      <Node04MekongCad
+                        config={formData}
+                        onChange={setFormData}
+                        primaryColor={formData.theme.primaryColor}
+                        accentColor={formData.theme.accentColor}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {selectedNodeId === 'node-05' && (
+                  <div className="space-y-5">
+                    <Node05ManufacturingFactory
+                      isSubAdapter={true}
+                      subStep={3}
+                      config={formData}
+                      onChange={setFormData}
+                      primaryColor={formData.theme.primaryColor}
+                      accentColor={formData.theme.accentColor}
+                    />
+                  </div>
+                )}
               </motion.div>
             )}
 
-            {/* STEP 4: TELEMETRY & BENTO GRID */}
+            {/* STEP 4: DYNAMIC ADAPTER SUB-RENDERING // TELEMETRY & BENTO GRID */}
             {activeStep === 4 && (
               <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 className="space-y-6"
               >
-                <div className="flex items-center gap-2 text-zinc-100 text-xs font-bold border-b border-zinc-800 pb-2">
-                  <Cpu className="w-4 h-4 text-emerald-400" />
-                  <span>STEP 4 // TELEMETRY & BENTO GRID</span>
-                </div>
-
-                {/* Telemetry Inputs */}
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-1">
-                    <label className="text-[10px] text-zinc-400 font-bold uppercase">
-                      Target SLA FPS
-                    </label>
-                    <input
-                      type="number"
-                      value={formData.telemetryFps}
-                      onChange={(e) =>
-                        setFormData((p) => ({
-                          ...p,
-                          telemetryFps: parseInt(e.target.value, 10) || 60,
-                        }))
-                      }
-                      className="w-full px-2.5 py-1.5 bg-zinc-900 border border-zinc-800 text-white text-xs"
-                    />
+                <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
+                  <div className="flex items-center gap-2 text-zinc-100 text-xs font-bold">
+                    <Cpu className="w-4 h-4 text-emerald-400" />
+                    <span>STEP 4 // TELEMETRY & BENTO GRID [{selectedNodeId.toUpperCase()}]</span>
                   </div>
-
-                  <div className="space-y-1">
-                    <label className="text-[10px] text-zinc-400 font-bold uppercase">
-                      Torque Precision
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.torquePrecision}
-                      onChange={(e) =>
-                        setFormData((p) => ({ ...p, torquePrecision: e.target.value }))
-                      }
-                      className="w-full px-2.5 py-1.5 bg-zinc-900 border border-zinc-800 text-white text-xs"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-[10px] text-zinc-400 font-bold uppercase">
-                      Sensor DOF
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.dofSensorCount}
-                      onChange={(e) =>
-                        setFormData((p) => ({ ...p, dofSensorCount: e.target.value }))
-                      }
-                      className="w-full px-2.5 py-1.5 bg-zinc-900 border border-zinc-800 text-white text-xs"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-[10px] text-zinc-400 font-bold uppercase">
-                      AI Latency
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.aiLatency}
-                      onChange={(e) =>
-                        setFormData((p) => ({ ...p, aiLatency: e.target.value }))
-                      }
-                      className="w-full px-2.5 py-1.5 bg-zinc-900 border border-zinc-800 text-white text-xs"
-                    />
-                  </div>
-                </div>
-
-                {/* Bento Grid Module Toggles */}
-                <div className="space-y-2">
-                  <label className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
-                    Bento Grid Modules
-                  </label>
-                  <div className="space-y-2">
-                    {[
-                      { key: 'viewport3d', label: 'Module 01: 3D Actuator Viewport' },
-                      { key: 'performanceGraph', label: 'Module 02: Kinematics Wave Graph' },
-                      { key: 'interactiveTactileMatrix', label: 'Module 03: Tactile Matrix (16 DOF)' },
-                    ].map((mod) => {
-                      const isEnabled = (formData.bentoModules as any)[mod.key];
-                      return (
-                        <div
-                          key={mod.key}
-                          onClick={() =>
-                            setFormData((prev) => ({
-                              ...prev,
-                              bentoModules: {
-                                ...prev.bentoModules,
-                                [mod.key]: !isEnabled,
-                              },
-                            }))
-                          }
-                          className={`p-2.5 border flex items-center justify-between cursor-pointer transition text-xs ${
-                            isEnabled
-                              ? 'border-zinc-700 bg-zinc-900 text-white'
-                              : 'border-zinc-800 bg-zinc-950 text-zinc-600'
-                          }`}
-                        >
-                          <span>{mod.label}</span>
-                          <span className={`text-[10px] font-bold ${isEnabled ? 'text-emerald-400' : 'text-zinc-600'}`}>
-                            {isEnabled ? 'ENABLED' : 'DISABLED'}
-                          </span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Spatial Point Cloud Toggle */}
-                <div
-                  onClick={() =>
-                    setFormData((p) => ({ ...p, spatialPointCloud: !p.spatialPointCloud }))
-                  }
-                  className={`p-3 border flex items-center justify-between cursor-pointer transition text-xs font-bold ${
-                    formData.spatialPointCloud
-                      ? 'border-[#00E5FF] bg-[#00E5FF]/10 text-white'
-                      : 'border-zinc-800 bg-zinc-950 text-zinc-500'
-                  }`}
-                >
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-[#00E5FF]" />
-                    <span>Spatial Point Cloud (1200+ Magnetic Particles)</span>
-                  </div>
-                  <span className="text-[10px]">
-                    {formData.spatialPointCloud ? 'ACTIVE' : 'OFF'}
+                  <span className="text-[9px] px-1.5 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-mono">
+                    LIVE TELEMETRY
                   </span>
                 </div>
+
+                {selectedNodeId === 'node-05' ? (
+                  <Node05ManufacturingFactory
+                    isSubAdapter={true}
+                    subStep={4}
+                    config={formData}
+                    onChange={setFormData}
+                    primaryColor={formData.theme.primaryColor}
+                    accentColor={formData.theme.accentColor}
+                  />
+                ) : (
+                  renderNode05SubPanel(4)
+                )}
               </motion.div>
             )}
 

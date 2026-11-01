@@ -2,17 +2,39 @@ import { NextRequest, NextResponse } from 'next/server';
 import { SwissDesignConfigSchema, CraftGenerateResponse } from '@/types/craft-studio';
 import { generateFallbackCyberneticHTML as fallbackHTML } from '@/lib/studioAstGenerator';
 
+export const maxDuration = 60;
+
 // URL Endpoint của n8n Orchestrator / Dify AI Core (Đặt trong .env hoặc fallback)
 const N8N_WEBHOOK_URL =
   (typeof process !== 'undefined' && (process.env?.N8N_CRAFT_WEBHOOK_URL || process.env?.N8N_CRAFT_GENERATOR_WEBHOOK)) ||
   'https://n8n.internal.network/webhook/craft-gen';
 
+function resolveCompositionId(input: any): string {
+  const candidate = input?.compositionId || input?.selectedNodeId || input?.nodeId || '';
+  if (typeof candidate === 'string') {
+    if (candidate === 'node-05' || candidate.includes('NODE_05')) return 'NODE_05_MANUFACTURING_FACTORY';
+    if (candidate === 'node-01' || candidate.includes('NODE_01')) return 'NODE_01_3D_MONOLITH';
+    if (candidate === 'node-02' || candidate.includes('NODE_02')) return 'NODE_02_REMOTION_MOTION';
+    if (candidate === 'node-03' || candidate.includes('NODE_03')) return 'NODE_03_BANNER_STUDIO';
+    if (candidate === 'node-04' || candidate.includes('NODE_04')) return 'NODE_04_MEKONG_CAD';
+    if (candidate.trim()) return candidate.trim();
+  }
+  return 'NODE_05_MANUFACTURING_FACTORY';
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
+    // Map input selectedNodeId / compositionId cleanly to schema
+    const rawConfig = body.config || body;
+    const resolvedCompId = resolveCompositionId(rawConfig) || resolveCompositionId(body);
+    if (!rawConfig.compositionId) {
+      rawConfig.compositionId = resolvedCompId;
+    }
+
     // 1. Client-Side Zod Gate Validation
-    const validationResult = SwissDesignConfigSchema.safeParse(body.config || body);
+    const validationResult = SwissDesignConfigSchema.safeParse(rawConfig);
 
     if (!validationResult.success) {
       return NextResponse.json<CraftGenerateResponse>(
@@ -31,7 +53,7 @@ export async function POST(req: NextRequest) {
     let htmlStream = '';
 
     try {
-      const compositionId = validatedConfig.compositionId || body.compositionId || 'NODE_05_MANUFACTURING_FACTORY';
+      const compositionId = validatedConfig.compositionId || resolvedCompId || 'NODE_05_MANUFACTURING_FACTORY';
       const backendResponse = await fetch(N8N_WEBHOOK_URL, {
         method: 'POST',
         headers: {
@@ -48,7 +70,13 @@ export async function POST(req: NextRequest) {
       });
 
       if (backendResponse.ok) {
-        htmlStream = await backendResponse.text();
+        const rawText = await backendResponse.text();
+        try {
+          const parsed = JSON.parse(rawText);
+          htmlStream = parsed.htmlStream || parsed.html || rawText;
+        } catch {
+          htmlStream = rawText;
+        }
       } else {
         throw new Error(`n8n Webhook returned status ${backendResponse.status}`);
       }
