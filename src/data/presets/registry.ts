@@ -46,4 +46,6 @@ export const getAllPresets = (): StudioPreset[] => {
 };
 
 export { digitalPlumbingSwarm, digitalPlumbingSwarm as digitalPlumbingSwarmPreset };
+export const node05DigitalPlumbingSwarm = digitalPlumbingSwarm;
+export { digitalPlumbingSwarm as 'node-05-digital-plumbing-swarm' };
 export default presetsRegistry;

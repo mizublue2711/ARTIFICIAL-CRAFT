@@ -39,6 +39,7 @@ import {
   CraftGenerateResponse,
 } from '@/types/craft-studio';
 import { generateFallbackCyberneticHTML, generateStudioAst, generateCodeSnippets } from '@/lib/studioAstGenerator';
+import { digitalPlumbingSwarm, 'node-05-digital-plumbing-swarm' as node05Preset } from '@/data/presets/registry';
 
 // --- TYPES & INTERFACES ---
 export type ActiveWizardStep = 1 | 2 | 3 | 4 | 5;
@@ -59,6 +60,11 @@ export interface ExtendedStudioConfig extends SwissDesignConfig {
   motionTokens: string[];
   secondaryAccentColor: string;
   codeFont: string;
+  hero3DEngine?: {
+    modelType: string;
+    enableRaycasting: boolean;
+    explodedStages: string[];
+  };
 
   // Extended Step 3: Exploded Assembly & Laser
   explodedProgress: number; // 0 to 100
@@ -186,6 +192,7 @@ const PRESET_PALETTES = [
 export const CraftStudioConfigurator: React.FC = () => {
   // State: Config Data
   const [formData, setFormData] = useState<ExtendedStudioConfig>(INITIAL_CONFIG);
+  const [selectedNodePreset, setSelectedNodePreset] = useState<string>('node-05-digital-plumbing-swarm');
   const [activeStep, setActiveStep] = useState<ActiveWizardStep>(1);
   const [deviceMode, setDeviceMode] = useState<DevicePreviewMode>('desktop');
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -203,6 +210,102 @@ export const CraftStudioConfigurator: React.FC = () => {
   // State: Iframe HTML string stream
   const [generatedHtml, setGeneratedHtml] = useState<string>('');
   const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  // Select and apply Node preset
+  const handleSelectNodePreset = useCallback((nodeKey: string) => {
+    setSelectedNodePreset(nodeKey);
+    if (nodeKey === 'node-05-digital-plumbing-swarm' || nodeKey === 'NODE_05_MANUFACTURING_FACTORY') {
+      const preset = node05Preset || digitalPlumbingSwarm;
+      setFormData((prev) => ({
+        ...prev,
+        presetId: preset.presetId,
+        compositionId: preset.compositionId,
+        brandName: preset.compositionId,
+        slogan: preset.slogan,
+        tagline: preset.slogan,
+        backgroundColor: preset.aesthetic.backgroundColor,
+        primaryColor: preset.aesthetic.primaryColor,
+        accentColor: preset.aesthetic.accentColor,
+        headlineFont: preset.aesthetic.headlineFont,
+        codeFont: preset.aesthetic.codeFont,
+        theme: {
+          ...prev.theme,
+          backgroundColor: preset.aesthetic.backgroundColor,
+          primaryColor: preset.aesthetic.primaryColor,
+          accentColor: preset.aesthetic.accentColor,
+          fontFamily: preset.aesthetic.headlineFont as any,
+        },
+        motionTokens: [...preset.motionTokens],
+        hero3DEngine: {
+          modelType: preset.hero3DEngine.modelType,
+          enableRaycasting: preset.hero3DEngine.enableRaycasting,
+          explodedStages: [...preset.hero3DEngine.explodedStages],
+        },
+        roboticsNode: {
+          ...prev.roboticsNode,
+          modelType: 'kinematic-assembler',
+          wireframe: true,
+          rotationSpeed: 1.5,
+          autoAnimate: true,
+          telemetryHud: true,
+        },
+        raycastingLaser: preset.hero3DEngine.enableRaycasting,
+        presetModel: preset.hero3DEngine.modelType,
+        modelType: preset.hero3DEngine.modelType,
+        explodedStages: {
+          stage0: `${preset.hero3DEngine.explodedStages[0] || '0%'} // Assembled Core Manipulator`,
+          stage33: `${preset.hero3DEngine.explodedStages[1] || '33%'} // Swarm Plumbing Bus`,
+          stage66: `${preset.hero3DEngine.explodedStages[2] || '66%'} // Kinematic Actuators`,
+          stage100: `${preset.hero3DEngine.explodedStages[3] || '100%'} // End-Effector Array`,
+        },
+        telemetryFps: preset.telemetryDock.fps || 60,
+      }));
+    } else if (nodeKey === 'node-01') {
+      setFormData((prev) => ({
+        ...prev,
+        presetId: 'node-01-3d-procedural',
+        compositionId: 'NODE_01_3D_MONOLITH',
+        brandName: 'NODE_01_3D_MONOLITH',
+        slogan: 'Procedural 3D Render Engine & Monolith Visualizer',
+        tagline: 'Procedural 3D Render Engine & Monolith Visualizer',
+        roboticsNode: {
+          ...prev.roboticsNode,
+          modelType: 'holographic-core',
+        },
+      }));
+    } else if (nodeKey === 'node-02') {
+      setFormData((prev) => ({
+        ...prev,
+        presetId: 'node-02-remotion-motion',
+        compositionId: 'NODE_02_REMOTION_MOTION',
+        brandName: 'NODE_02_REMOTION_MOTION',
+        slogan: 'Deterministic Programmatic Video Generation Engine',
+        tagline: 'Deterministic Programmatic Video Generation Engine',
+      }));
+    } else if (nodeKey === 'node-03') {
+      setFormData((prev) => ({
+        ...prev,
+        presetId: 'node-03-banner-studio',
+        compositionId: 'NODE_03_BANNER_STUDIO',
+        brandName: 'NODE_03_BANNER_STUDIO',
+        slogan: 'Automated Brand Asset & Banner Studio',
+        tagline: 'Automated Brand Asset & Banner Studio',
+      }));
+    } else if (nodeKey === 'node-04') {
+      setFormData((prev) => ({
+        ...prev,
+        presetId: 'node-04-mekong-cad',
+        compositionId: 'NODE_04_MEKONG_CAD',
+        brandName: 'NODE_04_MEKONG_CAD',
+        slogan: 'Open Mekong CAD Telemetry & Water Data Visualizer',
+        tagline: 'Open Mekong CAD Telemetry & Water Data Visualizer',
+        roboticsNode: {
+          ...prev.roboticsNode,
+          modelType: 'point-cloud-node',
+        },
+      }));
+    }
+  }, []);
 
   // Synchronize initial & updated live HTML
   const refreshLiveHtml = useCallback((cfg: ExtendedStudioConfig) => {
@@ -340,11 +443,16 @@ export const CraftStudioConfigurator: React.FC = () => {
         'LAYER 4/5: Compiling Zod AST & Cloudflare Worker Bundle...',
       ]);
 
+      const ast = generateStudioAst(formData as any);
+      const compositionId = formData.compositionId || 'NODE_05_MANUFACTURING_FACTORY';
+
       const response = await fetch('/api/craft/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          compositionId,
           config: validationResult.data,
+          ast,
           timestamp: new Date().toISOString(),
         }),
       });
@@ -486,16 +594,91 @@ export const CraftStudioConfigurator: React.FC = () => {
 
           {/* Wizard Content Panels */}
           <div className="p-5 flex-1 flex flex-col gap-6">
-            {/* STEP 1: BRAND IDENTIFICATION */}
+            {/* STEP 1: BRAND IDENTIFICATION & NODE SELECTION */}
             {activeStep === 1 && (
               <motion.div
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 className="space-y-5"
               >
-                <div className="flex items-center gap-2 text-zinc-100 text-xs font-bold border-b border-zinc-800 pb-2">
-                  <Box className="w-4 h-4 text-[#5322FF]" />
-                  <span>STEP 1 // BRAND IDENTIFICATION</span>
+                <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
+                  <div className="flex items-center gap-2 text-zinc-100 text-xs font-bold">
+                    <Box className="w-4 h-4 text-[#5322FF]" />
+                    <span>STEP 1 // NODE SELECTION & BRAND IDENTITY</span>
+                  </div>
+                  <span className="text-[10px] text-zinc-400 font-mono">
+                    {selectedNodePreset === 'node-05-digital-plumbing-swarm' ? 'FLAGSHIP' : 'CUSTOM'}
+                  </span>
+                </div>
+
+                {/* Node Flagship Presets Selector Dock */}
+                <div className="space-y-2">
+                  <label className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider flex items-center justify-between">
+                    <span>Target Node Pipeline Preset</span>
+                    <span className="text-[#00E5FF] text-[9px]">DIFY + N8N PIPELINE</span>
+                  </label>
+                  <div className="grid grid-cols-1 gap-1.5">
+                    {[
+                      {
+                        id: 'node-05-digital-plumbing-swarm',
+                        number: 'NODE 05 // 3D MANUFACTURING FACTORY',
+                        subtitle: 'Headless Digital Plumbing Swarm • Autonomous 3D Kinematics',
+                        highlight: true,
+                      },
+                      {
+                        id: 'node-01',
+                        number: 'NODE 01 // PROCEDURAL 3D ENGINE',
+                        subtitle: 'Procedural Shader Monolith • Audio Reactive',
+                        highlight: false,
+                      },
+                      {
+                        id: 'node-02',
+                        number: 'NODE 02 // REMOTION MOTION STUDIO',
+                        subtitle: 'Programmatic Video Pipeline • 4-Layer Stacking',
+                        highlight: false,
+                      },
+                      {
+                        id: 'node-03',
+                        number: 'NODE 03 // BANNER ASSET STUDIO',
+                        subtitle: 'Automated Multi-Format Canvas • SVG Pipeline',
+                        highlight: false,
+                      },
+                      {
+                        id: 'node-04',
+                        number: 'NODE 04 // MEKONG CAD VISUALIZER',
+                        subtitle: 'Open Data Telemetry Pipeline • PapaParse Stream',
+                        highlight: false,
+                      },
+                    ].map((node) => {
+                      const isSelected = selectedNodePreset === node.id;
+                      return (
+                        <button
+                          key={node.id}
+                          type="button"
+                          onClick={() => handleSelectNodePreset(node.id)}
+                          className={`p-2.5 border text-left transition flex flex-col gap-0.5 ${
+                            isSelected
+                              ? 'border-[#5322FF] bg-[#5322FF]/20 text-white shadow-[0_0_12px_rgba(83,34,255,0.3)]'
+                              : 'border-zinc-800 bg-zinc-950/80 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200'
+                          }`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="text-[11px] font-bold tracking-wider">
+                              {node.number}
+                            </span>
+                            {node.highlight && (
+                              <span className="text-[9px] px-1.5 py-0.2 bg-[#00E5FF]/20 text-[#00E5FF] border border-[#00E5FF]/40 font-bold uppercase">
+                                SWARM FLAGSHIP
+                              </span>
+                            )}
+                          </div>
+                          <span className="text-[9px] text-zinc-500 font-sans">
+                            {node.subtitle}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
 
                 {/* Project Name */}

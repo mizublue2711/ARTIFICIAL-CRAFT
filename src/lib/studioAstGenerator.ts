@@ -889,9 +889,10 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
   const bg = config.backgroundColor || '#09090B';
   const primary = config.primaryColor || '#5322FF';
   const accent = config.accentColor || '#00E5FF';
-  const brand = config.compositionId || 'ARTIFICIAL CRAFT';
-  const tag = config.slogan || 'Brutalist Automation & Graphic Precision';
+  const brand = config.compositionId || 'NODE_05_MANUFACTURING_FACTORY';
+  const tag = config.slogan || 'Autonomous 3D Manufacturing Pipeline & Multi-Agent Swarm';
   const speed = 1.5;
+  const isNode05 = brand.includes('NODE_05') || config.presetModel === 'kinematic_manipulator_arm';
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -901,7 +902,7 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
   <title>${brand} // HYPERFRAME 60FPS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -948,15 +949,16 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
       pointer-events: none;
     }
     .hud-brand h1 {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
     }
     .hud-brand p {
       font-size: 0.8rem;
       color: ${accent};
-      opacity: 0.85;
+      opacity: 0.9;
       margin-top: 4px;
       letter-spacing: 1px;
     }
@@ -964,7 +966,7 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
       position: absolute;
       top: 60px; right: 16px;
       z-index: 20;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.75);
       border: 1px solid rgba(255,255,255,0.1);
       padding: 8px 12px;
       font-size: 10px;
@@ -980,6 +982,7 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
     <div style="display:flex; align-items:center; gap:8px;">
       <span style="width:6px; height:6px; border-radius:50%; background:${accent}; box-shadow:0 0 8px ${accent};"></span>
       <span style="font-weight:700; color:#fff;">${brand} // STUDIO RUNTIME</span>
+      ${isNode05 ? '<span style="color:#a855f7; font-size:9px; border:1px solid #5322FF; padding:1px 4px; background:rgba(83,34,255,0.2);">NODE 05 PRESET</span>' : ''}
     </div>
     <div style="display:flex; align-items:center; gap:8px;">
       <span class="badge">SLA: 60FPS</span>
@@ -998,6 +1001,7 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
     <div>NODE: <span style="color:#fff;">${config.presetModel.toUpperCase()}</span></div>
     <div>EXPLODED: <span style="color:${accent};">${config.explodedProgress}%</span></div>
     <div>SLA: <span style="color:${primary};">${config.telemetryFps} FPS</span></div>
+    <div>PIPELINE: <span style="color:#10b981;">DIFY + N8N SWARM</span></div>
   </div>
 
   <script>

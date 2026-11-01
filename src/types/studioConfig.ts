@@ -14,7 +14,8 @@ export type Preset3DModel =
   | 'bipedal-robot'
   | 'industrial-arm'
   | 'drone'
-  | 'cyber-monolith';
+  | 'cyber-monolith'
+  | 'kinematic_manipulator_arm';
 
 export type SandboxLanguage =
   | 'typescript'
@@ -221,7 +222,7 @@ export function sanitizeStudioConfig(input?: Partial<StudioConfigData> | null): 
       ? input.motionTokens
       : DEFAULT_STUDIO_CONFIG.motionTokens,
     modelType: input.modelType === 'custom' ? 'custom' : 'preset',
-    presetModel: (['bipedal-robot', 'industrial-arm', 'drone', 'cyber-monolith'].includes(input.presetModel as string)
+    presetModel: (['bipedal-robot', 'industrial-arm', 'drone', 'cyber-monolith', 'kinematic_manipulator_arm'].includes(input.presetModel as string)
       ? input.presetModel
       : DEFAULT_STUDIO_CONFIG.presetModel) as Preset3DModel,
     customModelUrl: input.customModelUrl?.trim() || '',
