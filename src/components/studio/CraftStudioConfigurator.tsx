@@ -38,7 +38,6 @@ import {
 import { generateFallbackCyberneticHTML, generateStudioAst, generateCodeSnippets } from '@/lib/studioAstGenerator';
 import { digitalPlumbingSwarm, 'node-05-digital-plumbing-swarm' as node05Preset } from '@/data/presets/registry';
 import { Player } from '@remotion/player';
-import { useTranslation } from '@/context/useLanguage';
 import { CraftStudioVideoComposition } from '@/lib/video-engine/components/CraftStudioVideoComposition';
 import {
   SwissGridHUD,
@@ -270,8 +269,6 @@ const PRESET_PALETTES = [
 ];
 
 export const CraftStudioConfigurator: React.FC = () => {
-  const { t } = useTranslation();
-
   // State: Config Data
   const [formData, setFormData] = useState<ExtendedStudioConfig>(INITIAL_CONFIG);
   const [activeTabMode, setActiveTabMode] = useState<'FORGE_NODE' | 'USER_WEBAPP_GEN'>('USER_WEBAPP_GEN');
@@ -688,19 +685,19 @@ export const CraftStudioConfigurator: React.FC = () => {
         <div className="flex items-center gap-3">
           <div className="w-2.5 h-2.5 rounded-full bg-[#5322FF] animate-pulse" />
           <span className="font-bold tracking-widest text-zinc-100 uppercase">
-            {t('headerTitle')}
+            STUDIO CONFIGURATOR // NO-CODE 3D FACTORY
           </span>
           <span className="hidden sm:inline-block px-2 py-0.5 border border-zinc-700 bg-zinc-900 text-[10px] text-zinc-400">
-            {t('nodeBadge')}
+            NODE 05 :: 3D MANUFACTURING FACTORY
           </span>
         </div>
 
         <div className="flex items-center gap-2">
           <span className="px-2 py-0.5 border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 text-[10px] font-bold">
-            {t('zodGate')}
+            GATE: ZOD 100% PASS
           </span>
           <span className="px-2 py-0.5 border border-[#5322FF]/50 bg-[#5322FF]/10 text-purple-300 text-[10px] font-bold">
-            {t('slaFps')}
+            SLA: 60FPS KINEMATICS
           </span>
         </div>
       </div>
@@ -726,11 +723,11 @@ export const CraftStudioConfigurator: React.FC = () => {
                 >
                   <span>STEP 0{step}</span>
                   <span className="text-[8px] opacity-75 truncate max-w-full">
-                    {step === 1 && t('step1Brand')}
-                    {step === 2 && t('step2Stylist')}
-                    {step === 3 && t('step3Engine')}
-                    {step === 4 && t('step4Telemetry')}
-                    {step === 5 && t('step5Export')}
+                    {step === 1 && 'BRAND'}
+                    {step === 2 && 'STYLIST'}
+                    {step === 3 && '3D MESH'}
+                    {step === 4 && 'TELEMETRY'}
+                    {step === 5 && 'EXPORT'}
                   </span>
                 </button>
               ))}
@@ -749,17 +746,17 @@ export const CraftStudioConfigurator: React.FC = () => {
                 <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
                   <div className="flex items-center gap-2 text-zinc-100 text-xs font-bold">
                     <Box className="w-4 h-4 text-[#5322FF]" />
-                    <span>{t('step1Title')}</span>
+                    <span>STEP 1 // NODE SELECTION & BRAND IDENTITY</span>
                   </div>
                   <span className="text-[10px] text-zinc-400 font-mono">
-                    {t('activeBadge')}
+                    FLAGSHIP
                   </span>
                 </div>
 
                 {/* Node Flagship Presets Selector Dock: Locked Single Static Flagship Badge */}
                 <div className="space-y-2">
                   <label className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider flex items-center justify-between">
-                    <span>{t('targetPipeline')}</span>
+                    <span>Target Node Pipeline Preset</span>
                     <span className="text-[#00E5FF] text-[9px]">DIFY + N8N PIPELINE</span>
                   </label>
                   <div className="p-3 border border-[#5322FF] bg-[#5322FF]/15 shadow-[0_0_15px_rgba(83,34,255,0.25)] flex flex-col gap-1.5">
@@ -805,7 +802,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                 {/* Project Name */}
                 <div className="space-y-1.5">
                   <label className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
-                    {t('projectName')}
+                    Project / Brand Name
                   </label>
                   <input
                     type="text"
@@ -829,7 +826,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                 {/* Brand Slogan */}
                 <div className="space-y-1.5">
                   <label className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
-                    {t('brandTagline')}
+                    Brand Tagline / Slogan
                   </label>
                   <input
                     type="text"
@@ -851,14 +848,14 @@ export const CraftStudioConfigurator: React.FC = () => {
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-between">
                     <label className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
-                      {t('logoUrl')}
+                      Brand Logo URL
                     </label>
                     <button
                       onClick={() => handleExtractFromLogo(formData.logoUrl)}
                       className="text-[10px] text-[#00E5FF] hover:underline flex items-center gap-1"
                     >
                       <Sparkles className="w-3 h-3" />
-                      <span>{t('btnExtractLogo')}</span>
+                      <span>Extract Palette</span>
                     </button>
                   </div>
                   <input
@@ -894,15 +891,15 @@ export const CraftStudioConfigurator: React.FC = () => {
                 >
                   <FolderArchive className="w-6 h-6 text-zinc-600 group-hover:text-[#00E5FF] mx-auto mb-2 transition" />
                   <div className="text-[11px] text-zinc-300">
-                    {t('dropzoneText')}
+                    Click to Upload or Drag & Drop SVG/PNG Logo Asset
                   </div>
                   <div className="text-[9px] text-zinc-500 mt-1 font-mono">
-                    {t('dropzoneSubtext')}
+                    Triggers automatic logo palette color clustering
                   </div>
                   {formData.logoUrl && (
                     <div className="mt-2 inline-flex items-center gap-2 px-2 py-1 bg-zinc-900 border border-zinc-700 text-[10px] text-emerald-400">
                       <Check className="w-3 h-3 text-emerald-400" />
-                      <span>{t('logoAttached')}</span>
+                      <span>LOGO ATTACHED</span>
                     </div>
                   )}
                 </div>
@@ -918,13 +915,13 @@ export const CraftStudioConfigurator: React.FC = () => {
               >
                 <div className="flex items-center gap-2 text-zinc-100 text-xs font-bold border-b border-zinc-800 pb-2">
                   <Sparkles className="w-4 h-4 text-[#00E5FF]" />
-                  <span>{t('step2Title')}</span>
+                  <span>STEP 2 // AESTHETIC & VISUAL AI STYLIST</span>
                 </div>
 
                 {/* LỚP 1: Preset Swatches */}
                 <div className="space-y-2">
                   <div className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
-                    {t('layer1Title')}
+                    Lớp 1: Signature Palettes (1-Click)
                   </div>
                   <div className="grid grid-cols-2 gap-2">
                     {PRESET_PALETTES.map((p) => (
@@ -980,10 +977,10 @@ export const CraftStudioConfigurator: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1.5 text-[11px] font-bold text-purple-300">
                       <Sparkles className="w-3.5 h-3.5 text-[#00E5FF]" />
-                      <span>{t('layer2Title')}</span>
+                      <span>Lớp 2: Magic AI Stylist Hook</span>
                     </div>
                     <span className="text-[9px] px-1.5 py-0.5 bg-black/40 text-purple-300 border border-purple-500/30">
-                      {t('activeBadge')}
+                      PLUG & PLAY
                     </span>
                   </div>
 
@@ -992,7 +989,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                       type="text"
                       value={aiPrompt}
                       onChange={(e) => setAiPrompt(e.target.value)}
-                      placeholder={t('aiPromptPlaceholder')}
+                      placeholder="e.g. Luxury Titanium Robot, Cyberpunk Neon..."
                       className="w-full px-3 py-1.5 bg-zinc-950 border border-purple-500/40 text-white text-xs focus:outline-none focus:border-[#00E5FF]"
                     />
                     <div className="flex items-center gap-2">
@@ -1009,7 +1006,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                         ) : (
                           <>
                             <Sparkles className="w-3 h-3" />
-                            <span>{t('btnAiGenerate')}</span>
+                            <span>AI Generate Palette</span>
                           </>
                         )}
                       </button>
@@ -1017,7 +1014,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                         onClick={() => handleExtractFromLogo(formData.logoUrl)}
                         className="py-1.5 px-2.5 border border-zinc-700 bg-zinc-900 text-zinc-300 hover:text-white text-[10px] font-bold uppercase transition"
                       >
-                        {t('btnExtractLogo')}
+                        Extract Logo
                       </button>
                     </div>
                   </div>
@@ -1026,7 +1023,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                 {/* LỚP 3: Manual Fine-Tuning */}
                 <div className="space-y-3">
                   <div className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
-                    {t('layer3Title')}
+                    Lớp 3: Manual Fine-Tuning
                   </div>
                   <div className="grid grid-cols-3 gap-2">
                     <div>
@@ -1135,7 +1132,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                   {/* Step 02 Environment Cards & Explicit Dropdown for All 9 Background Shaders */}
                   <div className="space-y-2">
                     <label className="text-[10px] text-zinc-400 font-bold uppercase flex items-center justify-between">
-                      <span>{t('bgShaderEngine')}</span>
+                      <span>Background Shader Engine (9 Shaders)</span>
                       <span className="text-[#00E5FF] text-[9px] font-mono">DYNAMIC SHADER</span>
                     </label>
 
@@ -1163,7 +1160,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                               <span className="text-[9px] font-bold truncate">{card.label}</span>
                             </div>
                             <span className="text-[8px] text-zinc-500 font-mono truncate w-full">
-                              {isSelected ? t('active') : card.value}
+                              {isSelected ? '[ACTIVE]' : card.value}
                             </span>
                           </button>
                         );
@@ -1194,7 +1191,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                   {/* Font Family Selector */}
                   <div className="space-y-1">
                     <label className="text-[10px] text-zinc-400 font-bold uppercase">
-                      {t('typographyFamily')}
+                      Typography Family
                     </label>
                     <select
                       value={formData.theme.fontFamily}
@@ -1218,7 +1215,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                   {/* Motion Tokens Multi-Select */}
                   <div className="space-y-1.5 pt-2">
                     <label className="text-[10px] text-zinc-400 font-bold uppercase">
-                      {t('motionTokens')}
+                      Active Motion Tokens
                     </label>
                     <div className="grid grid-cols-2 gap-1.5">
                       {[
@@ -1277,13 +1274,13 @@ export const CraftStudioConfigurator: React.FC = () => {
               >
                 <div className="flex items-center gap-2 text-zinc-100 text-xs font-bold border-b border-zinc-800 pb-2">
                   <Layers className="w-4 h-4 text-[#5322FF]" />
-                  <span>{t('step3Title')}</span>
+                  <span>STEP 3 // 3D ENGINE & EXPLODED ASSEMBLY</span>
                 </div>
 
                 {/* 3D Mesh & Component Selector List */}
                 <div className="space-y-2">
                   <label className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
-                    {t('base3dMesh')}
+                    Base 3D Mesh Component
                   </label>
                   <div className="grid grid-cols-1 gap-1.5">
                     {AVAILABLE_3D_COMPONENTS.map((comp) => {
@@ -1317,7 +1314,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                             <span>{comp.label}</span>
                           </div>
                           <span className="text-[10px] text-zinc-500 font-mono">
-                            {isSelected ? t('active') : comp.value}
+                            {isSelected ? '[ACTIVE]' : comp.value}
                           </span>
                         </button>
                       );
@@ -1328,7 +1325,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                 {/* Model Selector Presets */}
                 <div className="space-y-2">
                   <label className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
-                    {t('actuatorModel')}
+                    Actuator Model Preset
                   </label>
                   <div className="grid grid-cols-2 gap-2">
                     {[
@@ -1367,7 +1364,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                 <div className="space-y-3 p-3 border border-zinc-800 bg-zinc-950/70">
                   <div className="flex items-center justify-between">
                     <span className="text-[11px] text-white font-bold uppercase">
-                      {t('explodedProgress')}
+                      Exploded Assembly Progress
                     </span>
                     <span className="text-xs font-bold text-[#00E5FF]">
                       {formData.explodedProgress}%
@@ -1502,14 +1499,14 @@ export const CraftStudioConfigurator: React.FC = () => {
               >
                 <div className="flex items-center gap-2 text-zinc-100 text-xs font-bold border-b border-zinc-800 pb-2">
                   <Cpu className="w-4 h-4 text-emerald-400" />
-                  <span>{t('step4Title')}</span>
+                  <span>STEP 4 // TELEMETRY & BENTO GRID</span>
                 </div>
 
                 {/* Telemetry Inputs */}
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1">
                     <label className="text-[10px] text-zinc-400 font-bold uppercase">
-                      {t('slaFps')}
+                      Target SLA FPS
                     </label>
                     <input
                       type="number"
@@ -1526,7 +1523,7 @@ export const CraftStudioConfigurator: React.FC = () => {
 
                   <div className="space-y-1">
                     <label className="text-[10px] text-zinc-400 font-bold uppercase">
-                      {t('torquePrecision')}
+                      Torque Precision
                     </label>
                     <input
                       type="text"
@@ -1540,7 +1537,7 @@ export const CraftStudioConfigurator: React.FC = () => {
 
                   <div className="space-y-1">
                     <label className="text-[10px] text-zinc-400 font-bold uppercase">
-                      {t('dofSensors')}
+                      Sensor DOF
                     </label>
                     <input
                       type="text"
@@ -1554,7 +1551,7 @@ export const CraftStudioConfigurator: React.FC = () => {
 
                   <div className="space-y-1">
                     <label className="text-[10px] text-zinc-400 font-bold uppercase">
-                      {t('aiLatency')}
+                      AI Latency
                     </label>
                     <input
                       type="text"
@@ -1638,7 +1635,7 @@ export const CraftStudioConfigurator: React.FC = () => {
               >
                 <div className="flex items-center gap-2 text-zinc-100 text-xs font-bold border-b border-zinc-800 pb-2">
                   <Terminal className="w-4 h-4 text-[#5322FF]" />
-                  <span>{t('step5Title')}</span>
+                  <span>STEP 5 // EXPORT & HAND-OFF DOCK</span>
                 </div>
 
                 {/* Motion FX / Motion Tokens Selector (Step 05) */}
@@ -1754,7 +1751,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                     ) : (
                       <>
                         <Zap className="w-4 h-4 text-[#00E5FF]" />
-                        <span>{t('btnCompile3d')}</span>
+                        <span>GENERATE 3D WEB APP</span>
                       </>
                     )}
                   </button>
@@ -1766,7 +1763,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                       className="py-2.5 px-3 border border-zinc-700 bg-zinc-900/80 hover:bg-zinc-800 text-zinc-200 text-xs font-bold uppercase transition flex items-center justify-center gap-2"
                     >
                       <Download className="w-3.5 h-3.5 text-[#00E5FF]" />
-                      <span>{t('btnExportAst')}</span>
+                      <span>Export JSON AST Payload</span>
                     </button>
 
                     <button
@@ -1774,7 +1771,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                       className="py-2.5 px-3 border border-zinc-700 bg-zinc-900/80 hover:bg-zinc-800 text-zinc-200 text-xs font-bold uppercase transition flex items-center justify-center gap-2"
                     >
                       <FolderArchive className="w-3.5 h-3.5 text-purple-400" />
-                      <span>{t('btnDownloadHtml')}</span>
+                      <span>Download Single-File HTML (.zip)</span>
                     </button>
 
                     <button
@@ -2179,7 +2176,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                 className="px-3 py-1 bg-[#5322FF] text-white text-[11px] font-bold uppercase flex items-center gap-1.5 transition"
               >
                 {copiedCode ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                <span>{copiedCode ? t('copied') : t('btnCopyCode')}</span>
+                <span>{copiedCode ? 'COPIED' : 'COPY CODE'}</span>
               </button>
             </div>
 
