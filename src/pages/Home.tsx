@@ -110,7 +110,9 @@ export default function Home({ onOpenBatchModal }: HomeProps) {
             </div>
             <div className="flex items-center gap-2">
               <a
-                href="/studio"
+                href="https://multi-zone-spatial-3d-compound-engine-v4-0-calibrated.mizu2711.workers.dev/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="px-4 py-2 bg-[#5322FF] hover:bg-[#5322FF]/90 text-white font-mono text-xs font-bold uppercase transition flex items-center gap-2 shadow-[0_0_15px_rgba(83,34,255,0.4)]"
               >
                 <span>ENTER FACTORY NODE ↗</span>

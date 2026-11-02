@@ -2005,18 +2005,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                     </div>
                   )}
 
-                  {/* Floating Glassmorphic Top HUD overlay */}
-                  <div className="absolute top-3 left-3 pointer-events-none flex items-center gap-2 z-20">
-                    <span className="px-2 py-0.5 bg-black/60 backdrop-blur-md border border-white/10 text-[10px] text-zinc-300">
-                      {formData.brandName}
-                    </span>
-                    <span className="px-2 py-0.5 bg-black/60 backdrop-blur-md border border-[#00E5FF]/30 text-[10px] text-[#00E5FF]">
-                      STAGE: {formData.explodedProgress}%
-                    </span>
-                    <span className="px-2 py-0.5 bg-black/60 backdrop-blur-md border border-emerald-500/30 text-[10px] text-emerald-400">
-                      SHADER: {activeShaderKey}
-                    </span>
-                  </div>
+                  {/* Floating Glassmorphic Top HUD overlay - Cleaned to avoid clashing with internal iframe HUD header (relocated to top-10 or hidden to keep canvas uncluttered) */}
 
                   {/* Bottom-Left Clean Logo Overlay (No Duplicate Text Clashing) */}
                   <div className="absolute bottom-6 left-6 z-20 pointer-events-none max-w-[80%]">
