@@ -1,0 +1,50 @@
+{
+  "slug": "book-06-tactile-reticle-cad",
+  "title": "Hướng dẫn Vận hành: Công cụ Tương tác & Định vị 3D Precision CAD",
+  "subtitle": "Thao tác Tâm ngắm Soi Chi tiết & Đo đạc Thông số Mô hình 3D",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "Hướng dẫn Vận hành: Công cụ Tương tác & Định vị 3D Precision CAD",
+      "subtitle": "Thao tác Tâm ngắm Soi Chi tiết & Đo đạc Thông số Mô hình 3D",
+      "version": "v1.0.0",
+      "tags": [
+        "ROBOTICS",
+        "3D KINEMATICS",
+        "PHYSICAL AI",
+        "EXPLODED VIEW"
+      ],
+      "verified": true
+    },
+    {
+      "id": "p02_blueprint_illusion",
+      "type": "tech_doc",
+      "title": "01 // ẢO ẢNH CỦA BẢN VẼ TĨNH",
+      "content": "Bản vẽ CAD 2D phẳng chỉ là tờ giấy vô hồn. Chỉ có chế độ bóc tách động 3D thời gian thực mới phản ánh chân thực cơ cấu cơ khí.\n\nNhà sản xuất thường gửi tệp PDF bản vẽ phẳng cho khách hàng và kỳ vọng họ hiểu được quy trình động lực học phức tạp. Kết quả: Khách hàng hoang mang, hiểu lầm thông số và làm chậm tiến độ dự án. Khách hàng B2B không muốn đọc bản vẽ phẳng; họ muốn tương tác trực tiếp với cỗ máy trên sàn sản xuất ảo.",
+      "seed": "robotics-factory-cover-seed-06",
+      "graphicType": "ISOMETRIC_CAD"
+    },
+    {
+      "id": "p03_stage_deconstruction",
+      "type": "tech_doc",
+      "title": "02 // 4 BƯỚC BÓC TÁCH KẾT CẤU CƠ KHÍ",
+      "content": "Làm thế nào để chứng minh độ chính xác cơ khí tuyệt đối? Hãy bóc tách từng chi tiết cỗ máy theo thời gian thực.\n\n0% — Khung thân robot hai chân nguyên khối hoàn chỉnh. Tinh gọn, vận hành mượt mà ở 60 FPS khi không tải.\n33% — Vỏ ngoài dần tách rời. Khung xương titan chịu lực lộ diện rõ ràng.\n66% — Hệ thống động cơ Harmonic Drive tách rời dọc theo các đường cong Bezier mềm mại.\n100% — Cụm bàn tay cơ khí 11 bậc tự do mở rộng tối đa, phô diễn 1.024 cảm biến áp lực tiếp xúc.\n\nĐừng chỉ nói với đối tác rằng động cơ của bạn chính xác. Hãy để họ tận mắt quan sát động cơ được rút ra khỏi vỏ máy ngay trước mắt.",
+      "seed": "bipedal-kinematics-4stage-slider",
+      "graphicType": "NEURAL_MESH"
+    },
+    {
+      "id": "p04_raycasting_truth",
+      "type": "diagram",
+      "title": "03 // ĐỘ CHÍNH XÁC RAYCASTING & ĐỘNG HỌC HARMONIC",
+      "content": "Rê tia laser định vị lên khớp nối: Khung dây 1px màu Cyan lập tức khóa nét. Hiệu ứng độ sâu trường ảnh làm mờ hậu cảnh nhẹ nhàng, bảng thông số Swiss CAD HUD hiển thị đè trực tiếp lên bề mặt chi tiết.\n\nDữ liệu đo đạc thời gian thực:\nĐộ chính xác mô-men xoắn: ±0.01mm.\nTỷ số truyền Harmonic: 1:100.\nVận tốc cực đại: 4.5 m/s.\n\nKhông cần lời quảng cáo hoa mỹ. Chỉ có dữ liệu cơ khí chân thực, bất biến và hiển thị tức thì ở tốc độ 60 FPS.",
+      "seed": "harmonic-torque-badge-001mm",
+      "graphicType": "AUTOMATION_FLOW",
+      "caption": "Hình 3.1 — Động lực học raycasting thời gian thực 60 FPS kết hợp đo lường mô-men xoắn động cơ Harmonic"
+    }
+  ]
+}

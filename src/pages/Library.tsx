@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import { getAllBooks } from '@/data/books/registry';
 import { BookOpen, ArrowRight, ShieldCheck, Tag } from 'lucide-react';
+import { useLanguage } from '@/context/useLanguage';
 
 export default function Library() {
-  const books = getAllBooks();
+  const { language } = useLanguage();
+  const books = getAllBooks(language);
 
   return (
     <div className="min-h-screen bg-[#09090b] pt-28 pb-20 px-4 sm:px-8 font-mono text-zinc-100">

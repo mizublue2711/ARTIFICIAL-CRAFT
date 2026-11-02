@@ -262,6 +262,26 @@ export interface Translations {
   blackbox_q5_a: string;
   blackbox_q6_q: string;
   blackbox_q6_a: string;
+
+  // Flipbook Library
+  book_01_title: string;
+  book_01_subtitle: string;
+  book_02_title: string;
+  book_02_subtitle: string;
+  book_03_title: string;
+  book_03_subtitle: string;
+  book_04_title: string;
+  book_04_subtitle: string;
+  book_05_title: string;
+  book_05_subtitle: string;
+  book_06_title: string;
+  book_06_subtitle: string;
+  book_07_title: string;
+  book_07_subtitle: string;
+  book_08_title: string;
+  book_08_subtitle: string;
+  book_09_title: string;
+  book_09_subtitle: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -537,6 +557,26 @@ export const translations: Record<Language, Translations> = {
     blackbox_q5_a: "A: Congratulations, you graduated from gear-pusher to System Architect. Your job is no longer dragging elements in Canva or pixel-pushing UI manually. You stand at the top of the architectural tower, monitoring GCP Cloud Logging telemetry, identifying system bottlenecks, and directing autonomous machines toward complex challenges. You are paid for strategic reasoning, system architecture, and uncompromising aesthetic taste.",
     blackbox_q6_q: "Q6: What happens if the AI finishes everything at 3 AM and realizes it doesn't need me?",
     blackbox_q6_a: "A: It sends a Slack message: 'Pipeline executed successfully. 1000 items rendered. What's next, Boss?'. And that is the true existential tragedy of the AI era: You wake up at 8 AM to find all manual labor cleared away, leaving you with nothing left to do except sit down and come up with an original idea.",
+
+    // Flipbook Library
+    book_01_title: 'THE BRAIN AND THE MUSCLE',
+    book_01_subtitle: 'Why Hybrid AI Architecture Is the Only Way Out of Hallucination Loops',
+    book_02_title: 'THE TIMELINE IS DEAD',
+    book_02_subtitle: 'Why Video Production Is Moving from Mouse Clicks to Deterministic Code',
+    book_03_title: 'THE INVISIBLE HEAVY LIFTER',
+    book_03_subtitle: 'Why FFmpeg Remains the Unsung Backbone of Every High-Throughput Video Pipeline',
+    book_04_title: 'BRUTALISM AND THE GENERATIVE SEED',
+    book_04_subtitle: 'How 1px Grids and Algorithmic Seeds Produce Infinite Unique Visuals at Zero Cost',
+    book_05_title: 'FAIL FAST OR DRIFT FOREVER',
+    book_05_subtitle: 'Why Zod Schema Guardrails Are Non-Negotiable in AI Agent Orchestration',
+    book_06_title: 'THE EXPLODED FACTORY',
+    book_06_subtitle: 'Why Static CAD Models Are Dead and Immersive 3D Kinematics Win',
+    book_07_title: 'PHYSICAL AI & SPATIAL POINT CLOUD',
+    book_07_subtitle: 'Eliminating Spatial Memory Drift in Real-Time Autonomous Systems',
+    book_08_title: 'THE NO-CODE 3D AST ENGINE',
+    book_08_subtitle: 'How Studio Configurator Transforms No-Code Actions into Real-Time 60FPS Web3D',
+    book_09_title: 'CYBERNETIC BRUTALISM & IFRAME SANDBOXING',
+    book_09_subtitle: 'Designing Resilient Web3D Architecture Without Shell Collisions or State Leaks',
   },
   vi: {
     // Navigation
@@ -810,5 +850,25 @@ export const translations: Record<Language, Translations> = {
     blackbox_q5_a: 'A: Chúc mừng, bạn đã chính thức tốt nghiệp từ vị trí "Gã thợ đẩy bánh răng" để trở thành "Tác giả của hệ thống". Việc của bạn không phải là ngồi mở Canva lên kéo thả hay cặm cụi sửa từng pixel UI nữa. Việc của bạn là đứng ở đỉnh tháp kiến trúc, theo dõi các chỉ số sức khỏe của máy chủ trên GCP Cloud Logging, phát hiện cổ chai hệ thống và chỉ cỗ máy lao vào giải quyết những bài toán phức tạp hơn. Bạn được trả tiền cho tư duy chiến lược, kiến trúc hệ thống và gu thẩm mỹ khắt khe của bạn.',
     blackbox_q6_q: 'Q6: Được rồi. Nhưng chuyện gì sẽ xảy ra nếu con AI làm xong hết việc lúc 3 giờ sáng và nhận ra nó hoàn toàn không cần đến tôi nữa?',
     blackbox_q6_a: 'A: Nó sẽ tự động bắn một tin nhắn vào kênh Slack của bạn với nội dung: “Pipeline executed successfully. 1000 items rendered. What\'s next, Boss?”. Và đó chính là bi kịch hiện sinh, là gánh nặng khủng khiếp nhất của kỷ nguyên AI: Bạn thức dậy lúc 8 giờ sáng để nhận ra toàn bộ việc chân tay nặng nhọc đã được dọn sạch, và bạn không còn việc gì để làm ngoại trừ việc phải ngồi xuống và vắt óc nghĩ ra một ý tưởng nguyên bản.',
+
+    // Flipbook Library
+    book_01_title: 'Hồ sơ Thiết kế: Jules - Kiến trúc sư Hệ thống AI',
+    book_01_subtitle: 'Tư duy Kiến trúc, Quy chuẩn Code & Cơ chế Điều phối Hệ thống',
+    book_02_title: 'Báo cáo Kỹ thuật: Hạ tầng Tự động hóa Luồng Dữ liệu (Digital Plumbing)',
+    book_02_subtitle: 'Hệ thống Truyền dẫn & Kết nối API Tự hành giữa n8n, Dify & Webhook',
+    book_03_title: 'Báo cáo Kỹ thuật: Chuyển đổi Kiến trúc từ Dify sang n8n Workflow',
+    book_03_subtitle: 'Tối ưu Chi phí $0.00 & Mở rộng Hiệu năng Luồng Tự động hóa AI',
+    book_04_title: 'Hướng dẫn Vận hành: Cổng Cấu hình Trực quan & Chế tạo Web 3D',
+    book_04_subtitle: 'Quy trình 5 Bước Tạo Giao diện 3D Unibody Không Cần Viết Code',
+    book_05_title: 'Báo cáo Ứng dụng: Mô phỏng Tài chính Thành phố Dữ liệu 3D',
+    book_05_subtitle: 'Trực quan hóa Báo cáo Tài chính thành Ma trận 3D Voxel 60 FPS',
+    book_06_title: 'Hướng dẫn Vận hành: Công cụ Tương tác & Định vị 3D Precision CAD',
+    book_06_subtitle: 'Thao tác Tâm ngắm Soi Chi tiết & Đo đạc Thông số Mô hình 3D',
+    book_07_title: 'Công cụ Tạo Ảnh Bìa LinkedIn & Nhận diện Thương hiệu',
+    book_07_subtitle: 'Tự động Thiết kế Banner Đồ họa & Hình ảnh Truyền thông Mạng Xã hội',
+    book_08_title: 'Mô hình Quản trị & Điều phối Mạng lưới AI Multi-Agent',
+    book_08_subtitle: 'Kiến trúc Tổ chức & Phân công Công việc Tự động giữa các Trợ lý AI',
+    book_09_title: 'Quy chuẩn Thiết kế & Tự động hóa Thư viện Sách lật 3D',
+    book_09_subtitle: 'Tiêu chuẩn Đóng gói Tài liệu thành Sách Lật 3D Tương tác trên Web',
   },
 };
