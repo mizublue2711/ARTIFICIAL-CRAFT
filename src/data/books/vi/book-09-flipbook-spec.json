@@ -1,0 +1,52 @@
+{
+  "slug": "book-09-flipbook-spec",
+  "title": "Quy chuẩn Thiết kế & Tự động hóa Thư viện Sách lật 3D",
+  "subtitle": "Tiêu chuẩn Đóng gói Tài liệu thành Sách Lật 3D Tương tác trên Web",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "Quy chuẩn Thiết kế & Tự động hóa Thư viện Sách lật 3D",
+      "subtitle": "Tiêu chuẩn Đóng gói Tài liệu thành Sách Lật 3D Tương tác trên Web",
+      "version": "v1.0.0",
+      "tags": [
+        "CYBERNETIC BRUTALISM",
+        "IFRAME SANDBOX",
+        "FAIL-FAST",
+        "ZOD"
+      ],
+      "verified": true
+    },
+    {
+      "id": "p02_ui_shell_nightmare",
+      "type": "tech_doc",
+      "title": "01 // CƠN ÁC MỘNG XUNG ĐỘT GIAO DIỆN VỎ NGOÀI",
+      "content": "Hầu hết các ứng dụng web hiện đại đều bị phình to quá mức. Bạn nhúng một công cụ 3D tương tác vào trang web chính; ngay lập tức, component con lại re-render lại cả thanh navbar cha. Style CSS bị xung đột, các biến toàn cục bị rò rỉ. Màn hình di động bị vỡ layout và bộ nhớ trình duyệt tăng vọt lên 2GB.\n\nPhong cách Cybernetic Brutalism loại bỏ hoàn toàn phần dư thừa: Màu đen Obsidian #09090B, sắc tím điện Electric Indigo #5322FF, viền kẻ 1px sắc bén và phông chữ JetBrains Mono chính xác. Công năng cơ học thuần túy quyết định hình thức.",
+      "seed": "cybernetic-brutalism-hud-09",
+      "graphicType": "NEURAL_MESH"
+    },
+    {
+      "id": "p03_in_memory_isolation",
+      "type": "tech_doc",
+      "title": "02 // CHIẾN LƯỢC BÓC TÁCH VỎ GIAO DIỆN (STRIPPING SHELL)",
+      "content": "Làm thế nào để đảm bảo tính an toàn 100% và không rò rỉ style giao diện? Hãy thực thi nghiêm ngặt Chiến lược Bóc tách Vỏ Giao diện.\n\nComponent CraftStudioConfigurator tuyệt đối không import giao diện điều hướng của ứng dụng cha. Mã nguồn Three.js được sinh ra sẽ được tiêm trực tiếp vào iframe trong bộ nhớ thông qua thuộc tính srcdoc. Không lưu tệp tạm vào ổ cứng máy chủ, không phát sinh lỗ hổng CORS và không gây ô nhiễm CSS lên DOM của trang web chính.",
+      "code": "<iframe\n  srcDoc={htmlStream}\n  sandbox=\"allow-scripts allow-modals\"\n  className=\"w-full h-full border-0\"\n  title=\"Live AST Preview\"\n/>",
+      "language": "typescript",
+      "seed": "stripping-shell-dual-node",
+      "graphicType": "DATA_MATRIX"
+    },
+    {
+      "id": "p04_unbreakable_system",
+      "type": "diagram",
+      "title": "03 // HỆ THỐNG BẤT KHẢ XÂM PHẠM & CỔNG KIỂM ĐỊNH FAIL-FAST",
+      "content": "Trước khi bất kỳ dòng code nào được đưa lên môi trường thực tế, nó phải vượt qua 4 cổng an toàn:\n1. Cổng Zod phía Client: Schema SwissDesignConfigSchema kiểm tra tính toàn vẹn của AST.\n2. Khiên đường dẫn chuẩn hóa: Ánh xạ đường dẫn nghiêm ngặt với bí danh @/components/...\n3. Giao thức luồng dữ liệu động: Truyền dẫn chuỗi ký tự trực tiếp vào bộ nhớ client.\n4. Cổng kiểm định Build: Kiểm tra nghiêm ngặt không khoan nhượng với lệnh npx tsc --noEmit.",
+      "seed": "fail-fast-safety-badge-100",
+      "graphicType": "AUTOMATION_FLOW",
+      "caption": "Hình 3.1 — Quy trình 4 cổng cô lập Cybernetic Brutalism đảm bảo 0% sai lệch trạng thái"
+    }
+  ]
+}

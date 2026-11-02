@@ -1,0 +1,52 @@
+{
+  "slug": "book-01-jules-architect",
+  "title": "Hồ sơ Thiết kế: Jules - Kiến trúc sư Hệ thống AI",
+  "subtitle": "Tư duy Kiến trúc, Quy chuẩn Code & Cơ chế Điều phối Hệ thống",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "Hồ sơ Thiết kế: Jules - Kiến trúc sư Hệ thống AI",
+      "subtitle": "Tư duy Kiến trúc, Quy chuẩn Code & Cơ chế Điều phối Hệ thống",
+      "version": "v1.0.0",
+      "tags": [
+        "DIFY",
+        "N8N",
+        "HYBRID AI",
+        "LLMOPS"
+      ],
+      "verified": true
+    },
+    {
+      "id": "p02_monolith_trap",
+      "type": "tech_doc",
+      "title": "01 // CẠM BẪY KIẾN TRÚC ĐƠN KHỐI (MONOLITH)",
+      "content": "Đừng bao giờ ép một mô hình AI duy nhất vừa phải tư duy, suy luận, vừa phải gọi API bên ngoài cùng lúc. Hãy phân tách trách nhiệm rõ ràng.\n\nKhi cần trợ lý AI, thông thường bạn sẽ gọi một LLM và yêu cầu nó đọc hiểu dữ liệu, trích xuất thông tin, gọi API và cập nhật cơ sở dữ liệu. Phần lớn các trường hợp mô hình sẽ bị ảo giác (hallucination), quên cấu trúc payload hoặc rơi vào vòng lặp retry vô tận. Nguyên nhân cốt lõi: Bạn đang bắt một trí tuệ làm hai việc xung đột – vừa suy nghĩ chiến lược, vừa phải trực tiếp mang vác hạ tầng nặng nhọc.",
+      "seed": "dify-n8n-cover-seed-01",
+      "graphicType": "NEURAL_MESH"
+    },
+    {
+      "id": "p03_the_split",
+      "type": "tech_doc",
+      "title": "02 // GIÁO SƯ VÀ VẬN ĐỘNG VIÊN CỬ TẠ",
+      "content": "Bạn không bao giờ nhờ một giáo sư đại học đi bốc vác xà gồ thép. Ngược lại, bạn cũng không yêu cầu một lực sĩ thể hình chứng minh định lý lượng tử.\n\nDify đóng vai trò Bộ Não: quản lý chuỗi prompt, truy xuất dữ liệu RAG, duy trì ngữ cảnh bộ nhớ và đưa ra quyết định logic.\n\nn8n đóng vai trò Cơ Bắp: lắng nghe Webhook, chuẩn hóa và chuyển đổi cấu trúc JSON payload, xử lý rate limit và lưu trữ dữ liệu vào PostgreSQL. Dify xuất ra ý định dưới dạng JSON chuẩn xác; n8n thực thi với độ tin cậy tuyệt đối.",
+      "code": "const res = await fetch('https://dify.local/v1/workflows/run', {\n  method: 'POST',\n  headers: { 'Authorization': `Bearer ${apiKey}` },\n  body: JSON.stringify({ inputs: { draft: cleanText } })\n});",
+      "language": "javascript",
+      "seed": "dify-brain-n8n-muscle-node",
+      "graphicType": "ISOMETRIC_CAD"
+    },
+    {
+      "id": "p04_sla_paradox",
+      "type": "diagram",
+      "title": "03 // TRIỆT TIÊU SAI LỆCH TRẠNG THÁI & NGHỊCH LÝ SLA",
+      "content": "Khi tầng suy luận được tách biệt hoàn toàn khỏi tầng thực thi, sai lệch trạng thái (state drift) sẽ giảm về 0. Đó là công thức duy nhất để đạt cam kết SLA 99.99%. Các framework có thể lỗi thời, nhưng kiến trúc chuẩn mực sẽ luôn trường tồn.",
+      "seed": "sla-metric-badge-9999",
+      "graphicType": "AUTOMATION_FLOW",
+      "caption": "Hình 3.1 — Luồng phân tách Suy luận & Thực thi giúp triệt tiêu hoàn toàn sai lệch trạng thái"
+    }
+  ]
+}

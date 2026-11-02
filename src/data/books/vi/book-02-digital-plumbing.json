@@ -1,0 +1,52 @@
+{
+  "slug": "book-02-digital-plumbing",
+  "title": "Báo cáo Kỹ thuật: Hạ tầng Tự động hóa Luồng Dữ liệu (Digital Plumbing)",
+  "subtitle": "Hệ thống Truyền dẫn & Kết nối API Tự hành giữa n8n, Dify & Webhook",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "Báo cáo Kỹ thuật: Hạ tầng Tự động hóa Luồng Dữ liệu (Digital Plumbing)",
+      "subtitle": "Hệ thống Truyền dẫn & Kết nối API Tự hành giữa n8n, Dify & Webhook",
+      "version": "v1.0.0",
+      "tags": [
+        "REMOTION",
+        "VIDEO-AS-CODE",
+        "REACT",
+        "DETERMINISM"
+      ],
+      "verified": true
+    },
+    {
+      "id": "p02_mouse_click_trap",
+      "type": "tech_doc",
+      "title": "01 // CẠM BẪY CỦA GIAO DIỆN KÉO THẢ (GUI)",
+      "content": "Phần mềm dựng video truyền thống sinh ra dành cho con người thao tác bằng chuột. Việc kéo thả timeline hoạt động tốt cho một video đơn lẻ, nhưng hoàn toàn sụp đổ trước quy mô hàng vạn video. Bạn không thể tự động hóa một nút bấm giao diện thủ công.\n\nNgười biên tập viên ngồi vào bàn làm việc, kéo clip lệch sang trái 12 pixel, chỉnh lại bảng màu và bấm xuất file: mất 4 tiếng cho 1 video. Video-as-Code chuyển hóa toàn bộ pixel thành các hàm thuần túy (pure functions).",
+      "seed": "hud-timeline-dead-01",
+      "graphicType": "NEURAL_MESH"
+    },
+    {
+      "id": "p03_video_as_code",
+      "type": "tech_doc",
+      "title": "02 // KHAI BÁO VIDEO DƯỚI DẠNG CODE",
+      "content": "Frame 0 là một đối tượng trạng thái (state object). Frame 60 là một phép biến đổi CSS. Frame 120 là một audio node. Bạn không chỉnh sửa từng điểm ảnh; bạn khai báo quy luật hiển thị.\n\nRemotion chuyển đổi component React thành từng khung hình video. TypeScript đảm bảo kiểu dữ liệu props luôn hợp lệ. Headless Chrome kết xuất từng frame trong một môi trường Thời gian Ảo (Virtual Time) được kiểm soát nghiêm ngặt.",
+      "code": "import { Composition } from 'remotion';\nimport { HeroScene } from './HeroScene';\n\nexport const VideoRoot = () => (\n  <Composition\n    id=\"HeroVideo\"\n    component={HeroScene}\n    durationInFrames={180}\n    fps={60}\n    width={1920}\n    height={1080}\n  />\n);",
+      "language": "typescript",
+      "seed": "matrix-cad-virtual-time",
+      "graphicType": "ISOMETRIC_CAD"
+    },
+    {
+      "id": "p04_virtual_time",
+      "type": "diagram",
+      "title": "03 // THỜI GIAN ẢO & ĐỘ CHÍNH XÁC KHUNG HÌNH 60 FPS",
+      "content": "Mã nguồn React + Headless Chrome + Virtual Time = Khả năng tái tạo 100% khung hình video mà không bị phụ thuộc vào độ trễ đồng hồ hệ thống. Mỗi lượt render tạo ra sản phẩm đồng nhất với 0% sai lệch trạng thái.",
+      "seed": "kinetic-staccato-60fps",
+      "graphicType": "REMOTION_TIMELINE",
+      "caption": "Hình 3.1 — Giao diện hàm thuần UI = f(State) đảm bảo 0% sai lệch trạng thái trên toàn bộ cụm máy chủ GCP"
+    }
+  ]
+}

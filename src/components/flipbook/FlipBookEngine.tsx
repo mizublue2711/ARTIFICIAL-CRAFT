@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { BookData, PageBlock } from '../../types/flipbook';
 import { getBookBySlug } from '../../data/books/registry';
+import { useLanguage } from '../../context/useLanguage';
 import { CoverBlock } from './blocks/CoverBlock';
 import { TechDocBlock } from './blocks/TechDocBlock';
 import { DiagramBlock } from './blocks/DiagramBlock';
@@ -139,12 +140,13 @@ export const FlipBookEngine: React.FC<FlipBookEngineProps> = ({
   bookData,
   className = ''
 }) => {
+  const { language } = useLanguage();
   const soundFx = useRef<FlipBookSoundFX>(new FlipBookSoundFX());
   const containerRef = useRef<HTMLDivElement>(null);
   const lastWheelTime = useRef<number>(0);
 
   // Load book data from prop or registry
-  const resolvedBook = bookData || getBookBySlug(bookSlug);
+  const resolvedBook = bookData || getBookBySlug(bookSlug, language);
 
   const [pageIndex, setPageIndex] = useState<number>(0);
   const [isMuted, setIsMuted] = useState<boolean>(false);
