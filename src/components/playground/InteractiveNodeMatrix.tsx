@@ -3,15 +3,20 @@ import { Link } from 'react-router-dom';
 import { Box, Film, Image, BarChart3, Sparkles, ChevronRight, ArrowUpRight } from 'lucide-react';
 import { UniversalComponentProps } from '@/types/preset';
 
-interface NodeCardProps {
+export interface NodeCardProps {
+  id?: string;
   nodeId: string;
-  number: string;
+  number?: string;
   title: string;
   subtitle: string;
-  techStack: string;
-  icon: React.ElementType;
+  description?: string;
+  techStack: string | string[];
+  icon?: React.ElementType;
   badge?: string;
-  to: string;
+  to?: string;
+  linkUrl?: string;
+  accentColor?: string;
+  primaryColor?: string;
 }
 
 const NODES: NodeCardProps[] = [
@@ -65,6 +70,18 @@ const NODES: NodeCardProps[] = [
     badge: 'FACTORY NODE',
     to: '/studio',
   },
+  {
+    id: '3d-data-metropolis',
+    nodeId: 'NODE 06 // DATA METROPOLIS',
+    title: '3D DATA METROPOLIS & CORPORATE PROFIT VISUALIZATION',
+    subtitle: '3D Voxel Matrix Financial Engine & Live Google Sheets Sync',
+    badge: 'LIVE WORKER // 60 FPS SLA',
+    description: 'Transforms flat financial spreadsheets into an interactive 3D Voxel Matrix city running at 60 FPS in the browser. Features live Google Sheets API integration, procedural negative profit sub-level sinking effects, and 3D Head-to-Head Duel Mode.',
+    techStack: ['Three.js / WebGL', 'Google Sheets Live API', 'Zod Sanitizer', 'Cybernetic Brutalism'],
+    linkUrl: 'https://3d-data-metropolis-corporate-profit-visualization.mizu2711.workers.dev/',
+    accentColor: '#00E5FF',
+    primaryColor: '#5322FF',
+  },
 ];
 
 export const InteractiveNodeMatrix: React.FC<UniversalComponentProps> = ({
@@ -88,7 +105,7 @@ export const InteractiveNodeMatrix: React.FC<UniversalComponentProps> = ({
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00E5FF]/10 border border-[#00E5FF]/40 text-[#00E5FF] text-[11px] font-bold uppercase mb-4 tracking-widest">
               <span className="w-1.5 h-1.5 rounded-full bg-[#00E5FF] animate-ping" />
-              INTERACTIVE NODE MATRIX // 5 ENGINES
+              INTERACTIVE NODE MATRIX // 6 ENGINES
             </div>
             <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight uppercase">
               STUDIO PLAYGROUND <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00E5FF] to-[#5322ff]">HUBS</span>
@@ -107,16 +124,68 @@ export const InteractiveNodeMatrix: React.FC<UniversalComponentProps> = ({
           </Link>
         </div>
 
-        {/* 5-Node Bento Matrix */}
+        {/* 6-Node Bento Matrix */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {NODES.map((node, index) => {
-            const Icon = node.icon;
+            if (node.id === '3d-data-metropolis' || node.linkUrl) {
+              const techList = Array.isArray(node.techStack)
+                ? node.techStack
+                : [node.techStack];
+              return (
+                <div
+                  key={node.id || node.nodeId}
+                  className="p-4 border border-[#5322FF]/50 bg-[#09090B] hover:border-[#00E5FF] transition flex flex-col justify-between gap-4 group"
+                >
+                  <div className="space-y-2">
+                    {/* Header Badges */}
+                    <div className="flex items-center justify-between text-[10px] font-mono">
+                      <span className="text-[#5322FF] font-bold">{node.nodeId}</span>
+                      <span className="px-2 py-0.5 bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/40 font-bold uppercase">
+                        {node.badge || 'LIVE WORKER // 60 FPS SLA'}
+                      </span>
+                    </div>
+
+                    {/* Title & Description */}
+                    <h3 className="text-sm font-bold text-white uppercase tracking-wider group-hover:text-[#00E5FF] transition">
+                      {node.title}
+                    </h3>
+                    <p className="text-xs text-zinc-400 font-sans leading-relaxed">
+                      {node.description || node.subtitle}
+                    </p>
+
+                    {/* Tech Stack Badges */}
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {techList.map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-1.5 py-0.5 bg-zinc-900 border border-zinc-800 text-[9px] font-mono text-zinc-300"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* CTA Button Link */}
+                  <a
+                    href={node.linkUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-2 px-3 bg-[#5322FF] hover:bg-[#5322FF]/80 text-white font-mono text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 text-center"
+                  >
+                    <span>LAUNCH 3D METROPOLIS DEMO ➔</span>
+                  </a>
+                </div>
+              );
+            }
+
+            const Icon = node.icon || Box;
             const isHighlight = index === 0;
 
             return (
               <Link
                 key={node.nodeId}
-                to={node.to}
+                to={node.to || '/playground'}
                 className={`group relative border transition-all duration-300 p-6 flex flex-col justify-between ${
                   isHighlight
                     ? 'border-[#00E5FF] bg-[#0c1220]/80 hover:bg-[#0e1628]'
@@ -163,7 +232,7 @@ export const InteractiveNodeMatrix: React.FC<UniversalComponentProps> = ({
                 {/* Card Bottom */}
                 <div className="pt-4 border-t border-zinc-800/80 flex items-center justify-between text-[11px]">
                   <span className="text-zinc-500 font-mono text-[10px]">
-                    {node.techStack}
+                    {Array.isArray(node.techStack) ? node.techStack.join(' • ') : node.techStack}
                   </span>
                   <div className="flex items-center gap-1 text-[#00E5FF] font-bold group-hover:translate-x-1 transition-transform">
                     <span>ENTER</span>
