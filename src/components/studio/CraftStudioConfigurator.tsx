@@ -62,6 +62,8 @@ export interface ExtendedStudioConfig extends Partial<SwissDesignConfig> {
   backgroundColor: string;
   primaryColor: string;
   accentColor: string;
+  backgroundShader?: string;
+  base_component?: string;
   headlineFont: string;
   presetModel?: any;
   modelType?: any;
@@ -136,6 +138,8 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
   backgroundColor: '#09090B',
   primaryColor: '#5322FF',
   accentColor: '#00E5FF',
+  backgroundShader: 'SwissGridHUD',
+  base_component: 'RoboticsHandNode',
   headlineFont: 'Space Grotesk',
   presetModel: 'robot-arm',
   modelType: 'preset',
@@ -668,8 +672,9 @@ export const CraftStudioConfigurator: React.FC = () => {
     }
   }, [formData]);
 
-  // Active Background Component resolved from backgroundShader state
-  const ActiveBg = BACKGROUND_COMPONENTS[backgroundShader] || SwissGridHUD;
+  // Active Background Component resolved from formData.backgroundShader or fallback backgroundShader state
+  const activeShaderKey = formData.backgroundShader || backgroundShader || 'SwissGridHUD';
+  const ActiveBg = BACKGROUND_COMPONENTS[activeShaderKey] || SwissGridHUD;
   const primaryColor = formData.theme?.primaryColor || formData.primaryColor || '#5322FF';
   const accentColor = formData.theme?.accentColor || formData.accentColor || '#00E5FF';
 
@@ -925,6 +930,9 @@ export const CraftStudioConfigurator: React.FC = () => {
                         onClick={() =>
                           setFormData((prev) => ({
                             ...prev,
+                            backgroundColor: p.bg,
+                            primaryColor: p.primary,
+                            accentColor: p.accent,
                             theme: {
                               ...prev.theme,
                               backgroundColor: p.bg,
@@ -1019,81 +1027,153 @@ export const CraftStudioConfigurator: React.FC = () => {
                   </div>
                   <div className="grid grid-cols-3 gap-2">
                     <div>
-                      <label className="text-[9px] text-zinc-500 block mb-1">
+                      <label className="text-[9px] text-zinc-500 block mb-1 font-bold">
                         BACKGROUND
                       </label>
                       <div className="flex items-center gap-1.5 border border-zinc-800 bg-zinc-950 p-1">
                         <input
                           type="color"
                           value={formData.theme.backgroundColor}
-                          onChange={(e) =>
+                          onChange={(e) => {
+                            const val = e.target.value;
                             setFormData((prev) => ({
                               ...prev,
-                              theme: { ...prev.theme, backgroundColor: e.target.value },
-                            }))
-                          }
-                          className="w-5 h-5 bg-transparent cursor-pointer border-0"
+                              backgroundColor: val,
+                              theme: { ...prev.theme, backgroundColor: val },
+                            }));
+                          }}
+                          className="w-5 h-5 bg-transparent cursor-pointer border-0 shrink-0"
                         />
-                        <span className="text-[9px] text-zinc-400">
-                          {formData.theme.backgroundColor}
-                        </span>
+                        <input
+                          type="text"
+                          value={formData.theme.backgroundColor}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setFormData((prev) => ({
+                              ...prev,
+                              backgroundColor: val,
+                              theme: { ...prev.theme, backgroundColor: val },
+                            }));
+                          }}
+                          className="w-full bg-transparent text-[9px] text-zinc-300 font-mono focus:outline-none uppercase"
+                        />
                       </div>
                     </div>
 
                     <div>
-                      <label className="text-[9px] text-zinc-500 block mb-1">
+                      <label className="text-[9px] text-zinc-500 block mb-1 font-bold">
                         PRIMARY
                       </label>
                       <div className="flex items-center gap-1.5 border border-zinc-800 bg-zinc-950 p-1">
                         <input
                           type="color"
                           value={formData.theme.primaryColor}
-                          onChange={(e) =>
+                          onChange={(e) => {
+                            const val = e.target.value;
                             setFormData((prev) => ({
                               ...prev,
-                              theme: { ...prev.theme, primaryColor: e.target.value },
-                            }))
-                          }
-                          className="w-5 h-5 bg-transparent cursor-pointer border-0"
+                              primaryColor: val,
+                              theme: { ...prev.theme, primaryColor: val },
+                            }));
+                          }}
+                          className="w-5 h-5 bg-transparent cursor-pointer border-0 shrink-0"
                         />
-                        <span className="text-[9px] text-zinc-400">
-                          {formData.theme.primaryColor}
-                        </span>
+                        <input
+                          type="text"
+                          value={formData.theme.primaryColor}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setFormData((prev) => ({
+                              ...prev,
+                              primaryColor: val,
+                              theme: { ...prev.theme, primaryColor: val },
+                            }));
+                          }}
+                          className="w-full bg-transparent text-[9px] text-zinc-300 font-mono focus:outline-none uppercase"
+                        />
                       </div>
                     </div>
 
                     <div>
-                      <label className="text-[9px] text-zinc-500 block mb-1">
+                      <label className="text-[9px] text-zinc-500 block mb-1 font-bold">
                         ACCENT
                       </label>
                       <div className="flex items-center gap-1.5 border border-zinc-800 bg-zinc-950 p-1">
                         <input
                           type="color"
                           value={formData.theme.accentColor}
-                          onChange={(e) =>
+                          onChange={(e) => {
+                            const val = e.target.value;
                             setFormData((prev) => ({
                               ...prev,
-                              theme: { ...prev.theme, accentColor: e.target.value },
-                            }))
-                          }
-                          className="w-5 h-5 bg-transparent cursor-pointer border-0"
+                              accentColor: val,
+                              theme: { ...prev.theme, accentColor: val },
+                            }));
+                          }}
+                          className="w-5 h-5 bg-transparent cursor-pointer border-0 shrink-0"
                         />
-                        <span className="text-[9px] text-zinc-400">
-                          {formData.theme.accentColor}
-                        </span>
+                        <input
+                          type="text"
+                          value={formData.theme.accentColor}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setFormData((prev) => ({
+                              ...prev,
+                              accentColor: val,
+                              theme: { ...prev.theme, accentColor: val },
+                            }));
+                          }}
+                          className="w-full bg-transparent text-[9px] text-zinc-300 font-mono focus:outline-none uppercase"
+                        />
                       </div>
                     </div>
                   </div>
 
-                  {/* Step 02 Explicit Dropdown for All 9 Background Shaders */}
-                  <div className="space-y-1.5">
+                  {/* Step 02 Environment Cards & Explicit Dropdown for All 9 Background Shaders */}
+                  <div className="space-y-2">
                     <label className="text-[10px] text-zinc-400 font-bold uppercase flex items-center justify-between">
                       <span>Background Shader Engine (9 Shaders)</span>
                       <span className="text-[#00E5FF] text-[9px] font-mono">DYNAMIC SHADER</span>
                     </label>
+
+                    {/* Environment Cards Grid */}
+                    <div className="grid grid-cols-3 gap-2">
+                      {AVAILABLE_BACKGROUNDS.map((card) => {
+                        const IconComp = card.icon;
+                        const isSelected = (formData.backgroundShader || backgroundShader) === card.value;
+                        return (
+                          <button
+                            key={card.value}
+                            type="button"
+                            onClick={() => {
+                              setBackgroundShader(card.value);
+                              setFormData((prev) => ({ ...prev, backgroundShader: card.value }));
+                            }}
+                            className={`p-2 border text-left transition flex flex-col gap-1 items-start ${
+                              isSelected
+                                ? 'border-[#00E5FF] bg-[#00E5FF]/10 text-white shadow-[0_0_8px_rgba(0,229,255,0.25)]'
+                                : 'border-zinc-800 bg-zinc-950/80 text-zinc-400 hover:text-white hover:border-zinc-700'
+                            }`}
+                          >
+                            <div className="flex items-center gap-1.5 w-full">
+                              <IconComp className="w-3.5 h-3.5 text-[#00E5FF] shrink-0" />
+                              <span className="text-[9px] font-bold truncate">{card.label}</span>
+                            </div>
+                            <span className="text-[8px] text-zinc-500 font-mono truncate w-full">
+                              {isSelected ? '[ACTIVE]' : card.value}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+
                     <select
-                      value={backgroundShader}
-                      onChange={(e) => setBackgroundShader(e.target.value)}
+                      value={formData.backgroundShader || backgroundShader}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setBackgroundShader(val);
+                        setFormData((prev) => ({ ...prev, backgroundShader: val }));
+                      }}
                       className="w-full bg-[#09090B] border border-[#5322FF] text-white p-2 rounded font-mono text-xs focus:outline-none focus:border-[#00E5FF]"
                     >
                       <option value="SwissGridHUD">Swiss Grid HUD</option>
@@ -1205,7 +1285,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                   <div className="grid grid-cols-1 gap-1.5">
                     {AVAILABLE_3D_COMPONENTS.map((comp) => {
                       const IconComponent = comp.icon;
-                      const activeModel = formData.presetModel || formData.modelType || 'RoboticsHandNode';
+                      const activeModel = formData.base_component || formData.presetModel || formData.modelType || 'RoboticsHandNode';
                       const isSelected = activeModel === comp.value;
                       return (
                         <button
@@ -1214,6 +1294,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                           onClick={() => {
                             setFormData((prev) => ({
                               ...prev,
+                              base_component: comp.value,
                               presetModel: comp.value,
                               modelType: comp.value,
                               roboticsNode: {
@@ -1258,6 +1339,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                         onClick={() =>
                           setFormData((prev) => ({
                             ...prev,
+                            base_component: model.id,
                             presetModel: model.id,
                             modelType: model.id,
                             roboticsNode: {
@@ -1267,7 +1349,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                           }))
                         }
                         className={`p-2 border text-left text-[11px] font-bold transition ${
-                          (formData.presetModel === model.id || formData.roboticsNode.modelType === model.id)
+                          ((formData.base_component || formData.presetModel) === model.id || formData.roboticsNode.modelType === model.id)
                             ? 'border-[#5322FF] bg-[#5322FF]/20 text-white'
                             : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-white'
                         }`}
@@ -1872,8 +1954,15 @@ export const CraftStudioConfigurator: React.FC = () => {
               }`}
             >
               {/* Dynamic Viewport Background Layer */}
-              <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
-                <ActiveBg primaryColor={primaryColor} accentColor={accentColor} />
+              <div
+                key={`bg-${activeShaderKey}-${primaryColor}-${accentColor}`}
+                className="absolute inset-0 z-0 pointer-events-none opacity-40"
+              >
+                <ActiveBg
+                  primaryColor={primaryColor}
+                  accentColor={accentColor}
+                  backgroundShader={activeShaderKey}
+                />
               </div>
 
               {previewViewportMode === '3d-canvas' ? (
@@ -1890,9 +1979,12 @@ export const CraftStudioConfigurator: React.FC = () => {
                 >
                   <iframe
                     ref={iframeRef}
+                    key={`3d-${activeShaderKey}-${formData.base_component || formData.presetModel || formData.modelType}-${primaryColor}-${accentColor}`}
                     srcDoc={generatedHtml}
                     sandbox="allow-scripts allow-modals allow-same-origin"
                     title="ARTIFICIAL CRAFT 3D Viewport"
+                    data-background-shader={activeShaderKey}
+                    data-base-component={formData.base_component || formData.presetModel || formData.modelType || 'RoboticsHandNode'}
                     className="w-full h-full bg-transparent rounded-none border-0 pointer-events-auto"
                   />
 
@@ -1926,7 +2018,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                       STAGE: {formData.explodedProgress}%
                     </span>
                     <span className="px-2 py-0.5 bg-black/60 backdrop-blur-md border border-emerald-500/30 text-[10px] text-emerald-400">
-                      SHADER: {backgroundShader}
+                      SHADER: {activeShaderKey}
                     </span>
                   </div>
 
@@ -1966,7 +2058,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                       primaryColor: formData.theme?.primaryColor || formData.primaryColor || '#5322FF',
                       accentColor: formData.theme?.accentColor || formData.accentColor || '#00E5FF',
                       backgroundColor: formData.theme?.backgroundColor || formData.backgroundColor || '#09090B',
-                      base_component: formData.presetModel || formData.modelType || 'kinematic_manipulator_arm',
+                      base_component: formData.base_component || formData.presetModel || formData.modelType || 'kinematic_manipulator_arm',
                       assemblyStage: formData.explodedProgress,
                       telemetry: {
                         slaTarget: formData.aiLatency || '<2ms',
