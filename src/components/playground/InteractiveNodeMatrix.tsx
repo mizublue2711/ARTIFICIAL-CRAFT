@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Box, Film, Image, BarChart3, ChevronRight, ArrowUpRight } from 'lucide-react';
 import { UniversalComponentProps } from '@/types/preset';
-import { useTranslation } from '@/context/useLanguage';
 
 export interface NodeCardProps {
   id?: string;
@@ -160,7 +159,7 @@ export const UnifiedHubCard: React.FC<HubCardProps> = ({
         rel="noopener noreferrer"
         className="w-full py-2 px-3 bg-[#5322FF] hover:bg-[#5322FF]/80 text-white font-mono text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 text-center"
       >
-        <span>{ctaLabel.endsWith('➔') ? ctaLabel : `${ctaLabel} ➔`}</span>
+        <span>{ctaLabel} ➔</span>
       </a>
     ) : (
       <button
@@ -168,7 +167,7 @@ export const UnifiedHubCard: React.FC<HubCardProps> = ({
         onClick={onAction}
         className="w-full py-2 px-3 bg-[#5322FF] hover:bg-[#5322FF]/80 text-white font-mono text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 text-center"
       >
-        <span>{ctaLabel.endsWith('➔') ? ctaLabel : `${ctaLabel} ➔`}</span>
+        <span>{ctaLabel} ➔</span>
       </button>
     )}
   </div>
@@ -177,41 +176,7 @@ export const UnifiedHubCard: React.FC<HubCardProps> = ({
 export const InteractiveNodeMatrix: React.FC<UniversalComponentProps> = ({
   className = '',
 }) => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
-
-  const localizedNodes: NodeCardProps[] = [
-    {
-      ...NODES[0],
-      title: t('node1Title'),
-      ctaLabel: t('btnLaunchDemo'),
-    },
-    {
-      ...NODES[1],
-      title: t('node2Title'),
-      ctaLabel: t('btnLaunchDemo'),
-    },
-    {
-      ...NODES[2],
-      title: t('node3Title'),
-      ctaLabel: t('btnLaunchDemo'),
-    },
-    {
-      ...NODES[3],
-      title: t('node4Title'),
-      ctaLabel: t('btnLaunchDemo'),
-    },
-    {
-      ...NODES[4],
-      title: t('node5Title'),
-      ctaLabel: t('btnOpenSandbox'),
-    },
-    {
-      ...NODES[5],
-      title: t('node6Title'),
-      ctaLabel: t('btnLaunchDemo'),
-    },
-  ];
 
   return (
     <section id="interactive-node-matrix" className={`relative py-24 bg-[#09090d] border-t border-zinc-800 font-mono ${className}`}>
@@ -234,10 +199,10 @@ export const InteractiveNodeMatrix: React.FC<UniversalComponentProps> = ({
               INTERACTIVE NODE MATRIX // 6 ENGINES
             </div>
             <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight uppercase">
-              {t('hubTitle')}
+              STUDIO PLAYGROUND <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00E5FF] to-[#5322ff]">HUBS</span>
             </h2>
             <p className="mt-3 text-sm text-zinc-400 max-w-xl font-sans">
-              {t('hubSub')}
+              Access the complete suite of deterministic AI, 3D procedural graphics, automated motion design, and open CAD telemetry engines.
             </p>
           </div>
 
@@ -252,7 +217,7 @@ export const InteractiveNodeMatrix: React.FC<UniversalComponentProps> = ({
 
         {/* 6-Node Bento Matrix */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {localizedNodes.map((node, index) => {
+          {NODES.map((node, index) => {
             const techList = Array.isArray(node.techStack)
               ? node.techStack
               : [node.techStack];
