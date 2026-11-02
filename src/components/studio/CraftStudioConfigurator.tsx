@@ -36,6 +36,8 @@ import {
 import {
   SwissDesignConfigSchema,
   SwissDesignConfig,
+  CraftPayloadObject,
+  CraftRequestPayload,
   CraftGenerateResponse,
 } from '@/types/craft-studio';
 import { generateFallbackCyberneticHTML, generateStudioAst, generateCodeSnippets } from '@/lib/studioAstGenerator';
@@ -192,6 +194,7 @@ const PRESET_PALETTES = [
 export const CraftStudioConfigurator: React.FC = () => {
   // State: Config Data
   const [formData, setFormData] = useState<ExtendedStudioConfig>(INITIAL_CONFIG);
+  const [activeTabMode, setActiveTabMode] = useState<'FORGE_NODE' | 'USER_WEBAPP_GEN'>('USER_WEBAPP_GEN');
   const [selectedNodePreset, setSelectedNodePreset] = useState<string>('NODE_05_MANUFACTURING_FACTORY');
   const [activeStep, setActiveStep] = useState<ActiveWizardStep>(1);
   const [deviceMode, setDeviceMode] = useState<DevicePreviewMode>('desktop');
@@ -266,8 +269,45 @@ export const CraftStudioConfigurator: React.FC = () => {
   // Synchronize initial & updated live HTML
   const refreshLiveHtml = useCallback((cfg: ExtendedStudioConfig) => {
     // Generate high-precision standalone HTML
-    const html = generateFallbackCyberneticHTML(cfg);
+    const html = generateFallbackCyberneticHTML(cfg as any);
     setGeneratedHtml(html);
+  }, []);
+
+  // Handler to render layout_json onto Live Preview Stage
+  const renderLegoCanvas = useCallback((layoutJson: any) => {
+    if (!layoutJson) return;
+
+    if (typeof layoutJson === 'string') {
+      if (layoutJson.trim().startsWith('<')) {
+        setGeneratedHtml(layoutJson);
+        return;
+      }
+      try {
+        const parsed = JSON.parse(layoutJson);
+        if (parsed.html) {
+          setGeneratedHtml(parsed.html);
+          return;
+        }
+      } catch {
+        // Fallback string
+      }
+    } else if (typeof layoutJson === 'object') {
+      if (layoutJson.html && typeof layoutJson.html === 'string') {
+        setGeneratedHtml(layoutJson.html);
+        return;
+      }
+      // If layout_json contains updated theme or AST config, sync with formData
+      setFormData((prev) => ({
+        ...prev,
+        theme: {
+          ...prev.theme,
+          ...(layoutJson.aesthetic?.primaryColor && { primaryColor: layoutJson.aesthetic.primaryColor }),
+          ...(layoutJson.aesthetic?.backgroundColor && { backgroundColor: layoutJson.aesthetic.backgroundColor }),
+        },
+        primaryColor: layoutJson.aesthetic?.primaryColor || prev.primaryColor,
+        backgroundColor: layoutJson.aesthetic?.backgroundColor || prev.backgroundColor,
+      }));
+    }
   }, []);
 
   useEffect(() => {
@@ -399,26 +439,73 @@ export const CraftStudioConfigurator: React.FC = () => {
         'LAYER 4/5: Compiling Zod AST & Cloudflare Worker Bundle...',
       ]);
 
-      const ast = generateStudioAst(formData as any);
-      const compositionId = formData.compositionId || 'NODE_05_MANUFACTURING_FACTORY';
+      // Read endpoint directly from Vite Client Env
+      const webhookUrl =
+        import.meta.env.VITE_N8N_WEBHOOK_URL ||
+        '/api/craft/generate';
 
-      const response = await fetch('/api/craft/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          compositionId,
-          config: validationResult.data,
-          ast,
-          timestamp: new Date().toISOString(),
-        }),
-      });
+      // Construct contract payload from React useState values
+      const taskType: 'ROBOTICS_3D' | 'USER_WEBAPP_GEN' =
+        activeTabMode === 'FORGE_NODE' ? 'ROBOTICS_3D' : 'USER_WEBAPP_GEN';
+
+      const payloadObject: CraftPayloadObject = {
+        prompt: aiPrompt || formData.aiStylist?.customPrompt || '',
+        base_component: formData.presetModel || formData.modelType || 'RoboticsHandNode',
+        aesthetic: {
+          palette: formData.brandName || 'Brutalist Monochrome',
+          primaryColor: formData.theme.primaryColor || '#5322FF',
+          backgroundColor: formData.theme.backgroundColor || '#09090B',
+        },
+        motion_tokens: formData.motionTokens || [],
+        telemetry: {
+          slaTarget: formData.aiLatency || '<8ms',
+          fps: formData.telemetryFps || 60,
+        },
+      };
+
+      const requestBody: CraftRequestPayload = {
+        task_type: taskType,
+        payload: JSON.stringify(payloadObject),
+      };
 
       let htmlResult = '';
-      if (response.ok) {
-        const data: CraftGenerateResponse = await response.json();
-        htmlResult = data.htmlStream || generateFallbackCyberneticHTML(formData);
-      } else {
-        htmlResult = generateFallbackCyberneticHTML(formData);
+      try {
+        const response = await fetch(webhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(requestBody),
+        });
+
+        if (response.ok) {
+          const contentType = response.headers.get('content-type') || '';
+          if (contentType.includes('application/json')) {
+            const data: CraftGenerateResponse = await response.json();
+            if (data.status === 'success' || data.success) {
+              if (data.layout_json) {
+                renderLegoCanvas(data.layout_json);
+              }
+              htmlResult = data.htmlStream || generatedHtml || generateFallbackCyberneticHTML(formData as any);
+            } else {
+              throw new Error(data.message || data.error || 'Server returned error status');
+            }
+          } else {
+            const textResponse = await response.text();
+            try {
+              const parsed = JSON.parse(textResponse);
+              if (parsed.status === 'success' && parsed.layout_json) {
+                renderLegoCanvas(parsed.layout_json);
+              }
+            } catch {
+              // Raw HTML or stream
+              htmlResult = textResponse;
+            }
+          }
+        } else {
+          throw new Error(`Endpoint returned status ${response.status}`);
+        }
+      } catch (fetchErr: any) {
+        console.warn('[CRAFT ADAPTER] Live webhook fallback:', fetchErr);
+        htmlResult = generateFallbackCyberneticHTML(formData as any);
       }
 
       await new Promise((r) => setTimeout(r, 400));
@@ -428,10 +515,12 @@ export const CraftStudioConfigurator: React.FC = () => {
         'SUCCESS: 3D Web App Compiled & Verified at 60FPS SLA.',
       ]);
 
-      setGeneratedHtml(htmlResult);
+      if (htmlResult) {
+        setGeneratedHtml(htmlResult);
+      }
     } catch (err: any) {
       console.warn('Compilation fallback to local engine:', err);
-      const fallbackHtml = generateFallbackCyberneticHTML(formData);
+      const fallbackHtml = generateFallbackCyberneticHTML(formData as any);
       setGeneratedHtml(fallbackHtml);
       setCompileLogs((prev) => [
         ...prev,
@@ -585,6 +674,31 @@ export const CraftStudioConfigurator: React.FC = () => {
                     <span className="text-[10px] text-zinc-400 font-sans">
                       Headless Digital Plumbing Swarm • Kinematic Manipulator & Telemetry SLA 60FPS
                     </span>
+                  </div>
+                  {/* Task Mode Switcher */}
+                  <div className="grid grid-cols-2 gap-1 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => setActiveTabMode('USER_WEBAPP_GEN')}
+                      className={`py-1 px-2 border text-[10px] font-bold uppercase transition ${
+                        activeTabMode === 'USER_WEBAPP_GEN'
+                          ? 'border-[#00E5FF] bg-[#00E5FF]/20 text-[#00E5FF]'
+                          : 'border-zinc-800 bg-zinc-900/60 text-zinc-500 hover:text-zinc-300'
+                      }`}
+                    >
+                      WebApp Gen
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setActiveTabMode('FORGE_NODE')}
+                      className={`py-1 px-2 border text-[10px] font-bold uppercase transition ${
+                        activeTabMode === 'FORGE_NODE'
+                          ? 'border-[#5322FF] bg-[#5322FF]/20 text-white'
+                          : 'border-zinc-800 bg-zinc-900/60 text-zinc-500 hover:text-zinc-300'
+                      }`}
+                    >
+                      Forge Node (3D)
+                    </button>
                   </div>
                 </div>
 
