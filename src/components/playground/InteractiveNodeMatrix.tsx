@@ -17,6 +17,7 @@ export interface NodeCardProps {
   linkUrl?: string;
   accentColor?: string;
   primaryColor?: string;
+  ctaLabel?: string;
 }
 
 const NODES: NodeCardProps[] = [
@@ -25,40 +26,48 @@ const NODES: NodeCardProps[] = [
     number: 'NODE 01',
     title: 'Procedural 3D Render Engine',
     subtitle: '60 FPS Three.js procedural shader monolith with live audio synthesis.',
-    techStack: 'Three.js • WebGL • Web Audio API',
+    description: '60 FPS Three.js procedural shader monolith with live audio synthesis.',
+    techStack: ['Three.js', 'WebGL', 'Web Audio API'],
     icon: Box,
     badge: 'LIVE ENGINE',
     to: '/playground?tab=node-01',
+    ctaLabel: 'LAUNCH 3D ENGINE',
   },
   {
-    nodeId: 'node-02',
+    nodeId: 'NODE 02 // REMOTION STUDIO',
     number: 'NODE 02',
-    title: 'Remotion Motion Studio',
+    title: 'REMOTION MOTION STUDIO',
     subtitle: 'Deterministic programmatic video generation with 4-layer Lego stack.',
-    techStack: 'Remotion 4.0 • React • Kinetic Typography',
+    description: 'Deterministic programmatic video generation with 4-layer Lego stack. Compose procedural motion graphics via React code.',
+    techStack: ['Remotion 4.0', 'React', 'Kinetic Typography', 'WebGL'],
     icon: Film,
     badge: '2K 60FPS',
     to: '/playground?tab=node-02',
+    ctaLabel: 'LAUNCH MOTION STUDIO',
   },
   {
-    nodeId: 'node-03',
+    nodeId: 'NODE 03 // BANNER STUDIO',
     number: 'NODE 03',
-    title: 'Automated Banner Studio',
+    title: 'AUTOMATED BANNER STUDIO',
     subtitle: 'Dynamic branding asset synthesis with SVG export and batch generation.',
-    techStack: 'HTML5 Canvas • SVG • n8n Webhook',
+    description: 'Dynamic branding asset synthesis with SVG vector export, batch production, and headless automated delivery.',
+    techStack: ['HTML5 Canvas', 'SVG Engine', 'n8n Webhook', 'Brutalist Tokens'],
     icon: Image,
     badge: 'BATCH ASSETS',
     to: '/playground?tab=node-03',
+    ctaLabel: 'OPEN BANNER STUDIO',
   },
   {
-    nodeId: 'node-04',
+    nodeId: 'NODE 04 // MEKONG CAD',
     number: 'NODE 04',
-    title: 'Open Mekong CAD Visualizer',
+    title: 'OPEN MEKONG CAD VISUALIZER',
     subtitle: 'Real-time environmental CKAN data pipeline with waveform visualizer.',
-    techStack: 'PapaParse • CKAN API • Line Art',
+    description: 'Real-time environmental CKAN data pipeline with waveform visualizer and line-art telemetry analysis.',
+    techStack: ['PapaParse', 'CKAN API', 'Line Art', 'Waveform Visualizer'],
     icon: BarChart3,
     badge: 'LIVE DATA',
     to: '/playground?tab=node-04',
+    ctaLabel: 'OPEN MEKONG CAD',
   },
   {
     id: 'plug-and-play-sandbox',
@@ -72,6 +81,7 @@ const NODES: NodeCardProps[] = [
     accentColor: '#5322FF',
     primaryColor: '#00E5FF',
     to: '/playground?node=plug-and-play-sandbox',
+    ctaLabel: 'OPEN PLUG & PLAY SANDBOX',
   },
   {
     id: '3d-data-metropolis',
@@ -84,8 +94,84 @@ const NODES: NodeCardProps[] = [
     linkUrl: 'https://3d-data-metropolis-corporate-profit-visualization.mizu2711.workers.dev/',
     accentColor: '#00E5FF',
     primaryColor: '#5322FF',
+    ctaLabel: 'LAUNCH 3D METROPOLIS DEMO',
   },
 ];
+
+interface HubCardProps {
+  nodeId: string;
+  badge: string;
+  title: string;
+  description: string;
+  techStack: string[];
+  ctaLabel: string;
+  onClickUrl?: string;
+  onAction?: () => void;
+  accentColor?: string;
+}
+
+export const UnifiedHubCard: React.FC<HubCardProps> = ({
+  nodeId,
+  badge,
+  title,
+  description,
+  techStack,
+  ctaLabel,
+  onClickUrl,
+  onAction,
+}) => (
+  <div className="p-4 border border-[#5322FF]/40 bg-[#09090B] hover:border-[#00E5FF] transition-all flex flex-col justify-between gap-4 group h-full">
+    <div className="space-y-2.5">
+      {/* Top Badge Line */}
+      <div className="flex items-center justify-between text-[10px] font-mono">
+        <span className="text-[#5322FF] font-bold">{nodeId}</span>
+        <span className="px-2 py-0.5 bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/30 font-bold uppercase">
+          {badge}
+        </span>
+      </div>
+
+      {/* Title & Description */}
+      <h3 className="text-sm font-bold text-white uppercase tracking-wider group-hover:text-[#00E5FF] transition">
+        {title}
+      </h3>
+      <p className="text-xs text-zinc-400 font-sans leading-relaxed line-clamp-3">
+        {description}
+      </p>
+
+      {/* Tech Stack Pills */}
+      <div className="flex flex-wrap gap-1.5 pt-1">
+        {techStack.map((tech) => (
+          <span
+            key={tech}
+            className="px-1.5 py-0.5 bg-zinc-900 border border-zinc-800 text-[9px] font-mono text-zinc-300"
+          >
+            {tech}
+          </span>
+        ))}
+      </div>
+    </div>
+
+    {/* CTA Button Action */}
+    {onClickUrl ? (
+      <a
+        href={onClickUrl}
+        target={onClickUrl.startsWith('http') ? '_blank' : '_self'}
+        rel="noopener noreferrer"
+        className="w-full py-2 px-3 bg-[#5322FF] hover:bg-[#5322FF]/80 text-white font-mono text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 text-center"
+      >
+        <span>{ctaLabel} ➔</span>
+      </a>
+    ) : (
+      <button
+        type="button"
+        onClick={onAction}
+        className="w-full py-2 px-3 bg-[#5322FF] hover:bg-[#5322FF]/80 text-white font-mono text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 text-center"
+      >
+        <span>{ctaLabel} ➔</span>
+      </button>
+    )}
+  </div>
+);
 
 export const InteractiveNodeMatrix: React.FC<UniversalComponentProps> = ({
   className = '',
@@ -132,174 +218,83 @@ export const InteractiveNodeMatrix: React.FC<UniversalComponentProps> = ({
         {/* 6-Node Bento Matrix */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {NODES.map((node, index) => {
-            if (node.id === 'plug-and-play-sandbox') {
-              const techList = Array.isArray(node.techStack)
-                ? node.techStack
-                : [node.techStack];
+            const techList = Array.isArray(node.techStack)
+              ? node.techStack
+              : [node.techStack];
+
+            // Node 01: Retains its distinct Flagship Hero badge and primary highlight style
+            if (index === 0) {
+              const Icon = node.icon || Box;
               return (
-                <div
-                  key={node.id}
-                  className="p-4 border border-[#5322FF]/50 bg-[#09090B] hover:border-[#00E5FF] transition flex flex-col justify-between gap-4 group"
+                <Link
+                  key={node.nodeId}
+                  to={node.to || '/playground?tab=node-01'}
+                  className="group relative border border-[#00E5FF] bg-[#0c1220]/80 hover:bg-[#0e1628] transition-all duration-300 p-6 flex flex-col justify-between"
                 >
-                  <div className="space-y-2">
-                    {/* Header Badges */}
-                    <div className="flex items-center justify-between text-[10px] font-mono">
-                      <span className="text-[#5322FF] font-bold">NODE 05 // PLUG & PLAY</span>
-                      <span className="px-2 py-0.5 bg-[#5322FF]/20 text-[#00E5FF] border border-[#00E5FF]/40 font-bold uppercase">
-                        {node.badge || 'INTERACTIVE SANDBOX // 60 FPS'}
+                  {/* Card Top */}
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-[10px] text-zinc-500 font-bold tracking-widest uppercase">
+                        {node.number || 'NODE 01'}
+                      </span>
+                      <span className="text-[9px] px-2 py-0.5 border border-[#00E5FF]/60 text-[#00E5FF] bg-[#00E5FF]/10 font-bold uppercase">
+                        {node.badge || 'FLAGSHIP HERO'}
                       </span>
                     </div>
 
-                    {/* Title & Description */}
-                    <h3 className="text-sm font-bold text-white uppercase tracking-wider group-hover:text-[#00E5FF] transition">
-                      {node.title}
-                    </h3>
-                    <p className="text-xs text-zinc-400 font-sans leading-relaxed">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="p-2 border border-[#00E5FF]/40 text-[#00E5FF] bg-[#00E5FF]/10">
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <h3 className="text-base font-bold text-white uppercase tracking-tight group-hover:text-[#00E5FF] transition-colors">
+                        {node.title}
+                      </h3>
+                    </div>
+
+                    <p className="text-xs text-zinc-400 leading-relaxed font-sans mb-6">
                       {node.description || node.subtitle}
                     </p>
-
-                    {/* Tech Stack Badges */}
-                    <div className="flex flex-wrap gap-1.5 pt-1">
-                      {techList.map((tech) => (
-                        <span
-                          key={tech}
-                          className="px-1.5 py-0.5 bg-zinc-900 border border-zinc-800 text-[9px] font-mono text-zinc-300"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
                   </div>
 
-                  {/* CTA Launch Action */}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      // Trigger PlugAndPlaySandbox view or route toggle
-                      console.log('Launching Plug and Play Sandbox...');
-                      navigate(node.linkUrl || '/playground?node=plug-and-play-sandbox');
-                    }}
-                    className="w-full py-2 px-3 bg-[#5322FF] hover:bg-[#5322FF]/80 text-white font-mono text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 text-center"
-                  >
-                    <span>OPEN PLUG & PLAY SANDBOX ➔</span>
-                  </button>
-                </div>
+                  {/* Card Bottom */}
+                  <div className="pt-4 border-t border-zinc-800/80 flex items-center justify-between text-[11px]">
+                    <span className="text-zinc-500 font-mono text-[10px]">
+                      {techList.join(' • ')}
+                    </span>
+                    <div className="flex items-center gap-1 text-[#00E5FF] font-bold group-hover:translate-x-1 transition-transform">
+                      <span>ENTER</span>
+                      <ArrowUpRight className="w-3.5 h-3.5" />
+                    </div>
+                  </div>
+                </Link>
               );
             }
 
-            if (node.id === '3d-data-metropolis' || (node.linkUrl && node.linkUrl.startsWith('http'))) {
-              const techList = Array.isArray(node.techStack)
-                ? node.techStack
-                : [node.techStack];
-              return (
-                <div
-                  key={node.id || node.nodeId}
-                  className="p-4 border border-[#5322FF]/50 bg-[#09090B] hover:border-[#00E5FF] transition flex flex-col justify-between gap-4 group"
-                >
-                  <div className="space-y-2">
-                    {/* Header Badges */}
-                    <div className="flex items-center justify-between text-[10px] font-mono">
-                      <span className="text-[#5322FF] font-bold">{node.nodeId}</span>
-                      <span className="px-2 py-0.5 bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/40 font-bold uppercase">
-                        {node.badge || 'LIVE WORKER // 60 FPS SLA'}
-                      </span>
-                    </div>
-
-                    {/* Title & Description */}
-                    <h3 className="text-sm font-bold text-white uppercase tracking-wider group-hover:text-[#00E5FF] transition">
-                      {node.title}
-                    </h3>
-                    <p className="text-xs text-zinc-400 font-sans leading-relaxed">
-                      {node.description || node.subtitle}
-                    </p>
-
-                    {/* Tech Stack Badges */}
-                    <div className="flex flex-wrap gap-1.5 pt-1">
-                      {techList.map((tech) => (
-                        <span
-                          key={tech}
-                          className="px-1.5 py-0.5 bg-zinc-900 border border-zinc-800 text-[9px] font-mono text-zinc-300"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* CTA Button Link */}
-                  <a
-                    href={node.linkUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full py-2 px-3 bg-[#5322FF] hover:bg-[#5322FF]/80 text-white font-mono text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 text-center"
-                  >
-                    <span>LAUNCH 3D METROPOLIS DEMO ➔</span>
-                  </a>
-                </div>
-              );
-            }
-
-            const Icon = node.icon || Box;
-            const isHighlight = index === 0;
+            // Nodes 02 to 06: Unified Cybernetic Brutalist Card Template
+            const destinationUrl = node.linkUrl || node.to;
+            const isExternal = Boolean(destinationUrl && destinationUrl.startsWith('http'));
 
             return (
-              <Link
-                key={node.nodeId}
-                to={node.to || '/playground'}
-                className={`group relative border transition-all duration-300 p-6 flex flex-col justify-between ${
-                  isHighlight
-                    ? 'border-[#00E5FF] bg-[#0c1220]/80 hover:bg-[#0e1628]'
-                    : 'border-zinc-800 bg-[#0c0c12]/60 hover:border-zinc-700 hover:bg-[#101018]'
-                }`}
-              >
-                {/* Card Top */}
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-[10px] text-zinc-500 font-bold tracking-widest uppercase">
-                      {node.number}
-                    </span>
-                    <span
-                      className={`text-[9px] px-2 py-0.5 border ${
-                        isHighlight
-                          ? 'border-[#00E5FF]/60 text-[#00E5FF] bg-[#00E5FF]/10'
-                          : 'border-zinc-700 text-zinc-400 bg-zinc-900'
-                      }`}
-                    >
-                      {node.badge}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-3 mb-3">
-                    <div
-                      className={`p-2 border ${
-                        isHighlight
-                          ? 'border-[#00E5FF]/40 text-[#00E5FF] bg-[#00E5FF]/10'
-                          : 'border-zinc-800 text-zinc-400 bg-zinc-900 group-hover:text-white'
-                      }`}
-                    >
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <h3 className="text-base font-bold text-white uppercase tracking-tight group-hover:text-[#00E5FF] transition-colors">
-                      {node.title}
-                    </h3>
-                  </div>
-
-                  <p className="text-xs text-zinc-400 leading-relaxed font-sans mb-6">
-                    {node.subtitle}
-                  </p>
-                </div>
-
-                {/* Card Bottom */}
-                <div className="pt-4 border-t border-zinc-800/80 flex items-center justify-between text-[11px]">
-                  <span className="text-zinc-500 font-mono text-[10px]">
-                    {Array.isArray(node.techStack) ? node.techStack.join(' • ') : node.techStack}
-                  </span>
-                  <div className="flex items-center gap-1 text-[#00E5FF] font-bold group-hover:translate-x-1 transition-transform">
-                    <span>ENTER</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-              </Link>
+              <UnifiedHubCard
+                key={node.id || node.nodeId}
+                nodeId={node.nodeId}
+                badge={node.badge || '60 FPS'}
+                title={node.title}
+                description={node.description || node.subtitle}
+                techStack={techList}
+                ctaLabel={node.ctaLabel || 'LAUNCH NODE'}
+                onClickUrl={isExternal ? destinationUrl : undefined}
+                onAction={
+                  !isExternal && destinationUrl
+                    ? () => {
+                        if (node.id === 'plug-and-play-sandbox') {
+                          console.log('Launching Plug and Play Sandbox...');
+                        }
+                        navigate(destinationUrl);
+                      }
+                    : undefined
+                }
+              />
             );
           })}
         </div>
