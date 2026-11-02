@@ -203,6 +203,10 @@ export const BACKGROUND_COMPONENTS: Record<string, React.FC<any>> = {
   QuantumWaveformBg,
   AnomalousNoiseField,
   VolumetricFogHUD,
+  ElectricIndigoGrid: HyperdriveGridBg,
+  TileJulesOctopusMatrix4x4: SwissGridHUD,
+  TileJulesOctopusMatrix8x8: SwissGridHUD,
+  TileJulesOctopusMatrix16x16: SwissGridHUD,
 };
 
 export const AVAILABLE_BACKGROUNDS = [
@@ -225,43 +229,21 @@ export const AVAILABLE_MOTION_TOKENS = [
   { value: 'magnetic-attraction', label: 'Cursor Vector Field Physics', icon: Activity },
 ];
 
-const PRESET_PALETTES = [
-  {
-    id: 'obsidian-indigo',
-    name: 'Obsidian & Indigo',
-    bg: '#09090B',
-    primary: '#5322FF',
-    accent: '#00E5FF',
-    font: 'Space Grotesk' as const,
-    desc: 'Signature cybernetic brutalism with electric indigo & laser cyan.',
-  },
-  {
-    id: 'titanium-cyan',
-    name: 'Titanium & Cyan',
-    bg: '#18181B',
-    primary: '#00E5FF',
-    accent: '#5322FF',
-    font: 'Inter' as const,
-    desc: 'High-precision aerospace machined titanium with neon cyan telemetry.',
-  },
-  {
-    id: 'cyber-green',
-    name: 'Cybernetic Matrix',
-    bg: '#05050A',
-    primary: '#5322FF',
-    accent: '#10B981',
-    font: 'JetBrains Mono' as const,
-    desc: 'Tactical phosphor emerald with dark obsidian background.',
-  },
-  {
-    id: 'industrial-amber',
-    name: 'Industrial Amber',
-    bg: '#0C0A09',
-    primary: '#F59E0B',
-    accent: '#10B981',
-    font: 'Space Grotesk' as const,
-    desc: 'Heavy machinery warning amber with positive diagnostic green.',
-  },
+export const SIGNATURE_PALETTES = [
+  { name: 'Obsidian & Indigo', primary: '#5322FF', accent: '#00E5FF', bg: '#09090B' },
+  { name: 'Titanium & Cyan', primary: '#00E5FF', accent: '#3B82F6', bg: '#0F172A' },
+  { name: 'Cybernetic Matrix', primary: '#10B981', accent: '#34D399', bg: '#022C22' },
+  { name: 'Industrial Amber', primary: '#F59E0B', accent: '#FBBF24', bg: '#18181B' },
+];
+
+export const ENVIRONMENT_CARDS = [
+  { id: 'SwissGridHUD', label: 'Obsidian Cleanroom (#09090B)' },
+  { id: 'ElectricIndigoGrid', label: 'Electric Indigo Mesh (#5322FF)' },
+  { id: 'TileJulesOctopusMatrix4x4', label: 'Jules Octopus Matrix (4x4 Grid)' },
+  { id: 'TileJulesOctopusMatrix8x8', label: 'Jules Octopus Matrix (8x8 Grid)' },
+  { id: 'TileJulesOctopusMatrix16x16', label: 'Jules Octopus Matrix (16x16 Grid)' },
+  { id: 'CyberpunkMatrixBg', label: 'Cyber Phosphor Emerald CAD (#10B981)' },
+  { id: 'VolumetricFogHUD', label: 'Brutalist High-Contrast Zinc' },
 ];
 
 export const CraftStudioConfigurator: React.FC = () => {
@@ -288,6 +270,30 @@ export const CraftStudioConfigurator: React.FC = () => {
       const url = URL.createObjectURL(file);
       setFormData((prev) => ({ ...prev, logoUrl: url }));
     }
+  };
+
+  const setPrimaryColor = (color: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      primaryColor: color,
+      theme: { ...prev.theme, primaryColor: color },
+    }));
+  };
+
+  const setAccentColor = (color: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      accentColor: color,
+      theme: { ...prev.theme, accentColor: color },
+    }));
+  };
+
+  const setBackgroundColor = (color: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      backgroundColor: color,
+      theme: { ...prev.theme, backgroundColor: color },
+    }));
   };
 
   // State: AI Stylist & Streaming Generator
@@ -670,6 +676,7 @@ export const CraftStudioConfigurator: React.FC = () => {
 
   // Active Background Component resolved from backgroundShader state
   const ActiveBg = BACKGROUND_COMPONENTS[backgroundShader] || SwissGridHUD;
+  const backgroundColor = formData.theme?.backgroundColor || formData.backgroundColor || '#09090B';
   const primaryColor = formData.theme?.primaryColor || formData.primaryColor || '#5322FF';
   const accentColor = formData.theme?.accentColor || formData.accentColor || '#00E5FF';
 
@@ -913,38 +920,28 @@ export const CraftStudioConfigurator: React.FC = () => {
                   <span>STEP 2 // AESTHETIC & VISUAL AI STYLIST</span>
                 </div>
 
-                {/* LỚP 1: Preset Swatches */}
+                {/* LỚP 1: Signature Palettes (1-Click Cards) */}
                 <div className="space-y-2">
                   <div className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
-                    Lớp 1: Signature Palettes (1-Click)
+                    Lớp 1: Signature Palettes (1-Click Cards)
                   </div>
                   <div className="grid grid-cols-2 gap-2">
-                    {PRESET_PALETTES.map((p) => (
-                      <button
-                        key={p.id}
-                        onClick={() =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            theme: {
-                              ...prev.theme,
-                              backgroundColor: p.bg,
-                              primaryColor: p.primary,
-                              accentColor: p.accent,
-                              fontFamily: p.font,
-                            },
-                          }))
-                        }
-                        className={`p-2.5 border text-left transition flex flex-col gap-1.5 ${
-                          formData.theme.backgroundColor === p.bg &&
-                          formData.theme.primaryColor === p.primary
-                            ? 'border-[#00E5FF] bg-zinc-900 shadow-[0_0_10px_rgba(0,229,255,0.2)]'
-                            : 'border-zinc-800 bg-zinc-950/80 hover:border-zinc-700'
+                    {SIGNATURE_PALETTES.map((p) => (
+                      <div
+                        key={p.name}
+                        onClick={() => {
+                          setPrimaryColor(p.primary);
+                          setAccentColor(p.accent);
+                          setBackgroundColor(p.bg);
+                        }}
+                        className={`p-3 border rounded cursor-pointer transition-all ${
+                          primaryColor === p.primary
+                            ? 'border-emerald-400 bg-[#5322FF]/20'
+                            : 'border-zinc-800 bg-[#09090B]'
                         }`}
                       >
-                        <div className="flex items-center justify-between">
-                          <span className="text-[10px] font-bold text-white">
-                            {p.name}
-                          </span>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <div className="text-xs font-bold font-mono text-white">{p.name}</div>
                           <div className="flex items-center gap-1">
                             <span
                               className="w-2.5 h-2.5 rounded-full border border-black"
@@ -956,10 +953,10 @@ export const CraftStudioConfigurator: React.FC = () => {
                             />
                           </div>
                         </div>
-                        <span className="text-[8px] text-zinc-500 line-clamp-1">
-                          {p.desc}
-                        </span>
-                      </button>
+                        <div className="text-[9px] text-zinc-500 font-mono">
+                          {p.primary} / {p.accent}
+                        </div>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -1015,97 +1012,101 @@ export const CraftStudioConfigurator: React.FC = () => {
                 {/* LỚP 3: Manual Fine-Tuning */}
                 <div className="space-y-3">
                   <div className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
-                    Lớp 3: Manual Fine-Tuning
+                    Lớp 3: Manual Fine-Tuning (Hex Color Inputs)
                   </div>
                   <div className="grid grid-cols-3 gap-2">
-                    <div>
-                      <label className="text-[9px] text-zinc-500 block mb-1">
+                    <div className="space-y-1">
+                      <label className="text-[9px] text-zinc-500 block">
                         BACKGROUND
                       </label>
+                      <input
+                        type="text"
+                        value={backgroundColor}
+                        onChange={(e) => setBackgroundColor(e.target.value)}
+                        className="bg-[#09090B] border border-zinc-800 text-white font-mono text-xs px-2 py-1 w-full"
+                      />
                       <div className="flex items-center gap-1.5 border border-zinc-800 bg-zinc-950 p-1">
                         <input
                           type="color"
-                          value={formData.theme.backgroundColor}
-                          onChange={(e) =>
-                            setFormData((prev) => ({
-                              ...prev,
-                              theme: { ...prev.theme, backgroundColor: e.target.value },
-                            }))
-                          }
-                          className="w-5 h-5 bg-transparent cursor-pointer border-0"
+                          value={backgroundColor.startsWith('#') && (backgroundColor.length === 4 || backgroundColor.length === 7) ? backgroundColor : '#09090B'}
+                          onChange={(e) => setBackgroundColor(e.target.value)}
+                          className="w-4 h-4 bg-transparent cursor-pointer border-0"
                         />
-                        <span className="text-[9px] text-zinc-400">
-                          {formData.theme.backgroundColor}
+                        <span className="text-[8px] text-zinc-400 truncate">
+                          {backgroundColor}
                         </span>
                       </div>
                     </div>
 
-                    <div>
-                      <label className="text-[9px] text-zinc-500 block mb-1">
+                    <div className="space-y-1">
+                      <label className="text-[9px] text-zinc-500 block">
                         PRIMARY
                       </label>
+                      <input
+                        type="text"
+                        value={primaryColor}
+                        onChange={(e) => setPrimaryColor(e.target.value)}
+                        className="bg-[#09090B] border border-zinc-800 text-white font-mono text-xs px-2 py-1 w-full"
+                      />
                       <div className="flex items-center gap-1.5 border border-zinc-800 bg-zinc-950 p-1">
                         <input
                           type="color"
-                          value={formData.theme.primaryColor}
-                          onChange={(e) =>
-                            setFormData((prev) => ({
-                              ...prev,
-                              theme: { ...prev.theme, primaryColor: e.target.value },
-                            }))
-                          }
-                          className="w-5 h-5 bg-transparent cursor-pointer border-0"
+                          value={primaryColor.startsWith('#') && (primaryColor.length === 4 || primaryColor.length === 7) ? primaryColor : '#5322FF'}
+                          onChange={(e) => setPrimaryColor(e.target.value)}
+                          className="w-4 h-4 bg-transparent cursor-pointer border-0"
                         />
-                        <span className="text-[9px] text-zinc-400">
-                          {formData.theme.primaryColor}
+                        <span className="text-[8px] text-zinc-400 truncate">
+                          {primaryColor}
                         </span>
                       </div>
                     </div>
 
-                    <div>
-                      <label className="text-[9px] text-zinc-500 block mb-1">
+                    <div className="space-y-1">
+                      <label className="text-[9px] text-zinc-500 block">
                         ACCENT
                       </label>
+                      <input
+                        type="text"
+                        value={accentColor}
+                        onChange={(e) => setAccentColor(e.target.value)}
+                        className="bg-[#09090B] border border-zinc-800 text-white font-mono text-xs px-2 py-1 w-full"
+                      />
                       <div className="flex items-center gap-1.5 border border-zinc-800 bg-zinc-950 p-1">
                         <input
                           type="color"
-                          value={formData.theme.accentColor}
-                          onChange={(e) =>
-                            setFormData((prev) => ({
-                              ...prev,
-                              theme: { ...prev.theme, accentColor: e.target.value },
-                            }))
-                          }
-                          className="w-5 h-5 bg-transparent cursor-pointer border-0"
+                          value={accentColor.startsWith('#') && (accentColor.length === 4 || accentColor.length === 7) ? accentColor : '#00E5FF'}
+                          onChange={(e) => setAccentColor(e.target.value)}
+                          className="w-4 h-4 bg-transparent cursor-pointer border-0"
                         />
-                        <span className="text-[9px] text-zinc-400">
-                          {formData.theme.accentColor}
+                        <span className="text-[8px] text-zinc-400 truncate">
+                          {accentColor}
                         </span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Step 02 Explicit Dropdown for All 9 Background Shaders */}
+                  {/* Studio Environment Background (7 Clickable Cards) */}
                   <div className="space-y-1.5">
                     <label className="text-[10px] text-zinc-400 font-bold uppercase flex items-center justify-between">
-                      <span>Background Shader Engine (9 Shaders)</span>
+                      <span>Studio Environment Background (7 Environments)</span>
                       <span className="text-[#00E5FF] text-[9px] font-mono">DYNAMIC SHADER</span>
                     </label>
-                    <select
-                      value={backgroundShader}
-                      onChange={(e) => setBackgroundShader(e.target.value)}
-                      className="w-full bg-[#09090B] border border-[#5322FF] text-white p-2 rounded font-mono text-xs focus:outline-none focus:border-[#00E5FF]"
-                    >
-                      <option value="SwissGridHUD">Swiss Grid HUD</option>
-                      <option value="CyberpunkMatrixBg">Cyberpunk Matrix</option>
-                      <option value="HolographicBlueprintBg">Holographic Blueprint</option>
-                      <option value="HyperdriveGridBg">Hyperdrive Grid 3D</option>
-                      <option value="IsometricGridBg">Isometric Grid</option>
-                      <option value="ParticleTunnelBg">Particle Tunnel</option>
-                      <option value="QuantumWaveformBg">Quantum Waveform</option>
-                      <option value="AnomalousNoiseField">Anomalous Noise Field</option>
-                      <option value="VolumetricFogHUD">Volumetric Fog HUD</option>
-                    </select>
+                    <div className="flex flex-col gap-1.5">
+                      {ENVIRONMENT_CARDS.map((card) => (
+                        <div
+                          key={card.id}
+                          onClick={() => setBackgroundShader(card.id)}
+                          className={`p-3 border rounded cursor-pointer flex items-center justify-between transition-all ${
+                            backgroundShader === card.id
+                              ? 'border-[#5322FF] bg-[#5322FF]/20 text-white font-bold'
+                              : 'border-zinc-800 bg-[#09090B] text-zinc-400 hover:border-zinc-600'
+                          }`}
+                        >
+                          <span className="font-mono text-xs">{card.label}</span>
+                          {backgroundShader === card.id && <span className="text-emerald-400 text-xs">✓ ACTIVE</span>}
+                        </div>
+                      ))}
+                    </div>
                   </div>
 
                   {/* Font Family Selector */}
@@ -1863,6 +1864,7 @@ export const CraftStudioConfigurator: React.FC = () => {
           {/* Central Canvas Viewport Frame */}
           <div className="flex-1 w-full h-full p-2 flex items-center justify-center overflow-hidden bg-black relative">
             <div
+              key={`${backgroundShader}-${primaryColor}-${accentColor}`}
               className={`h-full transition-all duration-300 relative border border-white/10 flex items-center justify-center bg-black overflow-hidden ${
                 deviceMode === 'desktop'
                   ? 'w-full'
