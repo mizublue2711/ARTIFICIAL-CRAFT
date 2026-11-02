@@ -4,33 +4,28 @@ import {
   Sparkles,
   Layers,
   Cpu,
-  Sliders,
   Terminal,
   Code,
   Download,
-  Share2,
   Maximize2,
   Minimize2,
   RotateCcw,
   Zap,
   Box,
-  Eye,
   Check,
-  ChevronDown,
-  ChevronRight,
   Monitor,
   Tablet,
   Smartphone,
-  ExternalLink,
-  Flame,
   CheckCircle2,
-  AlertCircle,
   Copy,
   FolderArchive,
   CloudLightning,
   RefreshCw,
-  SlidersHorizontal,
-  Compass,
+  Bot,
+  Boxes,
+  Radio,
+  Palette,
+  Activity,
 } from 'lucide-react';
 
 import {
@@ -142,11 +137,11 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
     accentColor: '#00E5FF',
     fontFamily: 'JetBrains Mono',
   },
-  secondaryAccentColor: '#00FF66',
+  secondaryAccentColor: '#10B981',
   codeFont: 'JetBrains Mono',
   motionTokens: ['kinetic-parallax', 'chromatic-aberration', 'magnetic-attraction'],
   roboticsNode: {
-    modelType: 'robot-arm',
+    modelType: 'RoboticsHandNode',
     wireframe: true,
     rotationSpeed: 1.5,
     autoAnimate: true,
@@ -179,30 +174,30 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
 };
 
 export const AVAILABLE_3D_COMPONENTS = [
-  { value: 'RoboticsHandNode', label: '🦾 Robotic Arm 6DOF Manipulator' },
-  { value: 'BipedalRobotMesh', label: '🤖 Bipedal Kinematic Assembler' },
-  { value: 'PointCloudNode', label: '🌌 Point Cloud Telemetry Core' },
-  { value: 'HolographicCore', label: '🔮 Holographic Energy Reactor' },
-  { value: 'ConveyorBeltV2', label: '🏭 Cybernetic Conveyor System' },
-  { value: 'CleanroomSwarmTerminal', label: '🏛️ Obsidian Cleanroom Terminal' },
+  { value: 'RoboticsHandNode', label: 'Robotic Arm 6DOF Manipulator', icon: Bot },
+  { value: 'BipedalRobotMesh', label: 'Bipedal Kinematic Assembler', icon: Cpu },
+  { value: 'PointCloudNode', label: 'Point Cloud Telemetry Core', icon: Boxes },
+  { value: 'HolographicCore', label: 'Holographic Energy Reactor', icon: Radio },
+  { value: 'ConveyorBeltV2', label: 'Cybernetic Conveyor System', icon: Terminal },
+  { value: 'CleanroomSwarmTerminal', label: 'Obsidian Cleanroom Terminal', icon: Layers },
 ];
 
 export const AVAILABLE_BACKGROUNDS = [
-  { value: 'obsidian-cleanroom', label: '⬛ Obsidian Cleanroom (#09090B)', color: '#09090B' },
-  { value: 'electric-indigo-grid', label: '🟪 Electric Indigo Mesh (#5322FF)', color: '#5322FF' },
-  { value: 'tile-jules-octopus-4x4', label: '🔲 Jules Octopus Matrix (4x4 Grid)', color: '#09090B' },
-  { value: 'tile-jules-octopus-8x8', label: '🔳 Jules Octopus Matrix (8x8 Grid)', color: '#09090B' },
-  { value: 'tile-jules-octopus-16x16', label: '📐 Jules Octopus Matrix (16x16 Grid)', color: '#09090B' },
-  { value: 'cyber-green-wireframe', label: '🟢 Cyber Green CAD Wireframe (#00FF66)', color: '#00FF66' },
-  { value: 'brutalist-monochrome', label: '⚪ Brutalist High-Contrast Zinc', color: '#18181B' },
+  { value: 'obsidian-cleanroom', label: 'Obsidian Cleanroom (#09090B)', color: '#09090B', icon: Box },
+  { value: 'electric-indigo-grid', label: 'Electric Indigo Mesh (#5322FF)', color: '#5322FF', icon: Layers },
+  { value: 'tile-jules-octopus-4x4', label: 'Jules Octopus Matrix (4x4 Grid)', color: '#09090B', icon: Boxes },
+  { value: 'tile-jules-octopus-8x8', label: 'Jules Octopus Matrix (8x8 Grid)', color: '#09090B', icon: Boxes },
+  { value: 'tile-jules-octopus-16x16', label: 'Jules Octopus Matrix (16x16 Grid)', color: '#09090B', icon: Boxes },
+  { value: 'cyber-green-wireframe', label: 'Cyber Phosphor Emerald CAD (#10B981)', color: '#10B981', icon: Activity },
+  { value: 'brutalist-monochrome', label: 'Brutalist High-Contrast Zinc', color: '#18181B', icon: Palette },
 ];
 
 export const AVAILABLE_MOTION_TOKENS = [
-  { value: 'kinetic-parallax', label: '🎥 Kinetic Parallax Camera Drift' },
-  { value: 'glitch-flicker', label: '⚡ Cybernetic Shader Glitch' },
-  { value: 'chromatic-aberration', label: '🌈 Chromatic Aberration Lens' },
-  { value: 'text-clipping-reveal', label: '🔤 Kinetic Title Clipping Reveal' },
-  { value: 'magnetic-attraction', label: '🧲 Cursor Vector Field Physics' },
+  { value: 'kinetic-parallax', label: 'Kinetic Parallax Camera Drift', icon: Sparkles },
+  { value: 'glitch-flicker', label: 'Cybernetic Shader Glitch', icon: Zap },
+  { value: 'chromatic-aberration', label: 'Chromatic Aberration Lens', icon: Palette },
+  { value: 'text-clipping-reveal', label: 'Kinetic Title Clipping Reveal', icon: Terminal },
+  { value: 'magnetic-attraction', label: 'Cursor Vector Field Physics', icon: Activity },
 ];
 
 const PRESET_PALETTES = [
@@ -229,7 +224,7 @@ const PRESET_PALETTES = [
     name: 'Cybernetic Matrix',
     bg: '#05050A',
     primary: '#5322FF',
-    accent: '#00FF66',
+    accent: '#10B981',
     font: 'JetBrains Mono' as const,
     desc: 'Tactical phosphor emerald with dark obsidian background.',
   },
@@ -404,7 +399,7 @@ export const CraftStudioConfigurator: React.FC = () => {
       } else if (lower.includes('emerald') || lower.includes('matrix') || lower.includes('green')) {
         mockAIPalette = {
           backgroundColor: '#050a06',
-          primaryColor: '#00FF66',
+          primaryColor: '#10B981',
           accentColor: '#00E5FF',
           fontFamily: 'JetBrains Mono',
         };
@@ -765,9 +760,14 @@ export const CraftStudioConfigurator: React.FC = () => {
                   <input
                     type="text"
                     value={formData.brandName}
-                    onChange={(e) =>
-                      setFormData((p) => ({ ...p, brandName: e.target.value }))
-                    }
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setFormData((p) => ({
+                        ...p,
+                        brandName: val,
+                        compositionId: val,
+                      }));
+                    }}
                     placeholder="ARTIFICIAL CRAFT"
                     className="w-full px-3 py-2 bg-zinc-900/90 border border-zinc-800 text-white text-xs focus:outline-none focus:border-[#5322FF] transition"
                   />
@@ -784,9 +784,14 @@ export const CraftStudioConfigurator: React.FC = () => {
                   <input
                     type="text"
                     value={formData.tagline}
-                    onChange={(e) =>
-                      setFormData((p) => ({ ...p, tagline: e.target.value }))
-                    }
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setFormData((p) => ({
+                        ...p,
+                        tagline: val,
+                        slogan: val,
+                      }));
+                    }}
                     placeholder="Robots for Everyone // Cybernetic Automation"
                     className="w-full px-3 py-2 bg-zinc-900/90 border border-zinc-800 text-white text-xs focus:outline-none focus:border-[#5322FF] transition"
                   />
@@ -1019,28 +1024,44 @@ export const CraftStudioConfigurator: React.FC = () => {
                     <label className="text-[10px] text-zinc-400 font-bold uppercase">
                       Studio Environment Background
                     </label>
-                    <select
-                      value={formData.theme.backgroundColor}
-                      onChange={(e) => {
-                        const selectedBg = AVAILABLE_BACKGROUNDS.find(b => b.color === e.target.value || b.value === e.target.value);
-                        const nextColor = selectedBg ? selectedBg.color : e.target.value;
-                        setFormData((prev) => ({
-                          ...prev,
-                          backgroundColor: nextColor,
-                          theme: {
-                            ...prev.theme,
-                            backgroundColor: nextColor,
-                          },
-                        }));
-                      }}
-                      className="w-full px-2.5 py-1.5 bg-zinc-950 border border-zinc-800 text-white text-xs focus:outline-none focus:border-[#5322FF]"
-                    >
-                      {AVAILABLE_BACKGROUNDS.map((bg) => (
-                        <option key={bg.value} value={bg.color}>
-                          {bg.label}
-                        </option>
-                      ))}
-                    </select>
+                    <div className="grid grid-cols-1 gap-1.5">
+                      {AVAILABLE_BACKGROUNDS.map((bg) => {
+                        const IconComponent = bg.icon;
+                        const isSelected =
+                          formData.theme.backgroundColor.toLowerCase() === bg.color.toLowerCase() ||
+                          formData.backgroundColor.toLowerCase() === bg.color.toLowerCase();
+                        return (
+                          <button
+                            key={bg.value}
+                            type="button"
+                            onClick={() => {
+                              setFormData((prev) => ({
+                                ...prev,
+                                backgroundColor: bg.color,
+                                theme: {
+                                  ...prev.theme,
+                                  backgroundColor: bg.color,
+                                },
+                              }));
+                            }}
+                            className={`w-full px-2.5 py-1.5 border text-left text-xs transition flex items-center justify-between ${
+                              isSelected
+                                ? 'border-[#5322FF] bg-[#5322FF]/15 text-white shadow-[0_0_10px_rgba(83,34,255,0.25)]'
+                                : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-white hover:border-zinc-700'
+                            }`}
+                          >
+                            <div className="flex items-center gap-2">
+                              <IconComponent className="w-3.5 h-3.5 text-[#00E5FF] stroke-[1.5]" />
+                              <span>{bg.label}</span>
+                            </div>
+                            <span
+                              className="w-3 h-3 border border-zinc-700 shrink-0"
+                              style={{ backgroundColor: bg.color }}
+                            />
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
 
                   {/* Font Family Selector */}
@@ -1132,33 +1153,48 @@ export const CraftStudioConfigurator: React.FC = () => {
                   <span>STEP 3 // 3D ENGINE & EXPLODED ASSEMBLY</span>
                 </div>
 
-                {/* 3D Mesh & Component Selector Dropdown */}
+                {/* 3D Mesh & Component Selector List */}
                 <div className="space-y-2">
                   <label className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
                     Base 3D Mesh Component
                   </label>
-                  <select
-                    value={formData.presetModel || formData.modelType || 'RoboticsHandNode'}
-                    onChange={(e) => {
-                      const selectedVal = e.target.value;
-                      setFormData((prev) => ({
-                        ...prev,
-                        presetModel: selectedVal,
-                        modelType: selectedVal,
-                        roboticsNode: {
-                          ...prev.roboticsNode,
-                          modelType: selectedVal as any,
-                        },
-                      }));
-                    }}
-                    className="w-full px-2.5 py-2 bg-zinc-950 border border-zinc-800 text-white text-xs font-mono focus:outline-none focus:border-[#5322FF]"
-                  >
-                    {AVAILABLE_3D_COMPONENTS.map((comp) => (
-                      <option key={comp.value} value={comp.value}>
-                        {comp.label}
-                      </option>
-                    ))}
-                  </select>
+                  <div className="grid grid-cols-1 gap-1.5">
+                    {AVAILABLE_3D_COMPONENTS.map((comp) => {
+                      const IconComponent = comp.icon;
+                      const activeModel = formData.presetModel || formData.modelType || 'RoboticsHandNode';
+                      const isSelected = activeModel === comp.value;
+                      return (
+                        <button
+                          key={comp.value}
+                          type="button"
+                          onClick={() => {
+                            setFormData((prev) => ({
+                              ...prev,
+                              presetModel: comp.value,
+                              modelType: comp.value,
+                              roboticsNode: {
+                                ...prev.roboticsNode,
+                                modelType: comp.value as any,
+                              },
+                            }));
+                          }}
+                          className={`w-full px-3 py-2 border text-left text-xs font-mono transition flex items-center justify-between ${
+                            isSelected
+                              ? 'border-[#5322FF] bg-[#5322FF]/20 text-white shadow-[0_0_12px_rgba(83,34,255,0.3)]'
+                              : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-white hover:border-zinc-700'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <IconComponent className="w-4 h-4 text-[#00E5FF] stroke-[1.5]" />
+                            <span>{comp.label}</span>
+                          </div>
+                          <span className="text-[10px] text-zinc-500 font-mono">
+                            {isSelected ? '[ACTIVE]' : comp.value}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
 
                 {/* Model Selector Presets */}
@@ -1488,6 +1524,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                   </div>
                   <div className="flex flex-col gap-1.5">
                     {AVAILABLE_MOTION_TOKENS.map((token) => {
+                      const IconComponent = token.icon;
                       const activeTokens: string[] = formData.motionTokens || [];
                       const isChecked = activeTokens.includes(token.value);
                       return (
@@ -1518,6 +1555,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                               }}
                               className="accent-[#00E5FF]"
                             />
+                            <IconComponent className="w-3.5 h-3.5 text-[#00E5FF] stroke-[1.5]" />
                             <span>{token.label}</span>
                           </div>
                           <span className="text-[9px] font-mono text-zinc-500">

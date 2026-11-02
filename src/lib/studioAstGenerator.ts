@@ -53,7 +53,7 @@ export interface StudioAstPayload {
 }
 
 export function normalizeStudioConfig(raw: any): StudioConfigData {
-  const brandName = raw?.compositionId || raw?.brandName || 'ARTIFICIAL_CRAFT';
+  const brandName = raw?.brandName || raw?.compositionId || 'ARTIFICIAL CRAFT';
   const slogan = raw?.slogan || raw?.tagline || 'Robots for Everyone // Cybernetic Automation';
   const logoUrl = raw?.logoUrl || 'https://raw.githubusercontent.com/artificial-craft/assets/main/logo-mark.svg';
   const bg = raw?.backgroundColor || raw?.theme?.backgroundColor || '#09090B';
@@ -889,10 +889,11 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
   const bg = config.backgroundColor || '#09090B';
   const primary = config.primaryColor || '#5322FF';
   const accent = config.accentColor || '#00E5FF';
-  const brand = config.compositionId || 'NODE_05_MANUFACTURING_FACTORY';
-  const tag = config.slogan || 'Autonomous 3D Manufacturing Pipeline & Multi-Agent Swarm';
+  const brand = rawConfig?.brandName || config.compositionId || 'ARTIFICIAL CRAFT';
+  const tag = rawConfig?.tagline || config.slogan || 'Robots for Everyone // Cybernetic Automation';
   const speed = 1.5;
   const isNode05 = brand.includes('NODE_05') || config.presetModel === 'kinematic_manipulator_arm';
+  const baseComponent = rawConfig?.base_component || config.presetModel || config.modelType || 'RoboticsHandNode';
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -998,7 +999,7 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
   </div>
 
   <div class="hud-telemetry">
-    <div>NODE: <span style="color:#fff;">${config.presetModel.toUpperCase()}</span></div>
+    <div>NODE: <span style="color:#fff;">${baseComponent.toUpperCase()}</span></div>
     <div>EXPLODED: <span style="color:${accent};">${config.explodedProgress}%</span></div>
     <div>SLA: <span style="color:${primary};">${config.telemetryFps} FPS</span></div>
     <div>PIPELINE: <span style="color:#10b981;">DIFY + N8N SWARM</span></div>
@@ -1044,19 +1045,119 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
         roughness: 0.2
       });
 
-      // Assembly components with exploded displacement
-      const core = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.7, 1.2, 16), mat);
-      group.add(core);
+      const accentMat = new THREE.MeshBasicMaterial({
+        color: '${accent}',
+        wireframe: true
+      });
 
-      const arm = new THREE.Mesh(new THREE.BoxGeometry(0.3, 1.8, 0.3), mat);
-      arm.position.set(0.6, 0.8 + (${config.explodedProgress} / 100.0) * 0.8, 0);
-      arm.rotation.z = -0.4;
-      group.add(arm);
+      const progress = (${config.explodedProgress} / 100.0);
+      const baseComp = '${baseComponent}';
 
-      const ring = new THREE.Mesh(new THREE.TorusGeometry(1.1, 0.06, 16, 32), new THREE.MeshBasicMaterial({ color: '${accent}', wireframe: true }));
-      ring.position.y = (${config.explodedProgress} / 100.0) * 0.6;
-      ring.rotation.x = Math.PI / 2;
-      group.add(ring);
+      if (baseComp === 'RoboticsHandNode' || baseComp === 'robot-arm' || baseComp === 'industrial-arm') {
+        const core = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.7, 1.2, 16), mat);
+        group.add(core);
+
+        const arm = new THREE.Mesh(new THREE.BoxGeometry(0.3, 1.8, 0.3), mat);
+        arm.position.set(0.6, 0.8 + progress * 0.8, 0);
+        arm.rotation.z = -0.4;
+        group.add(arm);
+
+        const wrist = new THREE.Mesh(new THREE.SphereGeometry(0.24, 12, 12), mat);
+        wrist.position.set(1.2, 1.6 + progress * 1.2, 0);
+        group.add(wrist);
+
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(1.1, 0.06, 16, 32), accentMat);
+        ring.position.y = progress * 0.6;
+        ring.rotation.x = Math.PI / 2;
+        group.add(ring);
+      } else if (baseComp === 'BipedalRobotMesh' || baseComp === 'bipedal-robot') {
+        const torso = new THREE.Mesh(new THREE.BoxGeometry(0.9, 1.1, 0.5), mat);
+        torso.position.y = 0.5 + progress * 0.4;
+        group.add(torso);
+
+        const head = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.4, 0.4), accentMat);
+        head.position.y = 1.35 + progress * 0.8;
+        group.add(head);
+
+        const legL = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.1, 1.2, 12), mat);
+        legL.position.set(-0.35, -0.6 - progress * 0.3, 0);
+        group.add(legL);
+
+        const legR = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.1, 1.2, 12), mat);
+        legR.position.set(0.35, -0.6 - progress * 0.3, 0);
+        group.add(legR);
+      } else if (baseComp === 'PointCloudNode') {
+        const pCount = 800;
+        const pGeo = new THREE.BufferGeometry();
+        const pPos = new Float32Array(pCount * 3);
+        for (let i = 0; i < pCount; i++) {
+          const u = Math.random();
+          const v = Math.random();
+          const theta = u * 2.0 * Math.PI;
+          const phi = Math.acos(2.0 * v - 1.0);
+          const r = Math.cbrt(Math.random()) * (1.2 + progress * 1.0);
+          pPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+          pPos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+          pPos[i * 3 + 2] = r * Math.cos(phi);
+        }
+        pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+        const pPoints = new THREE.Points(pGeo, new THREE.PointsMaterial({ color: '${accent}', size: 0.04 }));
+        group.add(pPoints);
+
+        const droneCore = new THREE.Mesh(new THREE.OctahedronGeometry(0.4, 0), mat);
+        group.add(droneCore);
+      } else if (baseComp === 'HolographicCore') {
+        const innerIco = new THREE.Mesh(new THREE.IcosahedronGeometry(0.65, 2), mat);
+        group.add(innerIco);
+
+        const outerIco = new THREE.Mesh(new THREE.IcosahedronGeometry(1.2 + progress * 0.8, 1), accentMat);
+        group.add(outerIco);
+
+        const halo = new THREE.Mesh(new THREE.RingGeometry(1.4, 1.55, 32), accentMat);
+        halo.rotation.x = Math.PI / 2;
+        group.add(halo);
+      } else if (baseComp === 'ConveyorBeltV2') {
+        const bed = new THREE.Mesh(new THREE.BoxGeometry(2.8, 0.18, 0.9), mat);
+        bed.position.y = -0.2;
+        group.add(bed);
+
+        const roller1 = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.9, 16), accentMat);
+        roller1.rotation.x = Math.PI / 2;
+        roller1.position.set(-1.2, -0.2, 0);
+        group.add(roller1);
+
+        const roller2 = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.9, 16), accentMat);
+        roller2.rotation.x = Math.PI / 2;
+        roller2.position.set(1.2, -0.2, 0);
+        group.add(roller2);
+
+        for (let i = -1; i <= 1; i++) {
+          const cargo = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.35, 0.35), mat);
+          cargo.position.set(i * 0.8, 0.15 + progress * 0.5, 0);
+          group.add(cargo);
+        }
+      } else if (baseComp === 'CleanroomSwarmTerminal') {
+        const base = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 1.2, 0.3, 8), mat);
+        base.position.y = -0.6;
+        group.add(base);
+
+        const pillar = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, 1.4, 16), mat);
+        pillar.position.y = 0.2;
+        group.add(pillar);
+
+        const terminalScreen = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.8, 0.08), accentMat);
+        terminalScreen.position.set(0, 0.9 + progress * 0.4, 0.2);
+        terminalScreen.rotation.x = -0.25;
+        group.add(terminalScreen);
+      } else {
+        const core = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.7, 1.2, 16), mat);
+        group.add(core);
+
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(1.1, 0.06, 16, 32), accentMat);
+        ring.position.y = progress * 0.6;
+        ring.rotation.x = Math.PI / 2;
+        group.add(ring);
+      }
 
       window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
@@ -1067,7 +1168,6 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
       function animate() {
         requestAnimationFrame(animate);
         group.rotation.y += 0.008 * ${speed};
-        ring.rotation.z += 0.01;
         renderer.render(scene, camera);
       }
       animate();
