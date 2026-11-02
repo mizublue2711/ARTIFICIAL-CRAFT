@@ -178,6 +178,33 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
   },
 };
 
+export const AVAILABLE_3D_COMPONENTS = [
+  { value: 'RoboticsHandNode', label: '🦾 Robotic Arm 6DOF Manipulator' },
+  { value: 'BipedalRobotMesh', label: '🤖 Bipedal Kinematic Assembler' },
+  { value: 'PointCloudNode', label: '🌌 Point Cloud Telemetry Core' },
+  { value: 'HolographicCore', label: '🔮 Holographic Energy Reactor' },
+  { value: 'ConveyorBeltV2', label: '🏭 Cybernetic Conveyor System' },
+  { value: 'CleanroomSwarmTerminal', label: '🏛️ Obsidian Cleanroom Terminal' },
+];
+
+export const AVAILABLE_BACKGROUNDS = [
+  { value: 'obsidian-cleanroom', label: '⬛ Obsidian Cleanroom (#09090B)', color: '#09090B' },
+  { value: 'electric-indigo-grid', label: '🟪 Electric Indigo Mesh (#5322FF)', color: '#5322FF' },
+  { value: 'tile-jules-octopus-4x4', label: '🔲 Jules Octopus Matrix (4x4 Grid)', color: '#09090B' },
+  { value: 'tile-jules-octopus-8x8', label: '🔳 Jules Octopus Matrix (8x8 Grid)', color: '#09090B' },
+  { value: 'tile-jules-octopus-16x16', label: '📐 Jules Octopus Matrix (16x16 Grid)', color: '#09090B' },
+  { value: 'cyber-green-wireframe', label: '🟢 Cyber Green CAD Wireframe (#00FF66)', color: '#00FF66' },
+  { value: 'brutalist-monochrome', label: '⚪ Brutalist High-Contrast Zinc', color: '#18181B' },
+];
+
+export const AVAILABLE_MOTION_TOKENS = [
+  { value: 'kinetic-parallax', label: '🎥 Kinetic Parallax Camera Drift' },
+  { value: 'glitch-flicker', label: '⚡ Cybernetic Shader Glitch' },
+  { value: 'chromatic-aberration', label: '🌈 Chromatic Aberration Lens' },
+  { value: 'text-clipping-reveal', label: '🔤 Kinetic Title Clipping Reveal' },
+  { value: 'magnetic-attraction', label: '🧲 Cursor Vector Field Physics' },
+];
+
 const PRESET_PALETTES = [
   {
     id: 'obsidian-indigo',
@@ -987,6 +1014,35 @@ export const CraftStudioConfigurator: React.FC = () => {
                     </div>
                   </div>
 
+                  {/* Environment & Studio Background Selector */}
+                  <div className="space-y-1">
+                    <label className="text-[10px] text-zinc-400 font-bold uppercase">
+                      Studio Environment Background
+                    </label>
+                    <select
+                      value={formData.theme.backgroundColor}
+                      onChange={(e) => {
+                        const selectedBg = AVAILABLE_BACKGROUNDS.find(b => b.color === e.target.value || b.value === e.target.value);
+                        const nextColor = selectedBg ? selectedBg.color : e.target.value;
+                        setFormData((prev) => ({
+                          ...prev,
+                          backgroundColor: nextColor,
+                          theme: {
+                            ...prev.theme,
+                            backgroundColor: nextColor,
+                          },
+                        }));
+                      }}
+                      className="w-full px-2.5 py-1.5 bg-zinc-950 border border-zinc-800 text-white text-xs focus:outline-none focus:border-[#5322FF]"
+                    >
+                      {AVAILABLE_BACKGROUNDS.map((bg) => (
+                        <option key={bg.value} value={bg.color}>
+                          {bg.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
                   {/* Font Family Selector */}
                   <div className="space-y-1">
                     <label className="text-[10px] text-zinc-400 font-bold uppercase">
@@ -1076,23 +1132,54 @@ export const CraftStudioConfigurator: React.FC = () => {
                   <span>STEP 3 // 3D ENGINE & EXPLODED ASSEMBLY</span>
                 </div>
 
-                {/* Model Selector */}
+                {/* 3D Mesh & Component Selector Dropdown */}
+                <div className="space-y-2">
+                  <label className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
+                    Base 3D Mesh Component
+                  </label>
+                  <select
+                    value={formData.presetModel || formData.modelType || 'RoboticsHandNode'}
+                    onChange={(e) => {
+                      const selectedVal = e.target.value;
+                      setFormData((prev) => ({
+                        ...prev,
+                        presetModel: selectedVal,
+                        modelType: selectedVal,
+                        roboticsNode: {
+                          ...prev.roboticsNode,
+                          modelType: selectedVal as any,
+                        },
+                      }));
+                    }}
+                    className="w-full px-2.5 py-2 bg-zinc-950 border border-zinc-800 text-white text-xs font-mono focus:outline-none focus:border-[#5322FF]"
+                  >
+                    {AVAILABLE_3D_COMPONENTS.map((comp) => (
+                      <option key={comp.value} value={comp.value}>
+                        {comp.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Model Selector Presets */}
                 <div className="space-y-2">
                   <label className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
                     Actuator Model Preset
                   </label>
                   <div className="grid grid-cols-2 gap-2">
                     {[
-                      { id: 'robot-arm', label: 'Industrial Robot Arm' },
-                      { id: 'kinematic-assembler', label: 'Kinematic Assembler' },
-                      { id: 'point-cloud-node', label: 'Point Cloud Drone' },
-                      { id: 'holographic-core', label: 'Cyber Monolith Core' },
+                      { id: 'RoboticsHandNode', label: 'Industrial Robot Arm' },
+                      { id: 'BipedalRobotMesh', label: 'Kinematic Assembler' },
+                      { id: 'PointCloudNode', label: 'Point Cloud Drone' },
+                      { id: 'HolographicCore', label: 'Cyber Monolith Core' },
                     ].map((model) => (
                       <button
                         key={model.id}
                         onClick={() =>
                           setFormData((prev) => ({
                             ...prev,
+                            presetModel: model.id,
+                            modelType: model.id,
                             roboticsNode: {
                               ...prev.roboticsNode,
                               modelType: model.id as any,
@@ -1100,7 +1187,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                           }))
                         }
                         className={`p-2 border text-left text-[11px] font-bold transition ${
-                          formData.roboticsNode.modelType === model.id
+                          (formData.presetModel === model.id || formData.roboticsNode.modelType === model.id)
                             ? 'border-[#5322FF] bg-[#5322FF]/20 text-white'
                             : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-white'
                         }`}
@@ -1387,6 +1474,59 @@ export const CraftStudioConfigurator: React.FC = () => {
                 <div className="flex items-center gap-2 text-zinc-100 text-xs font-bold border-b border-zinc-800 pb-2">
                   <Terminal className="w-4 h-4 text-[#5322FF]" />
                   <span>STEP 5 // EXPORT & HAND-OFF DOCK</span>
+                </div>
+
+                {/* Motion FX / Motion Tokens Selector (Step 05) */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
+                      Kinematic Motion FX Tokens
+                    </label>
+                    <span className="text-[9px] text-[#00E5FF] font-mono">
+                      {formData.motionTokens?.length || 0} ACTIVE
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    {AVAILABLE_MOTION_TOKENS.map((token) => {
+                      const activeTokens: string[] = formData.motionTokens || [];
+                      const isChecked = activeTokens.includes(token.value);
+                      return (
+                        <label
+                          key={token.value}
+                          className={`flex items-center justify-between p-2 border text-xs cursor-pointer transition font-bold ${
+                            isChecked
+                              ? 'border-[#00E5FF] bg-[#00E5FF]/10 text-white shadow-[0_0_8px_rgba(0,229,255,0.15)]'
+                              : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:border-zinc-700'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="checkbox"
+                              checked={isChecked}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setFormData((prev) => ({
+                                    ...prev,
+                                    motionTokens: [...activeTokens, token.value],
+                                  }));
+                                } else {
+                                  setFormData((prev) => ({
+                                    ...prev,
+                                    motionTokens: activeTokens.filter((t) => t !== token.value),
+                                  }));
+                                }
+                              }}
+                              className="accent-[#00E5FF]"
+                            />
+                            <span>{token.label}</span>
+                          </div>
+                          <span className="text-[9px] font-mono text-zinc-500">
+                            {token.value}
+                          </span>
+                        </label>
+                      );
+                    })}
+                  </div>
                 </div>
 
                 {/* Developer Sandbox Languages */}
