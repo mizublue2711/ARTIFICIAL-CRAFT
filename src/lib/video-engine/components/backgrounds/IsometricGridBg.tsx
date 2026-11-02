@@ -17,7 +17,12 @@ export const IsometricGridBg: React.FC<IsometricGridBgProps> = ({
   className,
   style,
 }) => {
-  const hookFrame = useCurrentFrame();
+  let hookFrame = 0;
+  try {
+    hookFrame = useCurrentFrame();
+  } catch {
+    hookFrame = 0;
+  }
   const frame = frameProp ?? hookFrame;
 
   const planeYTranslation = interpolate(frame % 180, [0, 180], [0, 60]);

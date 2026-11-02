@@ -11,7 +11,12 @@ export const HolographicBlueprintBg: React.FC<HolographicBlueprintBgProps> = ({
   className,
   style,
 }) => {
-  const hookFrame = useCurrentFrame();
+  let hookFrame = 0;
+  try {
+    hookFrame = useCurrentFrame();
+  } catch {
+    hookFrame = 0;
+  }
   const frame = frameProp ?? hookFrame;
 
   const rotY = interpolate(frame, [0, 300], [0, 360]);
