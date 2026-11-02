@@ -2018,10 +2018,10 @@ export const CraftStudioConfigurator: React.FC = () => {
                     </span>
                   </div>
 
-                  {/* Bottom-Left Brand Stack & Logo Display Overlay */}
-                  <div className="absolute bottom-6 left-6 z-20 flex flex-col items-start gap-2 pointer-events-none max-w-[80%]">
+                  {/* Bottom-Left Clean Logo Overlay (No Duplicate Text Clashing) */}
+                  <div className="absolute bottom-6 left-6 z-20 pointer-events-none max-w-[80%]">
                     {formData.logoUrl && (
-                      <div className="p-1.5 bg-black/70 backdrop-blur-md border border-white/10 shadow-lg">
+                      <div className="p-1.5 bg-black/70 backdrop-blur-md border border-white/10 shadow-lg rounded">
                         <img
                           src={formData.logoUrl}
                           alt="Brand Logo"
@@ -2031,14 +2031,6 @@ export const CraftStudioConfigurator: React.FC = () => {
                             (e.currentTarget as HTMLElement).style.display = 'none';
                           }}
                         />
-                      </div>
-                    )}
-                    <div className="font-extrabold text-xl tracking-wider text-white uppercase drop-shadow-md">
-                      {formData.brandName}
-                    </div>
-                    {formData.tagline && (
-                      <div className="text-xs text-[#10B981] font-mono tracking-tight drop-shadow">
-                        {formData.tagline}
                       </div>
                     )}
                   </div>

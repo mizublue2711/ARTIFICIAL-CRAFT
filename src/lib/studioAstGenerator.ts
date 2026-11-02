@@ -907,9 +907,9 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body, html {
+    body, html, #three-viewport {
       width: 100%; height: 100%;
-      background-color: ${bg};
+      background: transparent !important;
       color: #F4F4F5;
       font-family: 'JetBrains Mono', monospace;
       overflow: hidden;
@@ -1011,16 +1011,15 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
       if (!container) return;
 
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color('${bg}');
-      scene.fog = new THREE.FogExp2('${bg}', 0.05);
 
       const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
       camera.position.set(3.2, 2.4, 4.0);
       camera.lookAt(0, 0, 0);
 
-      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setClearColor(0x000000, 0);
       container.appendChild(renderer.domElement);
 
       const ambient = new THREE.AmbientLight(0xffffff, 0.5);
