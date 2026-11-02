@@ -14,7 +14,12 @@ export const HyperdriveGridBg: React.FC<HyperdriveGridBgProps> = ({
   className,
   style,
 }) => {
-  const hookFrame = useCurrentFrame();
+  let hookFrame = 0;
+  try {
+    hookFrame = useCurrentFrame();
+  } catch {
+    hookFrame = 0;
+  }
   const frame = frameProp ?? hookFrame;
 
   return (

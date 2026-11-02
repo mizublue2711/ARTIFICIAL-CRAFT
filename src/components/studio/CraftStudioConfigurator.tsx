@@ -39,6 +39,17 @@ import { generateFallbackCyberneticHTML, generateStudioAst, generateCodeSnippets
 import { digitalPlumbingSwarm, 'node-05-digital-plumbing-swarm' as node05Preset } from '@/data/presets/registry';
 import { Player } from '@remotion/player';
 import { CraftStudioVideoComposition } from '@/lib/video-engine/components/CraftStudioVideoComposition';
+import {
+  SwissGridHUD,
+  CyberpunkMatrixBg,
+  HolographicBlueprintBg,
+  HyperdriveGridBg,
+  IsometricGridBg,
+  ParticleTunnelBg,
+  QuantumWaveformBg,
+  AnomalousNoiseField,
+  VolumetricFogHUD,
+} from '@/lib/video-engine/components/backgrounds';
 
 // --- TYPES & INTERFACES ---
 export type ActiveWizardStep = 1 | 2 | 3 | 4 | 5;
@@ -182,14 +193,28 @@ export const AVAILABLE_3D_COMPONENTS = [
   { value: 'CleanroomSwarmTerminal', label: 'Obsidian Cleanroom Terminal', icon: Layers },
 ];
 
+export const BACKGROUND_COMPONENTS: Record<string, React.FC<any>> = {
+  SwissGridHUD,
+  CyberpunkMatrixBg,
+  HolographicBlueprintBg,
+  HyperdriveGridBg,
+  IsometricGridBg,
+  ParticleTunnelBg,
+  QuantumWaveformBg,
+  AnomalousNoiseField,
+  VolumetricFogHUD,
+};
+
 export const AVAILABLE_BACKGROUNDS = [
-  { value: 'obsidian-cleanroom', label: 'Obsidian Cleanroom (#09090B)', color: '#09090B', icon: Box },
-  { value: 'electric-indigo-grid', label: 'Electric Indigo Mesh (#5322FF)', color: '#5322FF', icon: Layers },
-  { value: 'tile-jules-octopus-4x4', label: 'Jules Octopus Matrix (4x4 Grid)', color: '#09090B', icon: Boxes },
-  { value: 'tile-jules-octopus-8x8', label: 'Jules Octopus Matrix (8x8 Grid)', color: '#09090B', icon: Boxes },
-  { value: 'tile-jules-octopus-16x16', label: 'Jules Octopus Matrix (16x16 Grid)', color: '#09090B', icon: Boxes },
-  { value: 'cyber-green-wireframe', label: 'Cyber Phosphor Emerald CAD (#10B981)', color: '#10B981', icon: Activity },
-  { value: 'brutalist-monochrome', label: 'Brutalist High-Contrast Zinc', color: '#18181B', icon: Palette },
+  { value: 'SwissGridHUD', label: 'Swiss Grid HUD', icon: Layers },
+  { value: 'CyberpunkMatrixBg', label: 'Cyberpunk Matrix', icon: Box },
+  { value: 'HolographicBlueprintBg', label: 'Holographic Blueprint', icon: Boxes },
+  { value: 'HyperdriveGridBg', label: 'Hyperdrive Grid 3D', icon: Radio },
+  { value: 'IsometricGridBg', label: 'Isometric Grid', icon: Layers },
+  { value: 'ParticleTunnelBg', label: 'Particle Tunnel', icon: Sparkles },
+  { value: 'QuantumWaveformBg', label: 'Quantum Waveform', icon: Activity },
+  { value: 'AnomalousNoiseField', label: 'Anomalous Noise Field', icon: Zap },
+  { value: 'VolumetricFogHUD', label: 'Volumetric Fog HUD', icon: Palette },
 ];
 
 export const AVAILABLE_MOTION_TOKENS = [
@@ -247,11 +272,23 @@ export const CraftStudioConfigurator: React.FC = () => {
   const [selectedNodePreset, setSelectedNodePreset] = useState<string>('NODE_05_MANUFACTURING_FACTORY');
   const [activeStep, setActiveStep] = useState<ActiveWizardStep>(1);
   const [deviceMode, setDeviceMode] = useState<DevicePreviewMode>('desktop');
+  const [backgroundShader, setBackgroundShader] = useState<string>('SwissGridHUD');
+  const [pointerCoords, setPointerCoords] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [isHoveringCanvas, setIsHoveringCanvas] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isB2BPopupOpen, setIsB2BPopupOpen] = useState(true);
   const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
   const [codeTab, setCodeTab] = useState<'html' | 'ast' | 'ts' | 'python' | 'ros2' | 'cpp'>('html');
   const [copiedCode, setCopiedCode] = useState(false);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileSelect = (file: File) => {
+    if (file && file.type.startsWith('image/')) {
+      const url = URL.createObjectURL(file);
+      setFormData((prev) => ({ ...prev, logoUrl: url }));
+    }
+  };
 
   // State: AI Stylist & Streaming Generator
   const [aiPrompt, setAiPrompt] = useState('Luxury Titanium Robot with Neon Indigo');
@@ -631,6 +668,11 @@ export const CraftStudioConfigurator: React.FC = () => {
     }
   }, [formData]);
 
+  // Active Background Component resolved from backgroundShader state
+  const ActiveBg = BACKGROUND_COMPONENTS[backgroundShader] || SwissGridHUD;
+  const primaryColor = formData.theme?.primaryColor || formData.primaryColor || '#5322FF';
+  const accentColor = formData.theme?.accentColor || formData.accentColor || '#00E5FF';
+
   return (
     <div className="relative w-full min-h-[calc(100vh-64px)] bg-[#09090B] text-zinc-100 font-mono flex flex-col selection:bg-[#00E5FF]/20">
       {/* Tactical Sub-Header Bar */}
@@ -822,15 +864,39 @@ export const CraftStudioConfigurator: React.FC = () => {
                   />
                 </div>
 
-                {/* Drag-and-Drop Mock Box */}
-                <div className="border border-dashed border-zinc-800 hover:border-zinc-700 bg-zinc-950/60 p-4 text-center cursor-pointer transition">
-                  <FolderArchive className="w-6 h-6 text-zinc-600 mx-auto mb-2" />
+                {/* File Picker & Drag-and-Drop Dropzone */}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => e.target.files?.[0] && handleFileSelect(e.target.files[0])}
+                  className="hidden"
+                />
+
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    if (e.dataTransfer.files?.[0]) {
+                      handleFileSelect(e.dataTransfer.files[0]);
+                    }
+                  }}
+                  className="border border-dashed border-zinc-800 hover:border-[#5322FF] bg-zinc-950/60 p-4 text-center cursor-pointer transition group"
+                >
+                  <FolderArchive className="w-6 h-6 text-zinc-600 group-hover:text-[#00E5FF] mx-auto mb-2 transition" />
                   <div className="text-[11px] text-zinc-300">
-                    Drag & Drop SVG/PNG Logo Asset
+                    Click to Upload or Drag & Drop SVG/PNG Logo Asset
                   </div>
-                  <div className="text-[9px] text-zinc-500 mt-1">
+                  <div className="text-[9px] text-zinc-500 mt-1 font-mono">
                     Triggers automatic logo palette color clustering
                   </div>
+                  {formData.logoUrl && (
+                    <div className="mt-2 inline-flex items-center gap-2 px-2 py-1 bg-zinc-900 border border-zinc-700 text-[10px] text-emerald-400">
+                      <Check className="w-3 h-3 text-emerald-400" />
+                      <span>LOGO ATTACHED</span>
+                    </div>
+                  )}
                 </div>
               </motion.div>
             )}
@@ -1019,49 +1085,27 @@ export const CraftStudioConfigurator: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Environment & Studio Background Selector */}
-                  <div className="space-y-1">
-                    <label className="text-[10px] text-zinc-400 font-bold uppercase">
-                      Studio Environment Background
+                  {/* Step 02 Explicit Dropdown for All 9 Background Shaders */}
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] text-zinc-400 font-bold uppercase flex items-center justify-between">
+                      <span>Background Shader Engine (9 Shaders)</span>
+                      <span className="text-[#00E5FF] text-[9px] font-mono">DYNAMIC SHADER</span>
                     </label>
-                    <div className="grid grid-cols-1 gap-1.5">
-                      {AVAILABLE_BACKGROUNDS.map((bg) => {
-                        const IconComponent = bg.icon;
-                        const isSelected =
-                          formData.theme.backgroundColor.toLowerCase() === bg.color.toLowerCase() ||
-                          formData.backgroundColor.toLowerCase() === bg.color.toLowerCase();
-                        return (
-                          <button
-                            key={bg.value}
-                            type="button"
-                            onClick={() => {
-                              setFormData((prev) => ({
-                                ...prev,
-                                backgroundColor: bg.color,
-                                theme: {
-                                  ...prev.theme,
-                                  backgroundColor: bg.color,
-                                },
-                              }));
-                            }}
-                            className={`w-full px-2.5 py-1.5 border text-left text-xs transition flex items-center justify-between ${
-                              isSelected
-                                ? 'border-[#5322FF] bg-[#5322FF]/15 text-white shadow-[0_0_10px_rgba(83,34,255,0.25)]'
-                                : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-white hover:border-zinc-700'
-                            }`}
-                          >
-                            <div className="flex items-center gap-2">
-                              <IconComponent className="w-3.5 h-3.5 text-[#00E5FF] stroke-[1.5]" />
-                              <span>{bg.label}</span>
-                            </div>
-                            <span
-                              className="w-3 h-3 border border-zinc-700 shrink-0"
-                              style={{ backgroundColor: bg.color }}
-                            />
-                          </button>
-                        );
-                      })}
-                    </div>
+                    <select
+                      value={backgroundShader}
+                      onChange={(e) => setBackgroundShader(e.target.value)}
+                      className="w-full bg-[#09090B] border border-[#5322FF] text-white p-2 rounded font-mono text-xs focus:outline-none focus:border-[#00E5FF]"
+                    >
+                      <option value="SwissGridHUD">Swiss Grid HUD</option>
+                      <option value="CyberpunkMatrixBg">Cyberpunk Matrix</option>
+                      <option value="HolographicBlueprintBg">Holographic Blueprint</option>
+                      <option value="HyperdriveGridBg">Hyperdrive Grid 3D</option>
+                      <option value="IsometricGridBg">Isometric Grid</option>
+                      <option value="ParticleTunnelBg">Particle Tunnel</option>
+                      <option value="QuantumWaveformBg">Quantum Waveform</option>
+                      <option value="AnomalousNoiseField">Anomalous Noise Field</option>
+                      <option value="VolumetricFogHUD">Volumetric Fog HUD</option>
+                    </select>
                   </div>
 
                   {/* Font Family Selector */}
@@ -1819,7 +1863,7 @@ export const CraftStudioConfigurator: React.FC = () => {
           {/* Central Canvas Viewport Frame */}
           <div className="flex-1 w-full h-full p-2 flex items-center justify-center overflow-hidden bg-black relative">
             <div
-              className={`h-full transition-all duration-300 relative border border-white/10 flex items-center justify-center bg-black ${
+              className={`h-full transition-all duration-300 relative border border-white/10 flex items-center justify-center bg-black overflow-hidden ${
                 deviceMode === 'desktop'
                   ? 'w-full'
                   : deviceMode === 'tablet'
@@ -1827,28 +1871,92 @@ export const CraftStudioConfigurator: React.FC = () => {
                   : 'w-[375px] max-w-full'
               }`}
             >
+              {/* Dynamic Viewport Background Layer */}
+              <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
+                <ActiveBg primaryColor={primaryColor} accentColor={accentColor} />
+              </div>
+
               {previewViewportMode === '3d-canvas' ? (
-                <>
+                <div
+                  className="relative w-full h-full pointer-events-auto cursor-crosshair z-10"
+                  onPointerMove={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+                    const y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+                    setPointerCoords({ x, y });
+                    setIsHoveringCanvas(true);
+                  }}
+                  onPointerLeave={() => setIsHoveringCanvas(false)}
+                >
                   <iframe
                     ref={iframeRef}
                     srcDoc={generatedHtml}
                     sandbox="allow-scripts allow-modals allow-same-origin"
                     title="ARTIFICIAL CRAFT 3D Viewport"
-                    className="w-full h-full bg-black rounded-none border-0"
+                    className="w-full h-full bg-transparent rounded-none border-0 pointer-events-auto"
                   />
 
-                  {/* Floating Glassmorphic HUD overlay */}
-                  <div className="absolute top-3 left-3 pointer-events-none flex items-center gap-2">
+                  {/* Raycasting Reticle Overlay Follower */}
+                  {isHoveringCanvas && (
+                    <div
+                      className="absolute pointer-events-none z-30 transition-transform duration-75 ease-out"
+                      style={{
+                        left: `${((pointerCoords.x + 1) / 2) * 100}%`,
+                        top: `${((-pointerCoords.y + 1) / 2) * 100}%`,
+                        transform: 'translate(-50%, -50%)',
+                      }}
+                    >
+                      <div className="relative w-8 h-8 flex items-center justify-center">
+                        <div className="absolute w-full h-[1px] bg-[#00E5FF]/60" />
+                        <div className="absolute h-full w-[1px] bg-[#00E5FF]/60" />
+                        <div className="w-2.5 h-2.5 border border-[#00E5FF] rounded-none animate-ping" />
+                        <div className="absolute -top-4 -right-10 text-[8px] font-mono text-[#00E5FF] bg-black/80 px-1 border border-[#00E5FF]/40">
+                          {pointerCoords.x.toFixed(2)},{pointerCoords.y.toFixed(2)}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Floating Glassmorphic Top HUD overlay */}
+                  <div className="absolute top-3 left-3 pointer-events-none flex items-center gap-2 z-20">
                     <span className="px-2 py-0.5 bg-black/60 backdrop-blur-md border border-white/10 text-[10px] text-zinc-300">
                       {formData.brandName}
                     </span>
                     <span className="px-2 py-0.5 bg-black/60 backdrop-blur-md border border-[#00E5FF]/30 text-[10px] text-[#00E5FF]">
                       STAGE: {formData.explodedProgress}%
                     </span>
+                    <span className="px-2 py-0.5 bg-black/60 backdrop-blur-md border border-emerald-500/30 text-[10px] text-emerald-400">
+                      SHADER: {backgroundShader}
+                    </span>
                   </div>
-                </>
+
+                  {/* Bottom-Left Brand Stack & Logo Display Overlay */}
+                  <div className="absolute bottom-6 left-6 z-20 flex flex-col items-start gap-2 pointer-events-none max-w-[80%]">
+                    {formData.logoUrl && (
+                      <div className="p-1.5 bg-black/70 backdrop-blur-md border border-white/10 shadow-lg">
+                        <img
+                          src={formData.logoUrl}
+                          alt="Brand Logo"
+                          className="max-h-8 w-auto object-contain"
+                          onError={(e) => {
+                            // Hide on broken image URL
+                            (e.currentTarget as HTMLElement).style.display = 'none';
+                          }}
+                        />
+                      </div>
+                    )}
+                    <div className="font-extrabold text-xl tracking-wider text-white uppercase drop-shadow-md">
+                      {formData.brandName}
+                    </div>
+                    {formData.tagline && (
+                      <div className="text-xs text-[#10B981] font-mono tracking-tight drop-shadow">
+                        {formData.tagline}
+                      </div>
+                    )}
+                  </div>
+                </div>
               ) : (
-                <div className="w-full h-full aspect-video max-w-full max-h-full flex items-center justify-center bg-black relative">
+                <div className="w-full h-full aspect-video max-w-full max-h-full flex items-center justify-center bg-black relative z-10">
                   <Player
                     component={CraftStudioVideoComposition}
                     inputProps={{

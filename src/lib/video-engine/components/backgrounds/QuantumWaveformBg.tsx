@@ -15,7 +15,12 @@ export const QuantumWaveformBg: React.FC<QuantumWaveformBgProps> = ({
   className,
   style,
 }) => {
-  const hookFrame = useCurrentFrame();
+  let hookFrame = 0;
+  try {
+    hookFrame = useCurrentFrame();
+  } catch {
+    hookFrame = 0;
+  }
   const frame = frameProp ?? hookFrame;
 
   const width = 1920;

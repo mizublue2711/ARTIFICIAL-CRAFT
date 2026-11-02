@@ -18,7 +18,12 @@ export const CyberpunkMatrixBg: React.FC<CyberpunkMatrixBgProps> = ({
   className,
   style,
 }) => {
-  const hookFrame = useCurrentFrame();
+  let hookFrame = 0;
+  try {
+    hookFrame = useCurrentFrame();
+  } catch {
+    hookFrame = 0;
+  }
   const frame = frameProp ?? hookFrame;
 
   const columns = Array.from({ length: columnCount }, (_, colIdx) => {

@@ -14,7 +14,12 @@ export const ParticleTunnelBg: React.FC<ParticleTunnelBgProps> = ({
   className,
   style,
 }) => {
-  const hookFrame = useCurrentFrame();
+  let hookFrame = 0;
+  try {
+    hookFrame = useCurrentFrame();
+  } catch {
+    hookFrame = 0;
+  }
   const frame = frameProp ?? hookFrame;
 
   const particles = Array.from({ length: particleCount }, (_, i) => {
