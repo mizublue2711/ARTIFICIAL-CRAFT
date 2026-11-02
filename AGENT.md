@@ -64,3 +64,36 @@
 - For Vision-enabled AI Workers (Cursor Composer, Roo Code, Cline):
 - Inspect rendered browser outputs or design mockups before generating layout fix code.
 - Ensure zero z-index conflicts, no scrollbar leaks, and flawless 60FPS WebGL canvas rendering.
+
+Dưới đây là điều khoản chuẩn kỹ thuật (viết bằng tiếng Anh theo đúng quy chuẩn tệp **`AGENT.md`** để mọi AI Agent khi tiếp quản đều đọc hiểu và tuân thủ 100%), bạn có thể copy và dán trực tiếp vào tệp `AGENT.md` trong REPO:
+
+---
+
+
+### 9. MANDATORY RULE: CONTINUOUS LOCALIZATION & i18n SYNCHRONIZATION
+
+To prevent untranslated UI text debt and ensure 100% Vietnamese localization coverage across the entire application, every AI Agent MUST strictly enforce the following protocol:
+
+1. **IMMEDIATE LOCALIZATION UPON SECTION COMPLETION**:
+   - Whenever you create, refactor, or complete any UI section, component, card, form, or modal, you **MUST NOT** leave raw hardcoded English text strings inside JSX/TSX files.
+   - You **MUST** immediately update `src/locales/translations.ts` by adding all newly introduced text strings (titles, subtitles, badges, descriptions, button labels, placeholders) to BOTH the `en` (English) and `vi` (Vietnamese) dictionary blocks before marking the task as complete.
+
+2. **MANDATORY HOOK BINDING**:
+   - All component text nodes must be bound via the translation function `t('key')` or `useTranslation()` hook.
+   - **Forbidden Pattern**:
+     ```tsx
+     // ❌ REJECTED: Hardcoded English text string
+     <h3>STUDIO CONFIGURATOR // NO-CODE 3D FACTORY</h3>
+     <button>ENTER FACTORY NODE ➔</button>
+     ```
+   - **Required Pattern**:
+     ```tsx
+     // ✅ REQUIRED: Registered in translations.ts and bound via t()
+     <h3>{t('headerTitle')}</h3>
+     <button>{t('enterNode')} ➔</button>
+     ```
+
+3. **DEFINITION OF DONE (i18n GATE CHECK)**:
+   - A task or pull request is **STRICTLY INVALID** and cannot be finalized if any newly created UI section contains untranslated English text or lacks corresponding Vietnamese entries in `src/locales/translations.ts`.
+   - Always run `npx tsc --noEmit` to verify zero missing key type errors after updating `translations.ts`.
+---
