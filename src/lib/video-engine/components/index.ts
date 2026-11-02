@@ -3,6 +3,7 @@ export * from './3d/RubikCube3D';
 export * from './3d/LogarithmicSpiral3D';
 export * from './3d/IsometricMatrix3D';
 export * from './3d/AppMockup3D';
+export * from './3d/MeshViewportSequence';
 
 // UI Elements
 export * from './ui/MacCodeEditor';
@@ -11,6 +12,7 @@ export * from './ui/DualEngineCard';
 export * from './ui/BentoGrid3D';
 export * from './ui/MarqueeTicker';
 export * from './ui/KineticTypography';
+export * from './ui/ThemeColorProvider';
 
 // Backgrounds & HUD
 export * from './backgrounds/SwissGridHUD';
@@ -22,6 +24,7 @@ export * from './backgrounds/HolographicBlueprintBg';
 export * from './backgrounds/HyperdriveGridBg';
 export * from './backgrounds/VolumetricFogHUD';
 export * from './backgrounds/AnomalousNoiseField';
+export * from './backgrounds/CyberneticHUDLayer';
 
 // Parametric Engines
 export * from './parametric/ParametricCircleEngine';
@@ -32,6 +35,10 @@ export * from './parametric/ContinuousMarqueeEngine';
 export * from './parametric/FibonacciSpiralEngine';
 export * from './parametric/SubmeshMorphEngine';
 export * from './parametric/VelocityBlurEngine';
+export * from './parametric/PostProcessingPipeline';
+
+// Compositions
+export * from './CraftStudioVideoComposition';
 
 // Legacy Aliases
 export * from './SwissGridBackground';

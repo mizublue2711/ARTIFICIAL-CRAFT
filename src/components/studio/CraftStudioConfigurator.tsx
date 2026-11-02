@@ -42,26 +42,51 @@ import {
 } from '@/types/craft-studio';
 import { generateFallbackCyberneticHTML, generateStudioAst, generateCodeSnippets } from '@/lib/studioAstGenerator';
 import { digitalPlumbingSwarm, 'node-05-digital-plumbing-swarm' as node05Preset } from '@/data/presets/registry';
+import { Player } from '@remotion/player';
+import { CraftStudioVideoComposition } from '@/lib/video-engine/components/CraftStudioVideoComposition';
 
 // --- TYPES & INTERFACES ---
 export type ActiveWizardStep = 1 | 2 | 3 | 4 | 5;
 export type DevicePreviewMode = 'desktop' | 'tablet' | 'mobile';
+export type PreviewViewportMode = '3d-canvas' | 'remotion-video';
 
-export interface ExtendedStudioConfig extends SwissDesignConfig {
-  // Extended Step 1 & 2 Attributes
-  compositionId?: string;
-  slogan?: string;
-  backgroundColor?: string;
-  primaryColor?: string;
-  accentColor?: string;
-  headlineFont?: string;
-  presetModel?: string;
-  modelType?: string;
+export interface ExtendedStudioConfig extends Partial<SwissDesignConfig> {
+  compositionId: string;
+  slogan: string;
+  backgroundColor: string;
+  primaryColor: string;
+  accentColor: string;
+  headlineFont: string;
+  presetModel?: any;
+  modelType?: any;
   customModelUrl?: string;
-  logoUrl?: string;
-  motionTokens: string[];
-  secondaryAccentColor: string;
+  logoUrl: string;
+  motionTokens: any;
+  secondaryAccentColor?: string;
   codeFont: string;
+  presetId?: string;
+  layoutMode?: string;
+  brandName: string;
+  tagline?: string;
+  theme: {
+    backgroundColor: string;
+    primaryColor: string;
+    textColor: string;
+    accentColor: string;
+    fontFamily: any;
+  };
+  roboticsNode: {
+    modelType: any;
+    wireframe: boolean;
+    rotationSpeed: number;
+    autoAnimate: boolean;
+    telemetryHud: boolean;
+  };
+  aiStylist?: {
+    customPrompt: string;
+    enableGSAPAnimations: boolean;
+    enableAudioSynthesizer: boolean;
+  };
   hero3DEngine?: {
     modelType: string;
     enableRaycasting: boolean;
@@ -75,6 +100,7 @@ export interface ExtendedStudioConfig extends SwissDesignConfig {
     stage33: string;
     stage66: string;
     stage100: string;
+    [key: string]: string;
   };
   raycastingLaser: boolean;
 
@@ -91,7 +117,7 @@ export interface ExtendedStudioConfig extends SwissDesignConfig {
   spatialPointCloud: boolean;
 
   // Extended Step 5: Export Sandbox
-  sandboxLanguages: string[];
+  sandboxLanguages: any;
 }
 
 export const INITIAL_CONFIG: ExtendedStudioConfig = {
@@ -195,10 +221,12 @@ export const CraftStudioConfigurator: React.FC = () => {
   // State: Config Data
   const [formData, setFormData] = useState<ExtendedStudioConfig>(INITIAL_CONFIG);
   const [activeTabMode, setActiveTabMode] = useState<'FORGE_NODE' | 'USER_WEBAPP_GEN'>('USER_WEBAPP_GEN');
+  const [previewViewportMode, setPreviewViewportMode] = useState<PreviewViewportMode>('3d-canvas');
   const [selectedNodePreset, setSelectedNodePreset] = useState<string>('NODE_05_MANUFACTURING_FACTORY');
   const [activeStep, setActiveStep] = useState<ActiveWizardStep>(1);
   const [deviceMode, setDeviceMode] = useState<DevicePreviewMode>('desktop');
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isB2BPopupOpen, setIsB2BPopupOpen] = useState(true);
   const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
   const [codeTab, setCodeTab] = useState<'html' | 'ast' | 'ts' | 'python' | 'ros2' | 'cpp'>('html');
   const [copiedCode, setCopiedCode] = useState(false);
@@ -1019,7 +1047,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                                   setFormData((prev) => ({
                                     ...prev,
                                     motionTokens: prev.motionTokens.filter(
-                                      (t) => t !== token
+                                       (t: string) => t !== token
                                     ),
                                   }));
                                 }
@@ -1390,7 +1418,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                               } else {
                                 setFormData((p) => ({
                                   ...p,
-                                  sandboxLanguages: p.sandboxLanguages.filter((l) => l !== lang),
+                                  sandboxLanguages: p.sandboxLanguages.filter((l: string) => l !== lang),
                                 }));
                               }
                             }}
@@ -1496,8 +1524,36 @@ export const CraftStudioConfigurator: React.FC = () => {
         >
           {/* Top Viewport Header Dock */}
           <div className="px-4 py-2 border-b border-zinc-800 bg-[#09090D] flex flex-wrap items-center justify-between gap-3 text-xs z-20">
-            {/* Viewport Status & SLA */}
+            {/* Viewport Status & SLA & DUAL-MODE PREVIEW TOGGLE */}
             <div className="flex items-center gap-3">
+              {/* Dual-Mode Preview Toggle */}
+              <div className="flex items-center border border-zinc-800 bg-zinc-950 p-0.5">
+                <button
+                  type="button"
+                  onClick={() => setPreviewViewportMode('3d-canvas')}
+                  className={`px-2.5 py-1 text-[11px] font-bold uppercase transition flex items-center gap-1.5 ${
+                    previewViewportMode === '3d-canvas'
+                      ? 'bg-[#5322FF] text-white shadow-[0_0_10px_rgba(83,34,255,0.4)]'
+                      : 'text-zinc-400 hover:text-zinc-200'
+                  }`}
+                >
+                  <span>[🎮 3D WebGL Canvas]</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPreviewViewportMode('remotion-video')}
+                  className={`px-2.5 py-1 text-[11px] font-bold uppercase transition flex items-center gap-1.5 ${
+                    previewViewportMode === 'remotion-video'
+                      ? 'bg-[#00E5FF] text-black shadow-[0_0_10px_rgba(0,229,255,0.4)]'
+                      : 'text-zinc-400 hover:text-zinc-200'
+                  }`}
+                >
+                  <span>[🎬 Remotion Video Preview]</span>
+                </button>
+              </div>
+
+              <span className="hidden sm:inline-block text-zinc-700">|</span>
+
               <span className="flex items-center gap-1.5 font-bold text-zinc-200">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
                 <span>SYSTEM SLA: {formData.telemetryFps}FPS</span>
@@ -1585,7 +1641,7 @@ export const CraftStudioConfigurator: React.FC = () => {
           {/* Central Canvas Viewport Frame */}
           <div className="flex-1 w-full h-full p-2 flex items-center justify-center overflow-hidden bg-black relative">
             <div
-              className={`h-full transition-all duration-300 relative border border-white/10 ${
+              className={`h-full transition-all duration-300 relative border border-white/10 flex items-center justify-center bg-black ${
                 deviceMode === 'desktop'
                   ? 'w-full'
                   : deviceMode === 'tablet'
@@ -1593,24 +1649,117 @@ export const CraftStudioConfigurator: React.FC = () => {
                   : 'w-[375px] max-w-full'
               }`}
             >
-              <iframe
-                ref={iframeRef}
-                srcDoc={generatedHtml}
-                sandbox="allow-scripts allow-modals allow-same-origin"
-                title="ARTIFICIAL CRAFT 3D Viewport"
-                className="w-full h-full bg-black rounded-none border-0"
-              />
+              {previewViewportMode === '3d-canvas' ? (
+                <>
+                  <iframe
+                    ref={iframeRef}
+                    srcDoc={generatedHtml}
+                    sandbox="allow-scripts allow-modals allow-same-origin"
+                    title="ARTIFICIAL CRAFT 3D Viewport"
+                    className="w-full h-full bg-black rounded-none border-0"
+                  />
 
-              {/* Floating Glassmorphic HUD overlay */}
-              <div className="absolute top-3 left-3 pointer-events-none flex items-center gap-2">
-                <span className="px-2 py-0.5 bg-black/60 backdrop-blur-md border border-white/10 text-[10px] text-zinc-300">
-                  {formData.brandName}
-                </span>
-                <span className="px-2 py-0.5 bg-black/60 backdrop-blur-md border border-[#00E5FF]/30 text-[10px] text-[#00E5FF]">
-                  STAGE: {formData.explodedProgress}%
-                </span>
-              </div>
+                  {/* Floating Glassmorphic HUD overlay */}
+                  <div className="absolute top-3 left-3 pointer-events-none flex items-center gap-2">
+                    <span className="px-2 py-0.5 bg-black/60 backdrop-blur-md border border-white/10 text-[10px] text-zinc-300">
+                      {formData.brandName}
+                    </span>
+                    <span className="px-2 py-0.5 bg-black/60 backdrop-blur-md border border-[#00E5FF]/30 text-[10px] text-[#00E5FF]">
+                      STAGE: {formData.explodedProgress}%
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <div className="w-full h-full aspect-video max-w-full max-h-full flex items-center justify-center bg-black relative">
+                  <Player
+                    component={CraftStudioVideoComposition}
+                    inputProps={{
+                      brandName: formData.brandName || formData.compositionId,
+                      slogan: formData.slogan || formData.tagline || 'Autonomous 3D Manufacturing Pipeline & Multi-Agent Swarm',
+                      logoUrl: formData.logoUrl,
+                      primaryColor: formData.theme?.primaryColor || formData.primaryColor || '#5322FF',
+                      accentColor: formData.theme?.accentColor || formData.accentColor || '#00E5FF',
+                      backgroundColor: formData.theme?.backgroundColor || formData.backgroundColor || '#09090B',
+                      base_component: formData.presetModel || formData.modelType || 'kinematic_manipulator_arm',
+                      assemblyStage: formData.explodedProgress,
+                      telemetry: {
+                        slaTarget: formData.aiLatency || '<2ms',
+                        fps: formData.telemetryFps || 60,
+                      },
+                      motion_tokens: formData.motionTokens || ['kinetic-parallax', 'chromatic-aberration', 'glitch-flicker'],
+                      cameraAnglePreset: 'isometric-iso',
+                      glitchIntensity: 0.5,
+                      audioBpm: 120,
+                      playbackRate: 1.0,
+                      matrixGridSize: 48,
+                      watermarkPosition: 'top-right',
+                    }}
+                    durationInFrames={180}
+                    compositionWidth={1920}
+                    compositionHeight={1080}
+                    fps={formData.telemetryFps || 60}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                    }}
+                    controls
+                    autoPlay
+                    loop
+                  />
+
+                  {/* Remotion Status Badge */}
+                  <div className="absolute top-3 left-3 pointer-events-none font-mono text-[10px] text-[#00E5FF] bg-zinc-950/80 border border-zinc-800 px-2.5 py-1 z-10 flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#00E5FF] animate-ping" />
+                    <span>REMOTION VIDEO ENGINE // 1080P 60FPS</span>
+                  </div>
+                </div>
+              )}
             </div>
+
+            {/* B2B ENTERPRISE CTA POPUP / FLOATING BANNER */}
+            <AnimatePresence>
+              {isB2BPopupOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 20, scale: 0.95 }}
+                  transition={{ duration: 0.25 }}
+                  className="absolute bottom-5 right-5 z-40 max-w-md w-[calc(100%-2.5rem)] bg-[#09090B] border border-[#5322FF] shadow-[0_0_25px_rgba(83,34,255,0.35)] p-4 font-mono text-zinc-100"
+                >
+                  {/* Header Badge & Close Button */}
+                  <div className="flex items-center justify-between pb-2 border-b border-zinc-800 mb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="px-2 py-0.5 bg-[#5322FF]/20 text-[#00E5FF] border border-[#00E5FF]/40 text-[10px] font-bold tracking-wider uppercase flex items-center gap-1">
+                        <Zap className="w-3 h-3 text-[#00E5FF]" />
+                        <span>⚡ PLAYGROUND DEMO MODE</span>
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setIsB2BPopupOpen(false)}
+                      className="text-zinc-500 hover:text-white text-xs px-1.5 py-0.5 border border-zinc-800 hover:border-zinc-700 bg-zinc-900/50 transition"
+                      title="Dismiss popup"
+                    >
+                      [ × CLOSE ]
+                    </button>
+                  </div>
+
+                  {/* Body Text */}
+                  <p className="text-xs text-zinc-300 leading-relaxed mb-4">
+                    You are currently experiencing the Playground Demo. Looking to forge custom, exclusive 3D Kinematics components tailored for your enterprise?
+                  </p>
+
+                  {/* Primary CTA Button */}
+                  <a
+                    href="mailto:thuyvu@artificialcraft.space?subject=ARTIFICIAL%20CRAFT%20-%20Enterprise%203D%20Kinematics%20Consultation"
+                    className="w-full py-2.5 px-3 bg-[#5322FF] hover:bg-[#5322FF]/90 text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(83,34,255,0.5)] border border-[#00E5FF]/30"
+                  >
+                    <Zap className="w-3.5 h-3.5 text-[#00E5FF]" />
+                    <span>[ ⚡ Book B2B Consultation & Enterprise Contract ]</span>
+                  </a>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </main>
       </div>

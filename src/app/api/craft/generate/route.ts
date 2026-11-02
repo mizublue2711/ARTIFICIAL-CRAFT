@@ -17,6 +17,7 @@ export async function POST(req: NextRequest) {
     if (!validationResult.success) {
       return NextResponse.json<CraftGenerateResponse>(
         {
+          status: 'error',
           success: false,
           error: 'Zod Validation Failed: Cấu hình gửi lên không hợp lệ.',
           message: JSON.stringify(validationResult.error.format()),
@@ -60,6 +61,7 @@ export async function POST(req: NextRequest) {
 
     // 3. Trả về kết quả HTML Stream dạng JSON cho Iframe Live Preview
     return NextResponse.json<CraftGenerateResponse>({
+      status: 'success',
       success: true,
       htmlStream,
       message: 'HyperFrame compiled successfully at 60FPS.',
@@ -69,6 +71,7 @@ export async function POST(req: NextRequest) {
     console.error('[CRAFT API ERROR]:', error);
     return NextResponse.json<CraftGenerateResponse>(
       {
+        status: 'error',
         success: false,
         error: error.message || 'Internal Server Error during compilation.',
       },
