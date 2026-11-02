@@ -124,9 +124,11 @@ export interface ExtendedStudioConfig extends Partial<SwissDesignConfig> {
 
   // Extended Step 5: Export Sandbox
   sandboxLanguages: any;
+  backgroundShader?: string;
 }
 
 export const INITIAL_CONFIG: ExtendedStudioConfig = {
+  backgroundShader: 'SwissGridHUD',
   presetId: 'node-05-digital-plumbing-swarm',
   layoutMode: 'two-column',
   compositionId: 'NODE_05_MANUFACTURING_FACTORY',
@@ -254,7 +256,10 @@ export const CraftStudioConfigurator: React.FC = () => {
   const [selectedNodePreset, setSelectedNodePreset] = useState<string>('NODE_05_MANUFACTURING_FACTORY');
   const [activeStep, setActiveStep] = useState<ActiveWizardStep>(1);
   const [deviceMode, setDeviceMode] = useState<DevicePreviewMode>('desktop');
-  const [backgroundShader, setBackgroundShader] = useState<string>('SwissGridHUD');
+  const backgroundShader = formData.backgroundShader || 'SwissGridHUD';
+  const setBackgroundShader = (shader: string) => {
+    setFormData((prev) => ({ ...prev, backgroundShader: shader }));
+  };
   const [pointerCoords, setPointerCoords] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [isHoveringCanvas, setIsHoveringCanvas] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
