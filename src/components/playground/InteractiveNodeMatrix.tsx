@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Box, Film, Image, BarChart3, Sparkles, ChevronRight, ArrowUpRight } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Box, Film, Image, BarChart3, ChevronRight, ArrowUpRight } from 'lucide-react';
 import { UniversalComponentProps } from '@/types/preset';
 
 export interface NodeCardProps {
@@ -61,14 +61,17 @@ const NODES: NodeCardProps[] = [
     to: '/playground?tab=node-04',
   },
   {
-    nodeId: 'studio-configurator-node',
-    number: 'NODE_05 :: 3D MANUFACTURING FACTORY',
-    title: 'STUDIO CONFIGURATOR // NO-CODE 3D FACTORY',
-    subtitle: 'Autonomous 3D WebApp manufacturing factory with 5-step wizard dock and 60FPS WebGL preview.',
-    techStack: 'React • Three.js • Zod • AI Stylist',
-    icon: Sparkles,
-    badge: 'FACTORY NODE',
-    to: '/studio',
+    id: 'plug-and-play-sandbox',
+    nodeId: 'NODE 05 // PLUG AND PLAY SANDBOX',
+    title: 'PLUG AND PLAY SANDBOX',
+    subtitle: 'Modular 3D Component Testing & AST Playground',
+    badge: 'INTERACTIVE SANDBOX // 60 FPS',
+    description: 'Interactive sandbox environment for hot-reloading custom 3D meshes, GLTF/OBJ assets, and Zod AST payloads into the ARTIFICIAL CRAFT runtime pipeline.',
+    techStack: ['React / Vite', 'Three.js / WebGL', 'Zod AST Gate', 'Cybernetic UI'],
+    linkUrl: '/playground?node=plug-and-play-sandbox',
+    accentColor: '#5322FF',
+    primaryColor: '#00E5FF',
+    to: '/playground?node=plug-and-play-sandbox',
   },
   {
     id: '3d-data-metropolis',
@@ -87,6 +90,8 @@ const NODES: NodeCardProps[] = [
 export const InteractiveNodeMatrix: React.FC<UniversalComponentProps> = ({
   className = '',
 }) => {
+  const navigate = useNavigate();
+
   return (
     <section id="interactive-node-matrix" className={`relative py-24 bg-[#09090d] border-t border-zinc-800 font-mono ${className}`}>
       {/* Background CAD Grid */}
@@ -127,7 +132,62 @@ export const InteractiveNodeMatrix: React.FC<UniversalComponentProps> = ({
         {/* 6-Node Bento Matrix */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {NODES.map((node, index) => {
-            if (node.id === '3d-data-metropolis' || node.linkUrl) {
+            if (node.id === 'plug-and-play-sandbox') {
+              const techList = Array.isArray(node.techStack)
+                ? node.techStack
+                : [node.techStack];
+              return (
+                <div
+                  key={node.id}
+                  className="p-4 border border-[#5322FF]/50 bg-[#09090B] hover:border-[#00E5FF] transition flex flex-col justify-between gap-4 group"
+                >
+                  <div className="space-y-2">
+                    {/* Header Badges */}
+                    <div className="flex items-center justify-between text-[10px] font-mono">
+                      <span className="text-[#5322FF] font-bold">NODE 05 // PLUG & PLAY</span>
+                      <span className="px-2 py-0.5 bg-[#5322FF]/20 text-[#00E5FF] border border-[#00E5FF]/40 font-bold uppercase">
+                        {node.badge || 'INTERACTIVE SANDBOX // 60 FPS'}
+                      </span>
+                    </div>
+
+                    {/* Title & Description */}
+                    <h3 className="text-sm font-bold text-white uppercase tracking-wider group-hover:text-[#00E5FF] transition">
+                      {node.title}
+                    </h3>
+                    <p className="text-xs text-zinc-400 font-sans leading-relaxed">
+                      {node.description || node.subtitle}
+                    </p>
+
+                    {/* Tech Stack Badges */}
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {techList.map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-1.5 py-0.5 bg-zinc-900 border border-zinc-800 text-[9px] font-mono text-zinc-300"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* CTA Launch Action */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      // Trigger PlugAndPlaySandbox view or route toggle
+                      console.log('Launching Plug and Play Sandbox...');
+                      navigate(node.linkUrl || '/playground?node=plug-and-play-sandbox');
+                    }}
+                    className="w-full py-2 px-3 bg-[#5322FF] hover:bg-[#5322FF]/80 text-white font-mono text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 text-center"
+                  >
+                    <span>OPEN PLUG & PLAY SANDBOX ➔</span>
+                  </button>
+                </div>
+              );
+            }
+
+            if (node.id === '3d-data-metropolis' || (node.linkUrl && node.linkUrl.startsWith('http'))) {
               const techList = Array.isArray(node.techStack)
                 ? node.techStack
                 : [node.techStack];
