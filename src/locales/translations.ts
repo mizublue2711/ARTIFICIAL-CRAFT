@@ -104,7 +104,6 @@ export interface Translations {
   bp_title_line2: string;
   bp_desc: string;
   copy_api: string;
-  copied: string;
   export_clean_screenshot: string;
   rendering_hd: string;
   preview_ready: string;
@@ -262,10 +261,156 @@ export interface Translations {
   blackbox_q5_a: string;
   blackbox_q6_q: string;
   blackbox_q6_a: string;
+
+  // Global Header & Navigation
+  headerTitle: string;
+  nodeBadge: string;
+  zodGate: string;
+  slaFps: string;
+  enterNode: string;
+
+  // Configurator Steps
+  step1Brand: string;
+  step2Stylist: string;
+  step3Engine: string;
+  step4Telemetry: string;
+  step5Export: string;
+
+  // Step 01
+  step1Title: string;
+  targetPipeline: string;
+  projectName: string;
+  brandTagline: string;
+  logoUrl: string;
+  dropzoneText: string;
+  dropzoneSubtext: string;
+  logoAttached: string;
+
+  // Step 02
+  step2Title: string;
+  layer1Title: string;
+  layer2Title: string;
+  layer3Title: string;
+  bgShaderEngine: string;
+  typographyFamily: string;
+  motionTokens: string;
+  aiPromptPlaceholder: string;
+  btnAiGenerate: string;
+  btnExtractLogo: string;
+
+  // Step 03
+  step3Title: string;
+  base3dMesh: string;
+  actuatorModel: string;
+  explodedProgress: string;
+
+  // Step 04
+  step4Title: string;
+  torquePrecision: string;
+  dofSensors: string;
+  aiLatency: string;
+
+  // Step 05
+  step5Title: string;
+  btnCompile3d: string;
+  btnDownloadHtml: string;
+  btnExportAst: string;
+  btnCopyCode: string;
+
+  // Playground Hubs
+  hubTitle: string;
+  hubSub: string;
+  node1Title: string;
+  node2Title: string;
+  node3Title: string;
+  node4Title: string;
+  node5Title: string;
+  node6Title: string;
+  btnLaunchDemo: string;
+  btnOpenSandbox: string;
+
+  // Common Actions & Statuses
+  active: string;
+  activeBadge: string;
+  copy: string;
+  copied: string;
 }
 
 export const translations: Record<Language, Translations> = {
   en: {
+    // Global Header & Navigation
+    headerTitle: "STUDIO CONFIGURATOR // NO-CODE 3D FACTORY",
+    nodeBadge: "NODE 05 :: 3D MANUFACTURING FACTORY",
+    zodGate: "GATE: ZOD 100% PASS",
+    slaFps: "SLA: 60FPS KINEMATICS",
+    enterNode: "ENTER FACTORY NODE ➔",
+
+    // Configurator Steps
+    step1Brand: "STEP 01 // BRAND",
+    step2Stylist: "STEP 02 // STYLIST",
+    step3Engine: "STEP 03 // 3D MESH",
+    step4Telemetry: "STEP 04 // TELEMETRY",
+    step5Export: "STEP 05 // EXPORT",
+
+    // Step 01
+    step1Title: "STEP 1 // NODE SELECTION & BRAND IDENTITY",
+    targetPipeline: "Target Node Pipeline Preset",
+    projectName: "Project / Brand Name",
+    brandTagline: "Brand Tagline / Slogan",
+    logoUrl: "Brand Logo URL",
+    dropzoneText: "Click to Upload or Drag & Drop SVG/PNG Logo Asset",
+    dropzoneSubtext: "Triggers automatic logo palette color clustering",
+    logoAttached: "LOGO ATTACHED",
+
+    // Step 02
+    step2Title: "STEP 2 // AESTHETIC & VISUAL AI STYLIST",
+    layer1Title: "Tier 1: Signature Palettes (1-Click)",
+    layer2Title: "Tier 2: Magic AI Stylist Hook",
+    layer3Title: "Tier 3: Manual Fine-Tuning",
+    bgShaderEngine: "Background Shader Engine (9 Shaders)",
+    typographyFamily: "Typography Family",
+    motionTokens: "Active Motion Tokens",
+    aiPromptPlaceholder: "e.g. Luxury Titanium Robot, Cyberpunk Neon...",
+    btnAiGenerate: "AI Generate Palette",
+    btnExtractLogo: "Extract Logo",
+
+    // Step 03
+    step3Title: "STEP 3 // 3D ENGINE & EXPLODED ASSEMBLY",
+    base3dMesh: "Base 3D Mesh Component",
+    actuatorModel: "Actuator Model Preset",
+    explodedProgress: "Exploded Assembly Progress",
+
+    // Step 04
+    step4Title: "STEP 4 // TELEMETRY & BENTO GRID DOCK",
+    torquePrecision: "Torque Precision SLA",
+    dofSensors: "DOF Sensor Array Count",
+    aiLatency: "AI Inferencing Latency",
+
+    // Step 05
+    step5Title: "STEP 5 // EXPORT SANDBOX & AST BUNDLER",
+    btnCompile3d: "COMPILE & DISPATCH 3D WEB APP ➔",
+    btnDownloadHtml: "DOWNLOAD SINGLE-FILE HTML",
+    btnExportAst: "EXPORT JSON AST BLUEPRINT",
+    btnCopyCode: "COPY CODE SNIPPET",
+
+    // Playground Hubs
+    hubTitle: "STUDIO PLAYGROUND HUBS",
+    hubSub: "Central Directory of Autonomous Creative Engines",
+    node1Title: "DIGITAL PLUMBING TERMINAL",
+    node2Title: "TACTILE RETICLE CAD LAB",
+    node3Title: "FLIPBOOK SHADER GENERATOR",
+    node4Title: "MULTI-AGENT SWARM DOCK",
+    node5Title: "PLUG AND PLAY SANDBOX",
+    node6Title: "3D DATA METROPOLIS & CORPORATE PROFIT VISUALIZATION",
+    btnLaunchDemo: "LAUNCH DEMO ➔",
+    btnOpenSandbox: "OPEN PLUG & PLAY SANDBOX ➔",
+
+    // Common Actions & Statuses
+    active: "[ACTIVE]",
+    activeBadge: "✓ ACTIVE",
+    copy: "Copy",
+    copied: "Copied!",
+
     // Navigation
     nav_engine: 'ENGINE',
     nav_playground: 'PLAYGROUND',
@@ -375,7 +520,6 @@ export const translations: Record<Language, Translations> = {
     bp_desc:
       'Every blueprint ships with a typed API, node topology, and Carbon-style HD Swiss image exporter.',
     copy_api: 'COPY API',
-    copied: 'COPIED',
     export_clean_screenshot: 'Export Clean Screenshot',
     rendering_hd: 'RENDERING HD...',
     preview_ready: 'PREVIEW READY',
@@ -539,6 +683,79 @@ export const translations: Record<Language, Translations> = {
     blackbox_q6_a: "A: It sends a Slack message: 'Pipeline executed successfully. 1000 items rendered. What's next, Boss?'. And that is the true existential tragedy of the AI era: You wake up at 8 AM to find all manual labor cleared away, leaving you with nothing left to do except sit down and come up with an original idea.",
   },
   vi: {
+    // Global Header & Navigation
+    headerTitle: "XƯỞNG CHẾ TẠO 3D UNIBODY // CẤU HÌNH CỖ MÁY",
+    nodeBadge: "NODE 05 :: TRẠM CHẾ TẠO KINETIC 3D",
+    zodGate: "CỔNG KIỂM ĐỊNH ZOD: PASS 100%",
+    slaFps: "CAM KẾT SLA: 60 FPS ĐỘNG HỌC",
+    enterNode: "TRUY CẬP NODE NGUYÊN MẪU ➔",
+
+    // Configurator Steps
+    step1Brand: "BƯỚC 01 // THƯƠNG HIỆU",
+    step2Stylist: "BƯỚC 02 // STYLIST",
+    step3Engine: "BƯỚC 03 // ĐỘNG CƠ 3D",
+    step4Telemetry: "BƯỚC 04 // MÁY ĐO",
+    step5Export: "BƯỚC 05 // XUẤT CODE",
+
+    // Step 01
+    step1Title: "BƯỚC 1 // CHỌN NODE TÁC CHIẾN & NHẬN DẠNG THƯƠNG HIỆU",
+    targetPipeline: "Khuôn Mẫu Tác Chuyện Node Mục Tiêu",
+    projectName: "Tên Dự Án / Thương Hiệu",
+    brandTagline: "Khẩu Hiệu / Slogan Thương Hiệu",
+    logoUrl: "Đường Dẫn Biểu Tượng Logo",
+    dropzoneText: "Bấm để Tải lên hoặc Kéo & Thả Biểu tượng Logo SVG/PNG",
+    dropzoneSubtext: "Kích hoạt thuật toán tự động gom cụm màu sắc logo",
+    logoAttached: "ĐÃ ĐÍNH KÈM LOGO",
+
+    // Step 02
+    step2Title: "BƯỚC 2 // PHONG CÁCH ĐỒ HỌA & AI STYLIST GIÁC QUAN",
+    layer1Title: "Lớp 1: Bảng Màu Chữ Ký (1-Click)",
+    layer2Title: "Lớp 2: Cổng Trợ Lý AI Visual Stylist",
+    layer3Title: "Lớp 3: Tinh Chỉnh Thủ Công (Manual Fine-Tuning)",
+    bgShaderEngine: "Cỗ Máy Phông Nền Background Shader (9 Shader)",
+    typographyFamily: "Họ Phông Chữ Precision Typography",
+    motionTokens: "Token Chuyển Động Đang Kích Hoạt",
+    aiPromptPlaceholder: "VD: Bề mặt Kim loại Titan, Đèn Neon Cyberpunk...",
+    btnAiGenerate: "AI Tự Động Phối Màu",
+    btnExtractLogo: "Tách Màu Tự Động Từ Logo",
+
+    // Step 03
+    step3Title: "BƯỚC 3 // ĐỘNG CƠ 3D & MÔ HÌNH BÓC TÁCH LINH KIỆN",
+    base3dMesh: "Thành Phần Khối Mesh 3D Cơ Bản",
+    actuatorModel: "Mẫu Động Cơ Cơ Cấu Tác Động",
+    explodedProgress: "Tiến Độ Bóc Tách Mô Hình (Exploded Assembly)",
+
+    // Step 04
+    step4Title: "BƯỚC 4 // BẢNG MÁY ĐO VI TRÌNH & BENTO GRID DOCK",
+    torquePrecision: "Mức Độ Chính Xác Mô-men Xoắn SLA",
+    dofSensors: "Mảng Cảm Biến Đa Tự Do (DOF Array)",
+    aiLatency: "Độ Trễ Suy Luận AI (AI Latency)",
+
+    // Step 05
+    step5Title: "BƯỚC 5 // MÔ-ĐUN XUẤT CODE & ĐÓNG GÓI BẢO AN AST",
+    btnCompile3d: "BIÊN DỊCH & PHÁT HÀNH WEB APP 3D ➔",
+    btnDownloadHtml: "TẢI TỆP HTML ĐỘC LẬP (SINGLE-FILE)",
+    btnExportAst: "XUẤT SƠ ĐỒ THIẾT KẾ JSON AST",
+    btnCopyCode: "SAO CHÉP MÃ NGUỒN",
+
+    // Playground Hubs
+    hubTitle: "MẠNG LƯỚI TRUNG TÂM THỬ NGHIỆM STUDIO",
+    hubSub: "Danh mục Trung tâm của các Cỗ máy Sáng tạo Tự hành",
+    node1Title: "TRẠM TRUNG CHUYỂN KỸ THUẬT SỐ",
+    node2Title: "LAB ĐỒ HỌA CAD & TÂM NGẮM XẠ THỦ",
+    node3Title: "CỖ MÁY SINH SHADER LẬT TRANG (FLIPBOOK)",
+    node4Title: "TRẠM ĐIỀU HÀNH BẦY KHÍ CỤ ĐA AGENT",
+    node5Title: "MÔ-ĐUN THỬ NGHIỆM PLUG AND PLAY SANDBOX",
+    node6Title: "THÀNH PHỐ DỮ LIỆU 3D METROPOLIS & MÔ PHỎNG TÀI CHÍNH",
+    btnLaunchDemo: "KÍCH HOẠT DEMO ➔",
+    btnOpenSandbox: "MỞ PLUG & PLAY SANDBOX ➔",
+
+    // Common Actions & Statuses
+    active: "[ĐANG BẬT]",
+    activeBadge: "✓ ĐANG HOẠT ĐỘNG",
+    copy: "Sao chép",
+    copied: "Đã chép!",
+
     // Navigation
     nav_engine: 'ĐỘNG CƠ',
     nav_playground: 'SÂN CHƠI',
@@ -648,7 +865,6 @@ export const translations: Record<Language, Translations> = {
     bp_desc:
       'Mỗi sơ đồ mẫu đi kèm với API có kiểu, cấu trúc nút và công cụ xuất ảnh định hình theo phong cách của khách hàng.',
     copy_api: 'SAO CHÉP API',
-    copied: 'ĐÃ SAO CHÉP',
     export_clean_screenshot: 'Xuất Ảnh Màn Hình Sạch',
     rendering_hd: 'ĐANG DỰNG HD...',
     preview_ready: 'XEM TRƯỚC SẴN SÀNG',
