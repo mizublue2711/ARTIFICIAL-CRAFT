@@ -1954,10 +1954,7 @@ export const CraftStudioConfigurator: React.FC = () => {
               }`}
             >
               {/* Dynamic Viewport Background Layer */}
-              <div
-                key={`bg-${activeShaderKey}-${primaryColor}-${accentColor}`}
-                className="absolute inset-0 z-0 pointer-events-none opacity-40"
-              >
+              <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
                 <ActiveBg
                   primaryColor={primaryColor}
                   accentColor={accentColor}
@@ -1979,7 +1976,6 @@ export const CraftStudioConfigurator: React.FC = () => {
                 >
                   <iframe
                     ref={iframeRef}
-                    key={`3d-${activeShaderKey}-${formData.base_component || formData.presetModel || formData.modelType}-${primaryColor}-${accentColor}`}
                     srcDoc={generatedHtml}
                     sandbox="allow-scripts allow-modals allow-same-origin"
                     title="ARTIFICIAL CRAFT 3D Viewport"
