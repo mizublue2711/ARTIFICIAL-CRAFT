@@ -38,6 +38,7 @@ const legacySlugs = [
   'tech-lib-07-spatial-point-cloud-ai',
   'tech-lib-08-studio-configurator-ast',
   'tech-lib-09-brutalism-iframe-sandbox',
+  'tech-lib-10-3d-data-metropolis',
 ];
 
 legacySlugs.forEach((legacySlug, idx) => {

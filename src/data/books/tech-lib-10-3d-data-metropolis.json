@@ -1,0 +1,54 @@
+{
+  "slug": "tech-lib-10-3d-data-metropolis",
+  "title": "THE 3D DATA METROPOLIS & SINK OF SHAME",
+  "subtitle": "Transforming Flat Corporate Spreadsheets into 60FPS 3D Skylines and Sub-Level Risk Audits",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "THE 3D DATA METROPOLIS",
+      "subtitle": "Transforming Flat Corporate Spreadsheets into 60FPS 3D Skylines and Sub-Level Risk Audits",
+      "version": "v1.0.0",
+      "tags": [
+        "DATA METROPOLIS",
+        "THREE.JS",
+        "INSTANCED MESH",
+        "FINANCIAL TECH"
+      ],
+      "verified": true,
+      "seed": "data-metropolis-cover-10",
+      "graphicType": "CANDLESTICK_STREAM"
+    },
+    {
+      "id": "p02_spreadsheet_lie",
+      "type": "tech_doc",
+      "title": "01 // THE SPREADSHEET LIE",
+      "content": "You want to analyze corporate earnings: Banking, Oil, Real Estate, Retail.\n\nSo you open Excel. You scroll through 500 rows of numbers. Row 12: VCB profit +11,218B. Row 342: PNJ profit -328B. Your eyes blur. Your brain shuts down.\n\nThis is spreadsheet fatigue. Loss-making companies love Excel. They hide in tiny 8pt light gray font on page 14. Nobody spots the risk until the quarterly audit fails.",
+      "seed": "spreadsheet-fatigue-candlestick-10",
+      "graphicType": "CANDLESTICK_STREAM"
+    },
+    {
+      "id": "p03_sink_of_shame",
+      "type": "tech_doc",
+      "title": "02 // THE SINK OF SHAME & MORPHING SKYLINES",
+      "content": "How do you make 50 corporate balance sheets readable in 0.5 seconds? You turn data into a 3D Voxel Metropolis.\n\nLogarithmic algorithms map profit numbers directly to tower heights across an obsidian grid. Profitable giants soar skyward in neon cyan. Loss-making companies don't get a minus sign in a tiny cell—their towers submerge below the obsidian floor into the sub-level and glow Alert Red (#EF4444). You spot contagion before markets open.",
+      "code": "const height = Math.sign(profit) * Math.log10(Math.abs(profit) + 1) * scale;\nmatrix.makeTranslation(x, height >= 0 ? height / 2 : height / 2, z);\ninstancedMesh.setMatrixAt(i, matrix);\nconst color = profit >= 0 ? 0x00E5FF : 0xEF4444;\ninstancedMesh.setColorAt(i, new THREE.Color(color));",
+      "language": "typescript",
+      "seed": "sink-of-shame-matrix-10",
+      "graphicType": "PORTFOLIO_ALLOCATOR"
+    },
+    {
+      "id": "p04_instanced_mesh_zero_cost",
+      "type": "diagram",
+      "title": "03 // INSTANCED MESH & $0.00 RENDER COST",
+      "content": "Head-to-Head Duel Mode sweeps the 3D camera in close. A 1px laser measures margin delta in real time.\n\nLive Google Sheets API syncs directly to client GPU via THREE.InstancedMesh. Zero server render fees, 100% real-time financial telemetry. Client-side Zod sanitizer gate latency under 100ms. An unbreakable 3D financial warfare ecosystem.",
+      "seed": "instanced-mesh-waterfall-10",
+      "graphicType": "WATERFALL_FLOW",
+      "caption": "Figure 10.1 — Real-time Google Sheets to GPU pipeline rendering 100+ towers at 60 FPS ($0.00 server cost)"
+    }
+  ]
+}

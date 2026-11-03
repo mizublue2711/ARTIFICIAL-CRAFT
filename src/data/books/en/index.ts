@@ -7,6 +7,7 @@ import book6 from './book-06-tactile-reticle-cad.json';
 import book7 from './book-07-linkedin-banner-engine.json';
 import book8 from './book-08-multi-agent-swarm.json';
 import book9 from './book-09-flipbook-spec.json';
+import book10 from './book-10-3d-data-metropolis.json';
 import { BookData } from '../../../types/flipbook';
 
 export const enBooks: BookData[] = [
@@ -19,4 +20,5 @@ export const enBooks: BookData[] = [
   book7 as BookData,
   book8 as BookData,
   book9 as BookData,
+  book10 as BookData,
 ];
