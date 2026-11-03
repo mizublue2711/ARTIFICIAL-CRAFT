@@ -272,6 +272,29 @@ export type GraphicType =
   | 'WATERFALL_FLOW';     // Capital AUM Growth &amp; Inflow Waterfall
 
 ```
+---------------------------------------------------------------------------------
+10. **IMMEDIATE LOCALIZATION UPON SECTION COMPLETION**:
+   - Whenever you create, refactor, or complete any UI section, component, card, form, or modal, you **MUST NOT** leave raw hardcoded English text strings inside JSX/TSX files.
+   - You **MUST** immediately update `src/locales/translations.ts` by adding all newly introduced text strings (titles, subtitles, badges, descriptions, button labels, placeholders) to BOTH the `en` (English) and `vi` (Vietnamese) dictionary blocks before marking the task as complete.
+
+  **MANDATORY HOOK BINDING**:
+   - All component text nodes must be bound via the translation function `t('key')` or `useTranslation()` hook.
+   - **Forbidden Pattern**:
+     ```tsx
+     // ❌ REJECTED: Hardcoded English text string
+     <h3>STUDIO CONFIGURATOR // NO-CODE 3D FACTORY</h3>
+     <button>ENTER FACTORY NODE ➔</button>
+     ```
+   - **Required Pattern**:
+     ```tsx
+     // ✅ REQUIRED: Registered in translations.ts and bound via t()
+     <h3>{t('headerTitle')}</h3>
+     <button>{t('enterNode')} ➔</button>
+     ```
+  **DEFINITION OF DONE (i18n GATE CHECK)**:
+   - A task or pull request is **STRICTLY INVALID** and cannot be finalized if any newly created UI section contains untranslated English text or lacks corresponding Vietnamese entries in `src/locales/translations.ts`.
+   - Always run `npx tsc --noEmit` to verify zero missing key type errors after updating `translations.ts`.
+
 
 
 
