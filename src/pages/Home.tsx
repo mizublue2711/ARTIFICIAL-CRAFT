@@ -7,6 +7,7 @@ import ExistentialBlackbox from '@/components/ExistentialBlackbox';
 import Experts from '@/components/Experts';
 import CraftStudioConfigurator from '@/components/studio/CraftStudioConfigurator';
 import HeadlessSwarmSection from '@/components/home/HeadlessSwarmSection';
+import { useTranslation } from '@/context/useLanguage';
 
 class StudioErrorBoundary extends React.Component<
   { children: React.ReactNode },
@@ -80,6 +81,8 @@ function LogoMarquee() {
 }
 
 export default function Home({ onOpenBatchModal }: HomeProps) {
+  const { t } = useTranslation();
+
   return (
     <main>
       {/* Hero section rendering 3D engine in compact mode */}
@@ -99,10 +102,10 @@ export default function Home({ onOpenBatchModal }: HomeProps) {
             <div>
               <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-[#5322FF]/20 border border-[#5322FF]/50 text-purple-300 font-mono text-[10px] font-bold uppercase tracking-widest mb-3">
                 <span className="w-2 h-2 rounded-full bg-[#00E5FF] animate-pulse" />
-                NODE 05 // 3D MANUFACTURING FACTORY
+                {t('configuratorNodeBadge')}
               </div>
               <h2 className="text-2xl md:text-4xl font-extrabold text-white tracking-tight uppercase font-mono">
-                STUDIO CONFIGURATOR // NO-CODE 3D FACTORY
+                {t('configuratorHeader')}
               </h2>
               <p className="text-xs md:text-sm text-zinc-400 font-mono mt-2 max-w-2xl">
                 Real-time Cybernetic Brutalism design engine. Customize brand parameters, generate AI palettes, inspect 4-stage exploded assembly, and compile deterministic 60FPS WebGL artifacts.
@@ -115,7 +118,7 @@ export default function Home({ onOpenBatchModal }: HomeProps) {
                 rel="noopener noreferrer"
                 className="px-4 py-2 bg-[#5322FF] hover:bg-[#5322FF]/90 text-white font-mono text-xs font-bold uppercase transition flex items-center gap-2 shadow-[0_0_15px_rgba(83,34,255,0.4)]"
               >
-                <span>ENTER FACTORY NODE ↗</span>
+                <span>{t('enterFactoryNodeBtn')}</span>
               </a>
             </div>
           </div>

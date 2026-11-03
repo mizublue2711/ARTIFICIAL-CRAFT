@@ -894,6 +894,7 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
   const speed = 1.5;
   const isNode05 = brand.includes('NODE_05') || config.presetModel === 'kinematic_manipulator_arm';
   const baseComponent = rawConfig?.base_component || config.presetModel || config.modelType || 'RoboticsHandNode';
+  const enterFactoryBtnText = rawConfig?.enterFactoryNodeBtn || 'ENTER FACTORY NODE ➔';
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -989,7 +990,7 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
         style="color: #00E5FF; text-decoration: none; border: 1px solid rgba(0,229,255,0.4); padding: 2px 8px; background: rgba(0,0,0,0.8); font-family: monospace; font-size: 10px; font-weight: bold; display: inline-flex; align-items: center; gap: 6px;"
       >
         <span style="width: 6px; height: 6px; background: #00E5FF; border-radius: 50%; display: inline-block;"></span>
-        ENTER FACTORY NODE ➔
+        ${enterFactoryBtnText}
       </a>
       <span style="font-weight:700; color:#fff;">${brand} // STUDIO RUNTIME</span>
       ${isNode05 ? '<span style="color:#a855f7; font-size:9px; border:1px solid #5322FF; padding:1px 4px; background:rgba(83,34,255,0.2);">NODE 05 PRESET</span>' : ''}

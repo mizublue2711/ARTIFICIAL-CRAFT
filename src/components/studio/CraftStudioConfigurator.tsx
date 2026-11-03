@@ -27,6 +27,7 @@ import {
   Palette,
   Activity,
 } from 'lucide-react';
+import { useTranslation } from '@/context/useLanguage';
 
 import {
   SwissDesignConfigSchema,
@@ -269,6 +270,7 @@ const PRESET_PALETTES = [
 ];
 
 export const CraftStudioConfigurator: React.FC = () => {
+  const { t } = useTranslation();
   // State: Config Data
   const [formData, setFormData] = useState<ExtendedStudioConfig>(INITIAL_CONFIG);
   const [activeTabMode, setActiveTabMode] = useState<'FORGE_NODE' | 'USER_WEBAPP_GEN'>('USER_WEBAPP_GEN');
@@ -360,9 +362,12 @@ export const CraftStudioConfigurator: React.FC = () => {
   // Synchronize initial & updated live HTML
   const refreshLiveHtml = useCallback((cfg: ExtendedStudioConfig) => {
     // Generate high-precision standalone HTML
-    const html = generateFallbackCyberneticHTML(cfg as any);
+    const html = generateFallbackCyberneticHTML({
+      ...cfg,
+      enterFactoryNodeBtn: t('enterFactoryNodeBtn'),
+    } as any);
     setGeneratedHtml(html);
-  }, []);
+  }, [t]);
 
   // Handler to render layout_json onto Live Preview Stage
   const renderLegoCanvas = useCallback((layoutJson: any) => {
@@ -635,7 +640,10 @@ export const CraftStudioConfigurator: React.FC = () => {
   };
 
   const handleDownloadSingleFileHtml = () => {
-    const html = generatedHtml || generateFallbackCyberneticHTML(formData);
+    const html = generatedHtml || generateFallbackCyberneticHTML({
+      ...formData,
+      enterFactoryNodeBtn: t('enterFactoryNodeBtn'),
+    });
     const blob = new Blob([html], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -685,10 +693,10 @@ export const CraftStudioConfigurator: React.FC = () => {
         <div className="flex items-center gap-3">
           <div className="w-2.5 h-2.5 rounded-full bg-[#5322FF] animate-pulse" />
           <span className="font-bold tracking-widest text-zinc-100 uppercase">
-            STUDIO CONFIGURATOR // NO-CODE 3D FACTORY
+            {t('configuratorHeader')}
           </span>
           <span className="hidden sm:inline-block px-2 py-0.5 border border-zinc-700 bg-zinc-900 text-[10px] text-zinc-400">
-            NODE 05 :: 3D MANUFACTURING FACTORY
+            {t('configuratorNodeBadge')}
           </span>
         </div>
 
@@ -2086,7 +2094,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                     <div className="flex items-center gap-2">
                       <span className="px-2 py-0.5 bg-[#5322FF]/20 text-[#00E5FF] border border-[#00E5FF]/40 text-[10px] font-bold tracking-wider uppercase flex items-center gap-1">
                         <Zap className="w-3 h-3 text-[#00E5FF]" />
-                        <span>⚡ PLAYGROUND DEMO MODE</span>
+                        <span>⚡ {t('b2bPopupTitle')}</span>
                       </span>
                     </div>
                     <button
@@ -2101,16 +2109,16 @@ export const CraftStudioConfigurator: React.FC = () => {
 
                   {/* Body Text */}
                   <p className="text-xs text-zinc-300 leading-relaxed mb-4">
-                    You are currently experiencing the Playground Demo. Looking to forge custom, exclusive 3D Kinematics components tailored for your enterprise?
+                    {t('b2bPopupDesc')}
                   </p>
 
                   {/* Primary CTA Button */}
                   <a
                     href="mailto:thuyvu@artificialcraft.space?subject=ARTIFICIAL%20CRAFT%20-%20Enterprise%203D%20Kinematics%20Consultation"
-                    className="w-full py-2.5 px-3 bg-[#5322FF] hover:bg-[#5322FF]/90 text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(83,34,255,0.5)] border border-[#00E5FF]/30"
+                    className="w-full py-2.5 px-3 bg-[#5322FF] hover:bg-[#5322FF]/90 text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(83,34,255,0.5)] border border-[#00E5FF]/30 text-center"
                   >
-                    <Zap className="w-3.5 h-3.5 text-[#00E5FF]" />
-                    <span>[ ⚡ Book B2B Consultation & Enterprise Contract ]</span>
+                    <Zap className="w-3.5 h-3.5 text-[#00E5FF] shrink-0" />
+                    <span>[ ⚡ {t('btnBookB2bConsultation')} ]</span>
                   </a>
                 </motion.div>
               )}

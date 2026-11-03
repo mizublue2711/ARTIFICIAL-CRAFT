@@ -94,6 +94,7 @@ export function generateFallbackCyberneticHTML(config: any): string {
   const modelType = config?.roboticsNode?.modelType || config?.hero3DEngine?.modelType || 'kinematic_manipulator_arm';
   const speed = config?.roboticsNode?.rotationSpeed || 1.5;
   const isWireframe = config?.roboticsNode?.wireframe !== false;
+  const enterFactoryBtnText = config?.enterFactoryNodeBtn || 'ENTER FACTORY NODE ➔';
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -188,7 +189,7 @@ export function generateFallbackCyberneticHTML(config: any): string {
         style="color: #00E5FF; text-decoration: none; border: 1px solid rgba(0,229,255,0.4); padding: 2px 8px; background: rgba(0,0,0,0.8); font-family: monospace; font-size: 10px; font-weight: bold; display: inline-flex; align-items: center; gap: 6px;"
       >
         <span style="width: 6px; height: 6px; background: #00E5FF; border-radius: 50%; display: inline-block;"></span>
-        ENTER FACTORY NODE ➔
+        ${enterFactoryBtnText}
       </a>
       <span style="font-weight:700; color:#fff;">${brand} // STUDIO RUNTIME</span>
     </div>

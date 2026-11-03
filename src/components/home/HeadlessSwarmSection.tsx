@@ -12,6 +12,7 @@ import {
   Radio,
   Boxes,
 } from 'lucide-react';
+import { useTranslation } from '@/context/useLanguage';
 
 interface AgentPylon {
   id: string;
@@ -96,6 +97,7 @@ const WORKSTATION_URL = 'https://digital-plumbing-terminal-headless-swarm.mizu27
  * Implements Swiss Cybernetic Brutalism with 5 Autonomous Pylon Towers and real-time WebGL telemetry.
  */
 export const HeadlessSwarmSection: React.FC = () => {
+  const { t } = useTranslation();
   const [activeAgent, setActiveAgent] = useState<AgentPylon>(AGENT_PYLONS[0]);
   const activeAgentRef = useRef<AgentPylon>(AGENT_PYLONS[0]);
   const [fpsCounter, setFpsCounter] = useState(60);
@@ -355,7 +357,7 @@ export const HeadlessSwarmSection: React.FC = () => {
               <div className="flex flex-wrap items-center gap-3">
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-cyan-500/10 border border-cyan-500/40 text-cyan-300 font-mono text-[11px] font-bold tracking-widest uppercase rounded">
                   <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-                  <span>[ TERMINAL // ZONE 03 ] HEADLESS AGENT WORKBENCH</span>
+                  <span>{t('pylonZoneTag')}</span>
                 </div>
                 <span className="px-2.5 py-0.5 border border-zinc-800 bg-zinc-900/80 text-zinc-400 text-[10px] uppercase tracking-wider">
                   SLA: 60FPS LOCAL GPU
@@ -365,16 +367,10 @@ export const HeadlessSwarmSection: React.FC = () => {
               {/* Bold Headline */}
               <div className="space-y-3">
                 <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight uppercase font-mono leading-snug">
-                  5 Autonomous Pylon Towers.{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-white to-[#5322FF]">
-                    Zero Cloud Latency.
-                  </span>{' '}
-                  $0.00 Render Cost.
+                  {t('pylonMainHeading')}
                 </h2>
                 <p className="text-xs sm:text-sm text-zinc-300 font-sans leading-relaxed border-l-2 border-cyan-400 pl-4 py-1">
-                  Decoupled multi-agent orchestration compiled directly into client-side WebGL
-                  kinematics. Eliminate massive cloud rendering bills with deterministic, edge-welded
-                  execution loops.
+                  {t('pylonSubheading')}
                 </p>
               </div>
 
@@ -383,9 +379,9 @@ export const HeadlessSwarmSection: React.FC = () => {
                 <div className="flex items-center justify-between text-[11px] text-zinc-400 font-mono uppercase tracking-wider">
                   <span className="flex items-center gap-1.5 text-zinc-300 font-bold">
                     <Radio className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
-                    <span>Autonomous Pylon Conduits</span>
+                    <span>{t('pylonConduitsTitle')}</span>
                   </span>
-                  <span className="text-zinc-500 text-[10px]">SELECT PYLON TO INSPECT</span>
+                  <span className="text-zinc-500 text-[10px]">{t('pylonInspectHint')}</span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
@@ -424,7 +420,7 @@ export const HeadlessSwarmSection: React.FC = () => {
 
                         {/* Throughput Telemetry */}
                         <div className="mt-2.5 pt-2 border-t border-zinc-800/80 flex items-center justify-between text-[9px] font-mono">
-                          <span className="text-zinc-500 uppercase">Throughput</span>
+                          <span className="text-zinc-500 uppercase">{t('pylonThroughputLabel')}</span>
                           <span className="text-cyan-300 font-bold">{pylon.throughput}</span>
                         </div>
                       </button>
@@ -476,7 +472,7 @@ export const HeadlessSwarmSection: React.FC = () => {
                   className="group relative inline-flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-cyan-400 to-[#5322FF] hover:from-cyan-300 hover:to-[#5322FF]/90 text-black font-extrabold text-xs sm:text-sm tracking-wider uppercase rounded transition-all duration-300 shadow-[0_0_25px_rgba(0,229,255,0.4)] cursor-pointer"
                 >
                   <span className="text-black font-mono font-black">
-                    [ ⚡ LAUNCH STANDALONE 3D WORKSTATION ]
+                    [ ⚡ {t('btnLaunchPylonStation')} ]
                   </span>
                   <ExternalLink className="w-4 h-4 text-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </a>
@@ -492,7 +488,7 @@ export const HeadlessSwarmSection: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <Terminal className="w-3.5 h-3.5 text-cyan-400" />
                   <span className="font-bold text-white uppercase tracking-wider text-[11px]">
-                    PYLON TELEMETRY // 3D HUD
+                    {t('pylonTelemetryTitle')}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 font-mono text-[10px]">
@@ -509,7 +505,7 @@ export const HeadlessSwarmSection: React.FC = () => {
                 {/* Floating Corner Overlay Telemetry */}
                 <div className="absolute top-3 left-3 z-10 pointer-events-none">
                   <div className="px-2 py-1 bg-black/80 border border-zinc-800 text-[10px] text-zinc-400 font-mono rounded">
-                    ACTIVE: <span className="text-cyan-400 font-bold">{activeAgent.name}</span>
+                    {t('pylonStatusActive').replace('DIFY.AI', activeAgent.name)}
                   </div>
                 </div>
 
@@ -529,11 +525,11 @@ export const HeadlessSwarmSection: React.FC = () => {
                       style={{ backgroundColor: activeAgent.glowColor }}
                     />
                     <span className="text-xs font-bold text-white uppercase">
-                      {activeAgent.name} PYLON TELEMETRY
+                      {activeAgent.name} {t('pylonTelemetryTitle')}
                     </span>
                   </div>
                   <span className="text-[10px] px-2 py-0.5 bg-cyan-500/10 border border-cyan-500/40 text-cyan-300">
-                    CONDUIT LOCKED
+                    {t('pylonConduitLocked')}
                   </span>
                 </div>
 
@@ -544,11 +540,11 @@ export const HeadlessSwarmSection: React.FC = () => {
 
                 <div className="grid grid-cols-2 gap-2 pt-1 text-[10px]">
                   <div className="p-2 border border-zinc-800 bg-zinc-950/80 rounded">
-                    <span className="text-zinc-500 block">THROUGHPUT</span>
+                    <span className="text-zinc-500 block">{t('pylonThroughputLabel')}</span>
                     <span className="font-bold text-white">{activeAgent.throughput}</span>
                   </div>
                   <div className="p-2 border border-zinc-800 bg-zinc-950/80 rounded">
-                    <span className="text-zinc-500 block">RENDER FEE</span>
+                    <span className="text-zinc-500 block">{t('pylonRenderFeeLabel')}</span>
                     <span className="font-bold text-emerald-400">$0.00 LOCAL</span>
                   </div>
                 </div>
