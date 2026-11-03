@@ -5,6 +5,7 @@ export type { Language, Translations };
 
 export interface LanguageContextType {
   language: Language;
+  currentLocale: Language;
   setLanguage: (lang: Language | string) => void;
   toggleLanguage: () => void;
   changeLanguage: (lang: Language | string) => void;
@@ -77,6 +78,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const contextValue = useMemo<LanguageContextType>(
     () => ({
       language,
+      currentLocale: language,
       setLanguage,
       toggleLanguage,
       changeLanguage: setLanguage,

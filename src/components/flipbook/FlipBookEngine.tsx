@@ -132,12 +132,14 @@ class FlipBookSoundFX {
 interface FlipBookEngineProps {
   bookSlug?: string;
   bookData?: BookData;
+  availableBooks?: BookData[];
   className?: string;
 }
 
 export const FlipBookEngine: React.FC<FlipBookEngineProps> = ({
   bookSlug = 'manual-sample-architecture',
   bookData,
+  availableBooks,
   className = ''
 }) => {
   const { language } = useLanguage();
@@ -145,10 +147,19 @@ export const FlipBookEngine: React.FC<FlipBookEngineProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const lastWheelTime = useRef<number>(0);
 
-  // Load book data from prop or registry
-  const resolvedBook = bookData || getBookBySlug(bookSlug, language);
+  // Load book data from prop or registry matching current locale
+  const resolvedBook = bookData || (availableBooks?.find(b => b.slug === bookSlug)) || getBookBySlug(bookSlug, language);
 
   const [pageIndex, setPageIndex] = useState<number>(0);
+
+  // Reset or clamp page index when active book changes (e.g. locale toggle or slug change)
+  useEffect(() => {
+    setPageIndex((prev) => {
+      const maxPages = resolvedBook?.pages.length || 0;
+      if (maxPages === 0) return 0;
+      return prev >= maxPages ? 0 : prev;
+    });
+  }, [resolvedBook?.slug, resolvedBook?.title, resolvedBook?.pages.length, language]);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [direction, setDirection] = useState<number>(1); // 1 = forward, -1 = backward
