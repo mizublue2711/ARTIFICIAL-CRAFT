@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import BackToTop from '@/components/BackToTop';
 import BatchProductionModal from '@/components/BatchProductionModal';
 import { LanguageProvider } from '@/context/LanguageContext';
 
@@ -35,6 +36,9 @@ function App() {
           </Routes>
 
           <Footer />
+
+          {/* Cybernetic Brutalist Floating Back To Top */}
+          <BackToTop />
 
           {/* Global Batch Production Modal */}
           <BatchProductionModal

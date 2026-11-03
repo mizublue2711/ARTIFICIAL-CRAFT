@@ -14,7 +14,8 @@ export interface LanguageContextType {
 
 export const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-const LOCAL_STORAGE_KEY = 'ac_lang';
+const PRIMARY_STORAGE_KEY = 'app_locale';
+const LEGACY_STORAGE_KEY = 'ac_lang';
 
 const normalizeLanguage = (langStr: string | null | undefined): Language => {
   if (!langStr) return 'en';
@@ -26,7 +27,7 @@ const normalizeLanguage = (langStr: string | null | undefined): Language => {
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguageState] = useState<Language>(() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+      const saved = localStorage.getItem(PRIMARY_STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY);
       return normalizeLanguage(saved);
     }
     return 'en';
@@ -36,7 +37,8 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const normalized = normalizeLanguage(lang);
     setLanguageState(normalized);
     if (typeof window !== 'undefined') {
-      localStorage.setItem(LOCAL_STORAGE_KEY, normalized);
+      localStorage.setItem(PRIMARY_STORAGE_KEY, normalized);
+      localStorage.setItem(LEGACY_STORAGE_KEY, normalized);
     }
   }, []);
 
@@ -44,7 +46,8 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setLanguageState((prev) => {
       const next = prev === 'en' ? 'vi' : 'en';
       if (typeof window !== 'undefined') {
-        localStorage.setItem(LOCAL_STORAGE_KEY, next);
+        localStorage.setItem(PRIMARY_STORAGE_KEY, next);
+        localStorage.setItem(LEGACY_STORAGE_KEY, next);
       }
       return next;
     });
@@ -52,7 +55,8 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      localStorage.setItem(LOCAL_STORAGE_KEY, language);
+      localStorage.setItem(PRIMARY_STORAGE_KEY, language);
+      localStorage.setItem(LEGACY_STORAGE_KEY, language);
     }
   }, [language]);
 
