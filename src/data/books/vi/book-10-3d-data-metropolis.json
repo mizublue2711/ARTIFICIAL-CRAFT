@@ -1,0 +1,54 @@
+{
+  "slug": "book-10-3d-data-metropolis",
+  "title": "Thành phố Dữ liệu 3D & Tầng Hầm Cảnh Báo",
+  "subtitle": "Chuyển hóa Bảng tính Tài chính Phẳng thành Đường chân trời Đô thị 3D 60 FPS và Kiểm toán Rủi ro Dưới mặt đất",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "THÀNH PHỐ DỮ LIỆU 3D & TẦNG HẦM CẢNH BÁO",
+      "subtitle": "Chuyển hóa Bảng tính Tài chính Phẳng thành Đường chân trời Đô thị 3D 60 FPS và Kiểm toán Rủi ro Dưới mặt đất",
+      "version": "v1.0.0",
+      "tags": [
+        "DATA METROPOLIS",
+        "THREE.JS",
+        "INSTANCED MESH",
+        "FINANCIAL TECH"
+      ],
+      "verified": true,
+      "seed": "data-metropolis-cover-10",
+      "graphicType": "CANDLESTICK_STREAM"
+    },
+    {
+      "id": "p02_spreadsheet_lie",
+      "type": "tech_doc",
+      "title": "01 // SỰ ĐÁNH LỪA CỦA BẢNG TÍNH EXCEL",
+      "content": "Bạn muốn phân tích kết quả kinh doanh: Ngân hàng, Dầu khí, Bất động sản, Bán lẻ.\n\nBạn mở Excel và cuộn qua 500 dòng số liệu. Dòng 12: VCB lãi +11.218 tỷ. Dòng 342: PNJ lỗ -328 tỷ. Mắt hoa đi, não quá tải. Đây là hội chứng kiệt sức bảng tính. Các công ty thua lỗ thích Excel vì họ có thể trốn trong cỡ chữ 8pt màu xám nhạt ở trang 14. Không ai thấy rủi ro cho đến khi đợt kiểm toán quý đổ vỡ.",
+      "seed": "spreadsheet-fatigue-candlestick-10",
+      "graphicType": "CANDLESTICK_STREAM"
+    },
+    {
+      "id": "p03_sink_of_shame",
+      "type": "tech_doc",
+      "title": "02 // TẦNG HẦM CẢNH BÁO & ĐÔ THỊ BIẾN HÌNH",
+      "content": "Làm sao đọc 50 báo cáo tài chính trong 0.5 giây? Biến dữ liệu thành Đô thị Voxel 3D.\n\nThuật toán Logarit ánh xạ lợi nhuận thành chiều cao tòa tháp trên lưới bê tông obsidian. Các trụ cột có lãi vươn cao rực rỡ với sắc xanh neon cyan. Doanh nghiệp thua lỗ không chỉ nhận dấu trừ trong ô nhỏ—tòa tháp của họ chìm sâu xuống lòng đất và phát sáng Đỏ Cảnh Báo (#EF4444). Bạn phát hiện nguy cơ lây lan trước giờ mở cửa thị trường.",
+      "code": "const height = Math.sign(profit) * Math.log10(Math.abs(profit) + 1) * scale;\nmatrix.makeTranslation(x, height >= 0 ? height / 2 : height / 2, z);\ninstancedMesh.setMatrixAt(i, matrix);\nconst color = profit >= 0 ? 0x00E5FF : 0xEF4444;\ninstancedMesh.setColorAt(i, new THREE.Color(color));",
+      "language": "typescript",
+      "seed": "sink-of-shame-matrix-10",
+      "graphicType": "PORTFOLIO_ALLOCATOR"
+    },
+    {
+      "id": "p04_instanced_mesh_zero_cost",
+      "type": "diagram",
+      "title": "03 // INSTANCED MESH & CHI PHÍ RENDER $0.00",
+      "content": "Chế độ Đối đầu Trực diện quét camera 3D lại gần. Tia laser 1px đo chênh lệch biên lợi nhuận thời gian thực.\n\nĐồng bộ Google Sheets API trực tiếp về GPU qua THREE.InstancedMesh. Không tốn phí máy chủ, 100% dữ liệu tài chính thời gian thực. Cổng lọc Zod phía client phản hồi dưới 100ms. Một hệ sinh thái quan sát tài chính 3D vững chắc.",
+      "seed": "instanced-mesh-waterfall-10",
+      "graphicType": "WATERFALL_FLOW",
+      "caption": "Hình 10.1 — Quy trình đồng bộ Google Sheets sang GPU hiển thị hơn 100 tòa tháp đạt 60 FPS (chi phí server $0.00)"
+    }
+  ]
+}
