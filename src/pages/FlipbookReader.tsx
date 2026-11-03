@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
-import { FlipBookEngine } from '@/components/flipbook/FlipBookEngine';
+import { FlipbookViewer } from '@/components/flipbook/FlipbookViewer';
 import { ChevronLeft, BookOpen } from 'lucide-react';
 
 export default function FlipbookReader() {
@@ -24,8 +24,8 @@ export default function FlipbookReader() {
           </div>
         </div>
 
-        {/* Flipbook Engine */}
-        <FlipBookEngine bookSlug={slug || 'manual-sample-architecture'} />
+        {/* Flipbook Viewer with dynamic locale loading */}
+        <FlipbookViewer bookSlug={slug || 'manual-sample-architecture'} />
       </div>
     </div>
   );
