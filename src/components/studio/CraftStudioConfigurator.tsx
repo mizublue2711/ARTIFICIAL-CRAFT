@@ -1972,7 +1972,8 @@ export const CraftStudioConfigurator: React.FC = () => {
 
               {previewViewportMode === '3d-canvas' ? (
                 <div
-                  className="relative w-full h-full pointer-events-auto cursor-crosshair z-10"
+                  className="relative w-full h-full pointer-events-auto cursor-crosshair z-10 touch-pan-y"
+                  style={{ touchAction: 'pan-y' }}
                   onPointerMove={(e) => {
                     const rect = e.currentTarget.getBoundingClientRect();
                     const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
@@ -1989,7 +1990,8 @@ export const CraftStudioConfigurator: React.FC = () => {
                     title="ARTIFICIAL CRAFT 3D Viewport"
                     data-background-shader={activeShaderKey}
                     data-base-component={formData.base_component || formData.presetModel || formData.modelType || 'RoboticsHandNode'}
-                    className="w-full h-full bg-transparent rounded-none border-0 pointer-events-auto"
+                    style={{ touchAction: 'pan-y' }}
+                    className="w-full h-full bg-transparent rounded-none border-0 pointer-events-auto touch-pan-y"
                   />
 
                   {/* Raycasting Reticle Overlay Follower */}

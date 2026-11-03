@@ -500,7 +500,8 @@ export const HeadlessSwarmSection: React.FC = () => {
               {/* Interactive Three.js Pylon Canvas Viewport */}
               <div
                 ref={canvasContainerRef}
-                className="relative w-full h-[300px] sm:h-[340px] bg-[#050508] overflow-hidden cursor-crosshair flex items-center justify-center"
+                style={{ touchAction: 'pan-y' }}
+                className="relative w-full h-[300px] sm:h-[340px] bg-[#050508] overflow-hidden cursor-crosshair flex items-center justify-center touch-pan-y"
               >
                 {/* Floating Corner Overlay Telemetry */}
                 <div className="absolute top-3 left-3 z-10 pointer-events-none">

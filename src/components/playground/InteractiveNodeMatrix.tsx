@@ -75,13 +75,13 @@ export const UnifiedHubCard: React.FC<HubCardProps> = ({
       </div>
     </div>
 
-    {/* CTA Button Action */}
+    {/* CTA Button Action - Enforcing 44px min touch target on mobile */}
     {onClickUrl ? (
       <a
         href={onClickUrl}
         target={onClickUrl.startsWith('http') ? '_blank' : '_self'}
         rel="noopener noreferrer"
-        className="w-full py-2 px-3 bg-[#5322FF] hover:bg-[#5322FF]/80 text-white font-mono text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 text-center"
+        className="w-full min-h-[44px] py-2.5 px-4 bg-[#5322FF] hover:bg-[#5322FF]/80 text-white font-mono text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 text-center touch-manipulation"
       >
         <span>{ctaLabel.endsWith('➔') ? ctaLabel : `${ctaLabel} ➔`}</span>
       </a>
@@ -89,7 +89,7 @@ export const UnifiedHubCard: React.FC<HubCardProps> = ({
       <button
         type="button"
         onClick={onAction}
-        className="w-full py-2 px-3 bg-[#5322FF] hover:bg-[#5322FF]/80 text-white font-mono text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 text-center"
+        className="w-full min-h-[44px] py-2.5 px-4 bg-[#5322FF] hover:bg-[#5322FF]/80 text-white font-mono text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 text-center touch-manipulation"
       >
         <span>{ctaLabel.endsWith('➔') ? ctaLabel : `${ctaLabel} ➔`}</span>
       </button>
@@ -260,12 +260,12 @@ export const InteractiveNodeMatrix: React.FC<UniversalComponentProps> = ({
                     </p>
                   </div>
 
-                  {/* Card Bottom */}
-                  <div className="pt-4 border-t border-zinc-800/80 flex items-center justify-between text-[11px]">
+                  {/* Card Bottom - Enforcing 44px min touch target on mobile */}
+                  <div className="pt-4 border-t border-zinc-800/80 flex items-center justify-between text-[11px] min-h-[44px]">
                     <span className="text-zinc-500 font-mono text-[10px]">
                       {techList.join(' • ')}
                     </span>
-                    <div className="flex items-center gap-1 text-[#00E5FF] font-bold group-hover:translate-x-1 transition-transform">
+                    <div className="flex items-center gap-1 text-[#00E5FF] font-bold group-hover:translate-x-1 transition-transform py-2 px-1">
                       <span>{node.enterLabel?.replace('↗', '').trim() || 'ENTER'}</span>
                       <ArrowUpRight className="w-3.5 h-3.5" />
                     </div>
