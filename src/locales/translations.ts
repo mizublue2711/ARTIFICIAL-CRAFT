@@ -282,6 +282,58 @@ export interface Translations {
   book_08_subtitle: string;
   book_09_title: string;
   book_09_subtitle: string;
+
+  // SECTION 1: PYLON WORKBENCH
+  pylonZoneTag: string;
+  pylonMainHeading: string;
+  pylonSubheading: string;
+  pylonConduitsTitle: string;
+  pylonInspectHint: string;
+  btnLaunchPylonStation: string;
+  pylonTelemetryTitle: string;
+  pylonStatusActive: string;
+  pylonConduitLocked: string;
+  pylonThroughputLabel: string;
+  pylonRenderFeeLabel: string;
+
+  // SECTION 2: STUDIO PLAYGROUND HUBS MATRIX
+  matrixTag: string;
+  matrixHeading: string;
+  matrixSubheading: string;
+  btnLaunchFullMatrix: string;
+
+  // Node Cards 01-06
+  node01Title: string;
+  node01Desc: string;
+  btnEnterNode01: string;
+
+  node02Title: string;
+  node02Desc: string;
+  btnLaunchNode02: string;
+
+  node03Title: string;
+  node03Desc: string;
+  btnOpenNode03: string;
+
+  node04Title: string;
+  node04Desc: string;
+  btnOpenNode04: string;
+
+  node05Title: string;
+  node05Desc: string;
+  btnOpenNode05: string;
+
+  node06Title: string;
+  node06Desc: string;
+  btnLaunchNode06: string;
+
+  // SECTION 3: STUDIO CONFIGURATOR & CANVAS HUD
+  configuratorHeader: string;
+  configuratorNodeBadge: string;
+  enterFactoryNodeBtn: string;
+  b2bPopupTitle: string;
+  b2bPopupDesc: string;
+  btnBookB2bConsultation: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -577,6 +629,58 @@ export const translations: Record<Language, Translations> = {
     book_08_subtitle: 'How Studio Configurator Transforms No-Code Actions into Real-Time 60FPS Web3D',
     book_09_title: 'CYBERNETIC BRUTALISM & IFRAME SANDBOXING',
     book_09_subtitle: 'Designing Resilient Web3D Architecture Without Shell Collisions or State Leaks',
+
+    // SECTION 1: PYLON WORKBENCH
+    pylonZoneTag: "TERMINAL // ZONE 03 // HEADLESS AGENT WORKBENCH",
+    pylonMainHeading: "5 AUTONOMOUS PYLON TOWERS. ZERO CLOUD LATENCY. $0.00 RENDER COST.",
+    pylonSubheading: "Decoupled multi-agent orchestration compiled directly into client-side WebGL kinematics. Eliminate massive cloud rendering bills with deterministic, edge-welded execution loops.",
+    pylonConduitsTitle: "AUTONOMOUS PYLON CONDUITS",
+    pylonInspectHint: "SELECT PYLON TO INSPECT",
+    btnLaunchPylonStation: "LAUNCH STANDALONE 3D WORKSTATION",
+    pylonTelemetryTitle: "PYLON TELEMETRY // 3D HUD",
+    pylonStatusActive: "ACTIVE: DIFY.AI",
+    pylonConduitLocked: "CONDUIT LOCKED",
+    pylonThroughputLabel: "THROUGHPUT",
+    pylonRenderFeeLabel: "RENDER FEE",
+
+    // SECTION 2: STUDIO PLAYGROUND HUBS MATRIX
+    matrixTag: "INTERACTIVE NODE MATRIX // 6 ENGINES",
+    matrixHeading: "STUDIO PLAYGROUND HUBS",
+    matrixSubheading: "Access the complete suite of deterministic AI, 3D procedural graphics, automated motion design, and open CAD telemetry engines.",
+    btnLaunchFullMatrix: "LAUNCH FULL STUDIO MATRIX ➔",
+
+    // Node Cards 01-06
+    node01Title: "PROCEDURAL 3D RENDER ENGINE",
+    node01Desc: "60 FPS Three.js procedural shader monolith with live audio synthesis.",
+    btnEnterNode01: "ENTER ↗",
+
+    node02Title: "REMOTION MOTION STUDIO",
+    node02Desc: "Deterministic programmatic video generation with 4-layer Lego stack. Compose procedural motion graphics via React code.",
+    btnLaunchNode02: "LAUNCH MOTION STUDIO ➔",
+
+    node03Title: "AUTOMATED BANNER STUDIO",
+    node03Desc: "Dynamic branding asset synthesis with SVG vector export, batch production, and headless automated delivery.",
+    btnOpenNode03: "OPEN BANNER STUDIO ➔",
+
+    node04Title: "OPEN MEKONG CAD VISUALIZER",
+    node04Desc: "Real-time environmental CKAN data pipeline with waveform visualizer and line-art telemetry analysis.",
+    btnOpenNode04: "OPEN MEKONG CAD ➔",
+
+    node05Title: "PLUG AND PLAY SANDBOX",
+    node05Desc: "Interactive sandbox environment for hot-reloading custom 3D meshes, GLTF/OBJ assets, and Zod AST payloads into the ARTIFICIAL CRAFT runtime pipeline.",
+    btnOpenNode05: "OPEN PLUG & PLAY SANDBOX ➔",
+
+    node06Title: "3D DATA METROPOLIS & CORPORATE PROFIT VISUALIZATION",
+    node06Desc: "Transforms flat financial spreadsheets into an interactive 3D Voxel Matrix city running at 60 FPS in the browser. Features live Google Sheets API integration, procedural negative profit sub-level sinking effects, and 3D Head-to-Head Duel Mode.",
+    btnLaunchNode06: "LAUNCH 3D METROPOLIS DEMO ➔",
+
+    // SECTION 3: STUDIO CONFIGURATOR & CANVAS HUD
+    configuratorHeader: "STUDIO CONFIGURATOR // NO-CODE 3D FACTORY",
+    configuratorNodeBadge: "NODE 05 :: 3D MANUFACTURING FACTORY",
+    enterFactoryNodeBtn: "ENTER FACTORY NODE ➔",
+    b2bPopupTitle: "PLAYGROUND DEMO MODE",
+    b2bPopupDesc: "You are currently experiencing the Playground Demo. Looking to forge custom, exclusive 3D Kinematics components tailored for your enterprise?",
+    btnBookB2bConsultation: "BOOK B2B CONSULTATION & ENTERPRISE CONTRACT",
   },
   vi: {
     // Navigation
@@ -870,5 +974,57 @@ export const translations: Record<Language, Translations> = {
     book_08_subtitle: 'Kiến trúc Tổ chức & Phân công Công việc Tự động giữa các Trợ lý AI',
     book_09_title: 'Quy chuẩn Thiết kế & Tự động hóa Thư viện Sách lật 3D',
     book_09_subtitle: 'Tiêu chuẩn Đóng gói Tài liệu thành Sách Lật 3D Tương tác trên Web',
+
+    // SECTION 1: PYLON WORKBENCH
+    pylonZoneTag: "TRẠM ĐIỀU HÀNH // PHÂN KHU 03 // BÀN LÀM VIỆC AGENT TỰ HÀNH",
+    pylonMainHeading: "5 TRẠM PYLON TỰ HÀNH. KHÔNG ĐỘ TRỄ CLOUD. CHÍ PHÍ RENDER $0.00.",
+    pylonSubheading: "Hệ thống điều phối đa trợ lý AI độc lập được biên dịch trực tiếp thành động học WebGL phía máy khách. Loại bỏ hoàn toàn hóa đơn máy chủ rendering đám mây với luồng thực thi khép kín.",
+    pylonConduitsTitle: "KÊNH DẪN PYLON TỰ HÀNH",
+    pylonInspectHint: "CHỌN PYLON ĐỂ SOI CHI TIẾT",
+    btnLaunchPylonStation: "KÍCH HOẠT TRẠM LÀM VIỆC 3D ĐỘC LẬP",
+    pylonTelemetryTitle: "BẢNG MÁY ĐO PYLON // 3D HUD",
+    pylonStatusActive: "TRẠM HOẠT ĐỘNG: DIFY.AI",
+    pylonConduitLocked: "ĐÃ KHÓA KÊNH DẪN",
+    pylonThroughputLabel: "BĂNG THÔNG XỬ LÝ",
+    pylonRenderFeeLabel: "CHI PHÍ RENDER",
+
+    // SECTION 2: STUDIO PLAYGROUND HUBS MATRIX
+    matrixTag: "MA TRẬN NGUYÊN MẪU // 6 CỖ MÁY SÁNG TẠO",
+    matrixHeading: "MẠNG LƯỚI TRUNG TÂM THỬ NGHIỆM STUDIO",
+    matrixSubheading: "Truy cập toàn bộ bộ cỗ máy AI xác định, đồ họa lập trình 3D procedural, tự động hóa thiết kế chuyển động và động cơ máy đo CAD mở.",
+    btnLaunchFullMatrix: "KÍCH HOẠT TOÀN BỘ MATRIX STUDIO ➔",
+
+    // Node Cards 01-06
+    node01Title: "CỖ MÁY RENDER 3D PROCEDURAL",
+    node01Desc: "Khối Shader Procedural Three.js 60 FPS tích hợp tổng hợp âm thanh thời gian thực.",
+    btnEnterNode01: "TRUY CẬP ↗",
+
+    node02Title: "XƯỞNG ĐỒ HỌA ĐỘNG REMOTION",
+    node02Desc: "Tạo video bằng mã nguồn xác định với cấu trúc 4 lớp Lego. Tự động biên soạn đồ họa chuyển động qua mã React.",
+    btnLaunchNode02: "MỞ REMOTION STUDIO ➔",
+
+    node03Title: "XƯỞNG TẠO BANNER THƯƠNG HIỆU TỰ ĐỘNG",
+    node03Desc: "Tổng hợp hình ảnh nhận diện thương hiệu động với xuất tệp vector SVG, sản xuất hàng loạt và phân phối tự động.",
+    btnOpenNode03: "MỞ BANNER STUDIO ➔",
+
+    node04Title: "TRÌNH TRỰC QUAN HÓA MEKONG CAD",
+    node04Desc: "Luồng dữ liệu môi trường CKAN thời gian thực với bộ hiển thị dạng sóng và phân tích vi trình đường nét line-art.",
+    btnOpenNode04: "MỞ MEKONG CAD ➔",
+
+    node05Title: "MÔ-ĐUN THỬ NGHIỆM PLUG AND PLAY SANDBOX",
+    node05Desc: "Môi trường sandbox tương tác hỗ trợ nạp nóng các khối mesh 3D tùy chỉnh, tệp GLTF/OBJ và cấu hình Zod AST vào cỗ máy ARTIFICIAL CRAFT.",
+    btnOpenNode05: "MỞ PLUG & PLAY SANDBOX ➔",
+
+    node06Title: "THÀNH PHỐ DỮ LIỆU 3D METROPOLIS & MÔ PHỎNG TÀI CHÍNH",
+    node06Desc: "Chuyển hóa báo cáo tài chính bảng phẳng thành Thành phố Dữ liệu 3D (3D Voxel Matrix) tương tác 60 FPS. Tích hợp Google Sheets Live API, hiệu ứng sụt chìm thua lỗ và chế độ So sánh Đối đầu 3D.",
+    btnLaunchNode06: "KÍCH HOẠT DEMO 3D METROPOLIS ➔",
+
+    // SECTION 3: STUDIO CONFIGURATOR & CANVAS HUD
+    configuratorHeader: "XƯỞNG CHẾ TẠO 3D UNIBODY // CẤU HÌNH CỖ MÁY",
+    configuratorNodeBadge: "NODE 05 :: TRẠM CHẾ TẠO KINETIC 3D",
+    enterFactoryNodeBtn: "TRUY CẬP NODE NGUYÊN MẪU ➔",
+    b2bPopupTitle: "CHẾ ĐỘ THỬ NGHIỆM PLAYGROUND",
+    b2bPopupDesc: "Bạn đang trải nghiệm phiên bản Playground Demo. Bạn muốn đặt hàng chế tạo các thành phần Động học 3D độc quyền dành riêng cho doanh nghiệp?",
+    btnBookB2bConsultation: "ĐẶT LỊCH TƯ VẤN B2B & HỢP ĐỒNG DOANH NGHIỆP",
   },
 };
