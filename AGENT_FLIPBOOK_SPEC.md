@@ -273,27 +273,33 @@ export type GraphicType =
 
 ```
 ---------------------------------------------------------------------------------
-10. **IMMEDIATE LOCALIZATION UPON SECTION COMPLETION**:
-   - Whenever you create, refactor, or complete any UI section, component, card, form, or modal, you **MUST NOT** leave raw hardcoded English text strings inside JSX/TSX files.
-   - You **MUST** immediately update `src/locales/translations.ts` by adding all newly introduced text strings (titles, subtitles, badges, descriptions, button labels, placeholders) to BOTH the `en` (English) and `vi` (Vietnamese) dictionary blocks before marking the task as complete.
 
-  **MANDATORY HOOK BINDING**:
-   - All component text nodes must be bound via the translation function `t('key')` or `useTranslation()` hook.
-   - **Forbidden Pattern**:
-     ```tsx
-     // ❌ REJECTED: Hardcoded English text string
-     <h3>STUDIO CONFIGURATOR // NO-CODE 3D FACTORY</h3>
-     <button>ENTER FACTORY NODE ➔</button>
-     ```
-   - **Required Pattern**:
-     ```tsx
-     // ✅ REQUIRED: Registered in translations.ts and bound via t()
-     <h3>{t('headerTitle')}</h3>
-     <button>{t('enterNode')} ➔</button>
-     ```
-  **DEFINITION OF DONE (i18n GATE CHECK)**:
-   - A task or pull request is **STRICTLY INVALID** and cannot be finalized if any newly created UI section contains untranslated English text or lacks corresponding Vietnamese entries in `src/locales/translations.ts`.
-   - Always run `npx tsc --noEmit` to verify zero missing key type errors after updating `translations.ts`.
+🌐 10. BI-LINGUAL ARCHITECTURE & DYNAMIC LOCALE PROTOCOL
+
+To ensure zero-downtime bi-lingual support and prevent memory bloat, all Flipbook features MUST strictly adhere to the dynamic locale architecture:
+
+A. BI-LINGUAL DATA DIRECTORY STRUCTURE (`src/data/books/`)
+- All compiled book JSON files MUST be stored under language-specific subdirectories:
+  - English Books: `src/data/books/en/book-<xx>-<slug>.json`
+  - Vietnamese Books: `src/data/books/vi/book-<xx>-<slug>.json`
+- **Slug Consistency Rule**: The `"slug"` field inside both English and Vietnamese JSON files MUST match the filename identically (e.g., `"slug": "book-01-jules-architect"` for both `/en/` and `/vi/`).
+
+B. REGISTRY & DYNAMIC LOCALE RESOLUTION (`src/data/books/registry.ts`)
+- `src/data/books/registry.ts` MUST export the `getBooksByLocale(locale: 'en' | 'vi')` helper.
+- **FORBIDDEN PATTERN**: NEVER import book JSON files statically or hardcode English manuscripts inside React UI components or `src/locales/translations.ts`.
+
+C. COMPONENT LOCALE BINDING PROTOCOL
+- All Reader and Viewer components (`FlipbookViewer.tsx`, `FlipbookReader.tsx`, `/library` page) MUST consume the active locale via `useTranslation()` (`currentLocale`) and dynamically fetch the manuscript dataset:
+  ```tsx
+  import { useTranslation } from '@/hooks/useTranslation';
+  import { getBooksByLocale } from '@/data/books/registry';
+
+  const { currentLocale } = useTranslation();
+  const availableBooks = getBooksByLocale(currentLocale);
+
+D. PAGE INDEX CLAMPING & STATE RESILIENCE
+In FlipBookEngine.tsx, changing books or switching locales MUST trigger a graceful page index reset/clamping: const safePageIndex = Math.min(currentPageIndex, activeBook.pages.length - 1); This prevents out-of-bounds rendering crashes when toggling languages on books with different page counts.
+
 
 
 
