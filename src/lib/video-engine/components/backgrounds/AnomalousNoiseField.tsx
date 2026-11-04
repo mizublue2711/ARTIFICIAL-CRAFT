@@ -10,10 +10,12 @@ export const AnomalousNoiseField: React.FC<AnomalousNoiseFieldProps> = ({
   frame: frameProp,
   backgroundColor = '#050505',
   primaryColor = '#00E5FF',
+  accentColor,
   particleCount = 100,
   className,
   style,
 }) => {
+  const effectiveAccent = accentColor || primaryColor;
   let hookFrame = 0;
   let isInRemotion = true;
   try {
@@ -83,8 +85,8 @@ export const AnomalousNoiseField: React.FC<AnomalousNoiseFieldProps> = ({
             width: `${p.size}px`,
             height: `${p.size}px`,
             borderRadius: '50%',
-            backgroundColor: primaryColor,
-            boxShadow: `0 0 8px ${primaryColor}`,
+            backgroundColor: idx % 3 === 0 ? effectiveAccent : primaryColor,
+            boxShadow: `0 0 8px ${idx % 3 === 0 ? effectiveAccent : primaryColor}`,
             opacity: p.opacity,
             pointerEvents: 'none',
           }}
