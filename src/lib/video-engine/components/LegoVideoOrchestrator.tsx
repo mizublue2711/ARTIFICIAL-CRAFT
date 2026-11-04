@@ -13,6 +13,11 @@ import {
   OrigamiPolyhedronMorph,
   HyperbolicLatticeCage,
   GyroidLatticeMatrix3D,
+  IsometricTesseractHypercube3D,
+  KeplerHarmonicOrbital3D,
+  MobiusLatticeMatrix3D,
+  ChronoGeodesicDomeAssembly3D,
+  ChiralDoubleHelixMatrix3D,
 } from './3d';
 
 export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
@@ -268,6 +273,76 @@ export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
       case 'gyroid-matrix-cad':
         return (
           <GyroidLatticeMatrix3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'isometric-tesseract-4d':
+        return (
+          <IsometricTesseractHypercube3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'kepler-harmonic-orbital':
+        return (
+          <KeplerHarmonicOrbital3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'mobius-lattice-matrix':
+        return (
+          <MobiusLatticeMatrix3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'chrono-geodesic-dome':
+        return (
+          <ChronoGeodesicDomeAssembly3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'chiral-double-helix':
+        return (
+          <ChiralDoubleHelixMatrix3D
             frame={frame}
             primaryColor={primary}
             accentColor={accent}
