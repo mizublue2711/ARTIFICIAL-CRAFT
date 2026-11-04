@@ -11,6 +11,7 @@ export interface BasePresetProps {
   rotateXDeg?: number;
   rotateYDeg?: number;
   dispersionAmount?: number;
+  interactive?: boolean;
   className?: string;
   style?: CSSProperties;
 }
