@@ -7,6 +7,13 @@ import {
   spring,
 } from 'remotion';
 import { PlaygroundRecipe } from '../types/playground';
+import {
+  NestedPlatonicSolids3D,
+  GimbalConcentricRings3D,
+  OrigamiPolyhedronMorph,
+  HyperbolicLatticeCage,
+  GyroidLatticeMatrix3D,
+} from './3d';
 
 export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
   const frame = useCurrentFrame();
@@ -200,6 +207,76 @@ export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
               }}
             />
           </div>
+        );
+
+      case 'nested-platonic-5layer':
+        return (
+          <NestedPlatonicSolids3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'gimbal-concentric-rings':
+        return (
+          <GimbalConcentricRings3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'origami-polyhedron':
+        return (
+          <OrigamiPolyhedronMorph
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'hyperbolic-lattice-cage':
+        return (
+          <HyperbolicLatticeCage
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'gyroid-matrix-cad':
+        return (
+          <GyroidLatticeMatrix3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
         );
 
       case 'ISOMETRIC_CUBE':
