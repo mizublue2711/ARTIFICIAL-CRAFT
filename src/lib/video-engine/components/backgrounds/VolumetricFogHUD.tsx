@@ -8,9 +8,11 @@ export const VolumetricFogHUD: React.FC<VolumetricFogHUDProps> = ({
   frame: frameProp,
   backgroundColor = '#040608',
   primaryColor = '#00E5FF',
+  accentColor,
   className,
   style,
 }) => {
+  const effectiveAccent = accentColor || primaryColor;
   let hookFrame = 0;
   let isInRemotion = true;
   try {
@@ -75,7 +77,7 @@ export const VolumetricFogHUD: React.FC<VolumetricFogHUDProps> = ({
           width: '800px',
           height: '800px',
           borderRadius: '50%',
-          background: `radial-gradient(circle, ${primaryColor}18 0%, transparent 70%)`,
+          background: `radial-gradient(circle, ${effectiveAccent}18 0%, transparent 70%)`,
           filter: 'blur(100px)',
           transform: `translate(${-fog1X}%, ${-fog1Y}%)`,
         }}
@@ -90,7 +92,7 @@ export const VolumetricFogHUD: React.FC<VolumetricFogHUDProps> = ({
           display: 'flex',
           alignItems: 'center',
           gap: '12px',
-          color: primaryColor,
+          color: effectiveAccent,
           opacity: isFlickering ? 0.3 : 0.9,
         }}
       >
@@ -99,8 +101,8 @@ export const VolumetricFogHUD: React.FC<VolumetricFogHUDProps> = ({
             width: '12px',
             height: '12px',
             borderRadius: '50%',
-            backgroundColor: primaryColor,
-            boxShadow: `0 0 10px ${primaryColor}`,
+            backgroundColor: effectiveAccent,
+            boxShadow: `0 0 10px ${effectiveAccent}`,
           }}
         />
         <span style={{ fontSize: '13px', letterSpacing: '2px' }}>

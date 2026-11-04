@@ -13,11 +13,13 @@ export const CyberpunkMatrixBg: React.FC<CyberpunkMatrixBgProps> = ({
   frame: frameProp,
   backgroundColor = '#050505',
   primaryColor = '#00E5FF',
+  accentColor,
   columnCount = 36,
   charsPerColumn = 24,
   className,
   style,
 }) => {
+  const effectiveAccent = accentColor || primaryColor;
   let hookFrame = 0;
   let isInRemotion = true;
   try {
@@ -106,10 +108,10 @@ export const CyberpunkMatrixBg: React.FC<CyberpunkMatrixBgProps> = ({
               <span
                 key={rIdx}
                 style={{
-                  color: item.isHead ? '#FFFFFF' : primaryColor,
+                  color: item.isHead ? (accentColor ? effectiveAccent : '#FFFFFF') : primaryColor,
                   opacity: item.opacity,
                   textShadow: item.isHead
-                    ? `0 0 10px #FFFFFF, 0 0 20px ${primaryColor}`
+                    ? `0 0 10px #FFFFFF, 0 0 20px ${effectiveAccent}`
                     : item.opacity > 0.4
                     ? `0 0 8px ${primaryColor}`
                     : 'none',

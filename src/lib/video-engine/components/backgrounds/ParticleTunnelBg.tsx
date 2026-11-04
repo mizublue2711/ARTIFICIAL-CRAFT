@@ -10,10 +10,12 @@ export const ParticleTunnelBg: React.FC<ParticleTunnelBgProps> = ({
   frame: frameProp,
   backgroundColor = '#050505',
   primaryColor = '#00E5FF',
+  accentColor,
   particleCount = 80,
   className,
   style,
 }) => {
+  const effectiveAccent = accentColor || primaryColor;
   let hookFrame = 0;
   let isInRemotion = true;
   try {
@@ -96,8 +98,8 @@ export const ParticleTunnelBg: React.FC<ParticleTunnelBgProps> = ({
               width: `${p.size}px`,
               height: `${p.size * 4}px`,
               borderRadius: '50%',
-              backgroundColor: primaryColor,
-              boxShadow: `0 0 12px ${primaryColor}`,
+              backgroundColor: idx % 2 === 0 ? primaryColor : effectiveAccent,
+              boxShadow: `0 0 12px ${idx % 2 === 0 ? primaryColor : effectiveAccent}`,
               opacity: p.opacity,
               transform: `translate3d(-50%, -50%, ${p.zPos}px)`,
             }}

@@ -8,9 +8,11 @@ export const HolographicBlueprintBg: React.FC<HolographicBlueprintBgProps> = ({
   frame: frameProp,
   backgroundColor = '#030A16',
   primaryColor = '#00E5FF',
+  accentColor,
   className,
   style,
 }) => {
+  const effectiveAccent = accentColor || primaryColor;
   let hookFrame = 0;
   let isInRemotion = true;
   try {
@@ -96,7 +98,7 @@ export const HolographicBlueprintBg: React.FC<HolographicBlueprintBgProps> = ({
               width: '400px',
               height: '400px',
               borderRadius: '50%',
-              border: `1px solid ${primaryColor}`,
+              border: `1px solid ${effectiveAccent}`,
               position: 'absolute',
             }}
           />
@@ -105,7 +107,7 @@ export const HolographicBlueprintBg: React.FC<HolographicBlueprintBgProps> = ({
               width: '250px',
               height: '250px',
               borderRadius: '50%',
-              border: `1px dashed ${primaryColor}`,
+              border: `1px dashed ${effectiveAccent}`,
               position: 'absolute',
             }}
           />
@@ -119,7 +121,7 @@ export const HolographicBlueprintBg: React.FC<HolographicBlueprintBgProps> = ({
               right: 0,
               display: 'flex',
               justifyContent: 'space-between',
-              color: primaryColor,
+              color: effectiveAccent,
               fontSize: '11px',
             }}
           >
@@ -133,7 +135,7 @@ export const HolographicBlueprintBg: React.FC<HolographicBlueprintBgProps> = ({
               left: '-80px',
               top: '50%',
               transform: 'rotate(-90deg)',
-              color: primaryColor,
+              color: effectiveAccent,
               fontSize: '11px',
             }}
           >

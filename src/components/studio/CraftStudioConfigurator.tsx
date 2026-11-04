@@ -1963,11 +1963,12 @@ export const CraftStudioConfigurator: React.FC = () => {
             >
               {/* Dynamic Viewport Background Layer */}
               <div
-                key={`bg-anim-${activeShaderKey}-${primaryColor}-${accentColor}`}
-                className="absolute inset-0 z-0 pointer-events-none opacity-40 overflow-hidden mix-blend-screen"
+                key={`bg-layer-${activeShaderKey}-${formData.theme?.backgroundColor}-${primaryColor}-${accentColor}`}
+                className="absolute inset-0 z-0 pointer-events-none opacity-40 overflow-hidden mix-blend-screen transition-colors duration-500"
                 style={{ transform: 'translateZ(0)' }}
               >
                 <ActiveBg
+                  backgroundColor={formData.theme?.backgroundColor || '#09090B'}
                   primaryColor={primaryColor}
                   accentColor={accentColor}
                   backgroundShader={activeShaderKey}

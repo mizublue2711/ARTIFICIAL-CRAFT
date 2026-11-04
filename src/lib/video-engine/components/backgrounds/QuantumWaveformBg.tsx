@@ -10,11 +10,13 @@ export const QuantumWaveformBg: React.FC<QuantumWaveformBgProps> = ({
   frame: frameProp,
   backgroundColor = '#050505',
   primaryColor = '#00E5FF',
-  secondaryColor = '#7000FF',
+  secondaryColor,
+  accentColor,
   waveCount = 5,
   className,
   style,
 }) => {
+  const effectiveSecondary = accentColor || secondaryColor || '#7000FF';
   let hookFrame = 0;
   let isInRemotion = true;
   try {
@@ -87,7 +89,7 @@ export const QuantumWaveformBg: React.FC<QuantumWaveformBgProps> = ({
       >
         {Array.from({ length: waveCount }).map((_, wIdx) => {
           const path = generateSvgPath(wIdx);
-          const strokeColor = wIdx % 2 === 0 ? primaryColor : secondaryColor;
+          const strokeColor = wIdx % 2 === 0 ? primaryColor : effectiveSecondary;
           const opacity = interpolate(
             Math.sin(frame * 0.05 + wIdx),
             [-1, 1],
