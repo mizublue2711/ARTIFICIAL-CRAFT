@@ -7,6 +7,7 @@ export interface TelemetryData {
 }
 
 export interface CyberneticHUDLayerProps {
+  frame?: number;
   telemetry?: TelemetryData;
   primaryColor?: string;
   accentColor?: string;
@@ -15,13 +16,38 @@ export interface CyberneticHUDLayerProps {
 }
 
 export const CyberneticHUDLayer: React.FC<CyberneticHUDLayerProps> = ({
+  frame: frameProp,
   telemetry = { slaTarget: '<2ms', fps: 60 },
   primaryColor = '#5322FF',
   accentColor = '#00E5FF',
   brandName = 'ARTIFICIAL CRAFT',
   assemblyStage = 33,
 }) => {
-  const frame = useCurrentFrame();
+  let hookFrame = 0;
+  let isInRemotion = true;
+  try {
+    hookFrame = useCurrentFrame();
+  } catch {
+    hookFrame = 0;
+    isInRemotion = false;
+  }
+
+  const [animFrame, setAnimFrame] = React.useState(0);
+
+  React.useEffect(() => {
+    if (frameProp !== undefined || isInRemotion) return;
+    let animId: number;
+    let startTime = performance.now();
+    const loop = (now: number) => {
+      const elapsed = (now - startTime) / 1000;
+      setAnimFrame(Math.floor(elapsed * 60));
+      animId = requestAnimationFrame(loop);
+    };
+    animId = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(animId);
+  }, [frameProp, isInRemotion]);
+
+  const frame = frameProp ?? (isInRemotion ? hookFrame : animFrame);
 
   const scanProgress = (frame % 90) / 90;
   const laserY = interpolate(scanProgress, [0, 1], [0, 100]);

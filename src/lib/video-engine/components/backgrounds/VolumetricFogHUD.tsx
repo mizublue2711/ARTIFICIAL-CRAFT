@@ -12,12 +12,30 @@ export const VolumetricFogHUD: React.FC<VolumetricFogHUDProps> = ({
   style,
 }) => {
   let hookFrame = 0;
+  let isInRemotion = true;
   try {
     hookFrame = useCurrentFrame();
   } catch {
     hookFrame = 0;
+    isInRemotion = false;
   }
-  const frame = frameProp ?? hookFrame;
+
+  const [animFrame, setAnimFrame] = React.useState(0);
+
+  React.useEffect(() => {
+    if (frameProp !== undefined || isInRemotion) return;
+    let animId: number;
+    let startTime = performance.now();
+    const loop = (now: number) => {
+      const elapsed = (now - startTime) / 1000;
+      setAnimFrame(Math.floor(elapsed * 60));
+      animId = requestAnimationFrame(loop);
+    };
+    animId = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(animId);
+  }, [frameProp, isInRemotion]);
+
+  const frame = frameProp ?? (isInRemotion ? hookFrame : animFrame);
 
   const flickerSeed = Math.floor(frame / 3);
   const isFlickering = random(flickerSeed) > 0.85;
