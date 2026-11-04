@@ -224,7 +224,8 @@ export const KeplerHarmonicOrbital3D: React.FC<KeplerHarmonicOrbital3DProps> = (
         width,
         height,
         perspective: '1200px',
-        backgroundColor: '#050505',
+        backgroundColor: 'transparent',
+        overflow: 'visible',
         boxSizing: 'border-box',
         ...style,
       }}
@@ -395,26 +396,6 @@ export const KeplerHarmonicOrbital3D: React.FC<KeplerHarmonicOrbital3DProps> = (
         {/* Center Target Point */}
         <circle cx={centerX} cy={centerY} r="2" fill="#FFFFFF" filter="url(#keplerCyanGlow)" />
       </svg>
-
-      {/* Cybernetic Telemetry Legend */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '12px',
-          left: '14px',
-          fontFamily: 'JetBrains Mono, monospace',
-          fontSize: '9px',
-          color: primaryColor,
-          letterSpacing: '1px',
-          textTransform: 'uppercase',
-          pointerEvents: 'none',
-        }}
-      >
-        <div>KEPLER//HARMONIC_ORBITAL_3D</div>
-        <div style={{ color: '#71717a' }}>
-          Z_SPACING: {(clampedDispersion * 650).toFixed(0)}mm | PULSE: {(cubePulse * 100).toFixed(0)}%
-        </div>
-      </div>
     </div>
   );
 };

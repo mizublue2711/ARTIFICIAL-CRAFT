@@ -294,7 +294,8 @@ export const NestedPlatonicSolids3D: React.FC<NestedPlatonicSolids3DProps> = ({
         width,
         height,
         perspective: '1200px',
-        backgroundColor: '#050505',
+        backgroundColor: 'transparent',
+        overflow: 'visible',
         boxSizing: 'border-box',
         ...style,
       }}
@@ -316,13 +317,7 @@ export const NestedPlatonicSolids3D: React.FC<NestedPlatonicSolids3DProps> = ({
           </filter>
         </defs>
 
-        {/* Outer CAD Crosshairs and Frame Metadata */}
-        <g opacity="0.3" stroke={primaryColor} strokeWidth="1">
-          <line x1={centerX - 40} y1={20} x2={centerX + 40} y2={20} />
-          <line x1={centerX} y1={0} x2={centerX} y2={40} />
-          <line x1={centerX - 40} y1={height - 20} x2={centerX + 40} y2={height - 20} />
-          <line x1={centerX} y1={height - 40} x2={centerX} y2={height} />
-        </g>
+
 
         {/* 5 Nested Platonic Solids */}
         {geometries.map((shell, shellIdx) => {
@@ -387,27 +382,6 @@ export const NestedPlatonicSolids3D: React.FC<NestedPlatonicSolids3DProps> = ({
           filter="url(#cyanGlow)"
         />
       </svg>
-
-      {/* Cybernetic Brutalist Corner Annotation */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '12px',
-          left: '14px',
-          fontFamily: 'JetBrains Mono, monospace',
-          fontSize: '9px',
-          color: primaryColor,
-          letterSpacing: '1px',
-          textTransform: 'uppercase',
-          pointerEvents: 'none',
-          opacity: 0.75,
-        }}
-      >
-        <span>PLATONIC//5_NESTED_SHELLS</span>
-        <span style={{ color: '#71717a', marginLeft: '8px' }}>
-          ΔR: {(clampedDispersion * 100).toFixed(1)}% | TILT: {rotateXDeg}°
-        </span>
-      </div>
     </div>
   );
 };

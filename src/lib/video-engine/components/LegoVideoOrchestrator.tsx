@@ -26,7 +26,7 @@ export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
 
   const slots = recipe?.slots || {
     backgroundId: 'SWISS_GRID',
-    heroObjectId: 'ISOMETRIC_CUBE',
+    heroObjectId: 'nested-platonic-5layer',
     overlayId: 'CROSSHAIRS',
     textId: 'SWISS_BRUTALIST',
   };
@@ -354,29 +354,18 @@ export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
           />
         );
 
-      case 'ISOMETRIC_CUBE':
       default:
         return (
-          <div
-            style={{
-              transform: `scale(${objectScale}) rotateY(${frame * 0.8}deg)`,
-              border: `2px solid ${primary}`,
-              boxShadow: `0px 0px 40px ${accent}66`,
-              backgroundColor: '#07070A',
-              padding: '32px 64px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '12px',
-            }}
-          >
-            <div style={{ color: primary, fontSize: '18px', fontWeight: 'bold' }}>
-              HERO_OBJECT: {slots.heroObjectId}
-            </div>
-            <div style={{ color: '#A1A1AA', fontSize: '12px' }}>
-              DISPERSION: {props.dispersionAmount.toFixed(2)} | ROTATE_X: {props.rotateXDeg}°
-            </div>
-          </div>
+          <NestedPlatonicSolids3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
         );
     }
   };
