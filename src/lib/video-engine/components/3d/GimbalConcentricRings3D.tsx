@@ -142,7 +142,8 @@ export const GimbalConcentricRings3D: React.FC<GimbalConcentricRings3DProps> = (
         width,
         height,
         perspective: '1200px',
-        backgroundColor: '#050505',
+        backgroundColor: 'transparent',
+        overflow: 'visible',
         boxSizing: 'border-box',
         ...style,
       }}
@@ -261,24 +262,6 @@ export const GimbalConcentricRings3D: React.FC<GimbalConcentricRings3DProps> = (
                 </g>
               ))}
 
-              {/* Outermost ring angle telemetry values */}
-              {ring.level === 3 &&
-                tickPoints.filter((_, idx) => idx % 4 === 0).map((tk, idx) => {
-                  const degVal = idx * 40;
-                  return (
-                    <text
-                      key={idx}
-                      x={tk.outer.x2d + 4}
-                      y={tk.outer.y2d + 4}
-                      fill={primaryColor}
-                      fontSize="8"
-                      fontFamily="JetBrains Mono, monospace"
-                      opacity="0.75"
-                    >
-                      {degVal}°
-                    </text>
-                  );
-                })}
             </g>
           );
         })}
@@ -311,46 +294,8 @@ export const GimbalConcentricRings3D: React.FC<GimbalConcentricRings3DProps> = (
             fill="#FFFFFF"
             filter="url(#gimbalCyanGlow)"
           />
-          {/* Center Precision Target Crosshair (+) */}
-          <line
-            x1={centerX - 12}
-            y1={centerY}
-            x2={centerX + 12}
-            y2={centerY}
-            stroke={primaryColor}
-            strokeWidth="1"
-          />
-          <line
-            x1={centerX}
-            y1={centerY - 12}
-            x2={centerX}
-            y2={centerY + 12}
-            stroke={primaryColor}
-            strokeWidth="1"
-          />
         </g>
       </svg>
-
-      {/* High-Tech CAD Telemetry Badge */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '12px',
-          right: '14px',
-          fontFamily: 'JetBrains Mono, monospace',
-          fontSize: '9px',
-          color: primaryColor,
-          letterSpacing: '1px',
-          textTransform: 'uppercase',
-          pointerEvents: 'none',
-          textAlign: 'right',
-        }}
-      >
-        <div>SYS//GIMBAL_4RING_TELEMETRY</div>
-        <div style={{ color: '#71717a' }}>
-          PITCH: {rotateXDeg}° | YAW: {(frame * 0.8).toFixed(1)}°
-        </div>
-      </div>
     </div>
   );
 };

@@ -213,7 +213,8 @@ export const ChronoGeodesicDomeAssembly3D: React.FC<ChronoGeodesicDomeAssembly3D
         width,
         height,
         perspective: '1200px',
-        backgroundColor: '#050505',
+        backgroundColor: 'transparent',
+        overflow: 'visible',
         boxSizing: 'border-box',
         ...style,
       }}
@@ -235,13 +236,7 @@ export const ChronoGeodesicDomeAssembly3D: React.FC<ChronoGeodesicDomeAssembly3D
           </filter>
         </defs>
 
-        {/* CAD Crosshairs */}
-        <g opacity="0.3" stroke={primaryColor} strokeWidth="1">
-          <line x1={centerX - 40} y1={20} x2={centerX + 40} y2={20} />
-          <line x1={centerX} y1={0} x2={centerX} y2={40} />
-          <line x1={centerX - 40} y1={height - 20} x2={centerX + 40} y2={height - 20} />
-          <line x1={centerX} y1={height - 40} x2={centerX} y2={height} />
-        </g>
+
 
         {/* SHELL 1: OUTER GEODESIC DOME (Y-rotation) */}
         <g className="outer-dome-shell">
@@ -410,38 +405,8 @@ export const ChronoGeodesicDomeAssembly3D: React.FC<ChronoGeodesicDomeAssembly3D
           })()}
         </g>
 
-        {/* Apex Telemetry Light Beam */}
-        <line
-          x1={centerX}
-          y1={centerY - 220}
-          x2={centerX}
-          y2={centerY + 220}
-          stroke={primaryColor}
-          strokeWidth="1"
-          strokeDasharray="2 6"
-          strokeOpacity="0.4"
-        />
-      </svg>
 
-      {/* Cybernetic Brutalist Footer Annotation */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '12px',
-          left: '14px',
-          fontFamily: 'JetBrains Mono, monospace',
-          fontSize: '9px',
-          color: primaryColor,
-          letterSpacing: '1px',
-          textTransform: 'uppercase',
-          pointerEvents: 'none',
-        }}
-      >
-        <span>GEODESIC//CHRONO_DOME_3X</span>
-        <span style={{ color: '#71717a', marginLeft: '8px' }}>
-          EXPLODE_Z: {(clampedDispersion * 700).toFixed(0)}mm | ELEVATION: {innerElevation.toFixed(1)}mm
-        </span>
-      </div>
+      </svg>
     </div>
   );
 };

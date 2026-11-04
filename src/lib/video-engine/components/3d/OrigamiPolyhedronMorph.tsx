@@ -185,7 +185,8 @@ export const OrigamiPolyhedronMorph: React.FC<OrigamiPolyhedronMorphProps> = ({
         width,
         height,
         perspective: '1200px',
-        backgroundColor: '#050505',
+        backgroundColor: 'transparent',
+        overflow: 'visible',
         boxSizing: 'border-box',
         ...style,
       }}
@@ -272,27 +273,6 @@ export const OrigamiPolyhedronMorph: React.FC<OrigamiPolyhedronMorphProps> = ({
           filter="url(#origamiCyanGlow)"
         />
       </svg>
-
-      {/* CAD Telemetry Legend */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '12px',
-          right: '14px',
-          fontFamily: 'JetBrains Mono, monospace',
-          fontSize: '9px',
-          color: primaryColor,
-          letterSpacing: '1px',
-          textTransform: 'uppercase',
-          pointerEvents: 'none',
-          textAlign: 'right',
-        }}
-      >
-        <div>MORPH//NORMAL_VECTOR_FOLD</div>
-        <div style={{ color: '#71717a' }}>
-          EXPANSION: {((0.5 + 0.5 * morphProgress) * 100).toFixed(0)}% | FACETS: 20
-        </div>
-      </div>
     </div>
   );
 };

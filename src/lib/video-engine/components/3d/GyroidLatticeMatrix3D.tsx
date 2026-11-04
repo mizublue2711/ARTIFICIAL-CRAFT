@@ -142,7 +142,8 @@ export const GyroidLatticeMatrix3D: React.FC<GyroidLatticeMatrix3DProps> = ({
         width,
         height,
         perspective: '1200px',
-        backgroundColor: '#050505',
+        backgroundColor: 'transparent',
+        overflow: 'visible',
         boxSizing: 'border-box',
         ...style,
       }}
@@ -194,16 +195,7 @@ export const GyroidLatticeMatrix3D: React.FC<GyroidLatticeMatrix3DProps> = ({
         })}
 
         {/* Center Optical Focal Reticle */}
-        <circle
-          cx={centerX}
-          cy={centerY}
-          r="28"
-          stroke={primaryColor}
-          strokeWidth="1"
-          strokeDasharray="2 4"
-          fill="none"
-          opacity="0.4"
-        />
+
         <circle
           cx={centerX}
           cy={centerY}
@@ -212,26 +204,6 @@ export const GyroidLatticeMatrix3D: React.FC<GyroidLatticeMatrix3DProps> = ({
           filter="url(#gyroidCyanGlow)"
         />
       </svg>
-
-      {/* Cybernetic Telemetry Indicator */}
-      <div
-        style={{
-          position: 'absolute',
-          top: '12px',
-          left: '14px',
-          fontFamily: 'JetBrains Mono, monospace',
-          fontSize: '9px',
-          color: primaryColor,
-          letterSpacing: '1px',
-          textTransform: 'uppercase',
-          pointerEvents: 'none',
-        }}
-      >
-        <div>GYROID//IMPLICIT_LATTICE_3D</div>
-        <div style={{ color: '#71717a' }}>
-          HARMONIC_TILT: {harmonicTiltDeg.toFixed(1)}° | Z_PUSH: {(cameraZ % 100).toFixed(0)}mm
-        </div>
-      </div>
     </div>
   );
 };

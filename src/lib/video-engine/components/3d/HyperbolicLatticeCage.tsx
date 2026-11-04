@@ -172,7 +172,8 @@ export const HyperbolicLatticeCage: React.FC<HyperbolicLatticeCageProps> = ({
         width,
         height,
         perspective: '1200px',
-        backgroundColor: '#050505',
+        backgroundColor: 'transparent',
+        overflow: 'visible',
         boxSizing: 'border-box',
         ...style,
       }}
@@ -284,26 +285,6 @@ export const HyperbolicLatticeCage: React.FC<HyperbolicLatticeCageProps> = ({
           );
         })}
       </svg>
-
-      {/* Cybernetic Brutalist HUD Tag */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '12px',
-          left: '14px',
-          fontFamily: 'JetBrains Mono, monospace',
-          fontSize: '9px',
-          color: primaryColor,
-          letterSpacing: '1px',
-          textTransform: 'uppercase',
-          pointerEvents: 'none',
-        }}
-      >
-        <div>HYPERBOLIC//LATTICE_CAGE_V8</div>
-        <div style={{ color: '#71717a' }}>
-          GEN_RULINGS: {generatorLinks.length} | NODES: {latticeNodes.length}
-        </div>
-      </div>
     </div>
   );
 };

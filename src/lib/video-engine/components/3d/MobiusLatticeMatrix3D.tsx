@@ -155,7 +155,8 @@ export const MobiusLatticeMatrix3D: React.FC<MobiusLatticeMatrix3DProps> = ({
         width,
         height,
         perspective: '1200px',
-        backgroundColor: '#050505',
+        backgroundColor: 'transparent',
+        overflow: 'visible',
         boxSizing: 'border-box',
         ...style,
       }}
@@ -177,13 +178,7 @@ export const MobiusLatticeMatrix3D: React.FC<MobiusLatticeMatrix3DProps> = ({
           </filter>
         </defs>
 
-        {/* CAD Outer Crosshairs */}
-        <g opacity="0.3" stroke={primaryColor} strokeWidth="1">
-          <line x1={centerX - 40} y1={25} x2={centerX + 40} y2={25} />
-          <line x1={centerX} y1={5} x2={centerX} y2={45} />
-          <line x1={centerX - 40} y1={height - 25} x2={centerX + 40} y2={height - 25} />
-          <line x1={centerX} y1={height - 45} x2={centerX} y2={height - 5} />
-        </g>
+
 
         {/* INNER GLOWING OCTAHEDRON CORE */}
         <g className="mobius-octahedron-core">
@@ -284,27 +279,6 @@ export const MobiusLatticeMatrix3D: React.FC<MobiusLatticeMatrix3DProps> = ({
           );
         })}
       </svg>
-
-      {/* High-Tech Telemetry Footer */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '12px',
-          right: '14px',
-          fontFamily: 'JetBrains Mono, monospace',
-          fontSize: '9px',
-          color: primaryColor,
-          letterSpacing: '1px',
-          textTransform: 'uppercase',
-          pointerEvents: 'none',
-          textAlign: 'right',
-        }}
-      >
-        <div>MOBIUS//LATTICE_MATRIX_3D</div>
-        <div style={{ color: '#71717a' }}>
-          RADIAL_R: {R.toFixed(0)}mm | PULSE: {(pulsePos / numStepsU * 100).toFixed(0)}%
-        </div>
-      </div>
     </div>
   );
 };

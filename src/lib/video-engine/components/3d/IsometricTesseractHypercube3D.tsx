@@ -200,7 +200,8 @@ export const IsometricTesseractHypercube3D: React.FC<IsometricTesseractHypercube
         width,
         height,
         perspective: '1200px',
-        backgroundColor: '#050505',
+        backgroundColor: 'transparent',
+        overflow: 'visible',
         boxSizing: 'border-box',
         ...style,
       }}
@@ -227,13 +228,7 @@ export const IsometricTesseractHypercube3D: React.FC<IsometricTesseractHypercube
           </linearGradient>
         </defs>
 
-        {/* Outer CAD Crosshairs */}
-        <g opacity="0.35" stroke={primaryColor} strokeWidth="1">
-          <line x1={centerX - 35} y1={25} x2={centerX + 35} y2={25} />
-          <line x1={centerX} y1={0} x2={centerX} y2={50} />
-          <line x1={centerX - 35} y1={height - 25} x2={centerX + 35} y2={height - 25} />
-          <line x1={centerX} y1={height - 50} x2={centerX} y2={height} />
-        </g>
+
 
         {/* 4D Laser Pulse Sweep Line */}
         <line
@@ -318,16 +313,7 @@ export const IsometricTesseractHypercube3D: React.FC<IsometricTesseractHypercube
         })}
 
         {/* Center Optical Reticle */}
-        <circle
-          cx={centerX}
-          cy={centerY}
-          r="4"
-          fill="none"
-          stroke={primaryColor}
-          strokeWidth="1"
-          strokeDasharray="2 2"
-          opacity="0.6"
-        />
+
         <circle
           cx={centerX}
           cy={centerY}
@@ -336,43 +322,6 @@ export const IsometricTesseractHypercube3D: React.FC<IsometricTesseractHypercube
           filter="url(#tesseractCyanGlow)"
         />
       </svg>
-
-      {/* Cybernetic Brutalist Corner Annotation */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '12px',
-          left: '14px',
-          fontFamily: 'JetBrains Mono, monospace',
-          fontSize: '9px',
-          color: primaryColor,
-          letterSpacing: '1px',
-          textTransform: 'uppercase',
-          pointerEvents: 'none',
-          opacity: 0.85,
-        }}
-      >
-        <span>TESSERACT//4D_HYPERCUBE_FOLD</span>
-        <span style={{ color: '#71717a', marginLeft: '8px' }}>
-          ΔW: {(Math.sin(t) * 100).toFixed(1)}% | PULSE: {((frame % 180) / 180 * 100).toFixed(0)}%
-        </span>
-      </div>
-
-      <div
-        style={{
-          position: 'absolute',
-          top: '12px',
-          right: '14px',
-          fontFamily: 'JetBrains Mono, monospace',
-          fontSize: '9px',
-          color: '#71717a',
-          letterSpacing: '1px',
-          textTransform: 'uppercase',
-          pointerEvents: 'none',
-        }}
-      >
-        DISPERSION: {(clampedDispersion * 100).toFixed(1)}% // CAD 28°
-      </div>
     </div>
   );
 };

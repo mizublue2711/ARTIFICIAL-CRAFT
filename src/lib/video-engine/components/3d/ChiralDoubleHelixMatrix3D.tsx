@@ -176,7 +176,8 @@ export const ChiralDoubleHelixMatrix3D: React.FC<ChiralDoubleHelixMatrix3DProps>
         width,
         height,
         perspective: '1200px',
-        backgroundColor: '#050505',
+        backgroundColor: 'transparent',
+        overflow: 'visible',
         boxSizing: 'border-box',
         ...style,
       }}
@@ -198,13 +199,7 @@ export const ChiralDoubleHelixMatrix3D: React.FC<ChiralDoubleHelixMatrix3DProps>
           </filter>
         </defs>
 
-        {/* CAD Outer Crosshairs */}
-        <g opacity="0.3" stroke={primaryColor} strokeWidth="1">
-          <line x1={centerX - 40} y1={20} x2={centerX + 40} y2={20} />
-          <line x1={centerX} y1={0} x2={centerX} y2={40} />
-          <line x1={centerX - 40} y1={height - 20} x2={centerX + 40} y2={height - 20} />
-          <line x1={centerX} y1={height - 40} x2={centerX} y2={height} />
-        </g>
+
 
         {/* STRAND A (1px CAD ribbon in Laser Cyan) */}
         {(() => {
@@ -314,27 +309,6 @@ export const ChiralDoubleHelixMatrix3D: React.FC<ChiralDoubleHelixMatrix3DProps>
           );
         })}
       </svg>
-
-      {/* Cybernetic Telemetry Footer */}
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '12px',
-          right: '14px',
-          fontFamily: 'JetBrains Mono, monospace',
-          fontSize: '9px',
-          color: primaryColor,
-          letterSpacing: '1px',
-          textTransform: 'uppercase',
-          pointerEvents: 'none',
-          textAlign: 'right',
-        }}
-      >
-        <div>CHIRAL//DOUBLE_HELIX_3D</div>
-        <div style={{ color: '#71717a' }}>
-          STRAND_DIST: {helixRadius.toFixed(0)}mm | RUNGS: {numRungs}
-        </div>
-      </div>
     </div>
   );
 };

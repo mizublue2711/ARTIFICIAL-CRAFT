@@ -68,41 +68,6 @@ export const ASSET_PRESET_REGISTRY: AssetPresetRegistry = {
   },
 
   heroObjects: {
-    ISOMETRIC_CUBE: {
-      id: 'ISOMETRIC_CUBE',
-      label: 'Isometric Extruded Cube',
-      category: 'heroObjects',
-      description: '3D Swiss architectural cube block',
-      previewColor: '#00E5FF',
-    },
-    PARTICLE_SPHERE: {
-      id: 'PARTICLE_SPHERE',
-      label: 'Particle Core Sphere',
-      category: 'heroObjects',
-      description: 'Luminescent orbiting particle orb',
-      previewColor: '#5322ff',
-    },
-    WIREFRAME_TORUS: {
-      id: 'WIREFRAME_TORUS',
-      label: 'Wireframe CAD Torus',
-      category: 'heroObjects',
-      description: 'Rotating vector geometric ring torus',
-      previewColor: '#F59E0B',
-    },
-    NEURAL_ANCHOR: {
-      id: 'NEURAL_ANCHOR',
-      label: 'Neural Node Mesh',
-      category: 'heroObjects',
-      description: 'Multi-agent reasoning node cluster',
-      previewColor: '#10B981',
-    },
-    CYBER_PYRAMID: {
-      id: 'CYBER_PYRAMID',
-      label: 'Cyber Obelisk Pyramid',
-      category: 'heroObjects',
-      description: 'Extruded high-tech obsidian pyramid',
-      previewColor: '#D400FF',
-    },
     'nested-platonic-5layer': {
       id: 'nested-platonic-5layer',
       label: '5-Layer Nested Platonic Solids',
