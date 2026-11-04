@@ -7,6 +7,10 @@ export interface BasePresetProps {
   secondaryColor?: string;
   accentColor?: string;
   gridColor?: string;
+  scale?: number;
+  rotateXDeg?: number;
+  rotateYDeg?: number;
+  dispersionAmount?: number;
   className?: string;
   style?: CSSProperties;
 }

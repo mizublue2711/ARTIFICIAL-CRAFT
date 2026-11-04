@@ -1,9 +1,5 @@
-// 3D Objects
-export * from './3d/RubikCube3D';
-export * from './3d/LogarithmicSpiral3D';
-export * from './3d/IsometricMatrix3D';
-export * from './3d/AppMockup3D';
-export * from './3d/MeshViewportSequence';
+// 3D Objects & Meshes
+export * from './3d';
 
 // UI Elements
 export * from './ui/MacCodeEditor';
