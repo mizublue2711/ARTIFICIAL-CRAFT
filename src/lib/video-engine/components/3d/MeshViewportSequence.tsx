@@ -6,6 +6,9 @@ import { TokamakReactorCore3D } from './TokamakReactorCore3D';
 import { BTreeDiskIndex3D } from '../../../../components/robotics/3d/BTreeDiskIndex3D';
 import { MailRopewayTcp3D } from '../../../../components/robotics/3d/MailRopewayTcp3D';
 import { TurbofanJetEngine3D } from '../../../../components/robotics/3d/TurbofanJetEngine3D';
+import { PowerStationGenerator3D } from '../../../../components/robotics/3d/PowerStationGenerator3D';
+import { LiquidSteelFoundry3D } from '../../../../components/robotics/3d/LiquidSteelFoundry3D';
+import { OpticalBenchInterferometer3D } from '../../../../components/robotics/3d/OpticalBenchInterferometer3D';
 
 export interface MeshViewportSequenceProps {
   base_component?: string;
@@ -190,6 +193,87 @@ export const MeshViewportSequence: React.FC<MeshViewportSequenceProps> = ({
         }}
       >
         <TurbofanJetEngine3D
+          frame={frame}
+          primaryColor={primaryColor}
+          accentColor={accentColor}
+          scale={0.8}
+          rotateXDeg={28}
+          dispersionAmount={dispAmount}
+          width={560}
+          height={560}
+        />
+      </div>
+    );
+  }
+
+  if (base_component === 'power-station-generator') {
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          perspective: '1000px',
+          transform: `scale(${entrance * pulseScale})`,
+        }}
+      >
+        <PowerStationGenerator3D
+          frame={frame}
+          primaryColor={primaryColor}
+          accentColor={accentColor}
+          scale={0.8}
+          rotateXDeg={28}
+          dispersionAmount={dispAmount}
+          width={560}
+          height={560}
+        />
+      </div>
+    );
+  }
+
+  if (base_component === 'liquid-steel-foundry') {
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          perspective: '1000px',
+          transform: `scale(${entrance * pulseScale})`,
+        }}
+      >
+        <LiquidSteelFoundry3D
+          frame={frame}
+          primaryColor={primaryColor}
+          accentColor={accentColor}
+          scale={0.8}
+          rotateXDeg={28}
+          dispersionAmount={dispAmount}
+          width={560}
+          height={560}
+        />
+      </div>
+    );
+  }
+
+  if (base_component === 'optical-bench-interferometer') {
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          perspective: '1000px',
+          transform: `scale(${entrance * pulseScale})`,
+        }}
+      >
+        <OpticalBenchInterferometer3D
           frame={frame}
           primaryColor={primaryColor}
           accentColor={accentColor}

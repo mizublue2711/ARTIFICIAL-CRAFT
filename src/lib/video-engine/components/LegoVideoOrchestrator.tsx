@@ -24,6 +24,9 @@ import {
   BTreeDiskIndex3D,
   MailRopewayTcp3D,
   TurbofanJetEngine3D,
+  PowerStationGenerator3D,
+  LiquidSteelFoundry3D,
+  OpticalBenchInterferometer3D,
 } from './3d';
 
 export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
@@ -433,6 +436,48 @@ export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
       case 'turbofan-jet-engine':
         return (
           <TurbofanJetEngine3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'power-station-generator':
+        return (
+          <PowerStationGenerator3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'liquid-steel-foundry':
+        return (
+          <LiquidSteelFoundry3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'optical-bench-interferometer':
+        return (
+          <OpticalBenchInterferometer3D
             frame={frame}
             primaryColor={primary}
             accentColor={accent}

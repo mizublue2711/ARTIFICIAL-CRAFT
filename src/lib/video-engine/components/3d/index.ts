@@ -22,6 +22,11 @@ export * from '../../../../components/robotics/3d/BTreeDiskIndex3D';
 export * from '../../../../components/robotics/3d/MailRopewayTcp3D';
 export * from '../../../../components/robotics/3d/TurbofanJetEngine3D';
 
+// Anatomy-Inspired Industrial & Power 3D Meshes (Batch 3)
+export * from '../../../../components/robotics/3d/PowerStationGenerator3D';
+export * from '../../../../components/robotics/3d/LiquidSteelFoundry3D';
+export * from '../../../../components/robotics/3d/OpticalBenchInterferometer3D';
+
 // Existing 3D components
 export * from './RubikCube3D';
 export * from './LogarithmicSpiral3D';
