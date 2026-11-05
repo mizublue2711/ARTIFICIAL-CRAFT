@@ -34,6 +34,7 @@ import { useTranslation } from '@/context/useLanguage';
 import { QuantumEscapementClock3D } from '@/lib/video-engine/components/3d/QuantumEscapementClock3D';
 import { PneumaticDataPipeline3D } from '@/lib/video-engine/components/3d/PneumaticDataPipeline3D';
 import { TokamakReactorCore3D } from '@/lib/video-engine/components/3d/TokamakReactorCore3D';
+import { BTreeDiskIndex3D, MailRopewayTcp3D, TurbofanJetEngine3D } from '@/components/robotics/3d';
 
 import {
   SwissDesignConfigSchema,
@@ -199,6 +200,9 @@ export const AVAILABLE_3D_COMPONENTS = [
   { value: 'quantum-escapement-clock', label: 'Quantum Escapement Clock 3D', icon: Clock },
   { value: 'pneumatic-data-pipeline', label: 'Pneumatic Data Pipeline 3D', icon: GitBranch },
   { value: 'tokamak-reactor-core', label: 'Tokamak Reactor Core 3D', icon: Atom },
+  { value: 'btree-disk-index', label: 'Rotary B-Tree Disk Index 3D', icon: Layers },
+  { value: 'mail-ropeway-tcp', label: 'Mail Ropeway TCP Handshake 3D', icon: Radio },
+  { value: 'turbofan-jet-engine', label: 'Dual-Spool Turbofan Jet Engine 3D', icon: Zap },
   { value: 'RoboticsHandNode', label: 'Robotic Arm 6DOF Manipulator', icon: Bot },
   { value: 'BipedalRobotMesh', label: 'Bipedal Kinematic Assembler', icon: Cpu },
   { value: 'PointCloudNode', label: 'Point Cloud Telemetry Core', icon: Boxes },
@@ -2043,6 +2047,54 @@ export const CraftStudioConfigurator: React.FC = () => {
                       return (
                         <div className="w-full h-full flex items-center justify-center p-4">
                           <TokamakReactorCore3D
+                            primaryColor={activePrim}
+                            accentColor={activeAcc}
+                            scale={1.1}
+                            rotateXDeg={formData.roboticsNode?.wireframe ? 28 : 28}
+                            dispersionAmount={dispAmount}
+                            width={720}
+                            height={600}
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      );
+                    }
+                    if (currentModel === 'btree-disk-index') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <BTreeDiskIndex3D
+                            primaryColor={activePrim}
+                            accentColor={activeAcc}
+                            scale={1.1}
+                            rotateXDeg={formData.roboticsNode?.wireframe ? 28 : 28}
+                            dispersionAmount={dispAmount}
+                            width={720}
+                            height={600}
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      );
+                    }
+                    if (currentModel === 'mail-ropeway-tcp') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <MailRopewayTcp3D
+                            primaryColor={activePrim}
+                            accentColor={activeAcc}
+                            scale={1.1}
+                            rotateXDeg={formData.roboticsNode?.wireframe ? 28 : 28}
+                            dispersionAmount={dispAmount}
+                            width={720}
+                            height={600}
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      );
+                    }
+                    if (currentModel === 'turbofan-jet-engine') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <TurbofanJetEngine3D
                             primaryColor={activePrim}
                             accentColor={activeAcc}
                             scale={1.1}

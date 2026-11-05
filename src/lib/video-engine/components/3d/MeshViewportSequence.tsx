@@ -3,6 +3,9 @@ import { interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import { QuantumEscapementClock3D } from './QuantumEscapementClock3D';
 import { PneumaticDataPipeline3D } from './PneumaticDataPipeline3D';
 import { TokamakReactorCore3D } from './TokamakReactorCore3D';
+import { BTreeDiskIndex3D } from '../../../../components/robotics/3d/BTreeDiskIndex3D';
+import { MailRopewayTcp3D } from '../../../../components/robotics/3d/MailRopewayTcp3D';
+import { TurbofanJetEngine3D } from '../../../../components/robotics/3d/TurbofanJetEngine3D';
 
 export interface MeshViewportSequenceProps {
   base_component?: string;
@@ -106,6 +109,87 @@ export const MeshViewportSequence: React.FC<MeshViewportSequenceProps> = ({
         }}
       >
         <TokamakReactorCore3D
+          frame={frame}
+          primaryColor={primaryColor}
+          accentColor={accentColor}
+          scale={0.8}
+          rotateXDeg={28}
+          dispersionAmount={dispAmount}
+          width={560}
+          height={560}
+        />
+      </div>
+    );
+  }
+
+  if (base_component === 'btree-disk-index') {
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          perspective: '1000px',
+          transform: `scale(${entrance * pulseScale})`,
+        }}
+      >
+        <BTreeDiskIndex3D
+          frame={frame}
+          primaryColor={primaryColor}
+          accentColor={accentColor}
+          scale={0.8}
+          rotateXDeg={28}
+          dispersionAmount={dispAmount}
+          width={560}
+          height={560}
+        />
+      </div>
+    );
+  }
+
+  if (base_component === 'mail-ropeway-tcp') {
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          perspective: '1000px',
+          transform: `scale(${entrance * pulseScale})`,
+        }}
+      >
+        <MailRopewayTcp3D
+          frame={frame}
+          primaryColor={primaryColor}
+          accentColor={accentColor}
+          scale={0.8}
+          rotateXDeg={28}
+          dispersionAmount={dispAmount}
+          width={560}
+          height={560}
+        />
+      </div>
+    );
+  }
+
+  if (base_component === 'turbofan-jet-engine') {
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          perspective: '1000px',
+          transform: `scale(${entrance * pulseScale})`,
+        }}
+      >
+        <TurbofanJetEngine3D
           frame={frame}
           primaryColor={primaryColor}
           accentColor={accentColor}
