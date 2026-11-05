@@ -9,6 +9,11 @@ import { RiskRadar } from './flipbook/illustrations/RiskRadar';
 import { GlobalGeoNodes } from './flipbook/illustrations/GlobalGeoNodes';
 import { CandlestickStream } from './flipbook/illustrations/CandlestickStream';
 import { WaterfallFlow } from './flipbook/illustrations/WaterfallFlow';
+import { PerspectiveTunnel } from './flipbook/illustrations/PerspectiveTunnel';
+import { CompositeMonolith } from './flipbook/illustrations/CompositeMonolith';
+import { DigitalBranchingTree } from './flipbook/illustrations/DigitalBranchingTree';
+import { FluidNoiseField } from './flipbook/illustrations/FluidNoiseField';
+import { WebmCaptureDock } from './flipbook/illustrations/WebmCaptureDock';
 
 interface GenerativeVisualProps {
   seed?: string;
@@ -83,6 +88,21 @@ export const GenerativeVisual: React.FC<GenerativeVisualProps> = ({
   }
   if (normalizedMode === 'WATERFALL_FLOW' || normalizedMode === 'WATERFALL') {
     return <WaterfallFlow seed={seed} className={className} />;
+  }
+  if (normalizedMode === 'PERSPECTIVE_TUNNEL' || normalizedMode === 'TUNNEL') {
+    return <PerspectiveTunnel seed={seed} className={className} />;
+  }
+  if (normalizedMode === 'COMPOSITE_MONOLITH' || normalizedMode === 'MONOLITH') {
+    return <CompositeMonolith seed={seed} className={className} />;
+  }
+  if (normalizedMode === 'DIGITAL_BRANCHING_TREE' || normalizedMode === 'BRANCHING_TREE' || normalizedMode === 'TREE') {
+    return <DigitalBranchingTree seed={seed} className={className} />;
+  }
+  if (normalizedMode === 'FLUID_NOISE_FIELD' || normalizedMode === 'NOISE_FIELD' || normalizedMode === 'FLUID_NOISE') {
+    return <FluidNoiseField seed={seed} className={className} />;
+  }
+  if (normalizedMode === 'WEBM_CAPTURE_DOCK' || normalizedMode === 'CAPTURE_DOCK' || normalizedMode === 'WEBM_DOCK') {
+    return <WebmCaptureDock seed={seed} className={className} />;
   }
 
   // 1. NEURAL_MESH Mode: Vector nodes with animated data pulses along connections
