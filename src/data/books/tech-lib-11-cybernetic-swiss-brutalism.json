@@ -1,0 +1,54 @@
+{
+  "slug": "tech-lib-11-cybernetic-swiss-brutalism",
+  "title": "CYBERNETIC SWISS BRUTALISM & DESIGN TOKENS",
+  "subtitle": "Engineering 1px Craft Precision and Existential Blackbox Aesthetics",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "CYBERNETIC SWISS BRUTALISM",
+      "subtitle": "Where 1px Craft Precision Meets Deterministic Code Automation",
+      "version": "v1.0.0",
+      "tags": [
+        "SWISS BRUTALISM",
+        "DESIGN TOKENS",
+        "BLACKBOX",
+        "DETERMINISTIC"
+      ],
+      "verified": true,
+      "seed": "swiss-brutalism-cover-11",
+      "graphicType": "ISOMETRIC_CAD"
+    },
+    {
+      "id": "p02_decorative_trap",
+      "type": "tech_doc",
+      "title": "01 // THE DECORATIVE TRAP",
+      "content": "Most modern web interfaces are soft. Rounded corners, pastel gradients, useless decorative animations. They want to feel friendly. They end up feeling generic.\n\nWe don't build friendly wallpaper. We build an existential blackbox. Obsidian #09090B. Dark Jet Black Canvas. Strict 1px Swiss Grid lines separating every WebGL canvas and telemetry card. JetBrains Mono typography for raw data precision.",
+      "seed": "decorative-trap-matrix-11",
+      "graphicType": "DATA_MATRIX"
+    },
+    {
+      "id": "p03_color_tokens_authority",
+      "type": "tech_doc",
+      "title": "02 // THE COLOR TOKENS OF AUTHORITY",
+      "content": "Color is not decoration. Color is status telemetry.\n\nElectric Indigo #5322FF: The primary signature accent for active buttons and 3D Rim Lights. Neon Cyan #00E5FF: The laser scanning beam for live telemetry data nodes. Blinking Anchor Nodes: 60FPS geometric pulse points at all four viewport corners. Every token exists to serve visual discipline. Form follows pure mechanical function.",
+      "code": ":root {\n  --canvas-obsidian: #09090B;\n  --accent-electric-indigo: #5322FF;\n  --telemetry-neon-cyan: #00E5FF;\n  --grid-border: 1px solid rgba(255, 255, 255, 0.08);\n  --font-mono: 'JetBrains Mono', monospace;\n}",
+      "language": "css",
+      "seed": "color-tokens-authority-11",
+      "graphicType": "AUTOMATION_FLOW"
+    },
+    {
+      "id": "p04_zero_silent_drift",
+      "type": "diagram",
+      "title": "03 // ZERO SILENT DRIFT SLA",
+      "content": "When an AI engine generates UI components, layouts drift. Marginal padding errors accumulate. Fonts misalign. Swiss Brutalism freezes the layout parameters.\n\n1.4s E2E Execution Speed. 99.99% Engine SLA. 60 FPS Target Frame Rate. 540ms Average RAG Latency. Meticulous graphic precision meets code automation.",
+      "seed": "zero-drift-sla-9999-11",
+      "graphicType": "DATA_MATRIX",
+      "caption": "Figure 11.1 — 1px Swiss grid discipline eliminating UI layout breaks across multi-platform delivery channels"
+    }
+  ]
+}

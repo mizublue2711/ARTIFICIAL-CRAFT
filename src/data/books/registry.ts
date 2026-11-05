@@ -39,6 +39,10 @@ const legacySlugs = [
   'tech-lib-08-studio-configurator-ast',
   'tech-lib-09-brutalism-iframe-sandbox',
   'tech-lib-10-3d-data-metropolis',
+  'tech-lib-11-cybernetic-swiss-brutalism',
+  'tech-lib-12-3d-perspective-tunnel',
+  'tech-lib-13-composite-monolith-kinematics',
+  'tech-lib-14-client-side-webm-exporter',
 ];
 
 legacySlugs.forEach((legacySlug, idx) => {

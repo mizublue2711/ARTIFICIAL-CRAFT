@@ -1,0 +1,54 @@
+{
+  "slug": "book-11-cybernetic-swiss-brutalism",
+  "title": "CHỦ NGHĨA CYBERNETIC SWISS BRUTALISM & HỆ THỐNG DESIGN TOKEN",
+  "subtitle": "Kỹ Nghệ Độ Chuẩn Xác 1px Thủ Công và Thẩm Mỹ Hộp Đen Hiện Sinh",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "CYBERNETIC SWISS BRUTALISM",
+      "subtitle": "Nơi Độ Chuẩn Xác 1px Gặp Gỡ Tự Động Hóa Lập Trình Xác Định",
+      "version": "v1.0.0",
+      "tags": [
+        "SWISS BRUTALISM",
+        "DESIGN TOKENS",
+        "BLACKBOX",
+        "DETERMINISTIC"
+      ],
+      "verified": true,
+      "seed": "swiss-brutalism-cover-11",
+      "graphicType": "ISOMETRIC_CAD"
+    },
+    {
+      "id": "p02_decorative_trap",
+      "type": "tech_doc",
+      "title": "01 // CẠM BẪY TRANG TRÍ MỀM YẾU",
+      "content": "Phần lớn giao diện web hiện đại đều mềm yếu. Bo góc tròn, chuyển màu pastel, hoạt ảnh trang trí vô nghĩa. Chúng cố tỏ ra thân thiện, nhưng kết cục lại nhạt nhòa phổ thông.\n\nChúng tôi không xây dựng giấy dán tường thân thiện. Chúng tôi kiến tạo chiếc hộp đen hiện sinh. Nền Obsidian #09090B đen tuyền. Lưới Swiss Grid 1px chuẩn mực phân tách từng khung WebGL và thẻ số liệu. Font JetBrains Mono cho độ chính xác dữ liệu thô.",
+      "seed": "decorative-trap-matrix-11",
+      "graphicType": "DATA_MATRIX"
+    },
+    {
+      "id": "p03_color_tokens_authority",
+      "type": "tech_doc",
+      "title": "02 // CÁC MÃ MÀU QUYỀN UY",
+      "content": "Màu sắc không phải để trang trí. Màu sắc là dữ liệu viễn thông trạng thái.\n\nElectric Indigo #5322FF: Điểm nhấn đặc trưng cho nút kích hoạt và đèn viền 3D. Neon Cyan #00E5FF: Tia quét laser cho các nút dữ liệu trực tiếp. Nút Neo Nhấp Nháy (Blinking Anchor Nodes): Nhịp đập hình học 60 FPS tại bốn góc màn hình. Mọi token sinh ra để phục vụ kỷ luật thị giác. Hình thức tuân theo công năng cơ khí thuần khiết.",
+      "code": ":root {\n  --canvas-obsidian: #09090B;\n  --accent-electric-indigo: #5322FF;\n  --telemetry-neon-cyan: #00E5FF;\n  --grid-border: 1px solid rgba(255, 255, 255, 0.08);\n  --font-mono: 'JetBrains Mono', monospace;\n}",
+      "language": "css",
+      "seed": "color-tokens-authority-11",
+      "graphicType": "AUTOMATION_FLOW"
+    },
+    {
+      "id": "p04_zero_silent_drift",
+      "type": "diagram",
+      "title": "03 // CAM KẾT SLA KHÔNG SAI LỆCH ÂM THẦM",
+      "content": "Khi công cụ AI tạo thành phần giao diện, bố cục dễ bị xô lệch. Sai số padding tích tụ, phông chữ lệch hàng. Swiss Brutalism đóng băng các tham số hiển thị.\n\nTốc độ thực thi 1.4s toàn trình. Cam kết SLA động cơ 99.99%. Mục tiêu 60 FPS ổn định. Độ trễ RAG trung bình 540ms. Độ chuẩn xác đồ họa thủ công kết hợp cùng tự động hóa mã nguồn.",
+      "seed": "zero-drift-sla-9999-11",
+      "graphicType": "DATA_MATRIX",
+      "caption": "Hình 11.1 — Kỷ luật hệ lưới Swiss Grid 1px loại bỏ gãy vỡ layout trên đa kênh phân phối"
+    }
+  ]
+}

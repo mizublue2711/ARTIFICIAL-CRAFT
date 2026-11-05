@@ -1,4 +1,12 @@
-export type BlockType = 'cover' | 'tech_doc' | 'diagram' | 'interactive';
+export type BlockType =
+  | 'cover'
+  | 'tech_doc'
+  | 'diagram'
+  | 'interactive'
+  | 'COVER'
+  | 'TECH_DOC'
+  | 'DIAGRAM'
+  | 'INTERACTIVE';
 
 export type GraphicType =
   | 'AUTOMATION_FLOW'
@@ -45,6 +53,7 @@ export interface PageBlock {
   verified?: boolean;
   content?: string;
   code?: string;
+  codeSnippet?: string;
   language?: string;
   imageUrl?: string;
   caption?: string;

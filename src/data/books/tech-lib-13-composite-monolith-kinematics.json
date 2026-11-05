@@ -1,0 +1,54 @@
+{
+  "slug": "tech-lib-13-composite-monolith-kinematics",
+  "title": "COMPOSITE MONOLITH & DUAL ZOOM-FOCUS",
+  "subtitle": "7-Part Composite Architecture and Non-Breaking Bezier Camera Inspection",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "COMPOSITE MONOLITH KINEMATICS",
+      "subtitle": "7-Part Mechanical Assembly & Exploded View Interpolation",
+      "version": "v1.0.0",
+      "tags": [
+        "COMPOSITE MONOLITH",
+        "KINEMATICS",
+        "EXPLODED VIEW",
+        "WEBGL"
+      ],
+      "verified": true,
+      "seed": "composite-monolith-cover-13",
+      "graphicType": "COMPOSITE_MONOLITH"
+    },
+    {
+      "id": "p02_mechanical_composite",
+      "type": "tech_doc",
+      "title": "01 // THE 7-PART MECHANICAL COMPOSITE",
+      "content": "Monolithic blocks are boring if they are solid. Real mechanics have internal structure.\n\nThe Composite Monolith is an assembly of 7 optical and mechanical parts:\n1. Beveled Outer Armor Plates.\n2. Glowing Crystalline Neural Core.\n3. Gold Logic Bus Interconnects.\n4. Heatsink Dissipation Fins.\n5. Dual Telemetry Ribbons.\n6. 4-Corner Optical Laser Calipers.\n7. Precision Machined Chassis.",
+      "seed": "mechanical-composite-monolith-13",
+      "graphicType": "COMPOSITE_MONOLITH"
+    },
+    {
+      "id": "p03_exploded_view_math",
+      "type": "tech_doc",
+      "title": "02 // 0% TO 100% EXPLODED VIEW MATH",
+      "content": "How do you dismantle a 3D machine on a web page? You don't swap pre-rendered videos. You interpolate vector offsets live in WebGL.\n\nThe Exploded View slider drives MathUtils.damp calculations. At 0%, a tight unibody chassis. At 100%, outer armor plates push outwards along normal vectors, exposing the neural core and gold logic interconnects without breaking spatial matrix bounds.",
+      "code": "const targetOffset = explodeSlider.value * maxDisplacement;\ncurrentOffset = THREE.MathUtils.damp(currentOffset, targetOffset, 4.0, delta);\narmorPlates.forEach((plate, i) => {\n  plate.position.copy(plate.basePos).addScaledVector(plate.normalVec, currentOffset);\n});",
+      "language": "typescript",
+      "seed": "exploded-view-math-13",
+      "graphicType": "ISOMETRIC_CAD"
+    },
+    {
+      "id": "p04_dual_zoom_focus",
+      "type": "diagram",
+      "title": "03 // NON-BREAKING DUAL ZOOM-FOCUS",
+      "content": "In standard 3D web viewers, clicking an object jerks the camera and disorients the user. Our Dual Zoom-Focus Engine solves this:\n\n• Director Auto-Fly Mode: Camera glides along closed Bezier curve paths through the tunnel.\n• Inspection Focus Mode: Vector interpolation smoothly pulls camera target to selected Data Node while locking anchor state.\n\nResuming auto-flight restores original trajectory vectors smoothly with zero camera jitter.",
+      "seed": "dual-zoom-focus-inspection-13",
+      "graphicType": "COMPOSITE_MONOLITH",
+      "caption": "Figure 13.1 — Non-breaking Bezier camera interpolation seamlessly switching between auto-flight and target inspection"
+    }
+  ]
+}
