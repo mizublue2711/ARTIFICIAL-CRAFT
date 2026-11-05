@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "1.0.0",
+  "title": "ARTIFICIAL CRAFT - Real Workflows & Pipeline Blueprints",
+  "blueprints": [
+    {
+      "id": "image-pim-pipeline",
+      "slug": "image-pim",
+      "name": "E2E AI IMAGE & SHADOW STUDIO PIPELINE",
+      "category": "E-Commerce Automation",
+      "tier": "Core",
+      "node_count": 5,
+      "description": "Tự động hóa xử lý ảnh sản phẩm: Tách nền, căn Grid 75%, đổ bóng Contour Shadow 2 lớp và upload R2 CDN xuất file PNG + PSD.",
+      "cli_deploy": "$ craft.blueprint.deploy(\"image-pim\", { grid: \"75%\", shadow: \"contour_2layer\", output: [\"png\", \"psd\"] })",
+      "nodes": [
+        { "step": 1, "id": "fast_remove_bg", "name": "Fast Remove BG", "type": "API_OR_LOCAL", "engine": "Remove.bg / BRIA RMBG 2.0 Local", "latency": "~0.5s", "output": "raw_nobg.png" },
+        { "step": 2, "id": "auto_crop_grid_75", "name": "Auto-Crop & Fit Grid 75%", "type": "CV_TRANSFORM", "engine": "OpenCV / Pillow", "latency": "~0.05s", "output": "product_fitted_75.png" },
+        { "step": 3, "id": "contour_shadow_engine", "name": "Contour Shadow Engine", "type": "NUMPY_MATH", "engine": "Pillow Alpha Mask + Gaussian Blur", "latency": "~0.08s", "output": "shadow_layer.png" },
+        { "step": 4, "id": "layer_compositor", "name": "Layer Compositor", "type": "MULTI_LAYER_MERGE", "engine": "psd-tools / Pillow", "latency": "~0.1s", "output": "final.png + final.psd" },
+        { "step": 5, "id": "r2_cdn_publisher", "name": "Cloudflare R2 Publisher", "type": "STORAGE_UPLOAD", "engine": "S3-Compatible API", "latency": "~0.2s", "output": "https://pub-r2.craft/pim/final.png" }
+      ],
+      "config_parameters": {
+        "canvas_size": 1024,
+        "grid_ratio": 0.75,
+        "bottom_margin_ratio": 0.125,
+        "shadow_config": { "contact_alpha": 190, "contact_blur": 3, "soft_alpha": 85, "soft_blur": 18 },
+        "export_formats": ["png", "psd"]
+      }
+    },
+    {
+      "id": "dify-n8n-lego-protocol",
+      "slug": "lego-protocol",
+      "name": "DIFY + N8N JSON-DRIVEN LEGO REGISTRY PROTOCOL",
+      "category": "Hybrid Architecture",
+      "tier": "Advanced",
+      "node_count": 5,
+      "description": "Kiến trúc Hybrid phân tách Bộ nào suy luận (Dify) và Cơ bắp thực thi (n8n), tiết kiệm 98% chi phí token nhờ đúc & ghép JSON AST Component.",
+      "cli_deploy": "$ craft.blueprint.deploy(\"lego-protocol\", { mode: \"native_json\", schema: \"component_registry_v2\" })",
+      "nodes": [
+        { "step": 1, "id": "n8n_webhook_inbound", "name": "Webhook Inbound Catch", "type": "TRIGGER", "engine": "n8n Webhook Node", "latency": "~0.01s", "output": "payload_json" },
+        { "step": 2, "id": "dify_question_classifier", "name": "Dify Task Classifier", "type": "ROUTER", "engine": "Dify Workflow Router", "latency": "~0.12s", "output": "task_type: ROBOTICS_3D | USER_WEBAPP_GEN" },
+        { "step": 3, "id": "dify_llm_json_mode", "name": "LLM AST Generator (Native JSON)", "type": "AI_INFERENCE", "engine": "Google Vertex AI (json_object mode)", "latency": "~0.8s", "output": "layout_ast_json (~60 tokens)" },
+        { "step": 4, "id": "n8n_sanitize_gate", "name": "Sanitize & Validate Gate", "type": "VALIDATOR", "engine": "n8n Code Node (JSON.parse)", "latency": "~0.02s", "output": "validated_json_ast" },
+        { "step": 5, "id": "n8n_response_or_github", "name": "Webhook Respond / GitHub Sync", "type": "FANOUT", "engine": "n8n Response Node + GitHub API", "latency": "~0.15s", "output": "live_preview_response" }
+      ],
+      "config_parameters": {
+        "dify_app_mode": "workflow",
+        "native_json_mode": true,
+        "token_savings": "98%",
+        "average_output_tokens": 65
+      }
+    },
+    {
+      "id": "contour-shadow-4node-modular",
+      "slug": "contour-shadow",
+      "name": "STANDALONE 4-NODE CONTOUR SHADOW COMPOSITOR",
+      "category": "Image Processing",
+      "tier": "Core",
+      "node_count": 4,
+      "description": "Cỗ máy đổ bóng 4-Node độc lập, chạy trên CPU <0.08s, cho phép lùi lại từng bước tinh chỉnh opacity & blur không phá hủy.",
+      "cli_deploy": "$ craft.blueprint.deploy(\"contour-shadow\", { strategy: \"contour_2layer\", cpu_only: true })",
+      "nodes": [
+        { "step": 1, "id": "input_transparent_png", "name": "Transparent Asset Ingest", "type": "INGEST", "engine": "Pillow PIL.Image", "latency": "~0.01s", "output": "nobg_rgba_array" },
+        { "step": 2, "id": "bottom_contour_extractor", "name": "Bottom Contour Extraction", "type": "ALPHA_ANALYSIS", "engine": "NumPy Slice (bottom 20% alpha)", "latency": "~0.01s", "output": "contact_mask_array" },
+        { "step": 3, "id": "dual_shadow_renderer", "name": "Dual-Layer Shadow Renderer", "type": "GAUSSIAN_RENDER", "engine": "Pillow ImageFilter (Blur 3px & 18px)", "latency": "~0.04s", "output": "contact_shadow + soft_drop_shadow" },
+        { "step": 4, "id": "canvas_compositor_export", "name": "Canvas Compositor & PSD Export", "type": "LAYER_MERGE", "engine": "Pillow / psd-tools", "latency": "~0.02s", "output": "composed_canvas_1024x1024" }
+      ],
+      "config_parameters": {
+        "cpu_runtime_ms": 78,
+        "api_cost_usd": 0.0
+      }
+    },
+    {
+      "id": "grafx-3d-interactive-pipeline",
+      "slug": "grafx-3d-bridge",
+      "name": "GRAFX STUDIO 3D INTERACTIVE BRIDGE",
+      "category": "3D & Interactive Web",
+      "tier": "Expert",
+      "node_count": 5,
+      "description": "Dây chuyền tích hợp GraFx Studio SDK (@chili-publish/studio-sdk) để tiêm biến số texture từ R2 vào viewport 3D tương tác real-time.",
+      "cli_deploy": "$ craft.blueprint.deploy(\"grafx-3d-bridge\", { sdk: \"@chili-publish/studio-sdk\", engine: \"threejs_webgl\" })",
+      "nodes": [
+        { "step": 1, "id": "sku_dify_parser", "name": "SKU Payload AI Parser", "type": "AI_EXTRACTOR", "engine": "Dify LLM Contract Node", "latency": "~0.3s", "output": "variable_contract_json" },
+        { "step": 2, "id": "texture_preprocessor", "name": "Texture Clean & Normalization", "type": "IMAGE_AGENT", "engine": "Python Image Agent (VPS)", "latency": "~0.1s", "output": "clean_texture_map.png" },
+        { "step": 3, "id": "r2_texture_cdn", "name": "R2 Asset CDN Delivery", "type": "CDN_STORAGE", "engine": "Cloudflare R2", "latency": "~0.15s", "output": "https://pub-r2.craft/textures/sku_diffuse.png" },
+        { "step": 4, "id": "grafx_studio_sdk_inject", "name": "GraFx Studio SDK Variable Injector", "type": "SDK_CONTROLLER", "engine": "@chili-publish/studio-sdk", "latency": "~0.05s", "output": "sdk.variable.setValue('product_texture', url)" },
+        { "step": 5, "id": "threejs_webgl_viewport", "name": "WebGL Interactive 360 Viewport", "type": "FRONTEND_VIEWPORT", "engine": "Three.js Canvas / Studio Engine", "latency": "< 0.05s", "output": "interactive_3d_product_view" }
+      ],
+      "config_parameters": {
+        "sdk_package": "@chili-publish/studio-sdk",
+        "variables_mapped": ["product_texture", "brand_color", "camera_angle", "shadow_opacity"]
+      }
+    }
+  ]
+}

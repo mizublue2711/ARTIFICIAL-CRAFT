@@ -104,8 +104,12 @@ export interface Translations {
   bp_title_line2: string;
   bp_desc: string;
   copy_api: string;
+  copyApi: string;
   copied: string;
   export_clean_screenshot: string;
+  exportDiagram: string;
+  inspectAst: string;
+  copyJson: string;
   rendering_hd: string;
   preview_ready: string;
   export_preview_title: string;
@@ -113,6 +117,10 @@ export interface Translations {
   bp_banner_title: string;
   bp_banner_sub: string;
   bp_browse_all: string;
+  bp_node_step: string;
+  bp_node_engine: string;
+  bp_node_latency: string;
+  bp_node_output: string;
 
   // LinkedIn Banner Studio Form
   banner_studio_title: string;
@@ -447,8 +455,12 @@ export const translations: Record<Language, Translations> = {
     bp_desc:
       'Every blueprint ships with a typed API, node topology, and Carbon-style HD Swiss image exporter.',
     copy_api: 'COPY API',
+    copyApi: 'COPY API',
     copied: 'COPIED',
     export_clean_screenshot: 'Export Clean Screenshot',
+    exportDiagram: 'EXPORT HD DIAGRAM',
+    inspectAst: 'INSPECT AST JSON',
+    copyJson: 'COPY JSON',
     rendering_hd: 'RENDERING HD...',
     preview_ready: 'PREVIEW READY',
     export_preview_title: 'EXPORT PREVIEW',
@@ -456,6 +468,10 @@ export const translations: Record<Language, Translations> = {
     bp_banner_title: 'ALL BLUEPRINTS ARE OPEN SOURCE',
     bp_banner_sub: 'MIT LICENSED · CRAFT//CODE CLI READY',
     bp_browse_all: 'BROWSE ALL 40+ TEMPLATES',
+    bp_node_step: 'STEP',
+    bp_node_engine: 'ENGINE',
+    bp_node_latency: 'LATENCY',
+    bp_node_output: 'OUTPUT',
 
     // LinkedIn Banner Studio Form
     banner_studio_title: 'Plug & Play Studio Banner LinkedIn (100% Automated & Free)',
@@ -792,8 +808,12 @@ export const translations: Record<Language, Translations> = {
     bp_desc:
       'Mỗi sơ đồ mẫu đi kèm với API có kiểu, cấu trúc nút và công cụ xuất ảnh định hình theo phong cách của khách hàng.',
     copy_api: 'SAO CHÉP API',
+    copyApi: 'SAO CHÉP API',
     copied: 'ĐÃ SAO CHÉP',
     export_clean_screenshot: 'Xuất Ảnh Màn Hình Sạch',
+    exportDiagram: 'XUẤT SƠ ĐỒ HD',
+    inspectAst: 'SOI CHI TIẾT AST JSON',
+    copyJson: 'SAO CHÉP JSON',
     rendering_hd: 'ĐANG DỰNG HD...',
     preview_ready: 'XEM TRƯỚC SẴN SÀNG',
     export_preview_title: 'XEM TRƯỚC KHI XUẤT',
@@ -801,6 +821,10 @@ export const translations: Record<Language, Translations> = {
     bp_banner_title: 'TẤT CẢ SƠ ĐỒ MẪU LÀ MÃ NGUỒN MỞ',
     bp_banner_sub: 'GIẤY PHÉP MIT · SẴN SÀNG CHO CRAFT//CODE CLI',
     bp_browse_all: 'DUYỆT TẤT CẢ 40+ MẪU',
+    bp_node_step: 'BƯỚC',
+    bp_node_engine: 'ĐỘNG CƠ',
+    bp_node_latency: 'ĐỘ TRỄ',
+    bp_node_output: 'ĐẦU RA',
 
     // LinkedIn Banner Studio Form
     banner_studio_title: 'Plug & Play Studio Banner LinkedIn (100% Automated & Free)',
