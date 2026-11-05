@@ -283,7 +283,8 @@ export const FlipBookEngine: React.FC<FlipBookEngineProps> = ({
 
   // Render block depending on type
   const renderBlockComponent = (block: PageBlock) => {
-    switch (block.type) {
+    const blockType = (block.type || '').toLowerCase();
+    switch (blockType) {
       case 'cover':
         return <CoverBlock block={block} />;
       case 'tech_doc':

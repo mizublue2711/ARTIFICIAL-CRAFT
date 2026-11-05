@@ -1,0 +1,54 @@
+{
+  "slug": "book-13-composite-monolith-kinematics",
+  "title": "KHỐI COMPOSITE MONOLITH & TIÊU ĐIỂM KÉP",
+  "subtitle": "Kiến Trúc Cơ Khí 7 Thành Phần và Thuật Toán Soi Chi Tiết Bằng Đường Cong Bezier",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "ĐỘNG HỌC COMPOSITE MONOLITH",
+      "subtitle": "Lắp Ráp Cơ Khí 7 Thành Phần & Phân Tách Hình Học Exploded View",
+      "version": "v1.0.0",
+      "tags": [
+        "COMPOSITE MONOLITH",
+        "KINEMATICS",
+        "EXPLODED VIEW",
+        "WEBGL"
+      ],
+      "verified": true,
+      "seed": "composite-monolith-cover-13",
+      "graphicType": "COMPOSITE_MONOLITH"
+    },
+    {
+      "id": "p02_mechanical_composite",
+      "type": "tech_doc",
+      "title": "01 // CƠ CẤU CƠ KHÍ 7 THÀNH PHẦN",
+      "content": "Khối nguyên khối đặc sẽ rất tẻ nhạt. Cơ khí chân thực luôn sở hữu cấu trúc nội tại.\n\nKhối Composite Monolith là tổ hợp của 7 mô-đun quang học và cơ khí:\n1. Tấm giáp ngoài vát cạnh.\n2. Lõi thần kinh tinh thể phát sáng.\n3. Bus mạch logic mạ vàng.\n4. Cánh tản nhiệt giải nhiệt.\n5. Dải ruy băng đo viễn thông kép.\n6. Thước kẹp laser quang học 4 góc.\n7. Khung bệ máy gia công chính xác.",
+      "seed": "mechanical-composite-monolith-13",
+      "graphicType": "COMPOSITE_MONOLITH"
+    },
+    {
+      "id": "p03_exploded_view_math",
+      "type": "tech_doc",
+      "title": "02 // TOÁN HỌC TÁCH MẢNH TỪ 0% ĐẾN 100%",
+      "content": "Làm thế nào bóc tách một cỗ máy 3D trên trang web? Không tráo đổi video render sẵn. Bạn nội suy trực tiếp vectơ dịch chuyển trong WebGL.\n\nThanh trượt Exploded View điều khiển phép tính MathUtils.damp. Tại 0%, khung unibody khép kín. Tại 100%, các tấm giáp ngoài đẩy ra dọc theo vectơ pháp tuyến, làm lộ lõi thần kinh và bus logic vàng mà không phá vỡ giới hạn ma trận không gian.",
+      "code": "const targetOffset = explodeSlider.value * maxDisplacement;\ncurrentOffset = THREE.MathUtils.damp(currentOffset, targetOffset, 4.0, delta);\narmorPlates.forEach((plate, i) => {\n  plate.position.copy(plate.basePos).addScaledVector(plate.normalVec, currentOffset);\n});",
+      "language": "typescript",
+      "seed": "exploded-view-math-13",
+      "graphicType": "ISOMETRIC_CAD"
+    },
+    {
+      "id": "p04_dual_zoom_focus",
+      "type": "diagram",
+      "title": "03 // TIÊU ĐIỂM PHÓNG TO KÉP KHÔNG ĐỨT GÃY",
+      "content": "Trong trình xem 3D thông thường, việc nhấp vào một vật thể giật camera khiến người dùng mất phương hướng. Cơ chế Phóng To Tiêu Điểm Kép giải quyết triệt để vấn đề này:\n\n• Chế độ Tự Bay Đạo Diễn: Camera lướt dọc theo đường cong Bezier khép kín xuyên qua đường hầm.\n• Chế độ Tiêu Điểm Soi: Nội suy vectơ kéo góc nhìn camera mượt mà về Nút Dữ liệu được chọn trong khi vẫn khóa trạng thái neo.\n\nTiếp tục hành trình bay tự động phục hồi vectơ quỹ đạo ban đầu, không rung lắc camera.",
+      "seed": "dual-zoom-focus-inspection-13",
+      "graphicType": "COMPOSITE_MONOLITH",
+      "caption": "Hình 13.1 — Chuyển đổi mượt mà giữa chế độ tự bay và soi chi tiết mục tiêu bằng đường cong Bezier"
+    }
+  ]
+}

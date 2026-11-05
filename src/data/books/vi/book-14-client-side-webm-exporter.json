@@ -1,0 +1,54 @@
+{
+  "slug": "book-14-client-side-webm-exporter",
+  "title": "CÔNG CỤ XUẤT VIDEO WEBM 60 FPS PHÍA MÁY KHÁCH",
+  "subtitle": "Ghi Luồng Canvas & Tổng Hợp Âm Thanh Web Audio Với Chi Phí Máy Chủ $0.00",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "XUẤT VIDEO WEBM 60 FPS PHÍA CLIENT",
+      "subtitle": "Xuất Video 60 FPS Tức Thì Trực Tiếp Trong Bộ Nhớ Trình Duyệt",
+      "version": "v1.0.0",
+      "tags": [
+        "WEBM EXPORTER",
+        "CANVAS STREAM",
+        "WEB AUDIO",
+        "$0.00 RENDER"
+      ],
+      "verified": true,
+      "seed": "webm-exporter-cover-14",
+      "graphicType": "WEBM_CAPTURE_DOCK"
+    },
+    {
+      "id": "p02_cloud_render_pit",
+      "type": "tech_doc",
+      "title": "01 // CÁI HỐ ĐỐT TIỀN RENDER ĐÁM MÂY",
+      "content": "Render video serverless trên AWS Lambda hay GCP Cloud Run nghe rất hấp dẫn cho đến khi hóa đơn tới. Từng khung hình ngốn thời gian CPU. Từng video xuất ra đốt băng thông mạng. Mở rộng lên 100.000 lượt xuất, ngân sách hạ tầng sụp đổ.\n\nTại sao trả tiền cho máy chủ đám mây khi máy tính của người dùng sở hữu chip M3 hay GPU RTX đang nằm chờ rảnh rỗi?",
+      "seed": "cloud-render-pit-14",
+      "graphicType": "DATA_MATRIX"
+    },
+    {
+      "id": "p03_in_memory_stream_synthesis",
+      "type": "tech_doc",
+      "title": "02 // TỔNG HỢP LUỒNG DỮ LIỆU TRONG BỘ NHỚ",
+      "content": "Chúng tôi chuyển 100% công đoạn tạo video về trình duyệt máy khách:\n1. Bắt Luồng Canvas: canvas.captureStream(60) khóa đầu ra ở mức 60 FPS xác định.\n2. Bộ Tổng Hợp Web Audio: Web Audio API tạo tiếng trống kick cyber 120 BPM, sub bass và arpeggio thời gian thực.\n3. Trộn Luồng & MediaRecorder: Kết hợp luồng hình và tiếng thành video WebM chuẩn VP9/Opus ngay trong RAM.",
+      "code": "const canvasStream = canvas.captureStream(60);\nconst audioStream = audioCtx.createMediaStreamDestination().stream;\nconst combinedStream = new MediaStream([\n  ...canvasStream.getVideoTracks(),\n  ...audioStream.getAudioTracks()\n]);\nconst recorder = new MediaRecorder(combinedStream, { mimeType: 'video/webm;codecs=vp9,opus' });",
+      "language": "typescript",
+      "seed": "in-memory-stream-synthesis-14",
+      "graphicType": "WEBM_CAPTURE_DOCK"
+    },
+    {
+      "id": "p04_zero_latency_victory",
+      "type": "diagram",
+      "title": "03 // CHIẾN THẮNG HÀNG ĐỢI 0ms",
+      "content": "Nhấp 'Xuất Video (.webm)' trên Bảng Điều Khiển đáy màn hình. Camera thực hiện chuyến bay tự động 5 hồi trong 30 giây. Trình duyệt mã hóa luồng VP9 trực tiếp.\n\nHoàn thành, tệp ArtificialCraft_Monolith_60fps.webm tự động tải về tức thì.\n\nChi phí máy chủ: $0.00.\nThời gian chờ hàng đợi: 0ms.\nĐó là cách các kỹ sư xây dựng dây chuyền truyền thông bền vững.",
+      "seed": "zero-dollar-cloud-cost-badge-14",
+      "graphicType": "WEBM_CAPTURE_DOCK",
+      "caption": "Hình 14.1 — Kiến trúc ghi hình GPU phía máy khách với chi phí server $0.00 và độ trễ hàng đợi 0ms"
+    }
+  ]
+}

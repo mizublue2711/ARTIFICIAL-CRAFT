@@ -1,0 +1,54 @@
+{
+  "slug": "book-12-3d-perspective-tunnel",
+  "title": "ĐƯỜNG HẦM PHỐI CẢNH 3D & CHUỖI BAY 5 HỒI",
+  "subtitle": "Toán Học Đường Hầm Lục Giác Không Gian & Kịch Bản Xác Định 30 Giây",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "ĐƯỜNG HẦM PHỐI CẢNH 3D",
+      "subtitle": "Điểm Tụ Hội Tụ & 5.000 Hạt Gia Tốc Chiều Sâu",
+      "version": "v1.0.0",
+      "tags": [
+        "3D TUNNEL",
+        "PERSPECTIVE",
+        "THREE.JS",
+        "CHOREOGRAPHY"
+      ],
+      "verified": true,
+      "seed": "perspective-tunnel-cover-12",
+      "graphicType": "PERSPECTIVE_TUNNEL"
+    },
+    {
+      "id": "p02_illusions_of_depth",
+      "type": "tech_doc",
+      "title": "01 // ẢO ẢNH CỦA CHIỀU SÂU",
+      "content": "Màn hình máy tính là mặt phẳng. Chỉ có hai chiều X và Y. Làm thế nào tạo chiều sâu không gian vô tận mà không làm tràn bộ nhớ RAM trình duyệt?\n\nBạn khai thác Điểm Tụ Hội Tụ và Độ Phân Tán Xuyên Tâm. 5.000 hạt dịch chuyển theo tọa độ cực ra xa theo trục Z. Ma trận Projection Matrix của Three.js khóa góc nhìn FOV qua mọi thiết bị. Công thức rung lắc camera trục Z 120 BPM hòa nhịp cùng các nút đồng thuận kiểm toán.",
+      "seed": "illusions-depth-tunnel-12",
+      "graphicType": "PERSPECTIVE_TUNNEL"
+    },
+    {
+      "id": "p03_three_depth_layers",
+      "type": "tech_doc",
+      "title": "02 // BA TẦNG ĐỘ SÂU KHÔNG LỖI 404",
+      "content": "Để đảm bảo chuẩn SLA 60 FPS không rớt khung hình, không gian 3D chia thành ba tầng độ sâu độc lập:\n1. Tầng Tiền Cảnh: Thẻ HUD 2D, con trỏ laser, phản hồi thị sai chuột kinetic.\n2. Tầng Trung Cảnh: Khối Composite Monolith, cây phân nhánh dữ liệu, bóng đổ che khuất.\n3. Tầng Hậu Cảnh: Trường nhiễu chất lỏng, lưới CAD 1px, hạt phân tán tỏa tròn.\n\n100% vân bề mặt PBR tạo trực tiếp trong RAM qua canvas texture. Không độ trễ tải tài nguyên.",
+      "code": "const canvasTexture = new THREE.CanvasTexture(bufferCanvas);\ncanvasTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();\nconst tunnelMaterial = new THREE.MeshStandardMaterial({\n  map: canvasTexture,\n  roughness: 0.15,\n  metalness: 0.85\n});",
+      "language": "typescript",
+      "seed": "depth-layers-code-12",
+      "graphicType": "ISOMETRIC_CAD"
+    },
+    {
+      "id": "p04_five_act_choreography",
+      "type": "diagram",
+      "title": "03 // KỊCH BẢN 5 HỒI TRONG 30 GIÂY",
+      "content": "Hồi 1 (00:00 - 00:06): Trường nhiễu chất lỏng 3D trên lưới Swiss Grid 1px.\nHồi 2 (00:06 - 00:12): Các lớp kính glassmorphism rơi xuống theo vật lý lò xo bậc 2.\nHồi 3 (00:12 - 00:18): Ma trận thập lục phân dạng sóng nhiễu Perlin và giải mã chữ số.\nHồi 4 (00:18 - 00:24): Đường hầm lục giác với 4 mô hình đồng thuận và camera Z-shake 120 BPM.\nHồi 5 (00:24 - 00:30): 200 nút dữ liệu quỹ đạo tạo mạng lưới dẫn dắt về nút kêu gọi hành động CTA.",
+      "seed": "5-act-sequence-telemetry-12",
+      "graphicType": "PERSPECTIVE_TUNNEL",
+      "caption": "Hình 12.1 — Chuỗi chuyển động 5 hồi 30 giây thực thi mượt mà ở 60 FPS trên GPU máy khách"
+    }
+  ]
+}

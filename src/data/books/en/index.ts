@@ -8,6 +8,10 @@ import book7 from './book-07-linkedin-banner-engine.json';
 import book8 from './book-08-multi-agent-swarm.json';
 import book9 from './book-09-flipbook-spec.json';
 import book10 from './book-10-3d-data-metropolis.json';
+import book11 from './book-11-cybernetic-swiss-brutalism.json';
+import book12 from './book-12-3d-perspective-tunnel.json';
+import book13 from './book-13-composite-monolith-kinematics.json';
+import book14 from './book-14-client-side-webm-exporter.json';
 import { BookData } from '../../../types/flipbook';
 
 export const enBooks: BookData[] = [
@@ -21,4 +25,8 @@ export const enBooks: BookData[] = [
   book8 as BookData,
   book9 as BookData,
   book10 as BookData,
+  book11 as BookData,
+  book12 as BookData,
+  book13 as BookData,
+  book14 as BookData,
 ];
