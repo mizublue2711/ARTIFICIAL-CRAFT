@@ -122,6 +122,19 @@ export interface Translations {
   bp_node_latency: string;
   bp_node_output: string;
 
+  // Blueprint Section Headers & Actions
+  blueprintSectionTitle: string;
+  blueprintSectionSubtitle: string;
+  btnDownloadJson: string;
+  btnExportHdDiagram: string;
+  btnInspectAstJson: string;
+
+  // Blueprint Descriptions
+  bpImagePimDesc: string;
+  bpLegoProtocolDesc: string;
+  bpContourShadowDesc: string;
+  bpGrafx3dDesc: string;
+
   // LinkedIn Banner Studio Form
   banner_studio_title: string;
   banner_full_name: string;
@@ -472,6 +485,19 @@ export const translations: Record<Language, Translations> = {
     bp_node_engine: 'ENGINE',
     bp_node_latency: 'LATENCY',
     bp_node_output: 'OUTPUT',
+
+    // Blueprint Section Headers & Actions
+    blueprintSectionTitle: 'REAL-WORLD PIPELINE BLUEPRINTS',
+    blueprintSectionSubtitle: 'Production-tested AI, image processing, and 3D kinematics workflows ready for deployment.',
+    btnDownloadJson: 'DOWNLOAD JSON',
+    btnExportHdDiagram: 'EXPORT HD DIAGRAM',
+    btnInspectAstJson: 'INSPECT AST JSON',
+
+    // Blueprint Descriptions (EN)
+    bpImagePimDesc: 'Automated e-commerce product image processing: Background removal, 75% Grid fitting, 2-layer Contour Shadow generation, and R2 CDN upload exporting PNG + PSD.',
+    bpLegoProtocolDesc: 'Hybrid architecture decoupling Reasoning Brain (Dify) and Execution Muscle (n8n), saving 98% token costs via JSON AST Component forging & assembly.',
+    bpContourShadowDesc: 'Standalone 4-Node shadow compositor running on CPU in <0.08s, allowing non-destructive step-by-step opacity & blur fine-tuning.',
+    bpGrafx3dDesc: 'Integration pipeline connecting GraFx Studio SDK (@chili-publish/studio-sdk) to inject R2 texture variables into real-time interactive 3D viewports.',
 
     // LinkedIn Banner Studio Form
     banner_studio_title: 'Plug & Play Studio Banner LinkedIn (100% Automated & Free)',
@@ -825,6 +851,19 @@ export const translations: Record<Language, Translations> = {
     bp_node_engine: 'ĐỘNG CƠ',
     bp_node_latency: 'ĐỘ TRỄ',
     bp_node_output: 'ĐẦU RA',
+
+    // Blueprint Section Headers & Actions
+    blueprintSectionTitle: 'SƠ ĐỒ ĐƯỜNG ỐNG TỰ ĐỘNG HÓA THỰC TẾ',
+    blueprintSectionSubtitle: 'Các quy trình xử lý AI, đồ họa và động học 3D đã qua kiểm định thực tế, sẵn sàng triển khai.',
+    btnDownloadJson: 'TẢI TỆP JSON',
+    btnExportHdDiagram: 'XUẤT SƠ ĐỒ HD',
+    btnInspectAstJson: 'SOI NGUYÊN MẪU AST',
+
+    // Blueprint Descriptions (VI)
+    bpImagePimDesc: 'Tự động hóa xử lý ảnh sản phẩm: Tách nền, căn Grid 75%, đổ bóng Contour Shadow 2 lớp và upload R2 CDN xuất file PNG + PSD.',
+    bpLegoProtocolDesc: 'Kiến trúc Hybrid phân tách Bộ não suy luận (Dify) và Cơ bắp thực thi (n8n), tiết kiệm 98% chi phí token nhờ đúc & ghép JSON AST Component.',
+    bpContourShadowDesc: 'Cỗ máy đổ bóng 4-Node độc lập, chạy trên CPU <0.08s, cho phép lùi lại từng bước tinh chỉnh opacity & blur không phá hủy.',
+    bpGrafx3dDesc: 'Dây chuyền tích hợp GraFx Studio SDK (@chili-publish/studio-sdk) để tiêm biến số texture từ R2 vào viewport 3D tương tác real-time.',
 
     // LinkedIn Banner Studio Form
     banner_studio_title: 'Plug & Play Studio Banner LinkedIn (100% Automated & Free)',

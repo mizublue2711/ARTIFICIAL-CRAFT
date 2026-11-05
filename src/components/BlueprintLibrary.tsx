@@ -15,7 +15,7 @@ import {
   Terminal,
 } from 'lucide-react';
 import pipelineBlueprintsData from '@/data/pipeline-blueprints.json';
-import { useTranslation } from '@/context/useLanguage';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export interface BlueprintNode {
   step: number;
@@ -152,6 +152,16 @@ function InspectAstModal({
     setTimeout(() => setCopiedAst(false), 1800);
   };
 
+  const downloadJson = () => {
+    const blob = new Blob([jsonContent], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${bp.slug || bp.id}-ast.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -195,6 +205,13 @@ function InspectAstModal({
             </span>
             <div className="flex items-center gap-2">
               <button
+                onClick={downloadJson}
+                className="inline-flex items-center gap-1.5 border border-zinc-700 bg-zinc-900 text-zinc-200 text-[11px] font-bold px-3 py-1.5 hover:bg-zinc-800 hover:text-white transition-colors uppercase"
+              >
+                <Download className="h-3.5 w-3.5" />
+                {t('btnDownloadJson')}
+              </button>
+              <button
                 onClick={copyJson}
                 className="inline-flex items-center gap-1.5 border border-zinc-700 bg-zinc-900 text-zinc-200 text-[11px] font-bold px-3 py-1.5 hover:bg-zinc-800 hover:text-white transition-colors uppercase"
               >
@@ -225,13 +242,25 @@ function InspectAstModal({
 }
 
 function BlueprintCard({ bp, index }: { bp: PipelineBlueprint; index: number }) {
-  const { t } = useTranslation();
+  const { t, currentLocale } = useTranslation();
   const [copiedCli, setCopiedCli] = useState(false);
   const [copiedApi, setCopiedApi] = useState(false);
   const [exported, setExported] = useState(false);
   const [exporting, setExporting] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [inspectOpen, setInspectOpen] = useState(false);
+
+  const getLocalizedDescription = (slug: string, fallbackDesc: string) => {
+    if (currentLocale === 'vi') {
+      if (slug === 'image-pim') return t('bpImagePimDesc');
+      if (slug === 'lego-protocol') return t('bpLegoProtocolDesc');
+      if (slug === 'contour-shadow') return t('bpContourShadowDesc');
+      if (slug === 'grafx-3d-bridge') return t('bpGrafx3dDesc');
+    }
+    return fallbackDesc; // Default English from JSON
+  };
+
+  const localizedDescription = getLocalizedDescription(bp.slug, bp.description);
 
   const accent = tierAccent(bp.tier);
   const exportRef = useRef<HTMLDivElement>(null);
@@ -325,7 +354,7 @@ function BlueprintCard({ bp, index }: { bp: PipelineBlueprint; index: number }) 
 
           {/* Description */}
           <p className="text-[12.5px] text-zinc-400 font-sans leading-relaxed mb-5">
-            {bp.description}
+            {localizedDescription}
           </p>
 
           {/* Node Workflow Diagram: Horizontal sequence connected with arrows */}
@@ -417,7 +446,7 @@ function BlueprintCard({ bp, index }: { bp: PipelineBlueprint; index: number }) 
               className="inline-flex items-center justify-center gap-1.5 border border-zinc-800 bg-zinc-900 text-[11px] font-bold text-zinc-300 px-3 py-2 hover:bg-zinc-800 hover:text-white transition-colors uppercase"
             >
               <Code2 className="h-3.5 w-3.5 text-cyan-glow" />
-              {t('inspectAst')}
+              {t('btnInspectAstJson') || t('inspectAst')}
             </button>
           </div>
 
@@ -444,7 +473,7 @@ function BlueprintCard({ bp, index }: { bp: PipelineBlueprint; index: number }) 
             ) : (
               <>
                 <Camera className="h-3.5 w-3.5" style={{ color: accent }} />
-                {t('exportDiagram')}
+                {t('btnExportHdDiagram') || t('exportDiagram')}
               </>
             )}
           </button>
@@ -500,7 +529,7 @@ function BlueprintCard({ bp, index }: { bp: PipelineBlueprint; index: number }) 
             {bp.name}
           </div>
           <div style={{ fontSize: '13px', color: '#a1a1aa', marginBottom: '24px', lineHeight: '1.5' }}>
-            {bp.description}
+            {localizedDescription}
           </div>
 
           {/* Step Sequence in Export */}
@@ -597,12 +626,12 @@ export default function BlueprintLibrary() {
             transition={{ duration: 0.5 }}
             className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white max-w-2xl uppercase leading-[1.05]"
           >
-            {t('bp_title_line1')}
+            {t('blueprintSectionTitle') || t('bp_title_line1')}
             <br />
             <span className="text-zinc-500">{t('bp_title_line2')}</span>
           </motion.h2>
           <p className="max-w-md text-[14px] text-zinc-400 font-sans leading-relaxed border-l-2 border-[#5322ff] pl-3">
-            {t('bp_desc')}
+            {t('blueprintSectionSubtitle') || t('bp_desc')}
           </p>
         </div>
 

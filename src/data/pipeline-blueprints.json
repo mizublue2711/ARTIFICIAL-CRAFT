@@ -10,7 +10,7 @@
       "category": "E-Commerce Automation",
       "tier": "Core",
       "node_count": 5,
-      "description": "Tự động hóa xử lý ảnh sản phẩm: Tách nền, căn Grid 75%, đổ bóng Contour Shadow 2 lớp và upload R2 CDN xuất file PNG + PSD.",
+      "description": "Automated e-commerce product image processing: Background removal, 75% Grid fitting, 2-layer Contour Shadow generation, and R2 CDN upload exporting PNG + PSD.",
       "cli_deploy": "$ craft.blueprint.deploy(\"image-pim\", { grid: \"75%\", shadow: \"contour_2layer\", output: [\"png\", \"psd\"] })",
       "nodes": [
         { "step": 1, "id": "fast_remove_bg", "name": "Fast Remove BG", "type": "API_OR_LOCAL", "engine": "Remove.bg / BRIA RMBG 2.0 Local", "latency": "~0.5s", "output": "raw_nobg.png" },
@@ -34,7 +34,7 @@
       "category": "Hybrid Architecture",
       "tier": "Advanced",
       "node_count": 5,
-      "description": "Kiến trúc Hybrid phân tách Bộ nào suy luận (Dify) và Cơ bắp thực thi (n8n), tiết kiệm 98% chi phí token nhờ đúc & ghép JSON AST Component.",
+      "description": "Hybrid architecture decoupling Reasoning Brain (Dify) and Execution Muscle (n8n), saving 98% token costs via JSON AST Component forging & assembly.",
       "cli_deploy": "$ craft.blueprint.deploy(\"lego-protocol\", { mode: \"native_json\", schema: \"component_registry_v2\" })",
       "nodes": [
         { "step": 1, "id": "n8n_webhook_inbound", "name": "Webhook Inbound Catch", "type": "TRIGGER", "engine": "n8n Webhook Node", "latency": "~0.01s", "output": "payload_json" },
@@ -57,7 +57,7 @@
       "category": "Image Processing",
       "tier": "Core",
       "node_count": 4,
-      "description": "Cỗ máy đổ bóng 4-Node độc lập, chạy trên CPU <0.08s, cho phép lùi lại từng bước tinh chỉnh opacity & blur không phá hủy.",
+      "description": "Standalone 4-Node shadow compositor running on CPU in <0.08s, allowing non-destructive step-by-step opacity & blur fine-tuning.",
       "cli_deploy": "$ craft.blueprint.deploy(\"contour-shadow\", { strategy: \"contour_2layer\", cpu_only: true })",
       "nodes": [
         { "step": 1, "id": "input_transparent_png", "name": "Transparent Asset Ingest", "type": "INGEST", "engine": "Pillow PIL.Image", "latency": "~0.01s", "output": "nobg_rgba_array" },
@@ -77,7 +77,7 @@
       "category": "3D & Interactive Web",
       "tier": "Expert",
       "node_count": 5,
-      "description": "Dây chuyền tích hợp GraFx Studio SDK (@chili-publish/studio-sdk) để tiêm biến số texture từ R2 vào viewport 3D tương tác real-time.",
+      "description": "Integration pipeline connecting GraFx Studio SDK (@chili-publish/studio-sdk) to inject R2 texture variables into real-time interactive 3D viewports.",
       "cli_deploy": "$ craft.blueprint.deploy(\"grafx-3d-bridge\", { sdk: \"@chili-publish/studio-sdk\", engine: \"threejs_webgl\" })",
       "nodes": [
         { "step": 1, "id": "sku_dify_parser", "name": "SKU Payload AI Parser", "type": "AI_EXTRACTOR", "engine": "Dify LLM Contract Node", "latency": "~0.3s", "output": "variable_contract_json" },
