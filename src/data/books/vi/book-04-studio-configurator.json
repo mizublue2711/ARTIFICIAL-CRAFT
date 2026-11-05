@@ -1,0 +1,52 @@
+{
+  "slug": "book-04-studio-configurator",
+  "title": "Hướng dẫn Vận hành: Cổng Cấu hình Trực quan & Chế tạo Web 3D",
+  "subtitle": "Quy trình 5 Bước Tạo Giao diện 3D Unibody Không Cần Viết Code",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "Hướng dẫn Vận hành: Cổng Cấu hình Trực quan & Chế tạo Web 3D",
+      "subtitle": "Quy trình 5 Bước Tạo Giao diện 3D Unibody Không Cần Viết Code",
+      "version": "v1.0.0",
+      "tags": [
+        "BRUTALISM",
+        "GENERATIVE SEED",
+        "CANVAS",
+        "EDGE"
+      ],
+      "verified": true
+    },
+    {
+      "id": "p02_decoration_vs_structure",
+      "type": "tech_doc",
+      "title": "01 // TRANG TRÍ BỀ MẶT SO VỚI KẾT CẤU NỀN TẢNG",
+      "content": "Nhà thiết kế thích trang trí hoa mỹ. Nhưng kỹ sư đồ họa tập trung tính toán hình học. Phong cách Swiss Brutalism hướng đến sự trung thực của kết cấu kỹ thuật.\n\nĐổ bóng mờ nhạt, bo góc tròn trịa và ảnh stock khuôn mẫu chỉ là sự rườm rà che giấu khiếm khuyết thiết kế. Swiss Brutalism tôn vinh hệ lưới đường kẻ 1px sắc lẹm, phông chữ kỹ thuật JetBrains Mono và các chỉ số đo đạc tương phản cao để làm lộ rõ khung xương vững chãi của hệ thống.",
+      "seed": "brutalist-hud-seed-01",
+      "graphicType": "NEURAL_MESH"
+    },
+    {
+      "id": "p03_seed_paradox",
+      "type": "tech_doc",
+      "title": "02 // NGHỊCH LÝ CỦA HẠT GIỐNG TẠO HÌNH (SEED)",
+      "content": "Lưu trữ 10.000 tệp đồ họa 3D render sẵn ngốn đến 50 Gigabytes dung lượng. Nhưng lưu trữ 10.000 chuỗi seed sinh hình chỉ tốn vẻn vẹn 200 Kilobytes.\n\nChỉ cần truyền một chuỗi seed duy nhất vào bộ engine tính toán procedural Canvas, toàn bộ hình ảnh toán học sẽ được dựng trực tiếp trên trình duyệt của người dùng với tốc độ ổn định 60 FPS.",
+      "code": "function hashString(seed: string): number {\n  let hash = 5381;\n  for (let i = 0; i < seed.length; i++) {\n    hash = (hash * 33) ^ seed.charCodeAt(i);\n  }\n  return Math.abs(hash);\n}",
+      "language": "typescript",
+      "seed": "fibonacci-spiral-math-seed",
+      "graphicType": "ALGORITHMIC_WAVE"
+    },
+    {
+      "id": "p04_zero_backend_cost",
+      "type": "diagram",
+      "title": "03 // CHI PHÍ HẠ TẦNG $0 & NGUYÊN LÝ CÔNG NĂNG ĐỊNH HÌNH HÌNH THỨC",
+      "content": "Kết xuất Canvas phía Client + Mạng lưới biên Cloudflare Workers = Hoàn toàn miễn phí chi phí máy chủ kết xuất. Mỗi người xem đều nhận được một giao diện trực quan độc bản và hoàn hảo về mặt thuật toán.",
+      "seed": "app-mockup-3d-edge-proxy",
+      "graphicType": "ISOMETRIC_CAD",
+      "caption": "Hình 3.1 — Kiến trúc sinh hình học thuật toán PRNG Canvas thực thi trực tiếp tại client"
+    }
+  ]
+}

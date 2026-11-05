@@ -10,7 +10,6 @@
 
 All book assets, graphics, and data files MUST follow these strict naming conventions:
 
-```text
 ARTIFICIAL-CRAFT/
 ├── JULES_FLIPBOOK_SPEC.md        <-- This specification file (Root)
 ├── drafts/                       <-- Raw manuscripts (.txt, .md)
@@ -271,7 +270,68 @@ export type GraphicType =
   | 'CANDLESTICK_STREAM'  // Market Dynamics &amp; Volatility Matrix
   | 'WATERFALL_FLOW';     // Capital AUM Growth &amp; Inflow Waterfall
 
-```
+
+
+--------------------------------------------------------------------------------
+
+🏷️ 10. WEBAPP 3D CASE STUDY & GRAPHIC COMPONENTS CLAUSE
+
+### A. Extended GraphicType Enums (src/types/flipbook.ts)
+To support interactive 3D WebApp case studies and WebGL presentation blueprints, Jules MUST register the following new graphic types:
+
+```typescript
+export type GraphicType =
+  | 'AUTOMATION_FLOW'
+  | 'DATA_MATRIX'
+  | 'REMOTION_TIMELINE'
+  | 'GEO_MAP'
+  // --- WebApp 3D & Case Study Extensions ---
+  | 'PERSPECTIVE_TUNNEL'      // 3D Hexagonal Hyperspace Tunnel with 5000 Particles
+  | 'COMPOSITE_MONOLITH'      // 7-Component Mechanical Monolith with 0-100% Exploded View
+  | 'DIGITAL_BRANCHING_TREE'  // 90°/45° Orthogonal 3D Line-Branching Directory Tree
+  | 'FLUID_NOISE_FIELD'       // Dynamic Instanced Mesh Perlin Fluid Field with 1px CAD Grid
+  | 'WEBM_CAPTURE_DOCK';      // Bottom Collapsible Control Dock with Real-Time Video Exporter
+B. Auto-Mapping Rules for Web3D Case Study Drafts
+Hyperspace / Fly-Through / 3D Tunnel / Particles / 30s Sequence -> Assign PERSPECTIVE_TUNNEL
+Exploded View / Monolith / Kinematics / Chassis / Dual Zoom-Focus -> Assign COMPOSITE_MONOLITH
+Directory Tree / Signal Chaining / Orthogonal Branching / Node Mapping -> Assign DIGITAL_BRANCHING_TREE
+Fluid Noise / Perlin Mesh / CAD Grid / PBR Lighting -> Assign FLUID_NOISE_FIELD
+Video Exporter / Control Dock / Canvas Stream / Zero Server Fee -> Assign WEBM_CAPTURE_DOCK
+C. Design Tokens & Visual Constraints
+Obsidian Canvas (#09090B): Base black blackbox background absorbing light.
+Electric Indigo (#5322FF): Signature glowing accent for active states, rim light, and borders.
+Neon Cyan (#00E5FF): Laser scan beams, live telemetry indicators, and 3D pointer crosshairs.
+Typography & Anchor Nodes: JetBrains Mono for telemetry codes and 60FPS Blinking Anchor Nodes at frame corners.
+
+---------------------------------------------------------------------------------
+
+🌐 11. BI-LINGUAL ARCHITECTURE & DYNAMIC LOCALE PROTOCOL
+
+To ensure zero-downtime bi-lingual support and prevent memory bloat, all Flipbook features MUST strictly adhere to the dynamic locale architecture:
+
+A. BI-LINGUAL DATA DIRECTORY STRUCTURE (`src/data/books/`)
+- All compiled book JSON files MUST be stored under language-specific subdirectories:
+  - English Books: `src/data/books/en/book-<xx>-<slug>.json`
+  - Vietnamese Books: `src/data/books/vi/book-<xx>-<slug>.json`
+- **Slug Consistency Rule**: The `"slug"` field inside both English and Vietnamese JSON files MUST match the filename identically (e.g., `"slug": "book-01-jules-architect"` for both `/en/` and `/vi/`).
+
+B. REGISTRY & DYNAMIC LOCALE RESOLUTION (`src/data/books/registry.ts`)
+- `src/data/books/registry.ts` MUST export the `getBooksByLocale(locale: 'en' | 'vi')` helper.
+- **FORBIDDEN PATTERN**: NEVER import book JSON files statically or hardcode English manuscripts inside React UI components or `src/locales/translations.ts`.
+
+C. COMPONENT LOCALE BINDING PROTOCOL
+- All Reader and Viewer components (`FlipbookViewer.tsx`, `FlipbookReader.tsx`, `/library` page) MUST consume the active locale via `useTranslation()` (`currentLocale`) and dynamically fetch the manuscript dataset:
+  ```tsx
+  import { useTranslation } from '@/hooks/useTranslation';
+  import { getBooksByLocale } from '@/data/books/registry';
+
+  const { currentLocale } = useTranslation();
+  const availableBooks = getBooksByLocale(currentLocale);
+
+D. PAGE INDEX CLAMPING & STATE RESILIENCE
+In FlipBookEngine.tsx, changing books or switching locales MUST trigger a graceful page index reset/clamping: const safePageIndex = Math.min(currentPageIndex, activeBook.pages.length - 1); This prevents out-of-bounds rendering crashes when toggling languages on books with different page counts.
+
+
 
 
 

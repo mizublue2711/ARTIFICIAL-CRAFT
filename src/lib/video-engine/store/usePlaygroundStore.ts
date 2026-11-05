@@ -8,7 +8,7 @@ import {
 export const INITIAL_RECIPE: PlaygroundRecipe = {
   slots: {
     backgroundId: 'SWISS_GRID',
-    heroObjectId: 'ISOMETRIC_CUBE',
+    heroObjectId: 'nested-platonic-5layer',
     overlayId: 'CROSSHAIRS',
     textId: 'SWISS_BRUTALIST',
   },

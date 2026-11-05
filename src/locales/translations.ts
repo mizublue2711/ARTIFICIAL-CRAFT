@@ -104,8 +104,12 @@ export interface Translations {
   bp_title_line2: string;
   bp_desc: string;
   copy_api: string;
+  copyApi: string;
   copied: string;
   export_clean_screenshot: string;
+  exportDiagram: string;
+  inspectAst: string;
+  copyJson: string;
   rendering_hd: string;
   preview_ready: string;
   export_preview_title: string;
@@ -113,6 +117,23 @@ export interface Translations {
   bp_banner_title: string;
   bp_banner_sub: string;
   bp_browse_all: string;
+  bp_node_step: string;
+  bp_node_engine: string;
+  bp_node_latency: string;
+  bp_node_output: string;
+
+  // Blueprint Section Headers & Actions
+  blueprintSectionTitle: string;
+  blueprintSectionSubtitle: string;
+  btnDownloadJson: string;
+  btnExportHdDiagram: string;
+  btnInspectAstJson: string;
+
+  // Blueprint Descriptions
+  bpImagePimDesc: string;
+  bpLegoProtocolDesc: string;
+  bpContourShadowDesc: string;
+  bpGrafx3dDesc: string;
 
   // LinkedIn Banner Studio Form
   banner_studio_title: string;
@@ -171,6 +192,10 @@ export interface Translations {
   status_online: string;
   privacy: string;
   terms: string;
+  footerEngineBadge: string;
+  footerEngineTitle: string;
+  footerEngineDesc: string;
+  btnLaunchEngine: string;
 
   // Plug & Play Sandbox
   sandbox_section_label: string;
@@ -489,6 +514,79 @@ export interface Translations {
   docs_arch_btn_download_ast: string;
   docs_arch_btn_export_pdf: string;
   docs_arch_btn_export_md: string;
+
+  // Flipbook Library
+  book_01_title: string;
+  book_01_subtitle: string;
+  book_02_title: string;
+  book_02_subtitle: string;
+  book_03_title: string;
+  book_03_subtitle: string;
+  book_04_title: string;
+  book_04_subtitle: string;
+  book_05_title: string;
+  book_05_subtitle: string;
+  book_06_title: string;
+  book_06_subtitle: string;
+  book_07_title: string;
+  book_07_subtitle: string;
+  book_08_title: string;
+  book_08_subtitle: string;
+  book_09_title: string;
+  book_09_subtitle: string;
+
+  // SECTION 1: PYLON WORKBENCH
+  pylonZoneTag: string;
+  pylonMainHeading: string;
+  pylonSubheading: string;
+  pylonConduitsTitle: string;
+  pylonInspectHint: string;
+  btnLaunchPylonStation: string;
+  pylonTelemetryTitle: string;
+  pylonStatusActive: string;
+  pylonConduitLocked: string;
+  pylonThroughputLabel: string;
+  pylonRenderFeeLabel: string;
+
+  // SECTION 2: STUDIO PLAYGROUND HUBS MATRIX
+  matrixTag: string;
+  matrixHeading: string;
+  matrixSubheading: string;
+  btnLaunchFullMatrix: string;
+
+  // Node Cards 01-06
+  node01Title: string;
+  node01Desc: string;
+  btnEnterNode01: string;
+
+  node02Title: string;
+  node02Desc: string;
+  btnLaunchNode02: string;
+
+  node03Title: string;
+  node03Desc: string;
+  btnOpenNode03: string;
+
+  node04Title: string;
+  node04Desc: string;
+  btnOpenNode04: string;
+
+  node05Title: string;
+  node05Desc: string;
+  btnOpenNode05: string;
+
+  node06Title: string;
+  node06Desc: string;
+  btnLaunchNode06: string;
+
+  // SECTION 3: STUDIO CONFIGURATOR & CANVAS HUD
+  configuratorHeader: string;
+  configuratorNodeBadge: string;
+  enterFactoryNodeBtn: string;
+  b2bPopupTitle: string;
+  b2bPopupDesc: string;
+  btnBookB2bConsultation: string;
+
 }
 
 export const translations: Record<Language, Translations> = {
@@ -602,8 +700,12 @@ export const translations: Record<Language, Translations> = {
     bp_desc:
       'Every blueprint ships with a typed API, node topology, and Carbon-style HD Swiss image exporter.',
     copy_api: 'COPY API',
+    copyApi: 'COPY API',
     copied: 'COPIED',
     export_clean_screenshot: 'Export Clean Screenshot',
+    exportDiagram: 'EXPORT HD DIAGRAM',
+    inspectAst: 'INSPECT AST JSON',
+    copyJson: 'COPY JSON',
     rendering_hd: 'RENDERING HD...',
     preview_ready: 'PREVIEW READY',
     export_preview_title: 'EXPORT PREVIEW',
@@ -611,6 +713,23 @@ export const translations: Record<Language, Translations> = {
     bp_banner_title: 'ALL BLUEPRINTS ARE OPEN SOURCE',
     bp_banner_sub: 'MIT LICENSED · CRAFT//CODE CLI READY',
     bp_browse_all: 'BROWSE ALL 40+ TEMPLATES',
+    bp_node_step: 'STEP',
+    bp_node_engine: 'ENGINE',
+    bp_node_latency: 'LATENCY',
+    bp_node_output: 'OUTPUT',
+
+    // Blueprint Section Headers & Actions
+    blueprintSectionTitle: 'REAL-WORLD PIPELINE BLUEPRINTS',
+    blueprintSectionSubtitle: 'Production-tested AI, image processing, and 3D kinematics workflows ready for deployment.',
+    btnDownloadJson: 'DOWNLOAD JSON',
+    btnExportHdDiagram: 'EXPORT HD DIAGRAM',
+    btnInspectAstJson: 'INSPECT AST JSON',
+
+    // Blueprint Descriptions (EN)
+    bpImagePimDesc: 'Automated e-commerce product image processing: Background removal, 75% Grid fitting, 2-layer Contour Shadow generation, and R2 CDN upload exporting PNG + PSD.',
+    bpLegoProtocolDesc: 'Hybrid architecture decoupling Reasoning Brain (Dify) and Execution Muscle (n8n), saving 98% token costs via JSON AST Component forging & assembly.',
+    bpContourShadowDesc: 'Standalone 4-Node shadow compositor running on CPU in <0.08s, allowing non-destructive step-by-step opacity & blur fine-tuning.',
+    bpGrafx3dDesc: 'Integration pipeline connecting GraFx Studio SDK (@chili-publish/studio-sdk) to inject R2 texture variables into real-time interactive 3D viewports.',
 
     // LinkedIn Banner Studio Form
     banner_studio_title: 'Plug & Play Studio Banner LinkedIn (100% Automated & Free)',
@@ -673,6 +792,11 @@ export const translations: Record<Language, Translations> = {
     status_online: 'SYSTEMS ONLINE',
     privacy: 'PRIVACY',
     terms: 'TERMS',
+    // Footer 3D Engine Link
+    footerEngineBadge: "3D ARCHITECTURE ENGINE",
+    footerEngineTitle: "WEBAPP PRESENTATION ENGINE",
+    footerEngineDesc: "Interactive 3D WebApp Architecture & Directory AST Visualizer. Replace static slides with fluid WebGL kinematics.",
+    btnLaunchEngine: "LAUNCH 3D ENGINE ↗",
 
     // Plug & Play Sandbox
     sandbox_section_label: 'PLUG & PLAY // SANDBOX // HYPER-SPEED EXPERIMENTS // FULL SECURITY CONTROL',
@@ -991,6 +1115,79 @@ export const translations: Record<Language, Translations> = {
     docs_arch_btn_download_ast: '[ JSON AST ]',
     docs_arch_btn_export_pdf: '[ PDF VI/EN ]',
     docs_arch_btn_export_md: '[ MARKDOWN .MD ]',
+
+    // Flipbook Library
+    book_01_title: 'THE BRAIN AND THE MUSCLE',
+    book_01_subtitle: 'Why Hybrid AI Architecture Is the Only Way Out of Hallucination Loops',
+    book_02_title: 'THE TIMELINE IS DEAD',
+    book_02_subtitle: 'Why Video Production Is Moving from Mouse Clicks to Deterministic Code',
+    book_03_title: 'THE INVISIBLE HEAVY LIFTER',
+    book_03_subtitle: 'Why FFmpeg Remains the Unsung Backbone of Every High-Throughput Video Pipeline',
+    book_04_title: 'BRUTALISM AND THE GENERATIVE SEED',
+    book_04_subtitle: 'How 1px Grids and Algorithmic Seeds Produce Infinite Unique Visuals at Zero Cost',
+    book_05_title: 'FAIL FAST OR DRIFT FOREVER',
+    book_05_subtitle: 'Why Zod Schema Guardrails Are Non-Negotiable in AI Agent Orchestration',
+    book_06_title: 'THE EXPLODED FACTORY',
+    book_06_subtitle: 'Why Static CAD Models Are Dead and Immersive 3D Kinematics Win',
+    book_07_title: 'PHYSICAL AI & SPATIAL POINT CLOUD',
+    book_07_subtitle: 'Eliminating Spatial Memory Drift in Real-Time Autonomous Systems',
+    book_08_title: 'THE NO-CODE 3D AST ENGINE',
+    book_08_subtitle: 'How Studio Configurator Transforms No-Code Actions into Real-Time 60FPS Web3D',
+    book_09_title: 'CYBERNETIC BRUTALISM & IFRAME SANDBOXING',
+    book_09_subtitle: 'Designing Resilient Web3D Architecture Without Shell Collisions or State Leaks',
+
+    // SECTION 1: PYLON WORKBENCH
+    pylonZoneTag: "TERMINAL // ZONE 03 // HEADLESS AGENT WORKBENCH",
+    pylonMainHeading: "5 AUTONOMOUS PYLON TOWERS. ZERO CLOUD LATENCY. $0.00 RENDER COST.",
+    pylonSubheading: "Decoupled multi-agent orchestration compiled directly into client-side WebGL kinematics. Eliminate massive cloud rendering bills with deterministic, edge-welded execution loops.",
+    pylonConduitsTitle: "AUTONOMOUS PYLON CONDUITS",
+    pylonInspectHint: "SELECT PYLON TO INSPECT",
+    btnLaunchPylonStation: "LAUNCH STANDALONE 3D WORKSTATION",
+    pylonTelemetryTitle: "PYLON TELEMETRY // 3D HUD",
+    pylonStatusActive: "ACTIVE: DIFY.AI",
+    pylonConduitLocked: "CONDUIT LOCKED",
+    pylonThroughputLabel: "THROUGHPUT",
+    pylonRenderFeeLabel: "RENDER FEE",
+
+    // SECTION 2: STUDIO PLAYGROUND HUBS MATRIX
+    matrixTag: "INTERACTIVE NODE MATRIX // 6 ENGINES",
+    matrixHeading: "STUDIO PLAYGROUND HUBS",
+    matrixSubheading: "Access the complete suite of deterministic AI, 3D procedural graphics, automated motion design, and open CAD telemetry engines.",
+    btnLaunchFullMatrix: "LAUNCH FULL STUDIO MATRIX ➔",
+
+    // Node Cards 01-06
+    node01Title: "PROCEDURAL 3D RENDER ENGINE",
+    node01Desc: "60 FPS Three.js procedural shader monolith with live audio synthesis.",
+    btnEnterNode01: "ENTER ↗",
+
+    node02Title: "REMOTION MOTION STUDIO",
+    node02Desc: "Deterministic programmatic video generation with 4-layer Lego stack. Compose procedural motion graphics via React code.",
+    btnLaunchNode02: "LAUNCH MOTION STUDIO ➔",
+
+    node03Title: "AUTOMATED BANNER STUDIO",
+    node03Desc: "Dynamic branding asset synthesis with SVG vector export, batch production, and headless automated delivery.",
+    btnOpenNode03: "OPEN BANNER STUDIO ➔",
+
+    node04Title: "OPEN MEKONG CAD VISUALIZER",
+    node04Desc: "Real-time environmental CKAN data pipeline with waveform visualizer and line-art telemetry analysis.",
+    btnOpenNode04: "OPEN MEKONG CAD ➔",
+
+    node05Title: "PLUG AND PLAY SANDBOX",
+    node05Desc: "Interactive sandbox environment for hot-reloading custom 3D meshes, GLTF/OBJ assets, and Zod AST payloads into the ARTIFICIAL CRAFT runtime pipeline.",
+    btnOpenNode05: "OPEN PLUG & PLAY SANDBOX ➔",
+
+    node06Title: "3D DATA METROPOLIS & CORPORATE PROFIT VISUALIZATION",
+    node06Desc: "Transforms flat financial spreadsheets into an interactive 3D Voxel Matrix city running at 60 FPS in the browser. Features live Google Sheets API integration, procedural negative profit sub-level sinking effects, and 3D Head-to-Head Duel Mode.",
+    btnLaunchNode06: "LAUNCH 3D METROPOLIS DEMO ➔",
+
+    // SECTION 3: STUDIO CONFIGURATOR & CANVAS HUD
+    configuratorHeader: "STUDIO CONFIGURATOR // NO-CODE 3D FACTORY",
+    configuratorNodeBadge: "NODE 05 :: 3D MANUFACTURING FACTORY",
+    enterFactoryNodeBtn: "ENTER FACTORY NODE ➔",
+    b2bPopupTitle: "PLAYGROUND DEMO MODE",
+    b2bPopupDesc: "You are currently experiencing the Playground Demo. Looking to forge custom, exclusive 3D Kinematics components tailored for your enterprise?",
+    btnBookB2bConsultation: "BOOK B2B CONSULTATION & ENTERPRISE CONTRACT",
+
   },
   vi: {
     // Navigation
@@ -1102,8 +1299,12 @@ export const translations: Record<Language, Translations> = {
     bp_desc:
       'Mỗi sơ đồ mẫu đi kèm với API có kiểu, cấu trúc nút và công cụ xuất ảnh định hình theo phong cách của khách hàng.',
     copy_api: 'SAO CHÉP API',
+    copyApi: 'SAO CHÉP API',
     copied: 'ĐÃ SAO CHÉP',
     export_clean_screenshot: 'Xuất Ảnh Màn Hình Sạch',
+    exportDiagram: 'XUẤT SƠ ĐỒ HD',
+    inspectAst: 'SOI CHI TIẾT AST JSON',
+    copyJson: 'SAO CHÉP JSON',
     rendering_hd: 'ĐANG DỰNG HD...',
     preview_ready: 'XEM TRƯỚC SẴN SÀNG',
     export_preview_title: 'XEM TRƯỚC KHI XUẤT',
@@ -1111,6 +1312,23 @@ export const translations: Record<Language, Translations> = {
     bp_banner_title: 'TẤT CẢ SƠ ĐỒ MẪU LÀ MÃ NGUỒN MỞ',
     bp_banner_sub: 'GIẤY PHÉP MIT · SẴN SÀNG CHO CRAFT//CODE CLI',
     bp_browse_all: 'DUYỆT TẤT CẢ 40+ MẪU',
+    bp_node_step: 'BƯỚC',
+    bp_node_engine: 'ĐỘNG CƠ',
+    bp_node_latency: 'ĐỘ TRỄ',
+    bp_node_output: 'ĐẦU RA',
+
+    // Blueprint Section Headers & Actions
+    blueprintSectionTitle: 'SƠ ĐỒ ĐƯỜNG ỐNG TỰ ĐỘNG HÓA THỰC TẾ',
+    blueprintSectionSubtitle: 'Các quy trình xử lý AI, đồ họa và động học 3D đã qua kiểm định thực tế, sẵn sàng triển khai.',
+    btnDownloadJson: 'TẢI TỆP JSON',
+    btnExportHdDiagram: 'XUẤT SƠ ĐỒ HD',
+    btnInspectAstJson: 'SOI NGUYÊN MẪU AST',
+
+    // Blueprint Descriptions (VI)
+    bpImagePimDesc: 'Tự động hóa xử lý ảnh sản phẩm: Tách nền, căn Grid 75%, đổ bóng Contour Shadow 2 lớp và upload R2 CDN xuất file PNG + PSD.',
+    bpLegoProtocolDesc: 'Kiến trúc Hybrid phân tách Bộ não suy luận (Dify) và Cơ bắp thực thi (n8n), tiết kiệm 98% chi phí token nhờ đúc & ghép JSON AST Component.',
+    bpContourShadowDesc: 'Cỗ máy đổ bóng 4-Node độc lập, chạy trên CPU <0.08s, cho phép lùi lại từng bước tinh chỉnh opacity & blur không phá hủy.',
+    bpGrafx3dDesc: 'Dây chuyền tích hợp GraFx Studio SDK (@chili-publish/studio-sdk) để tiêm biến số texture từ R2 vào viewport 3D tương tác real-time.',
 
     // LinkedIn Banner Studio Form
     banner_studio_title: 'Plug & Play Studio Banner LinkedIn (100% Automated & Free)',
@@ -1173,6 +1391,11 @@ export const translations: Record<Language, Translations> = {
     status_online: 'HỆ THỐNG TRỰC TUYẾN',
     privacy: 'BẢO MẬT',
     terms: 'ĐIỀU KHẢN',
+    // Footer 3D Engine Link
+    footerEngineBadge: "CỖ MÁY MÔ PHỎNG 3D",
+    footerEngineTitle: "TRÌNH TRỰC QUAN HÓA KIẾN TRÚC 3D",
+    footerEngineDesc: "Công cụ trực quan hóa sơ đồ 3D từ Frontend đến Backend & Cây thư mục AST. Thay thế slide tĩnh bằng không gian tương tác WebGL.",
+    btnLaunchEngine: "MỞ CỖ MÁY 3D ↗",
 
     // Plug & Play Sandbox
     sandbox_section_label: 'CẮM & CHẠY // MÔ PHỎNG',
@@ -1491,5 +1714,78 @@ export const translations: Record<Language, Translations> = {
     docs_arch_btn_download_ast: '[ JSON AST ]',
     docs_arch_btn_export_pdf: '[ PDF VI/EN ]',
     docs_arch_btn_export_md: '[ MARKDOWN .MD ]',
+
+    // Flipbook Library
+    book_01_title: 'Hồ sơ Thiết kế: Jules - Kiến trúc sư Hệ thống AI',
+    book_01_subtitle: 'Tư duy Kiến trúc, Quy chuẩn Code & Cơ chế Điều phối Hệ thống',
+    book_02_title: 'Báo cáo Kỹ thuật: Hạ tầng Tự động hóa Luồng Dữ liệu (Digital Plumbing)',
+    book_02_subtitle: 'Hệ thống Truyền dẫn & Kết nối API Tự hành giữa n8n, Dify & Webhook',
+    book_03_title: 'Báo cáo Kỹ thuật: Chuyển đổi Kiến trúc từ Dify sang n8n Workflow',
+    book_03_subtitle: 'Tối ưu Chi phí $0.00 & Mở rộng Hiệu năng Luồng Tự động hóa AI',
+    book_04_title: 'Hướng dẫn Vận hành: Cổng Cấu hình Trực quan & Chế tạo Web 3D',
+    book_04_subtitle: 'Quy trình 5 Bước Tạo Giao diện 3D Unibody Không Cần Viết Code',
+    book_05_title: 'Báo cáo Ứng dụng: Mô phỏng Tài chính Thành phố Dữ liệu 3D',
+    book_05_subtitle: 'Trực quan hóa Báo cáo Tài chính thành Ma trận 3D Voxel 60 FPS',
+    book_06_title: 'Hướng dẫn Vận hành: Công cụ Tương tác & Định vị 3D Precision CAD',
+    book_06_subtitle: 'Thao tác Tâm ngắm Soi Chi tiết & Đo đạc Thông số Mô hình 3D',
+    book_07_title: 'Công cụ Tạo Ảnh Bìa LinkedIn & Nhận diện Thương hiệu',
+    book_07_subtitle: 'Tự động Thiết kế Banner Đồ họa & Hình ảnh Truyền thông Mạng Xã hội',
+    book_08_title: 'Mô hình Quản trị & Điều phối Mạng lưới AI Multi-Agent',
+    book_08_subtitle: 'Kiến trúc Tổ chức & Phân công Công việc Tự động giữa các Trợ lý AI',
+    book_09_title: 'Quy chuẩn Thiết kế & Tự động hóa Thư viện Sách lật 3D',
+    book_09_subtitle: 'Tiêu chuẩn Đóng gói Tài liệu thành Sách Lật 3D Tương tác trên Web',
+
+    // SECTION 1: PYLON WORKBENCH
+    pylonZoneTag: "TRẠM ĐIỀU HÀNH // PHÂN KHU 03 // BÀN LÀM VIỆC AGENT TỰ HÀNH",
+    pylonMainHeading: "5 TRẠM PYLON TỰ HÀNH. KHÔNG ĐỘ TRỄ CLOUD. CHÍ PHÍ RENDER $0.00.",
+    pylonSubheading: "Hệ thống điều phối đa trợ lý AI độc lập được biên dịch trực tiếp thành động học WebGL phía máy khách. Loại bỏ hoàn toàn hóa đơn máy chủ rendering đám mây với luồng thực thi khép kín.",
+    pylonConduitsTitle: "KÊNH DẪN PYLON TỰ HÀNH",
+    pylonInspectHint: "CHỌN PYLON ĐỂ SOI CHI TIẾT",
+    btnLaunchPylonStation: "KÍCH HOẠT TRẠM LÀM VIỆC 3D ĐỘC LẬP",
+    pylonTelemetryTitle: "BẢNG MÁY ĐO PYLON // 3D HUD",
+    pylonStatusActive: "TRẠM HOẠT ĐỘNG: DIFY.AI",
+    pylonConduitLocked: "ĐÃ KHÓA KÊNH DẪN",
+    pylonThroughputLabel: "BĂNG THÔNG XỬ LÝ",
+    pylonRenderFeeLabel: "CHI PHÍ RENDER",
+
+    // SECTION 2: STUDIO PLAYGROUND HUBS MATRIX
+    matrixTag: "MA TRẬN NGUYÊN MẪU // 6 CỖ MÁY SÁNG TẠO",
+    matrixHeading: "MẠNG LƯỚI TRUNG TÂM THỬ NGHIỆM STUDIO",
+    matrixSubheading: "Truy cập toàn bộ bộ cỗ máy AI xác định, đồ họa lập trình 3D procedural, tự động hóa thiết kế chuyển động và động cơ máy đo CAD mở.",
+    btnLaunchFullMatrix: "KÍCH HOẠT TOÀN BỘ MATRIX STUDIO ➔",
+
+    // Node Cards 01-06
+    node01Title: "CỖ MÁY RENDER 3D PROCEDURAL",
+    node01Desc: "Khối Shader Procedural Three.js 60 FPS tích hợp tổng hợp âm thanh thời gian thực.",
+    btnEnterNode01: "TRUY CẬP ↗",
+
+    node02Title: "XƯỞNG ĐỒ HỌA ĐỘNG REMOTION",
+    node02Desc: "Tạo video bằng mã nguồn xác định với cấu trúc 4 lớp Lego. Tự động biên soạn đồ họa chuyển động qua mã React.",
+    btnLaunchNode02: "MỞ REMOTION STUDIO ➔",
+
+    node03Title: "XƯỞNG TẠO BANNER THƯƠNG HIỆU TỰ ĐỘNG",
+    node03Desc: "Tổng hợp hình ảnh nhận diện thương hiệu động với xuất tệp vector SVG, sản xuất hàng loạt và phân phối tự động.",
+    btnOpenNode03: "MỞ BANNER STUDIO ➔",
+
+    node04Title: "TRÌNH TRỰC QUAN HÓA MEKONG CAD",
+    node04Desc: "Luồng dữ liệu môi trường CKAN thời gian thực với bộ hiển thị dạng sóng và phân tích vi trình đường nét line-art.",
+    btnOpenNode04: "MỞ MEKONG CAD ➔",
+
+    node05Title: "MÔ-ĐUN THỬ NGHIỆM PLUG AND PLAY SANDBOX",
+    node05Desc: "Môi trường sandbox tương tác hỗ trợ nạp nóng các khối mesh 3D tùy chỉnh, tệp GLTF/OBJ và cấu hình Zod AST vào cỗ máy ARTIFICIAL CRAFT.",
+    btnOpenNode05: "MỞ PLUG & PLAY SANDBOX ➔",
+
+    node06Title: "THÀNH PHỐ DỮ LIỆU 3D METROPOLIS & MÔ PHỎNG TÀI CHÍNH",
+    node06Desc: "Chuyển hóa báo cáo tài chính bảng phẳng thành Thành phố Dữ liệu 3D (3D Voxel Matrix) tương tác 60 FPS. Tích hợp Google Sheets Live API, hiệu ứng sụt chìm thua lỗ và chế độ So sánh Đối đầu 3D.",
+    btnLaunchNode06: "KÍCH HOẠT DEMO 3D METROPOLIS ➔",
+
+    // SECTION 3: STUDIO CONFIGURATOR & CANVAS HUD
+    configuratorHeader: "XƯỞNG CHẾ TẠO 3D UNIBODY // CẤU HÌNH CỖ MÁY",
+    configuratorNodeBadge: "NODE 05 :: TRẠM CHẾ TẠO KINETIC 3D",
+    enterFactoryNodeBtn: "TRUY CẬP NODE NGUYÊN MẪU ➔",
+    b2bPopupTitle: "CHẾ ĐỘ THỬ NGHIỆM PLAYGROUND",
+    b2bPopupDesc: "Bạn đang trải nghiệm phiên bản Playground Demo. Bạn muốn đặt hàng chế tạo các thành phần Động học 3D độc quyền dành riêng cho doanh nghiệp?",
+    btnBookB2bConsultation: "ĐẶT LỊCH TƯ VẤN B2B & HỢP ĐỒNG DOANH NGHIỆP",
+
   },
 };

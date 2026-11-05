@@ -268,6 +268,19 @@ export class ZodError extends Error {
     this.name = 'ZodError';
     this.issues = issues;
   }
+
+  format(): Record<string, unknown> {
+    const formatted: Record<string, unknown> = {
+      _errors: this.issues.map((i) => i.message),
+    };
+    for (const issue of this.issues) {
+      if (issue.path.length > 0) {
+        const key = String(issue.path[0]);
+        formatted[key] = { _errors: [issue.message] };
+      }
+    }
+    return formatted;
+  }
 }
 
 export const SwissDesignConfigSchema = {

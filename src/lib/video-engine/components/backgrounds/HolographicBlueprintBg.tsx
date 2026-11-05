@@ -8,11 +8,36 @@ export const HolographicBlueprintBg: React.FC<HolographicBlueprintBgProps> = ({
   frame: frameProp,
   backgroundColor = '#030A16',
   primaryColor = '#00E5FF',
+  accentColor,
   className,
   style,
 }) => {
-  const hookFrame = useCurrentFrame();
-  const frame = frameProp ?? hookFrame;
+  const effectiveAccent = accentColor || primaryColor;
+  let hookFrame = 0;
+  let isInRemotion = true;
+  try {
+    hookFrame = useCurrentFrame();
+  } catch {
+    hookFrame = 0;
+    isInRemotion = false;
+  }
+
+  const [animFrame, setAnimFrame] = React.useState(0);
+
+  React.useEffect(() => {
+    if (frameProp !== undefined || isInRemotion) return;
+    let animId: number;
+    let startTime = performance.now();
+    const loop = (now: number) => {
+      const elapsed = (now - startTime) / 1000;
+      setAnimFrame(Math.floor(elapsed * 60));
+      animId = requestAnimationFrame(loop);
+    };
+    animId = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(animId);
+  }, [frameProp, isInRemotion]);
+
+  const frame = frameProp ?? (isInRemotion ? hookFrame : animFrame);
 
   const rotY = interpolate(frame, [0, 300], [0, 360]);
   const rotX = interpolate(Math.sin(frame * 0.02), [-1, 1], [15, 35]);
@@ -73,7 +98,7 @@ export const HolographicBlueprintBg: React.FC<HolographicBlueprintBgProps> = ({
               width: '400px',
               height: '400px',
               borderRadius: '50%',
-              border: `1px solid ${primaryColor}`,
+              border: `1px solid ${effectiveAccent}`,
               position: 'absolute',
             }}
           />
@@ -82,7 +107,7 @@ export const HolographicBlueprintBg: React.FC<HolographicBlueprintBgProps> = ({
               width: '250px',
               height: '250px',
               borderRadius: '50%',
-              border: `1px dashed ${primaryColor}`,
+              border: `1px dashed ${effectiveAccent}`,
               position: 'absolute',
             }}
           />
@@ -96,7 +121,7 @@ export const HolographicBlueprintBg: React.FC<HolographicBlueprintBgProps> = ({
               right: 0,
               display: 'flex',
               justifyContent: 'space-between',
-              color: primaryColor,
+              color: effectiveAccent,
               fontSize: '11px',
             }}
           >
@@ -110,7 +135,7 @@ export const HolographicBlueprintBg: React.FC<HolographicBlueprintBgProps> = ({
               left: '-80px',
               top: '50%',
               transform: 'rotate(-90deg)',
-              color: primaryColor,
+              color: effectiveAccent,
               fontSize: '11px',
             }}
           >

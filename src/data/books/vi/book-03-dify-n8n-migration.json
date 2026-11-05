@@ -1,0 +1,52 @@
+{
+  "slug": "book-03-dify-n8n-migration",
+  "title": "Báo cáo Kỹ thuật: Chuyển đổi Kiến trúc từ Dify sang n8n Workflow",
+  "subtitle": "Tối ưu Chi phí $0.00 & Mở rộng Hiệu năng Luồng Tự động hóa AI",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "Báo cáo Kỹ thuật: Chuyển đổi Kiến trúc từ Dify sang n8n Workflow",
+      "subtitle": "Tối ưu Chi phí $0.00 & Mở rộng Hiệu năng Luồng Tự động hóa AI",
+      "version": "v1.0.0",
+      "tags": [
+        "FFMPEG",
+        "MEDIA PIPELINE",
+        "STREAMING",
+        "CLI"
+      ],
+      "verified": true
+    },
+    {
+      "id": "p02_fancy_wrapper",
+      "type": "tech_doc",
+      "title": "01 // LỚP VỎ HÀO NHOÁNG",
+      "content": "AI sinh ra câu lệnh prompt. React dựng cây DOM. Nhưng chính FFmpeg mới là kẻ gánh vác phần việc nặng nhọc nhất.\n\nẨn sâu bên dưới những công cụ sinh video hào nhoáng và bảng điều khiển đám mây là một chương trình C 25 năm tuổi chạy trong terminal Unix. Khi React vẽ các frame canvas và giọng nói AI tổng hợp luồng âm thanh PCM thô, FFmpeg âm thầm ghép nối, nén và mã hóa các byte h264 ở tốc độ 60fps mượt mà.",
+      "seed": "ffmpeg-cli-code-editor-01",
+      "graphicType": "NEURAL_MESH"
+    },
+    {
+      "id": "p03_disk_write_suicide",
+      "type": "tech_doc",
+      "title": "02 // TRUYỀN DẪN DÒNG DỮ LIỆU THAY VÌ GHI Ổ ĐĨA",
+      "content": "Ghi hàng loạt file ảnh PNG tạm thời xuống ổ cứng sẽ bóp nghẹt băng thông I/O, tràn bộ nhớ RAM máy chủ và đội chi phí đám mây lên gấp nhiều lần.\n\nCác kỹ sư hệ thống lành nghề luôn mở pipe trực tiếp từ stdout của Chrome sang stdin của FFmpeg. Luồng byte YUV420p thô chạy xuyên suốt qua RAM mà không tạo ra bất kỳ file rác nào trên ổ cứng.",
+      "code": "cat frames/*.yuv | ffmpeg -f rawvideo -pixel_format yuv420p \\\n  -video_size 1920x1080 -framerate 60 -i pipe:0 \\\n  -c:v libx264 -pix_fmt yuv420p output.mp4",
+      "language": "bash",
+      "seed": "ffmpeg-pipe-marquee-ticker",
+      "graphicType": "DATA_MATRIX"
+    },
+    {
+      "id": "p04_zero_memory_leak",
+      "type": "diagram",
+      "title": "03 // TRIỆT TIÊU RÒ RỈ BỘ NHỚ & ĐẢM BẢO BĂNG THÔNG CAO",
+      "content": "Trong khi các framework JavaScript liên tục ra đời rồi bị thay thế, FFmpeg vẫn âm thầm nghiền ngẫm hàng tỷ byte dữ liệu suốt một phần tư thế kỷ. Hãy tôn trọng nền tảng hạ tầng cốt lõi.",
+      "seed": "ffmpeg-zero-leak-metric",
+      "graphicType": "DATA_MATRIX",
+      "caption": "Hình 3.1 — Quy trình streaming YUV420p trực tiếp vào bộ mã hóa FFmpeg libx264 không qua ghi đĩa"
+    }
+  ]
+}

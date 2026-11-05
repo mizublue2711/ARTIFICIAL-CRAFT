@@ -8,11 +8,12 @@ interface TechDocBlockProps {
 
 export const TechDocBlock: React.FC<TechDocBlockProps> = ({ block }) => {
   const [copied, setCopied] = useState(false);
+  const codeContent = block.code || block.codeSnippet;
 
   const handleCopy = async () => {
-    if (!block.code) return;
+    if (!codeContent) return;
     try {
-      await navigator.clipboard.writeText(block.code);
+      await navigator.clipboard.writeText(codeContent);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -50,7 +51,7 @@ export const TechDocBlock: React.FC<TechDocBlockProps> = ({ block }) => {
         )}
 
         {/* Code Snippet Box */}
-        {block.code && (
+        {codeContent && (
           <div className="flex-1 flex flex-col border border-zinc-800 bg-black/80 font-mono text-xs overflow-hidden">
             <div className="flex items-center justify-between bg-zinc-900/90 border-b border-zinc-800 px-4 py-2">
               <div className="flex items-center gap-2 text-zinc-400 text-[11px]">
@@ -76,7 +77,7 @@ export const TechDocBlock: React.FC<TechDocBlockProps> = ({ block }) => {
               </button>
             </div>
             <pre className="p-4 text-cyan-300/90 overflow-x-auto font-mono text-xs leading-relaxed whitespace-pre font-medium">
-              <code>{block.code}</code>
+              <code>{codeContent}</code>
             </pre>
           </div>
         )}

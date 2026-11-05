@@ -17,6 +17,7 @@ export async function POST(req: NextRequest) {
     if (!validationResult.success) {
       return NextResponse.json<CraftGenerateResponse>(
         {
+          status: 'error',
           success: false,
           error: 'Zod Validation Failed: Cấu hình gửi lên không hợp lệ.',
           message: JSON.stringify(validationResult.error.format()),
@@ -60,6 +61,7 @@ export async function POST(req: NextRequest) {
 
     // 3. Trả về kết quả HTML Stream dạng JSON cho Iframe Live Preview
     return NextResponse.json<CraftGenerateResponse>({
+      status: 'success',
       success: true,
       htmlStream,
       message: 'HyperFrame compiled successfully at 60FPS.',
@@ -69,6 +71,7 @@ export async function POST(req: NextRequest) {
     console.error('[CRAFT API ERROR]:', error);
     return NextResponse.json<CraftGenerateResponse>(
       {
+        status: 'error',
         success: false,
         error: error.message || 'Internal Server Error during compilation.',
       },
@@ -91,6 +94,7 @@ export function generateFallbackCyberneticHTML(config: any): string {
   const modelType = config?.roboticsNode?.modelType || config?.hero3DEngine?.modelType || 'kinematic_manipulator_arm';
   const speed = config?.roboticsNode?.rotationSpeed || 1.5;
   const isWireframe = config?.roboticsNode?.wireframe !== false;
+  const enterFactoryBtnText = config?.enterFactoryNodeBtn || 'ENTER FACTORY NODE ➔';
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -177,7 +181,16 @@ export function generateFallbackCyberneticHTML(config: any): string {
 <body>
   <header class="hud-header">
     <div style="display:flex; align-items:center; gap:8px;">
-      <span style="width:6px; height:6px; border-radius:50%; background:${accent}; box-shadow:0 0 8px ${accent};"></span>
+      <a
+        href="https://multi-zone-spatial-3d-compound-engine-v4-0-calibrated.mizu2711.workers.dev/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hud-badge-link"
+        style="color: #00E5FF; text-decoration: none; border: 1px solid rgba(0,229,255,0.4); padding: 2px 8px; background: rgba(0,0,0,0.8); font-family: monospace; font-size: 10px; font-weight: bold; display: inline-flex; align-items: center; gap: 6px;"
+      >
+        <span style="width: 6px; height: 6px; background: #00E5FF; border-radius: 50%; display: inline-block;"></span>
+        ${enterFactoryBtnText}
+      </a>
       <span style="font-weight:700; color:#fff;">${brand} // STUDIO RUNTIME</span>
     </div>
     <div style="display:flex; align-items:center; gap:8px;">

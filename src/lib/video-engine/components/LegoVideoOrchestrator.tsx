@@ -7,6 +7,18 @@ import {
   spring,
 } from 'remotion';
 import { PlaygroundRecipe } from '../types/playground';
+import {
+  NestedPlatonicSolids3D,
+  GimbalConcentricRings3D,
+  OrigamiPolyhedronMorph,
+  HyperbolicLatticeCage,
+  GyroidLatticeMatrix3D,
+  IsometricTesseractHypercube3D,
+  KeplerHarmonicOrbital3D,
+  MobiusLatticeMatrix3D,
+  ChronoGeodesicDomeAssembly3D,
+  ChiralDoubleHelixMatrix3D,
+} from './3d';
 
 export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
   const frame = useCurrentFrame();
@@ -14,7 +26,7 @@ export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
 
   const slots = recipe?.slots || {
     backgroundId: 'SWISS_GRID',
-    heroObjectId: 'ISOMETRIC_CUBE',
+    heroObjectId: 'nested-platonic-5layer',
     overlayId: 'CROSSHAIRS',
     textId: 'SWISS_BRUTALIST',
   };
@@ -202,29 +214,158 @@ export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
           </div>
         );
 
-      case 'ISOMETRIC_CUBE':
+      case 'nested-platonic-5layer':
+        return (
+          <NestedPlatonicSolids3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'gimbal-concentric-rings':
+        return (
+          <GimbalConcentricRings3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'origami-polyhedron':
+        return (
+          <OrigamiPolyhedronMorph
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'hyperbolic-lattice-cage':
+        return (
+          <HyperbolicLatticeCage
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'gyroid-matrix-cad':
+        return (
+          <GyroidLatticeMatrix3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'isometric-tesseract-4d':
+        return (
+          <IsometricTesseractHypercube3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'kepler-harmonic-orbital':
+        return (
+          <KeplerHarmonicOrbital3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'mobius-lattice-matrix':
+        return (
+          <MobiusLatticeMatrix3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'chrono-geodesic-dome':
+        return (
+          <ChronoGeodesicDomeAssembly3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'chiral-double-helix':
+        return (
+          <ChiralDoubleHelixMatrix3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
       default:
         return (
-          <div
-            style={{
-              transform: `scale(${objectScale}) rotateY(${frame * 0.8}deg)`,
-              border: `2px solid ${primary}`,
-              boxShadow: `0px 0px 40px ${accent}66`,
-              backgroundColor: '#07070A',
-              padding: '32px 64px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '12px',
-            }}
-          >
-            <div style={{ color: primary, fontSize: '18px', fontWeight: 'bold' }}>
-              HERO_OBJECT: {slots.heroObjectId}
-            </div>
-            <div style={{ color: '#A1A1AA', fontSize: '12px' }}>
-              DISPERSION: {props.dispersionAmount.toFixed(2)} | ROTATE_X: {props.rotateXDeg}°
-            </div>
-          </div>
+          <NestedPlatonicSolids3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
         );
     }
   };

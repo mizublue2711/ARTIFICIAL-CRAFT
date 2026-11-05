@@ -36,7 +36,7 @@ export interface PlaygroundRecipe {
 export interface AssetPresetItem {
   id: string;
   label: string;
-  category: 'backgrounds' | 'heroObjects' | 'overlays' | 'typography';
+  category: 'backgrounds' | 'heroObjects' | 'overlays' | 'typography' | '3D_MESHES';
   description?: string;
   previewColor?: string;
 }
@@ -46,4 +46,5 @@ export interface AssetPresetRegistry {
   heroObjects: Record<string, AssetPresetItem>;
   overlays: Record<string, AssetPresetItem>;
   typography: Record<string, AssetPresetItem>;
+  '3D_MESHES'?: Record<string, AssetPresetItem>;
 }

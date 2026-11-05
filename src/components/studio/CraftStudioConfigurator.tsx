@@ -4,62 +4,98 @@ import {
   Sparkles,
   Layers,
   Cpu,
-  Sliders,
   Terminal,
   Code,
   Download,
-  Share2,
   Maximize2,
   Minimize2,
   RotateCcw,
   Zap,
   Box,
-  Eye,
   Check,
-  ChevronDown,
-  ChevronRight,
   Monitor,
   Tablet,
   Smartphone,
-  ExternalLink,
-  Flame,
   CheckCircle2,
-  AlertCircle,
   Copy,
   FolderArchive,
   CloudLightning,
   RefreshCw,
-  SlidersHorizontal,
-  Compass,
+  Bot,
+  Boxes,
+  Radio,
+  Palette,
+  Activity,
 } from 'lucide-react';
+import { useTranslation } from '@/context/useLanguage';
 
 import {
   SwissDesignConfigSchema,
   SwissDesignConfig,
+  CraftPayloadObject,
+  CraftRequestPayload,
   CraftGenerateResponse,
 } from '@/types/craft-studio';
 import { generateFallbackCyberneticHTML, generateStudioAst, generateCodeSnippets } from '@/lib/studioAstGenerator';
 import { digitalPlumbingSwarm, 'node-05-digital-plumbing-swarm' as node05Preset } from '@/data/presets/registry';
+import { Player } from '@remotion/player';
+import { CraftStudioVideoComposition } from '@/lib/video-engine/components/CraftStudioVideoComposition';
+import {
+  SwissGridHUD,
+  CyberpunkMatrixBg,
+  HolographicBlueprintBg,
+  HyperdriveGridBg,
+  IsometricGridBg,
+  ParticleTunnelBg,
+  QuantumWaveformBg,
+  AnomalousNoiseField,
+  VolumetricFogHUD,
+} from '@/lib/video-engine/components/backgrounds';
 
 // --- TYPES & INTERFACES ---
 export type ActiveWizardStep = 1 | 2 | 3 | 4 | 5;
 export type DevicePreviewMode = 'desktop' | 'tablet' | 'mobile';
+export type PreviewViewportMode = '3d-canvas' | 'remotion-video';
 
-export interface ExtendedStudioConfig extends SwissDesignConfig {
-  // Extended Step 1 & 2 Attributes
-  compositionId?: string;
-  slogan?: string;
-  backgroundColor?: string;
-  primaryColor?: string;
-  accentColor?: string;
-  headlineFont?: string;
-  presetModel?: string;
-  modelType?: string;
+export interface ExtendedStudioConfig extends Partial<SwissDesignConfig> {
+  compositionId: string;
+  slogan: string;
+  backgroundColor: string;
+  primaryColor: string;
+  accentColor: string;
+  backgroundShader?: string;
+  base_component?: string;
+  headlineFont: string;
+  presetModel?: any;
+  modelType?: any;
   customModelUrl?: string;
-  logoUrl?: string;
-  motionTokens: string[];
-  secondaryAccentColor: string;
+  logoUrl: string;
+  motionTokens: any;
+  secondaryAccentColor?: string;
   codeFont: string;
+  presetId?: string;
+  layoutMode?: string;
+  brandName: string;
+  tagline?: string;
+  theme: {
+    backgroundColor: string;
+    primaryColor: string;
+    textColor: string;
+    accentColor: string;
+    fontFamily: any;
+  };
+  roboticsNode: {
+    modelType: any;
+    wireframe: boolean;
+    rotationSpeed: number;
+    autoAnimate: boolean;
+    telemetryHud: boolean;
+  };
+  aiStylist?: {
+    customPrompt: string;
+    enableGSAPAnimations: boolean;
+    enableAudioSynthesizer: boolean;
+  };
   hero3DEngine?: {
     modelType: string;
     enableRaycasting: boolean;
@@ -73,6 +109,7 @@ export interface ExtendedStudioConfig extends SwissDesignConfig {
     stage33: string;
     stage66: string;
     stage100: string;
+    [key: string]: string;
   };
   raycastingLaser: boolean;
 
@@ -89,7 +126,7 @@ export interface ExtendedStudioConfig extends SwissDesignConfig {
   spatialPointCloud: boolean;
 
   // Extended Step 5: Export Sandbox
-  sandboxLanguages: string[];
+  sandboxLanguages: any;
 }
 
 export const INITIAL_CONFIG: ExtendedStudioConfig = {
@@ -102,6 +139,8 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
   backgroundColor: '#09090B',
   primaryColor: '#5322FF',
   accentColor: '#00E5FF',
+  backgroundShader: 'SwissGridHUD',
+  base_component: 'RoboticsHandNode',
   headlineFont: 'Space Grotesk',
   presetModel: 'robot-arm',
   modelType: 'preset',
@@ -114,11 +153,11 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
     accentColor: '#00E5FF',
     fontFamily: 'JetBrains Mono',
   },
-  secondaryAccentColor: '#00FF66',
+  secondaryAccentColor: '#10B981',
   codeFont: 'JetBrains Mono',
   motionTokens: ['kinetic-parallax', 'chromatic-aberration', 'magnetic-attraction'],
   roboticsNode: {
-    modelType: 'robot-arm',
+    modelType: 'RoboticsHandNode',
     wireframe: true,
     rotationSpeed: 1.5,
     autoAnimate: true,
@@ -150,6 +189,47 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
   },
 };
 
+export const AVAILABLE_3D_COMPONENTS = [
+  { value: 'RoboticsHandNode', label: 'Robotic Arm 6DOF Manipulator', icon: Bot },
+  { value: 'BipedalRobotMesh', label: 'Bipedal Kinematic Assembler', icon: Cpu },
+  { value: 'PointCloudNode', label: 'Point Cloud Telemetry Core', icon: Boxes },
+  { value: 'HolographicCore', label: 'Holographic Energy Reactor', icon: Radio },
+  { value: 'ConveyorBeltV2', label: 'Cybernetic Conveyor System', icon: Terminal },
+  { value: 'CleanroomSwarmTerminal', label: 'Obsidian Cleanroom Terminal', icon: Layers },
+];
+
+export const BACKGROUND_COMPONENTS: Record<string, React.FC<any>> = {
+  SwissGridHUD,
+  CyberpunkMatrixBg,
+  HolographicBlueprintBg,
+  HyperdriveGridBg,
+  IsometricGridBg,
+  ParticleTunnelBg,
+  QuantumWaveformBg,
+  AnomalousNoiseField,
+  VolumetricFogHUD,
+};
+
+export const AVAILABLE_BACKGROUNDS = [
+  { value: 'SwissGridHUD', label: 'Swiss Grid HUD', icon: Layers },
+  { value: 'CyberpunkMatrixBg', label: 'Cyberpunk Matrix', icon: Box },
+  { value: 'HolographicBlueprintBg', label: 'Holographic Blueprint', icon: Boxes },
+  { value: 'HyperdriveGridBg', label: 'Hyperdrive Grid 3D', icon: Radio },
+  { value: 'IsometricGridBg', label: 'Isometric Grid', icon: Layers },
+  { value: 'ParticleTunnelBg', label: 'Particle Tunnel', icon: Sparkles },
+  { value: 'QuantumWaveformBg', label: 'Quantum Waveform', icon: Activity },
+  { value: 'AnomalousNoiseField', label: 'Anomalous Noise Field', icon: Zap },
+  { value: 'VolumetricFogHUD', label: 'Volumetric Fog HUD', icon: Palette },
+];
+
+export const AVAILABLE_MOTION_TOKENS = [
+  { value: 'kinetic-parallax', label: 'Kinetic Parallax Camera Drift', icon: Sparkles },
+  { value: 'glitch-flicker', label: 'Cybernetic Shader Glitch', icon: Zap },
+  { value: 'chromatic-aberration', label: 'Chromatic Aberration Lens', icon: Palette },
+  { value: 'text-clipping-reveal', label: 'Kinetic Title Clipping Reveal', icon: Terminal },
+  { value: 'magnetic-attraction', label: 'Cursor Vector Field Physics', icon: Activity },
+];
+
 const PRESET_PALETTES = [
   {
     id: 'obsidian-indigo',
@@ -174,7 +254,7 @@ const PRESET_PALETTES = [
     name: 'Cybernetic Matrix',
     bg: '#05050A',
     primary: '#5322FF',
-    accent: '#00FF66',
+    accent: '#10B981',
     font: 'JetBrains Mono' as const,
     desc: 'Tactical phosphor emerald with dark obsidian background.',
   },
@@ -190,15 +270,31 @@ const PRESET_PALETTES = [
 ];
 
 export const CraftStudioConfigurator: React.FC = () => {
+  const { t } = useTranslation();
   // State: Config Data
   const [formData, setFormData] = useState<ExtendedStudioConfig>(INITIAL_CONFIG);
+  const [activeTabMode, setActiveTabMode] = useState<'FORGE_NODE' | 'USER_WEBAPP_GEN'>('USER_WEBAPP_GEN');
+  const [previewViewportMode, setPreviewViewportMode] = useState<PreviewViewportMode>('3d-canvas');
   const [selectedNodePreset, setSelectedNodePreset] = useState<string>('NODE_05_MANUFACTURING_FACTORY');
   const [activeStep, setActiveStep] = useState<ActiveWizardStep>(1);
   const [deviceMode, setDeviceMode] = useState<DevicePreviewMode>('desktop');
+  const [backgroundShader, setBackgroundShader] = useState<string>('SwissGridHUD');
+  const [pointerCoords, setPointerCoords] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [isHoveringCanvas, setIsHoveringCanvas] = useState<boolean>(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isB2BPopupOpen, setIsB2BPopupOpen] = useState(true);
   const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
   const [codeTab, setCodeTab] = useState<'html' | 'ast' | 'ts' | 'python' | 'ros2' | 'cpp'>('html');
   const [copiedCode, setCopiedCode] = useState(false);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileSelect = (file: File) => {
+    if (file && file.type.startsWith('image/')) {
+      const url = URL.createObjectURL(file);
+      setFormData((prev) => ({ ...prev, logoUrl: url }));
+    }
+  };
 
   // State: AI Stylist & Streaming Generator
   const [aiPrompt, setAiPrompt] = useState('Luxury Titanium Robot with Neon Indigo');
@@ -266,8 +362,48 @@ export const CraftStudioConfigurator: React.FC = () => {
   // Synchronize initial & updated live HTML
   const refreshLiveHtml = useCallback((cfg: ExtendedStudioConfig) => {
     // Generate high-precision standalone HTML
-    const html = generateFallbackCyberneticHTML(cfg);
+    const html = generateFallbackCyberneticHTML({
+      ...cfg,
+      enterFactoryNodeBtn: t('enterFactoryNodeBtn'),
+    } as any);
     setGeneratedHtml(html);
+  }, [t]);
+
+  // Handler to render layout_json onto Live Preview Stage
+  const renderLegoCanvas = useCallback((layoutJson: any) => {
+    if (!layoutJson) return;
+
+    if (typeof layoutJson === 'string') {
+      if (layoutJson.trim().startsWith('<')) {
+        setGeneratedHtml(layoutJson);
+        return;
+      }
+      try {
+        const parsed = JSON.parse(layoutJson);
+        if (parsed.html) {
+          setGeneratedHtml(parsed.html);
+          return;
+        }
+      } catch {
+        // Fallback string
+      }
+    } else if (typeof layoutJson === 'object') {
+      if (layoutJson.html && typeof layoutJson.html === 'string') {
+        setGeneratedHtml(layoutJson.html);
+        return;
+      }
+      // If layout_json contains updated theme or AST config, sync with formData
+      setFormData((prev) => ({
+        ...prev,
+        theme: {
+          ...prev.theme,
+          ...(layoutJson.aesthetic?.primaryColor && { primaryColor: layoutJson.aesthetic.primaryColor }),
+          ...(layoutJson.aesthetic?.backgroundColor && { backgroundColor: layoutJson.aesthetic.backgroundColor }),
+        },
+        primaryColor: layoutJson.aesthetic?.primaryColor || prev.primaryColor,
+        backgroundColor: layoutJson.aesthetic?.backgroundColor || prev.backgroundColor,
+      }));
+    }
   }, []);
 
   useEffect(() => {
@@ -309,7 +445,7 @@ export const CraftStudioConfigurator: React.FC = () => {
       } else if (lower.includes('emerald') || lower.includes('matrix') || lower.includes('green')) {
         mockAIPalette = {
           backgroundColor: '#050a06',
-          primaryColor: '#00FF66',
+          primaryColor: '#10B981',
           accentColor: '#00E5FF',
           fontFamily: 'JetBrains Mono',
         };
@@ -399,26 +535,73 @@ export const CraftStudioConfigurator: React.FC = () => {
         'LAYER 4/5: Compiling Zod AST & Cloudflare Worker Bundle...',
       ]);
 
-      const ast = generateStudioAst(formData as any);
-      const compositionId = formData.compositionId || 'NODE_05_MANUFACTURING_FACTORY';
+      // Read endpoint directly from Vite Client Env
+      const webhookUrl =
+        import.meta.env.VITE_N8N_WEBHOOK_URL ||
+        '/api/craft/generate';
 
-      const response = await fetch('/api/craft/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          compositionId,
-          config: validationResult.data,
-          ast,
-          timestamp: new Date().toISOString(),
-        }),
-      });
+      // Construct contract payload from React useState values
+      const taskType: 'ROBOTICS_3D' | 'USER_WEBAPP_GEN' =
+        activeTabMode === 'FORGE_NODE' ? 'ROBOTICS_3D' : 'USER_WEBAPP_GEN';
+
+      const payloadObject: CraftPayloadObject = {
+        prompt: aiPrompt || formData.aiStylist?.customPrompt || '',
+        base_component: formData.presetModel || formData.modelType || 'RoboticsHandNode',
+        aesthetic: {
+          palette: formData.brandName || 'Brutalist Monochrome',
+          primaryColor: formData.theme.primaryColor || '#5322FF',
+          backgroundColor: formData.theme.backgroundColor || '#09090B',
+        },
+        motion_tokens: formData.motionTokens || [],
+        telemetry: {
+          slaTarget: formData.aiLatency || '<8ms',
+          fps: formData.telemetryFps || 60,
+        },
+      };
+
+      const requestBody: CraftRequestPayload = {
+        task_type: taskType,
+        payload: JSON.stringify(payloadObject),
+      };
 
       let htmlResult = '';
-      if (response.ok) {
-        const data: CraftGenerateResponse = await response.json();
-        htmlResult = data.htmlStream || generateFallbackCyberneticHTML(formData);
-      } else {
-        htmlResult = generateFallbackCyberneticHTML(formData);
+      try {
+        const response = await fetch(webhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(requestBody),
+        });
+
+        if (response.ok) {
+          const contentType = response.headers.get('content-type') || '';
+          if (contentType.includes('application/json')) {
+            const data: CraftGenerateResponse = await response.json();
+            if (data.status === 'success' || data.success) {
+              if (data.layout_json) {
+                renderLegoCanvas(data.layout_json);
+              }
+              htmlResult = data.htmlStream || generatedHtml || generateFallbackCyberneticHTML(formData as any);
+            } else {
+              throw new Error(data.message || data.error || 'Server returned error status');
+            }
+          } else {
+            const textResponse = await response.text();
+            try {
+              const parsed = JSON.parse(textResponse);
+              if (parsed.status === 'success' && parsed.layout_json) {
+                renderLegoCanvas(parsed.layout_json);
+              }
+            } catch {
+              // Raw HTML or stream
+              htmlResult = textResponse;
+            }
+          }
+        } else {
+          throw new Error(`Endpoint returned status ${response.status}`);
+        }
+      } catch (fetchErr: any) {
+        console.warn('[CRAFT ADAPTER] Live webhook fallback:', fetchErr);
+        htmlResult = generateFallbackCyberneticHTML(formData as any);
       }
 
       await new Promise((r) => setTimeout(r, 400));
@@ -428,10 +611,12 @@ export const CraftStudioConfigurator: React.FC = () => {
         'SUCCESS: 3D Web App Compiled & Verified at 60FPS SLA.',
       ]);
 
-      setGeneratedHtml(htmlResult);
+      if (htmlResult) {
+        setGeneratedHtml(htmlResult);
+      }
     } catch (err: any) {
       console.warn('Compilation fallback to local engine:', err);
-      const fallbackHtml = generateFallbackCyberneticHTML(formData);
+      const fallbackHtml = generateFallbackCyberneticHTML(formData as any);
       setGeneratedHtml(fallbackHtml);
       setCompileLogs((prev) => [
         ...prev,
@@ -455,7 +640,10 @@ export const CraftStudioConfigurator: React.FC = () => {
   };
 
   const handleDownloadSingleFileHtml = () => {
-    const html = generatedHtml || generateFallbackCyberneticHTML(formData);
+    const html = generatedHtml || generateFallbackCyberneticHTML({
+      ...formData,
+      enterFactoryNodeBtn: t('enterFactoryNodeBtn'),
+    });
     const blob = new Blob([html], { type: 'text/html' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -492,6 +680,12 @@ export const CraftStudioConfigurator: React.FC = () => {
     }
   }, [formData]);
 
+  // Active Background Component resolved from formData.backgroundShader or fallback backgroundShader state
+  const activeShaderKey = formData.backgroundShader || backgroundShader || 'SwissGridHUD';
+  const ActiveBg = BACKGROUND_COMPONENTS[activeShaderKey] || SwissGridHUD;
+  const primaryColor = formData.theme?.primaryColor || formData.primaryColor || '#5322FF';
+  const accentColor = formData.theme?.accentColor || formData.accentColor || '#00E5FF';
+
   return (
     <div className="relative w-full min-h-[calc(100vh-64px)] bg-[#09090B] text-zinc-100 font-mono flex flex-col selection:bg-[#00E5FF]/20">
       {/* Tactical Sub-Header Bar */}
@@ -499,10 +693,10 @@ export const CraftStudioConfigurator: React.FC = () => {
         <div className="flex items-center gap-3">
           <div className="w-2.5 h-2.5 rounded-full bg-[#5322FF] animate-pulse" />
           <span className="font-bold tracking-widest text-zinc-100 uppercase">
-            STUDIO CONFIGURATOR // NO-CODE 3D FACTORY
+            {t('configuratorHeader')}
           </span>
           <span className="hidden sm:inline-block px-2 py-0.5 border border-zinc-700 bg-zinc-900 text-[10px] text-zinc-400">
-            NODE 05 :: 3D MANUFACTURING FACTORY
+            {t('configuratorNodeBadge')}
           </span>
         </div>
 
@@ -586,6 +780,31 @@ export const CraftStudioConfigurator: React.FC = () => {
                       Headless Digital Plumbing Swarm • Kinematic Manipulator & Telemetry SLA 60FPS
                     </span>
                   </div>
+                  {/* Task Mode Switcher */}
+                  <div className="grid grid-cols-2 gap-1 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => setActiveTabMode('USER_WEBAPP_GEN')}
+                      className={`py-1 px-2 border text-[10px] font-bold uppercase transition ${
+                        activeTabMode === 'USER_WEBAPP_GEN'
+                          ? 'border-[#00E5FF] bg-[#00E5FF]/20 text-[#00E5FF]'
+                          : 'border-zinc-800 bg-zinc-900/60 text-zinc-500 hover:text-zinc-300'
+                      }`}
+                    >
+                      WebApp Gen
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setActiveTabMode('FORGE_NODE')}
+                      className={`py-1 px-2 border text-[10px] font-bold uppercase transition ${
+                        activeTabMode === 'FORGE_NODE'
+                          ? 'border-[#5322FF] bg-[#5322FF]/20 text-white'
+                          : 'border-zinc-800 bg-zinc-900/60 text-zinc-500 hover:text-zinc-300'
+                      }`}
+                    >
+                      Forge Node (3D)
+                    </button>
+                  </div>
                 </div>
 
                 {/* Project Name */}
@@ -596,9 +815,14 @@ export const CraftStudioConfigurator: React.FC = () => {
                   <input
                     type="text"
                     value={formData.brandName}
-                    onChange={(e) =>
-                      setFormData((p) => ({ ...p, brandName: e.target.value }))
-                    }
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setFormData((p) => ({
+                        ...p,
+                        brandName: val,
+                        compositionId: val,
+                      }));
+                    }}
                     placeholder="ARTIFICIAL CRAFT"
                     className="w-full px-3 py-2 bg-zinc-900/90 border border-zinc-800 text-white text-xs focus:outline-none focus:border-[#5322FF] transition"
                   />
@@ -615,9 +839,14 @@ export const CraftStudioConfigurator: React.FC = () => {
                   <input
                     type="text"
                     value={formData.tagline}
-                    onChange={(e) =>
-                      setFormData((p) => ({ ...p, tagline: e.target.value }))
-                    }
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      setFormData((p) => ({
+                        ...p,
+                        tagline: val,
+                        slogan: val,
+                      }));
+                    }}
                     placeholder="Robots for Everyone // Cybernetic Automation"
                     className="w-full px-3 py-2 bg-zinc-900/90 border border-zinc-800 text-white text-xs focus:outline-none focus:border-[#5322FF] transition"
                   />
@@ -648,15 +877,39 @@ export const CraftStudioConfigurator: React.FC = () => {
                   />
                 </div>
 
-                {/* Drag-and-Drop Mock Box */}
-                <div className="border border-dashed border-zinc-800 hover:border-zinc-700 bg-zinc-950/60 p-4 text-center cursor-pointer transition">
-                  <FolderArchive className="w-6 h-6 text-zinc-600 mx-auto mb-2" />
+                {/* File Picker & Drag-and-Drop Dropzone */}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => e.target.files?.[0] && handleFileSelect(e.target.files[0])}
+                  className="hidden"
+                />
+
+                <div
+                  onClick={() => fileInputRef.current?.click()}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    if (e.dataTransfer.files?.[0]) {
+                      handleFileSelect(e.dataTransfer.files[0]);
+                    }
+                  }}
+                  className="border border-dashed border-zinc-800 hover:border-[#5322FF] bg-zinc-950/60 p-4 text-center cursor-pointer transition group"
+                >
+                  <FolderArchive className="w-6 h-6 text-zinc-600 group-hover:text-[#00E5FF] mx-auto mb-2 transition" />
                   <div className="text-[11px] text-zinc-300">
-                    Drag & Drop SVG/PNG Logo Asset
+                    Click to Upload or Drag & Drop SVG/PNG Logo Asset
                   </div>
-                  <div className="text-[9px] text-zinc-500 mt-1">
+                  <div className="text-[9px] text-zinc-500 mt-1 font-mono">
                     Triggers automatic logo palette color clustering
                   </div>
+                  {formData.logoUrl && (
+                    <div className="mt-2 inline-flex items-center gap-2 px-2 py-1 bg-zinc-900 border border-zinc-700 text-[10px] text-emerald-400">
+                      <Check className="w-3 h-3 text-emerald-400" />
+                      <span>LOGO ATTACHED</span>
+                    </div>
+                  )}
                 </div>
               </motion.div>
             )}
@@ -685,6 +938,9 @@ export const CraftStudioConfigurator: React.FC = () => {
                         onClick={() =>
                           setFormData((prev) => ({
                             ...prev,
+                            backgroundColor: p.bg,
+                            primaryColor: p.primary,
+                            accentColor: p.accent,
                             theme: {
                               ...prev.theme,
                               backgroundColor: p.bg,
@@ -779,70 +1035,165 @@ export const CraftStudioConfigurator: React.FC = () => {
                   </div>
                   <div className="grid grid-cols-3 gap-2">
                     <div>
-                      <label className="text-[9px] text-zinc-500 block mb-1">
+                      <label className="text-[9px] text-zinc-500 block mb-1 font-bold">
                         BACKGROUND
                       </label>
                       <div className="flex items-center gap-1.5 border border-zinc-800 bg-zinc-950 p-1">
                         <input
                           type="color"
                           value={formData.theme.backgroundColor}
-                          onChange={(e) =>
+                          onChange={(e) => {
+                            const val = e.target.value;
                             setFormData((prev) => ({
                               ...prev,
-                              theme: { ...prev.theme, backgroundColor: e.target.value },
-                            }))
-                          }
-                          className="w-5 h-5 bg-transparent cursor-pointer border-0"
+                              backgroundColor: val,
+                              theme: { ...prev.theme, backgroundColor: val },
+                            }));
+                          }}
+                          className="w-5 h-5 bg-transparent cursor-pointer border-0 shrink-0"
                         />
-                        <span className="text-[9px] text-zinc-400">
-                          {formData.theme.backgroundColor}
-                        </span>
+                        <input
+                          type="text"
+                          value={formData.theme.backgroundColor}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setFormData((prev) => ({
+                              ...prev,
+                              backgroundColor: val,
+                              theme: { ...prev.theme, backgroundColor: val },
+                            }));
+                          }}
+                          className="w-full bg-transparent text-[9px] text-zinc-300 font-mono focus:outline-none uppercase"
+                        />
                       </div>
                     </div>
 
                     <div>
-                      <label className="text-[9px] text-zinc-500 block mb-1">
+                      <label className="text-[9px] text-zinc-500 block mb-1 font-bold">
                         PRIMARY
                       </label>
                       <div className="flex items-center gap-1.5 border border-zinc-800 bg-zinc-950 p-1">
                         <input
                           type="color"
                           value={formData.theme.primaryColor}
-                          onChange={(e) =>
+                          onChange={(e) => {
+                            const val = e.target.value;
                             setFormData((prev) => ({
                               ...prev,
-                              theme: { ...prev.theme, primaryColor: e.target.value },
-                            }))
-                          }
-                          className="w-5 h-5 bg-transparent cursor-pointer border-0"
+                              primaryColor: val,
+                              theme: { ...prev.theme, primaryColor: val },
+                            }));
+                          }}
+                          className="w-5 h-5 bg-transparent cursor-pointer border-0 shrink-0"
                         />
-                        <span className="text-[9px] text-zinc-400">
-                          {formData.theme.primaryColor}
-                        </span>
+                        <input
+                          type="text"
+                          value={formData.theme.primaryColor}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setFormData((prev) => ({
+                              ...prev,
+                              primaryColor: val,
+                              theme: { ...prev.theme, primaryColor: val },
+                            }));
+                          }}
+                          className="w-full bg-transparent text-[9px] text-zinc-300 font-mono focus:outline-none uppercase"
+                        />
                       </div>
                     </div>
 
                     <div>
-                      <label className="text-[9px] text-zinc-500 block mb-1">
+                      <label className="text-[9px] text-zinc-500 block mb-1 font-bold">
                         ACCENT
                       </label>
                       <div className="flex items-center gap-1.5 border border-zinc-800 bg-zinc-950 p-1">
                         <input
                           type="color"
                           value={formData.theme.accentColor}
-                          onChange={(e) =>
+                          onChange={(e) => {
+                            const val = e.target.value;
                             setFormData((prev) => ({
                               ...prev,
-                              theme: { ...prev.theme, accentColor: e.target.value },
-                            }))
-                          }
-                          className="w-5 h-5 bg-transparent cursor-pointer border-0"
+                              accentColor: val,
+                              theme: { ...prev.theme, accentColor: val },
+                            }));
+                          }}
+                          className="w-5 h-5 bg-transparent cursor-pointer border-0 shrink-0"
                         />
-                        <span className="text-[9px] text-zinc-400">
-                          {formData.theme.accentColor}
-                        </span>
+                        <input
+                          type="text"
+                          value={formData.theme.accentColor}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setFormData((prev) => ({
+                              ...prev,
+                              accentColor: val,
+                              theme: { ...prev.theme, accentColor: val },
+                            }));
+                          }}
+                          className="w-full bg-transparent text-[9px] text-zinc-300 font-mono focus:outline-none uppercase"
+                        />
                       </div>
                     </div>
+                  </div>
+
+                  {/* Step 02 Environment Cards & Explicit Dropdown for All 9 Background Shaders */}
+                  <div className="space-y-2">
+                    <label className="text-[10px] text-zinc-400 font-bold uppercase flex items-center justify-between">
+                      <span>Background Shader Engine (9 Shaders)</span>
+                      <span className="text-[#00E5FF] text-[9px] font-mono">DYNAMIC SHADER</span>
+                    </label>
+
+                    {/* Environment Cards Grid */}
+                    <div className="grid grid-cols-3 gap-2">
+                      {AVAILABLE_BACKGROUNDS.map((card) => {
+                        const IconComp = card.icon;
+                        const isSelected = (formData.backgroundShader || backgroundShader) === card.value;
+                        return (
+                          <button
+                            key={card.value}
+                            type="button"
+                            onClick={() => {
+                              setBackgroundShader(card.value);
+                              setFormData((prev) => ({ ...prev, backgroundShader: card.value }));
+                            }}
+                            className={`p-2 border text-left transition flex flex-col gap-1 items-start ${
+                              isSelected
+                                ? 'border-[#00E5FF] bg-[#00E5FF]/10 text-white shadow-[0_0_8px_rgba(0,229,255,0.25)]'
+                                : 'border-zinc-800 bg-zinc-950/80 text-zinc-400 hover:text-white hover:border-zinc-700'
+                            }`}
+                          >
+                            <div className="flex items-center gap-1.5 w-full">
+                              <IconComp className="w-3.5 h-3.5 text-[#00E5FF] shrink-0" />
+                              <span className="text-[9px] font-bold truncate">{card.label}</span>
+                            </div>
+                            <span className="text-[8px] text-zinc-500 font-mono truncate w-full">
+                              {isSelected ? '[ACTIVE]' : card.value}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    <select
+                      value={formData.backgroundShader || backgroundShader}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        setBackgroundShader(val);
+                        setFormData((prev) => ({ ...prev, backgroundShader: val }));
+                      }}
+                      className="w-full bg-[#09090B] border border-[#5322FF] text-white p-2 rounded font-mono text-xs focus:outline-none focus:border-[#00E5FF]"
+                    >
+                      <option value="SwissGridHUD">Swiss Grid HUD</option>
+                      <option value="CyberpunkMatrixBg">Cyberpunk Matrix</option>
+                      <option value="HolographicBlueprintBg">Holographic Blueprint</option>
+                      <option value="HyperdriveGridBg">Hyperdrive Grid 3D</option>
+                      <option value="IsometricGridBg">Isometric Grid</option>
+                      <option value="ParticleTunnelBg">Particle Tunnel</option>
+                      <option value="QuantumWaveformBg">Quantum Waveform</option>
+                      <option value="AnomalousNoiseField">Anomalous Noise Field</option>
+                      <option value="VolumetricFogHUD">Volumetric Fog HUD</option>
+                    </select>
                   </div>
 
                   {/* Font Family Selector */}
@@ -905,7 +1256,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                                   setFormData((prev) => ({
                                     ...prev,
                                     motionTokens: prev.motionTokens.filter(
-                                      (t) => t !== token
+                                       (t: string) => t !== token
                                     ),
                                   }));
                                 }
@@ -934,23 +1285,71 @@ export const CraftStudioConfigurator: React.FC = () => {
                   <span>STEP 3 // 3D ENGINE & EXPLODED ASSEMBLY</span>
                 </div>
 
-                {/* Model Selector */}
+                {/* 3D Mesh & Component Selector List */}
+                <div className="space-y-2">
+                  <label className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
+                    Base 3D Mesh Component
+                  </label>
+                  <div className="grid grid-cols-1 gap-1.5">
+                    {AVAILABLE_3D_COMPONENTS.map((comp) => {
+                      const IconComponent = comp.icon;
+                      const activeModel = formData.base_component || formData.presetModel || formData.modelType || 'RoboticsHandNode';
+                      const isSelected = activeModel === comp.value;
+                      return (
+                        <button
+                          key={comp.value}
+                          type="button"
+                          onClick={() => {
+                            setFormData((prev) => ({
+                              ...prev,
+                              base_component: comp.value,
+                              presetModel: comp.value,
+                              modelType: comp.value,
+                              roboticsNode: {
+                                ...prev.roboticsNode,
+                                modelType: comp.value as any,
+                              },
+                            }));
+                          }}
+                          className={`w-full px-3 py-2 border text-left text-xs font-mono transition flex items-center justify-between ${
+                            isSelected
+                              ? 'border-[#5322FF] bg-[#5322FF]/20 text-white shadow-[0_0_12px_rgba(83,34,255,0.3)]'
+                              : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-white hover:border-zinc-700'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <IconComponent className="w-4 h-4 text-[#00E5FF] stroke-[1.5]" />
+                            <span>{comp.label}</span>
+                          </div>
+                          <span className="text-[10px] text-zinc-500 font-mono">
+                            {isSelected ? '[ACTIVE]' : comp.value}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Model Selector Presets */}
                 <div className="space-y-2">
                   <label className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
                     Actuator Model Preset
                   </label>
                   <div className="grid grid-cols-2 gap-2">
                     {[
-                      { id: 'robot-arm', label: 'Industrial Robot Arm' },
-                      { id: 'kinematic-assembler', label: 'Kinematic Assembler' },
-                      { id: 'point-cloud-node', label: 'Point Cloud Drone' },
-                      { id: 'holographic-core', label: 'Cyber Monolith Core' },
+                      { id: 'RoboticsHandNode', label: 'Industrial Robot Arm' },
+                      { id: 'BipedalRobotMesh', label: 'Kinematic Assembler' },
+                      { id: 'PointCloudNode', label: 'Point Cloud Drone' },
+                      { id: 'HolographicCore', label: 'Cyber Monolith Core' },
                     ].map((model) => (
                       <button
                         key={model.id}
                         onClick={() =>
                           setFormData((prev) => ({
                             ...prev,
+                            base_component: model.id,
+                            presetModel: model.id,
+                            modelType: model.id,
                             roboticsNode: {
                               ...prev.roboticsNode,
                               modelType: model.id as any,
@@ -958,7 +1357,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                           }))
                         }
                         className={`p-2 border text-left text-[11px] font-bold transition ${
-                          formData.roboticsNode.modelType === model.id
+                          ((formData.base_component || formData.presetModel) === model.id || formData.roboticsNode.modelType === model.id)
                             ? 'border-[#5322FF] bg-[#5322FF]/20 text-white'
                             : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-white'
                         }`}
@@ -1247,6 +1646,61 @@ export const CraftStudioConfigurator: React.FC = () => {
                   <span>STEP 5 // EXPORT & HAND-OFF DOCK</span>
                 </div>
 
+                {/* Motion FX / Motion Tokens Selector (Step 05) */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
+                      Kinematic Motion FX Tokens
+                    </label>
+                    <span className="text-[9px] text-[#00E5FF] font-mono">
+                      {formData.motionTokens?.length || 0} ACTIVE
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    {AVAILABLE_MOTION_TOKENS.map((token) => {
+                      const IconComponent = token.icon;
+                      const activeTokens: string[] = formData.motionTokens || [];
+                      const isChecked = activeTokens.includes(token.value);
+                      return (
+                        <label
+                          key={token.value}
+                          className={`flex items-center justify-between p-2 border text-xs cursor-pointer transition font-bold ${
+                            isChecked
+                              ? 'border-[#00E5FF] bg-[#00E5FF]/10 text-white shadow-[0_0_8px_rgba(0,229,255,0.15)]'
+                              : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:border-zinc-700'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="checkbox"
+                              checked={isChecked}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setFormData((prev) => ({
+                                    ...prev,
+                                    motionTokens: [...activeTokens, token.value],
+                                  }));
+                                } else {
+                                  setFormData((prev) => ({
+                                    ...prev,
+                                    motionTokens: activeTokens.filter((t) => t !== token.value),
+                                  }));
+                                }
+                              }}
+                              className="accent-[#00E5FF]"
+                            />
+                            <IconComponent className="w-3.5 h-3.5 text-[#00E5FF] stroke-[1.5]" />
+                            <span>{token.label}</span>
+                          </div>
+                          <span className="text-[9px] font-mono text-zinc-500">
+                            {token.value}
+                          </span>
+                        </label>
+                      );
+                    })}
+                  </div>
+                </div>
+
                 {/* Developer Sandbox Languages */}
                 <div className="space-y-2">
                   <label className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
@@ -1276,7 +1730,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                               } else {
                                 setFormData((p) => ({
                                   ...p,
-                                  sandboxLanguages: p.sandboxLanguages.filter((l) => l !== lang),
+                                  sandboxLanguages: p.sandboxLanguages.filter((l: string) => l !== lang),
                                 }));
                               }
                             }}
@@ -1382,8 +1836,36 @@ export const CraftStudioConfigurator: React.FC = () => {
         >
           {/* Top Viewport Header Dock */}
           <div className="px-4 py-2 border-b border-zinc-800 bg-[#09090D] flex flex-wrap items-center justify-between gap-3 text-xs z-20">
-            {/* Viewport Status & SLA */}
+            {/* Viewport Status & SLA & DUAL-MODE PREVIEW TOGGLE */}
             <div className="flex items-center gap-3">
+              {/* Dual-Mode Preview Toggle */}
+              <div className="flex items-center border border-zinc-800 bg-zinc-950 p-0.5">
+                <button
+                  type="button"
+                  onClick={() => setPreviewViewportMode('3d-canvas')}
+                  className={`px-2.5 py-1 text-[11px] font-bold uppercase transition flex items-center gap-1.5 ${
+                    previewViewportMode === '3d-canvas'
+                      ? 'bg-[#5322FF] text-white shadow-[0_0_10px_rgba(83,34,255,0.4)]'
+                      : 'text-zinc-400 hover:text-zinc-200'
+                  }`}
+                >
+                  <span>[🎮 3D WebGL Canvas]</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPreviewViewportMode('remotion-video')}
+                  className={`px-2.5 py-1 text-[11px] font-bold uppercase transition flex items-center gap-1.5 ${
+                    previewViewportMode === 'remotion-video'
+                      ? 'bg-[#00E5FF] text-black shadow-[0_0_10px_rgba(0,229,255,0.4)]'
+                      : 'text-zinc-400 hover:text-zinc-200'
+                  }`}
+                >
+                  <span>[🎬 Remotion Video Preview]</span>
+                </button>
+              </div>
+
+              <span className="hidden sm:inline-block text-zinc-700">|</span>
+
               <span className="flex items-center gap-1.5 font-bold text-zinc-200">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
                 <span>SYSTEM SLA: {formData.telemetryFps}FPS</span>
@@ -1471,7 +1953,7 @@ export const CraftStudioConfigurator: React.FC = () => {
           {/* Central Canvas Viewport Frame */}
           <div className="flex-1 w-full h-full p-2 flex items-center justify-center overflow-hidden bg-black relative">
             <div
-              className={`h-full transition-all duration-300 relative border border-white/10 ${
+              className={`h-full transition-all duration-300 relative border border-white/10 flex items-center justify-center bg-black overflow-hidden ${
                 deviceMode === 'desktop'
                   ? 'w-full'
                   : deviceMode === 'tablet'
@@ -1479,24 +1961,176 @@ export const CraftStudioConfigurator: React.FC = () => {
                   : 'w-[375px] max-w-full'
               }`}
             >
-              <iframe
-                ref={iframeRef}
-                srcDoc={generatedHtml}
-                sandbox="allow-scripts allow-modals allow-same-origin"
-                title="ARTIFICIAL CRAFT 3D Viewport"
-                className="w-full h-full bg-black rounded-none border-0"
-              />
-
-              {/* Floating Glassmorphic HUD overlay */}
-              <div className="absolute top-3 left-3 pointer-events-none flex items-center gap-2">
-                <span className="px-2 py-0.5 bg-black/60 backdrop-blur-md border border-white/10 text-[10px] text-zinc-300">
-                  {formData.brandName}
-                </span>
-                <span className="px-2 py-0.5 bg-black/60 backdrop-blur-md border border-[#00E5FF]/30 text-[10px] text-[#00E5FF]">
-                  STAGE: {formData.explodedProgress}%
-                </span>
+              {/* Dynamic Viewport Background Layer */}
+              <div
+                key={`bg-layer-${activeShaderKey}-${formData.theme?.backgroundColor}-${primaryColor}-${accentColor}`}
+                className="absolute inset-0 z-0 pointer-events-none opacity-40 overflow-hidden mix-blend-screen transition-colors duration-500"
+                style={{ transform: 'translateZ(0)' }}
+              >
+                <ActiveBg
+                  backgroundColor={formData.theme?.backgroundColor || '#09090B'}
+                  primaryColor={primaryColor}
+                  accentColor={accentColor}
+                  backgroundShader={activeShaderKey}
+                  interactive={false}
+                />
               </div>
+
+              {previewViewportMode === '3d-canvas' ? (
+                <div
+                  className="relative w-full h-full pointer-events-auto cursor-crosshair z-10 touch-pan-y"
+                  style={{ touchAction: 'pan-y' }}
+                  onPointerMove={(e) => {
+                    const rect = e.currentTarget.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+                    const y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+                    setPointerCoords({ x, y });
+                    setIsHoveringCanvas(true);
+                  }}
+                  onPointerLeave={() => setIsHoveringCanvas(false)}
+                >
+                  <iframe
+                    ref={iframeRef}
+                    srcDoc={generatedHtml}
+                    sandbox="allow-scripts allow-modals allow-same-origin"
+                    title="ARTIFICIAL CRAFT 3D Viewport"
+                    data-background-shader={activeShaderKey}
+                    data-base-component={formData.base_component || formData.presetModel || formData.modelType || 'RoboticsHandNode'}
+                    style={{ touchAction: 'pan-y' }}
+                    className="w-full h-full bg-transparent rounded-none border-0 pointer-events-auto touch-pan-y"
+                  />
+
+                  {/* Raycasting Reticle Overlay Follower */}
+                  {isHoveringCanvas && (
+                    <div
+                      className="absolute pointer-events-none z-30 transition-transform duration-75 ease-out"
+                      style={{
+                        left: `${((pointerCoords.x + 1) / 2) * 100}%`,
+                        top: `${((-pointerCoords.y + 1) / 2) * 100}%`,
+                        transform: 'translate(-50%, -50%)',
+                      }}
+                    >
+                      <div className="relative w-8 h-8 flex items-center justify-center">
+                        <div className="absolute w-full h-[1px] bg-[#00E5FF]/60" />
+                        <div className="absolute h-full w-[1px] bg-[#00E5FF]/60" />
+                        <div className="w-2.5 h-2.5 border border-[#00E5FF] rounded-none animate-ping" />
+                        <div className="absolute -top-4 -right-10 text-[8px] font-mono text-[#00E5FF] bg-black/80 px-1 border border-[#00E5FF]/40">
+                          {pointerCoords.x.toFixed(2)},{pointerCoords.y.toFixed(2)}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Floating Glassmorphic Top HUD overlay - Cleaned to avoid clashing with internal iframe HUD header (relocated to top-10 or hidden to keep canvas uncluttered) */}
+
+                  {/* Bottom-Left Clean Logo Overlay (No Duplicate Text Clashing) */}
+                  <div className="absolute bottom-6 left-6 z-20 pointer-events-none max-w-[80%]">
+                    {formData.logoUrl && (
+                      <div className="p-1.5 bg-black/70 backdrop-blur-md border border-white/10 shadow-lg rounded">
+                        <img
+                          src={formData.logoUrl}
+                          alt="Brand Logo"
+                          className="max-h-8 w-auto object-contain"
+                          onError={(e) => {
+                            // Hide on broken image URL
+                            (e.currentTarget as HTMLElement).style.display = 'none';
+                          }}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="w-full h-full aspect-video max-w-full max-h-full flex items-center justify-center bg-black relative z-10">
+                  <Player
+                    component={CraftStudioVideoComposition}
+                    inputProps={{
+                      brandName: formData.brandName || formData.compositionId,
+                      slogan: formData.slogan || formData.tagline || 'Autonomous 3D Manufacturing Pipeline & Multi-Agent Swarm',
+                      logoUrl: formData.logoUrl,
+                      primaryColor: formData.theme?.primaryColor || formData.primaryColor || '#5322FF',
+                      accentColor: formData.theme?.accentColor || formData.accentColor || '#00E5FF',
+                      backgroundColor: formData.theme?.backgroundColor || formData.backgroundColor || '#09090B',
+                      base_component: formData.base_component || formData.presetModel || formData.modelType || 'kinematic_manipulator_arm',
+                      assemblyStage: formData.explodedProgress,
+                      telemetry: {
+                        slaTarget: formData.aiLatency || '<2ms',
+                        fps: formData.telemetryFps || 60,
+                      },
+                      motion_tokens: formData.motionTokens || ['kinetic-parallax', 'chromatic-aberration', 'glitch-flicker'],
+                      cameraAnglePreset: 'isometric-iso',
+                      glitchIntensity: 0.5,
+                      audioBpm: 120,
+                      playbackRate: 1.0,
+                      matrixGridSize: 48,
+                      watermarkPosition: 'top-right',
+                    }}
+                    durationInFrames={180}
+                    compositionWidth={1920}
+                    compositionHeight={1080}
+                    fps={formData.telemetryFps || 60}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                    }}
+                    controls
+                    autoPlay
+                    loop
+                  />
+
+                  {/* Remotion Status Badge */}
+                  <div className="absolute top-3 left-3 pointer-events-none font-mono text-[10px] text-[#00E5FF] bg-zinc-950/80 border border-zinc-800 px-2.5 py-1 z-10 flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#00E5FF] animate-ping" />
+                    <span>REMOTION VIDEO ENGINE // 1080P 60FPS</span>
+                  </div>
+                </div>
+              )}
             </div>
+
+            {/* B2B ENTERPRISE CTA POPUP / FLOATING BANNER */}
+            <AnimatePresence>
+              {isB2BPopupOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 20, scale: 0.95 }}
+                  transition={{ duration: 0.25 }}
+                  className="absolute bottom-5 right-5 z-40 max-w-md w-[calc(100%-2.5rem)] bg-[#09090B] border border-[#5322FF] shadow-[0_0_25px_rgba(83,34,255,0.35)] p-4 font-mono text-zinc-100"
+                >
+                  {/* Header Badge & Close Button */}
+                  <div className="flex items-center justify-between pb-2 border-b border-zinc-800 mb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="px-2 py-0.5 bg-[#5322FF]/20 text-[#00E5FF] border border-[#00E5FF]/40 text-[10px] font-bold tracking-wider uppercase flex items-center gap-1">
+                        <Zap className="w-3 h-3 text-[#00E5FF]" />
+                        <span>⚡ {t('b2bPopupTitle')}</span>
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setIsB2BPopupOpen(false)}
+                      className="text-zinc-500 hover:text-white text-xs px-1.5 py-0.5 border border-zinc-800 hover:border-zinc-700 bg-zinc-900/50 transition"
+                      title="Dismiss popup"
+                    >
+                      [ × CLOSE ]
+                    </button>
+                  </div>
+
+                  {/* Body Text */}
+                  <p className="text-xs text-zinc-300 leading-relaxed mb-4">
+                    {t('b2bPopupDesc')}
+                  </p>
+
+                  {/* Primary CTA Button */}
+                  <a
+                    href="mailto:thuyvu@artificialcraft.space?subject=ARTIFICIAL%20CRAFT%20-%20Enterprise%203D%20Kinematics%20Consultation"
+                    className="w-full py-2.5 px-3 bg-[#5322FF] hover:bg-[#5322FF]/90 text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(83,34,255,0.5)] border border-[#00E5FF]/30 text-center"
+                  >
+                    <Zap className="w-3.5 h-3.5 text-[#00E5FF] shrink-0" />
+                    <span>[ ⚡ {t('btnBookB2bConsultation')} ]</span>
+                  </a>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </main>
       </div>

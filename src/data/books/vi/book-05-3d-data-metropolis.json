@@ -1,0 +1,52 @@
+{
+  "slug": "book-05-3d-data-metropolis",
+  "title": "Báo cáo Ứng dụng: Mô phỏng Tài chính Thành phố Dữ liệu 3D",
+  "subtitle": "Trực quan hóa Báo cáo Tài chính thành Ma trận 3D Voxel 60 FPS",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "Báo cáo Ứng dụng: Mô phỏng Tài chính Thành phố Dữ liệu 3D",
+      "subtitle": "Trực quan hóa Báo cáo Tài chính thành Ma trận 3D Voxel 60 FPS",
+      "version": "v1.0.0",
+      "tags": [
+        "ZOD",
+        "FAIL-FAST",
+        "AI AGENTS",
+        "GUARDRAILS"
+      ],
+      "verified": true
+    },
+    {
+      "id": "p02_invisible_disaster",
+      "type": "tech_doc",
+      "title": "01 // THẢM HỌA VÔ HÌNH TRONG DÒNG DỮ LIỆU",
+      "content": "Một trang web sập sẽ để lại log lỗi rõ ràng. Nhưng một luồng video tự động hóa bị lỗi dữ liệu ngầm sẽ âm thầm tạo ra 1.000 video hỏng mà bạn không hề hay biết.\n\nNếu thiếu rào chắn kiểm định schema nghiêm ngặt, sự sai lệch dữ liệu sẽ dẫn tới vỡ khung chữ, thiếu mã màu hex hoặc chết liên kết ảnh 404 sau hàng chục giờ cày ải render và đốt sạch ngân sách điện toán đám mây.",
+      "seed": "rubik-cube-matrix-01",
+      "graphicType": "NEURAL_MESH"
+    },
+    {
+      "id": "p03_three_window_pipeline",
+      "type": "tech_doc",
+      "title": "02 // MÔ HÌNH BA CỬA SỔ CÁCH LY TRÁCH NHIỆM",
+      "content": "Cửa sổ 1 (Kiến trúc sư - Architect): Trích xuất thông số JSON và định nghĩa schema Zod chặt chẽ.\nCửa sổ 2 (Kỹ sư dựng - Builder): Tiếp nhận schema chuẩn và triển khai mã nguồn Remotion React.\nCửa sổ 3 (Động cơ - Engine): Thực thi tác vụ render không đầu (headless).\nNghiêm cấm chồng chéo hoặc lẫn lộn trách nhiệm giữa các vai trò.",
+      "code": "import { z } from 'zod';\n\nexport const RenderPropsSchema = z.object({\n  title: z.string().max(60),\n  primaryColor: z.string().regex(/^#[0-9A-Fa-f]{6}$/),\n  fps: z.literal(60),\n  seed: z.string()\n});",
+      "language": "typescript",
+      "seed": "swiss-grid-dot-matrix",
+      "graphicType": "DATA_MATRIX"
+    },
+    {
+      "id": "p04_doorstep_rule",
+      "type": "diagram",
+      "title": "03 // NGUYÊN TẮC GÁC CỔNG & RÀO CHẮN BẢO VỆ CHUẨN THỤY SĨ",
+      "content": "Xác thực dữ liệu đầu vào ngay tại cửa ngõ bằng Zod. Nếu thuộc tính props không vượt qua kiểm định, lập tức hủy tiến trình trong vòng 2 mili-giây (chi phí $0.00) trước khi tiêu tốn bất kỳ tài nguyên điện toán nào.",
+      "seed": "master-director-orchestrator",
+      "graphicType": "AUTOMATION_FLOW",
+      "caption": "Hình 3.1 — Rào chắn schema Zod gác cổng ngăn chặn payload không hợp lệ trước khi cấp phát tài nguyên đám mây"
+    }
+  ]
+}

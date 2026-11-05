@@ -10,12 +10,37 @@ export const ParticleTunnelBg: React.FC<ParticleTunnelBgProps> = ({
   frame: frameProp,
   backgroundColor = '#050505',
   primaryColor = '#00E5FF',
+  accentColor,
   particleCount = 80,
   className,
   style,
 }) => {
-  const hookFrame = useCurrentFrame();
-  const frame = frameProp ?? hookFrame;
+  const effectiveAccent = accentColor || primaryColor;
+  let hookFrame = 0;
+  let isInRemotion = true;
+  try {
+    hookFrame = useCurrentFrame();
+  } catch {
+    hookFrame = 0;
+    isInRemotion = false;
+  }
+
+  const [animFrame, setAnimFrame] = React.useState(0);
+
+  React.useEffect(() => {
+    if (frameProp !== undefined || isInRemotion) return;
+    let animId: number;
+    let startTime = performance.now();
+    const loop = (now: number) => {
+      const elapsed = (now - startTime) / 1000;
+      setAnimFrame(Math.floor(elapsed * 60));
+      animId = requestAnimationFrame(loop);
+    };
+    animId = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(animId);
+  }, [frameProp, isInRemotion]);
+
+  const frame = frameProp ?? (isInRemotion ? hookFrame : animFrame);
 
   const particles = Array.from({ length: particleCount }, (_, i) => {
     const seed = i * 333;
@@ -73,8 +98,8 @@ export const ParticleTunnelBg: React.FC<ParticleTunnelBgProps> = ({
               width: `${p.size}px`,
               height: `${p.size * 4}px`,
               borderRadius: '50%',
-              backgroundColor: primaryColor,
-              boxShadow: `0 0 12px ${primaryColor}`,
+              backgroundColor: idx % 2 === 0 ? primaryColor : effectiveAccent,
+              boxShadow: `0 0 12px ${idx % 2 === 0 ? primaryColor : effectiveAccent}`,
               opacity: p.opacity,
               transform: `translate3d(-50%, -50%, ${p.zPos}px)`,
             }}

@@ -9,20 +9,16 @@ import { ASSET_PRESET_REGISTRY } from '@/lib/video-engine/presets/registry';
 import Monolith3DNode from '@/components/playground/Monolith3DNode';
 import BannerStudio from '@/components/playground/BannerStudio';
 import CsvDataVisualizer from '@/components/playground/CsvDataVisualizer';
-import CraftStudioConfigurator from '@/components/studio/CraftStudioConfigurator';
+import PlugAndPlaySandbox from '@/components/playground/PlugAndPlaySandbox';
 import {
   Box,
   Film,
   Image,
   BarChart3,
-  Sparkles,
+  Sliders,
   Link as LinkIcon,
   Code,
-  Sliders,
   Layers,
-  Terminal,
-  Cpu,
-  ArrowRight,
 } from 'lucide-react';
 
 export type PlaygroundActiveTab =
@@ -34,10 +30,26 @@ export type PlaygroundActiveTab =
 
 export const PlaygroundPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const initialTab = (searchParams.get('tab') as PlaygroundActiveTab) || 'node-01';
-  const [activeTab, setActiveTab] = useState<PlaygroundActiveTab>(initialTab);
+  const getInitialTab = (): PlaygroundActiveTab => {
+    const nodeParam = searchParams.get('node');
+    if (nodeParam === 'plug-and-play-sandbox' || nodeParam === 'node-05') {
+      return 'node-05';
+    }
+    const tabParam = searchParams.get('tab') as PlaygroundActiveTab;
+    if (tabParam && ['node-01', 'node-02', 'node-03', 'node-04', 'node-05'].includes(tabParam)) {
+      return tabParam;
+    }
+    return 'node-01';
+  };
+
+  const [activeTab, setActiveTab] = useState<PlaygroundActiveTab>(getInitialTab);
 
   useEffect(() => {
+    const nodeParam = searchParams.get('node');
+    if (nodeParam === 'plug-and-play-sandbox' || nodeParam === 'node-05') {
+      setActiveTab('node-05');
+      return;
+    }
     const tabParam = searchParams.get('tab') as PlaygroundActiveTab;
     if (tabParam && ['node-01', 'node-02', 'node-03', 'node-04', 'node-05'].includes(tabParam)) {
       setActiveTab(tabParam);
@@ -142,12 +154,12 @@ export const PlaygroundPage: React.FC = () => {
             onClick={() => handleSelectTab('node-05')}
             className={`flex items-center gap-1.5 px-3 py-1.5 border transition ${
               activeTab === 'node-05'
-                ? 'border-[#5322ff] bg-[#5322ff]/20 text-[#a855f7] font-bold shadow-[0_0_10px_rgba(83,34,255,0.4)]'
+                ? 'border-[#5322ff] bg-[#5322ff]/20 text-[#00E5FF] font-bold shadow-[0_0_10px_rgba(83,34,255,0.4)]'
                 : 'border-zinc-800 bg-zinc-950/80 text-zinc-400 hover:text-white'
             }`}
           >
-            <Sparkles className="w-3.5 h-3.5 text-[#5322ff]" />
-            <span>NODE 05: STUDIO FACTORY</span>
+            <Sliders className="w-3.5 h-3.5 text-[#5322ff]" />
+            <span>NODE 05: PLUG & PLAY</span>
           </button>
         </div>
       </header>
@@ -378,10 +390,10 @@ export const PlaygroundPage: React.FC = () => {
           </div>
         )}
 
-        {/* NODE 05: Studio Configurator Node (Nhà máy sản xuất Web 3D No-Code/Low-Code) */}
+        {/* NODE 05: Plug and Play Sandbox */}
         {activeTab === 'node-05' && (
           <div className="flex-1 w-full h-full relative">
-            <CraftStudioConfigurator />
+            <PlugAndPlaySandbox />
           </div>
         )}
       </main>

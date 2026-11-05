@@ -10,13 +10,38 @@ export const QuantumWaveformBg: React.FC<QuantumWaveformBgProps> = ({
   frame: frameProp,
   backgroundColor = '#050505',
   primaryColor = '#00E5FF',
-  secondaryColor = '#7000FF',
+  secondaryColor,
+  accentColor,
   waveCount = 5,
   className,
   style,
 }) => {
-  const hookFrame = useCurrentFrame();
-  const frame = frameProp ?? hookFrame;
+  const effectiveSecondary = accentColor || secondaryColor || '#7000FF';
+  let hookFrame = 0;
+  let isInRemotion = true;
+  try {
+    hookFrame = useCurrentFrame();
+  } catch {
+    hookFrame = 0;
+    isInRemotion = false;
+  }
+
+  const [animFrame, setAnimFrame] = React.useState(0);
+
+  React.useEffect(() => {
+    if (frameProp !== undefined || isInRemotion) return;
+    let animId: number;
+    let startTime = performance.now();
+    const loop = (now: number) => {
+      const elapsed = (now - startTime) / 1000;
+      setAnimFrame(Math.floor(elapsed * 60));
+      animId = requestAnimationFrame(loop);
+    };
+    animId = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(animId);
+  }, [frameProp, isInRemotion]);
+
+  const frame = frameProp ?? (isInRemotion ? hookFrame : animFrame);
 
   const width = 1920;
   const height = 1080;
@@ -64,7 +89,7 @@ export const QuantumWaveformBg: React.FC<QuantumWaveformBgProps> = ({
       >
         {Array.from({ length: waveCount }).map((_, wIdx) => {
           const path = generateSvgPath(wIdx);
-          const strokeColor = wIdx % 2 === 0 ? primaryColor : secondaryColor;
+          const strokeColor = wIdx % 2 === 0 ? primaryColor : effectiveSecondary;
           const opacity = interpolate(
             Math.sin(frame * 0.05 + wIdx),
             [-1, 1],

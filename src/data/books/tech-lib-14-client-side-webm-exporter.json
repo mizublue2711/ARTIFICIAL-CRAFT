@@ -1,0 +1,54 @@
+{
+  "slug": "tech-lib-14-client-side-webm-exporter",
+  "title": "CLIENT-SIDE 60FPS WEBM EXPORTER",
+  "subtitle": "Canvas Stream Capture & Web Audio Synthesizer at $0.00 Server Cost",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "CLIENT-SIDE 60FPS WEBM EXPORTER",
+      "subtitle": "Instant 60FPS Video Export Directly In Browser Memory",
+      "version": "v1.0.0",
+      "tags": [
+        "WEBM EXPORTER",
+        "CANVAS STREAM",
+        "WEB AUDIO",
+        "$0.00 RENDER"
+      ],
+      "verified": true,
+      "seed": "webm-exporter-cover-14",
+      "graphicType": "WEBM_CAPTURE_DOCK"
+    },
+    {
+      "id": "p02_cloud_render_pit",
+      "type": "tech_doc",
+      "title": "01 // THE CLOUD RENDER MONEY PIT",
+      "content": "Serverless video rendering on AWS Lambda or GCP Cloud Run sounds great until the bill arrives. Every rendered frame costs CPU time. Every exported video burns bandwidth. Scale to 100,000 exports, and your infrastructure budget collapses.\n\nWhy pay cloud servers to render frames when your user's machine has an M3 chip or RTX GPU sitting idle?",
+      "seed": "cloud-render-pit-14",
+      "graphicType": "DATA_MATRIX"
+    },
+    {
+      "id": "p03_in_memory_stream_synthesis",
+      "type": "tech_doc",
+      "title": "02 // IN-MEMORY STREAM SYNTHESIS",
+      "content": "We offload video creation 100% to the client browser:\n1. Canvas Stream Capture: canvas.captureStream(60) locks output to a deterministic 60 FPS image stream.\n2. Web Audio Synthesizer: Procedural Web Audio API generates 120 BPM cyber kicks, sub drops, and high-tech arpeggios in real time.\n3. Stream Merging & MediaRecorder: Combines video and audio tracks into VP9/Opus WebM directly in RAM.",
+      "code": "const canvasStream = canvas.captureStream(60);\nconst audioStream = audioCtx.createMediaStreamDestination().stream;\nconst combinedStream = new MediaStream([\n  ...canvasStream.getVideoTracks(),\n  ...audioStream.getAudioTracks()\n]);\nconst recorder = new MediaRecorder(combinedStream, { mimeType: 'video/webm;codecs=vp9,opus' });",
+      "language": "typescript",
+      "seed": "in-memory-stream-synthesis-14",
+      "graphicType": "WEBM_CAPTURE_DOCK"
+    },
+    {
+      "id": "p04_zero_latency_victory",
+      "type": "diagram",
+      "title": "03 // THE 0ms QUEUE VICTORY",
+      "content": "Click 'Export Video (.webm)' on the bottom Collapsible Dock. The camera executes a 30-second 5-act auto-flight. The browser encodes the VP9 stream live.\n\nWhen finished, ArtificialCraft_Monolith_60fps.webm downloads instantly.\n\nServer compute cost: $0.00.\nRender queue latency: 0ms.\nThat is how workers build sustainable media pipelines.",
+      "seed": "zero-dollar-cloud-cost-badge-14",
+      "graphicType": "WEBM_CAPTURE_DOCK",
+      "caption": "Figure 14.1 — Zero-server-cost browser-native client GPU recording architecture achieving 0ms queue latency"
+    }
+  ]
+}

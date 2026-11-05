@@ -210,8 +210,8 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                     <ExternalLink className="h-3.5 w-3.5 text-zinc-500 group-hover:text-[#00E5FF] shrink-0 ml-2" />
                   </a>
 
-                  <a
-                    href="/#banner-studio"
+                  <Link
+                    to="/playground?tab=node-03"
                     onClick={() => setStudiosOpen(false)}
                     className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs transition-colors mt-1"
                   >
@@ -221,10 +221,10 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                       </span>
                       <span className="text-[10px] text-zinc-500">Brutalist Graphic Generator</span>
                     </div>
-                  </a>
+                  </Link>
 
-                  <a
-                    href="/#csv-visualizer"
+                  <Link
+                    to="/playground?tab=node-04"
                     onClick={() => setStudiosOpen(false)}
                     className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs transition-colors mt-1"
                   >
@@ -234,7 +234,7 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                       </span>
                       <span className="text-[10px] text-zinc-500">CKAN Mekong Open Data Visualizer</span>
                     </div>
-                  </a>
+                  </Link>
                 </motion.div>
               )}
             </AnimatePresence>

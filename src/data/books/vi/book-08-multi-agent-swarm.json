@@ -1,0 +1,52 @@
+{
+  "slug": "book-08-multi-agent-swarm",
+  "title": "Mô hình Quản trị & Điều phối Mạng lưới AI Multi-Agent",
+  "subtitle": "Kiến trúc Tổ chức & Phân công Công việc Tự động giữa các Trợ lý AI",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "Mô hình Quản trị & Điều phối Mạng lưới AI Multi-Agent",
+      "subtitle": "Kiến trúc Tổ chức & Phân công Công việc Tự động giữa các Trợ lý AI",
+      "version": "v1.0.0",
+      "tags": [
+        "STUDIO CONFIGURATOR",
+        "AST ENGINE",
+        "WEB3D",
+        "THREE.JS"
+      ],
+      "verified": true
+    },
+    {
+      "id": "p02_b2b_conversion_wall",
+      "type": "tech_doc",
+      "title": "01 // BỨC TƯỜNG CHUYỂN ĐỔI KHÁCH HÀNG DOANH NGHIỆP B2B",
+      "content": "Bạn muốn bán các sản phẩm B2B công nghệ cao phức tạp: Cánh tay robot, trạm Physical AI, thiết bị phần cứng công nghiệp. Bạn dựng một website thông thường, tải lên vài bức ảnh render PNG tĩnh, viết nội dung quảng cáo và gắn nút 'Yêu cầu Bản Demo'.\n\nHầu như không ai tương tác. Hình ảnh tĩnh không thể xây dựng niềm tin; chúng chỉ giống như hình nền vô hồn. Khách hàng tiềm năng muốn trực tiếp chạm vào thiết bị, tháo lắp chi tiết linh kiện và tùy biến cấu hình theo thời gian thực.",
+      "seed": "studio-configurator-cover-08",
+      "graphicType": "NEURAL_MESH"
+    },
+    {
+      "id": "p03_gpu_render_architecture",
+      "type": "tech_doc",
+      "title": "02 // KIẾN TRÚC KẾT XUẤT GPU CHI PHÍ $0",
+      "content": "Làm thế nào để tạo ứng dụng Web 3D tùy biến riêng biệt cho từng khách hàng mà không phá sản?\nLựa chọn A: Thuê 5 lập trình viên Three.js và tiêu tốn 3 tháng cho mỗi dự án.\nLựa chọn B: Vận hành cụm máy chủ GPU đắt đỏ với chi phí lên đến $5 cho mỗi lượt render.\nLựa chọn C: Xây dựng Động cơ Cấu hình Studio AST.\n\nPhát sinh payload JSON cây cú pháp trừu tượng (AST) siêu nhẹ, xác thực qua cổng kiểm định Zod tại client và truyền dẫn trực tiếp vào trình duyệt.",
+      "code": "export const SwissDesignConfigSchema = z.object({\n  presetId: z.string().default('cybernetic-brutalism-v1'),\n  layoutMode: z.enum(['two-column', 'fullscreen-canvas']),\n  theme: z.object({ primaryColor: z.string() })\n});",
+      "language": "typescript",
+      "seed": "ast-proxy-code-snippet",
+      "graphicType": "ISOMETRIC_CAD"
+    },
+    {
+      "id": "p04_instant_stream",
+      "type": "diagram",
+      "title": "03 // MIỄN PHÍ RENDER MÁY CHỦ & TRUYỀN TẢI TỨC THÌ",
+      "content": "Hệ thống backend trả về luồng HTML/GSAP/Three.js sạch sẽ. Trình duyệt nạp trực tiếp vào iframe trong bộ nhớ (srcdoc). Card đồ họa GPU của người dùng kết xuất mượt mà ở 60 FPS. Chi phí điện toán máy chủ: đúng $0.00. Độ trễ: Dưới 500ms.",
+      "seed": "zero-cost-gpu-render-mockup",
+      "graphicType": "AUTOMATION_FLOW",
+      "caption": "Hình 3.1 — Kiến trúc iframe srcdoc trong bộ nhớ đẩy toàn bộ tác vụ WebGL 60 FPS về GPU phía client"
+    }
+  ]
+}

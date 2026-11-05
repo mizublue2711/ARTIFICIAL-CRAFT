@@ -1,0 +1,51 @@
+{
+  "slug": "book-07-linkedin-banner-engine",
+  "title": "Công cụ Tạo Ảnh Bìa LinkedIn & Nhận diện Thương hiệu",
+  "subtitle": "Tự động Thiết kế Banner Đồ họa & Hình ảnh Truyền thông Mạng Xã hội",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "Công cụ Tạo Ảnh Bìa LinkedIn & Nhận diện Thương hiệu",
+      "subtitle": "Tự động Thiết kế Banner Đồ họa & Hình ảnh Truyền thông Mạng Xã hội",
+      "version": "v1.0.0",
+      "tags": [
+        "PHYSICAL AI",
+        "POINT CLOUD",
+        "LIDAR",
+        "ROS2"
+      ],
+      "verified": true
+    },
+    {
+      "id": "p02_drift_nightmare",
+      "type": "tech_doc",
+      "title": "01 // CƠN ÁC MỘNG SAI LỆCH KHÔNG GIAN",
+      "content": "Một ứng dụng web gặp lỗi? Bạn nhận mã 500 và sửa lại một dòng code.\n\nNhưng một robot tự hành hai chân bị lệch không gian vật lý? Chỉ 0.01% sai lệch định vị cũng đủ khiến cánh tay robot 50kg va đập thẳng vào dây chuyền lắp ráp.\n\nTrong phát triển web, sai lệch chỉ gây phiền toái. Nhưng trong Physical AI, sai lệch là thảm họa. Bạn không thể phó thác cho luồng camera 2D phẳng thông thường; bạn bắt buộc phải truyền trực tiếp đám mây điểm 3D LiDAR (spatial point cloud) ở tốc độ ổn định 60 FPS.",
+      "seed": "point-cloud-hud-cover-seed-07",
+      "graphicType": "NEURAL_MESH"
+    },
+    {
+      "id": "p03_neural_pipeline",
+      "type": "tech_doc",
+      "title": "02 // ĐƯỜNG ỐNG XỬ LÝ NƠ-RON TỐC ĐỘ CAO",
+      "content": "Làm thế nào để triệt tiêu hoàn toàn sự sai lệch định vị vật lý? Hãy xây dựng đường ống tiếp nhận dữ liệu không độ trễ.\n\nLuồng không gian LiDAR -> Lõi xử lý mạng nơ-ron -> Bộ truyền động cơ và bàn tay.\nĐộ trễ suy luận: 1.8ms.\nTốc độ nạp dữ liệu: luồng dataset 60 FPS liên tục.\nMa trận lực tiếp xúc xúc giác: 1.024 điểm cảm ứng hoạt động đồng thời.\n\nCon trỏ chuột biến thành một cực nam châm hút và uốn cong đám mây điểm theo thời gian thực. Bạn sẽ thấy dòng dữ liệu chuyển động ngay trước khi cánh tay robot thực tế thực hiện động tác.",
+      "seed": "neural-pipeline-pointcloud-mockup",
+      "graphicType": "DATA_MATRIX"
+    },
+    {
+      "id": "p04_developer_sandbox",
+      "type": "tech_doc",
+      "title": "03 // MÔI TRƯỜNG THỰC NGHIỆM ROS2 & PYTHON",
+      "content": "Nhà quản lý cần bảng điều khiển tổng quan. Kỹ sư lập trình cần giao diện lập trình API. Chúng tôi cung cấp cả hai.\n\nKhung thông số đo lường hiệu ứng kính mờ (Glassmorphic Telemetry Dock) nổi ở phía trên. Môi trường thực nghiệm tương tác trực tiếp ROS2 và Python đặt ngay bên dưới. Không che giấu code đằng sau hiệu ứng lòe loẹt. Mở rộng toàn bộ SDK và để kỹ sư tinh chỉnh góc quay của từng khớp động cơ trực tiếp.\n\nLàm chủ luồng đám mây điểm là làm chủ thế giới vật lý thực tế.",
+      "code": "import rclpy\nfrom physical_ai import MotorKinematics\n\nrobot = MotorKinematics(node_id=\"biped-arm-01\")\nrobot.set_joint_angle(joint=3, angle=45.2, torque_limit=45.0)\nassert robot.telemetry.latency < 2.0  # 1.8ms SLA",
+      "language": "python",
+      "seed": "ros2-python-code-snippet",
+      "graphicType": "ISOMETRIC_CAD"
+    }
+  ]
+}

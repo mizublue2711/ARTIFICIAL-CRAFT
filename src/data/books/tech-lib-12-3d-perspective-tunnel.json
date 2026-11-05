@@ -1,0 +1,54 @@
+{
+  "slug": "tech-lib-12-3d-perspective-tunnel",
+  "title": "3D PERSPECTIVE TUNNEL & 5-ACT FLY-THROUGH",
+  "subtitle": "Hyperspace Hexagonal Tunnel Math & 30-Second Deterministic Sequence",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "3D PERSPECTIVE TUNNEL",
+      "subtitle": "Vanishing Point Convergence & 5,000 Accelerating Particles",
+      "version": "v1.0.0",
+      "tags": [
+        "3D TUNNEL",
+        "PERSPECTIVE",
+        "THREE.JS",
+        "CHOREOGRAPHY"
+      ],
+      "verified": true,
+      "seed": "perspective-tunnel-cover-12",
+      "graphicType": "PERSPECTIVE_TUNNEL"
+    },
+    {
+      "id": "p02_illusions_of_depth",
+      "type": "tech_doc",
+      "title": "01 // THE ILLUSIONS OF DEPTH",
+      "content": "A computer screen is flat. Two dimensions: X and Y. How do you create infinite spatial depth without crashing browser RAM?\n\nYou harness Vanishing Point Convergence and Radial Dispersion. 5,000 particles moving Z-distance outwards in polar coordinates. Three.js Projection Matrix locking Field of View (FOV) across viewports. A 120 BPM camera Z-shake math synchronizing rhythm with audit consensus nodes.",
+      "seed": "illusions-depth-tunnel-12",
+      "graphicType": "PERSPECTIVE_TUNNEL"
+    },
+    {
+      "id": "p03_three_depth_layers",
+      "type": "tech_doc",
+      "title": "02 // THREE LAYERS OF ZERO-404 PRECISION",
+      "content": "To guarantee 60 FPS SLA without frame drops, 3D space splits into three isolated depth layers:\n1. Foreground Layer: 2D HUD cards, laser cursor, kinetic-parallax mouse response.\n2. Midground Layer: Composite Monolith, data branching tree, ambient occlusion shadows.\n3. Background Layer: Fluid noise field, 1px CAD grid, radial particle dispersion.\n\n100% of PBR textures generated in-memory via dynamic canvas textures in RAM. Zero asset loading delays.",
+      "code": "const canvasTexture = new THREE.CanvasTexture(bufferCanvas);\ncanvasTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();\nconst tunnelMaterial = new THREE.MeshStandardMaterial({\n  map: canvasTexture,\n  roughness: 0.15,\n  metalness: 0.85\n});",
+      "language": "typescript",
+      "seed": "depth-layers-code-12",
+      "graphicType": "ISOMETRIC_CAD"
+    },
+    {
+      "id": "p04_five_act_choreography",
+      "type": "diagram",
+      "title": "03 // 30-SECOND 5-ACT CHOREOGRAPHY",
+      "content": "Act 1 (00:00 - 00:06): Dynamic 3D fluid noise field over 1px Swiss grid.\nAct 2 (00:06 - 00:12): Glassmorphism interface layers dropping with 2nd-order spring physics.\nAct 3 (00:12 - 00:18): Monospace hex matrix with Perlin noise wave and scramble text.\nAct 4 (00:18 - 00:24): Cyberpunk hexagonal tunnel with 4-model consensus nodes and 120 BPM Z-shake.\nAct 5 (00:24 - 00:30): 200 orbiting data nodes forming a plexus leading to CTA.",
+      "seed": "5-act-sequence-telemetry-12",
+      "graphicType": "PERSPECTIVE_TUNNEL",
+      "caption": "Figure 12.1 — 30-Second 5-Act deterministic flight sequence executing at 60 FPS on client GPU"
+    }
+  ]
+}
