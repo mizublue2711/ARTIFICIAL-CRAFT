@@ -192,6 +192,10 @@ export interface Translations {
   status_online: string;
   privacy: string;
   terms: string;
+  footerEngineBadge: string;
+  footerEngineTitle: string;
+  footerEngineDesc: string;
+  btnLaunchEngine: string;
 
   // Plug & Play Sandbox
   sandbox_section_label: string;
@@ -560,6 +564,11 @@ export const translations: Record<Language, Translations> = {
     status_online: 'SYSTEMS ONLINE',
     privacy: 'PRIVACY',
     terms: 'TERMS',
+    // Footer 3D Engine Link
+    footerEngineBadge: "3D ARCHITECTURE ENGINE",
+    footerEngineTitle: "WEBAPP PRESENTATION ENGINE",
+    footerEngineDesc: "Interactive 3D WebApp Architecture & Directory AST Visualizer. Replace static slides with fluid WebGL kinematics.",
+    btnLaunchEngine: "LAUNCH 3D ENGINE ↗",
 
     // Plug & Play Sandbox
     sandbox_section_label: 'PLUG & PLAY // SANDBOX // HYPER-SPEED EXPERIMENTS // FULL SECURITY CONTROL',
@@ -926,6 +935,11 @@ export const translations: Record<Language, Translations> = {
     status_online: 'HỆ THỐNG TRỰC TUYẾN',
     privacy: 'BẢO MẬT',
     terms: 'ĐIỀU KHẢN',
+    // Footer 3D Engine Link
+    footerEngineBadge: "CỖ MÁY MÔ PHỎNG 3D",
+    footerEngineTitle: "TRÌNH TRỰC QUAN HÓA KIẾN TRÚC 3D",
+    footerEngineDesc: "Công cụ trực quan hóa sơ đồ 3D từ Frontend đến Backend & Cây thư mục AST. Thay thế slide tĩnh bằng không gian tương tác WebGL.",
+    btnLaunchEngine: "MỞ CỖ MÁY 3D ↗",
 
     // Plug & Play Sandbox
     sandbox_section_label: 'CẮM & CHẠY // MÔ PHỎNG',
