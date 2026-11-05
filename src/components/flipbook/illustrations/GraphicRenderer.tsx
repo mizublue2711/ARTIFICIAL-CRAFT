@@ -10,6 +10,11 @@ import { RiskRadar } from './RiskRadar';
 import { GlobalGeoNodes } from './GlobalGeoNodes';
 import { CandlestickStream } from './CandlestickStream';
 import { WaterfallFlow } from './WaterfallFlow';
+import { PerspectiveTunnel } from './PerspectiveTunnel';
+import { CompositeMonolith } from './CompositeMonolith';
+import { DigitalBranchingTree } from './DigitalBranchingTree';
+import { FluidNoiseField } from './FluidNoiseField';
+import { WebmCaptureDock } from './WebmCaptureDock';
 
 interface GraphicRendererProps {
   seed?: string;
@@ -51,6 +56,24 @@ export const GraphicRenderer: React.FC<GraphicRendererProps> = ({
     case 'WATERFALL_FLOW':
     case 'WATERFALL':
       return <WaterfallFlow seed={seed} className={className} />;
+    case 'PERSPECTIVE_TUNNEL':
+    case 'TUNNEL':
+      return <PerspectiveTunnel seed={seed} className={className} />;
+    case 'COMPOSITE_MONOLITH':
+    case 'MONOLITH':
+      return <CompositeMonolith seed={seed} className={className} />;
+    case 'DIGITAL_BRANCHING_TREE':
+    case 'BRANCHING_TREE':
+    case 'TREE':
+      return <DigitalBranchingTree seed={seed} className={className} />;
+    case 'FLUID_NOISE_FIELD':
+    case 'NOISE_FIELD':
+    case 'FLUID_NOISE':
+      return <FluidNoiseField seed={seed} className={className} />;
+    case 'WEBM_CAPTURE_DOCK':
+    case 'CAPTURE_DOCK':
+    case 'WEBM_DOCK':
+      return <WebmCaptureDock seed={seed} className={className} />;
     default:
       return <GenerativeVisual seed={seed} mode={graphicType} className={className} />;
   }
