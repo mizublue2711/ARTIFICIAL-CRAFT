@@ -587,6 +587,14 @@ export interface Translations {
   b2bPopupDesc: string;
   btnBookB2bConsultation: string;
 
+  // 3D MODEL PRESETS REGISTRY
+  modelQuantumClockTitle: string;
+  modelQuantumClockDesc: string;
+  modelPneumaticPipelineTitle: string;
+  modelPneumaticPipelineDesc: string;
+  modelTokamakCoreTitle: string;
+  modelTokamakCoreDesc: string;
+
 }
 
 export const translations: Record<Language, Translations> = {
@@ -1188,6 +1196,14 @@ export const translations: Record<Language, Translations> = {
     b2bPopupDesc: "You are currently experiencing the Playground Demo. Looking to forge custom, exclusive 3D Kinematics components tailored for your enterprise?",
     btnBookB2bConsultation: "BOOK B2B CONSULTATION & ENTERPRISE CONTRACT",
 
+    // 3D MODEL PRESETS REGISTRY
+    modelQuantumClockTitle: "QUANTUM ESCAPEMENT CLOCK 3D",
+    modelQuantumClockDesc: "60 FPS Quantum kinematics escapement mechanism with precision temporal telemetry.",
+    modelPneumaticPipelineTitle: "PNEUMATIC DATA PIPELINE 3D",
+    modelPneumaticPipelineDesc: "Pressurized data flow conduit matrix featuring pneumatic valve mechanics.",
+    modelTokamakCoreTitle: "TOKAMAK REACTOR CORE 3D",
+    modelTokamakCoreDesc: "Magnetic plasma confinement torus with high-energy particle acceleration visuals.",
+
   },
   vi: {
     // Navigation
@@ -1786,6 +1802,14 @@ export const translations: Record<Language, Translations> = {
     b2bPopupTitle: "CHẾ ĐỘ THỬ NGHIỆM PLAYGROUND",
     b2bPopupDesc: "Bạn đang trải nghiệm phiên bản Playground Demo. Bạn muốn đặt hàng chế tạo các thành phần Động học 3D độc quyền dành riêng cho doanh nghiệp?",
     btnBookB2bConsultation: "ĐẶT LỊCH TƯ VẤN B2B & HỢP ĐỒNG DOANH NGHIỆP",
+
+    // 3D MODEL PRESETS REGISTRY
+    modelQuantumClockTitle: "ĐỒNG HỒ ĐỘNG HỌC LƯỢNG TỬ 3D",
+    modelQuantumClockDesc: "Bộ cơ thoát lượng tử 60 FPS với thước đo thời gian chuẩn xác.",
+    modelPneumaticPipelineTitle: "ĐƯỜNG ỐNG DỮ LIỆU KHÍ NÉN 3D",
+    modelPneumaticPipelineDesc: "Ma trận kênh dẫn dữ liệu áp suất cao mô phỏng van khí nén tự động.",
+    modelTokamakCoreTitle: "LÕI LÒ PHẢN ỨNG TOKAMAK 3D",
+    modelTokamakCoreDesc: "Vòng xuyến giam giữ huyết tương từ trường với hiệu ứng gia tốc hạt năng lượng cao.",
 
   },
 };

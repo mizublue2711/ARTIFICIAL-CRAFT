@@ -26,8 +26,14 @@ import {
   Radio,
   Palette,
   Activity,
+  Clock,
+  GitBranch,
+  Atom,
 } from 'lucide-react';
 import { useTranslation } from '@/context/useLanguage';
+import { QuantumEscapementClock3D } from '@/lib/video-engine/components/3d/QuantumEscapementClock3D';
+import { PneumaticDataPipeline3D } from '@/lib/video-engine/components/3d/PneumaticDataPipeline3D';
+import { TokamakReactorCore3D } from '@/lib/video-engine/components/3d/TokamakReactorCore3D';
 
 import {
   SwissDesignConfigSchema,
@@ -140,10 +146,10 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
   primaryColor: '#5322FF',
   accentColor: '#00E5FF',
   backgroundShader: 'SwissGridHUD',
-  base_component: 'RoboticsHandNode',
+  base_component: 'quantum-escapement-clock',
   headlineFont: 'Space Grotesk',
-  presetModel: 'robot-arm',
-  modelType: 'preset',
+  presetModel: 'quantum-escapement-clock',
+  modelType: 'quantum-escapement-clock',
   customModelUrl: '',
   logoUrl: 'https://raw.githubusercontent.com/artificial-craft/assets/main/logo-mark.svg',
   theme: {
@@ -157,7 +163,7 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
   codeFont: 'JetBrains Mono',
   motionTokens: ['kinetic-parallax', 'chromatic-aberration', 'magnetic-attraction'],
   roboticsNode: {
-    modelType: 'RoboticsHandNode',
+    modelType: 'quantum-escapement-clock',
     wireframe: true,
     rotationSpeed: 1.5,
     autoAnimate: true,
@@ -190,6 +196,9 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
 };
 
 export const AVAILABLE_3D_COMPONENTS = [
+  { value: 'quantum-escapement-clock', label: 'Quantum Escapement Clock 3D', icon: Clock },
+  { value: 'pneumatic-data-pipeline', label: 'Pneumatic Data Pipeline 3D', icon: GitBranch },
+  { value: 'tokamak-reactor-core', label: 'Tokamak Reactor Core 3D', icon: Atom },
   { value: 'RoboticsHandNode', label: 'Robotic Arm 6DOF Manipulator', icon: Bot },
   { value: 'BipedalRobotMesh', label: 'Bipedal Kinematic Assembler', icon: Cpu },
   { value: 'PointCloudNode', label: 'Point Cloud Telemetry Core', icon: Boxes },
@@ -1337,10 +1346,12 @@ export const CraftStudioConfigurator: React.FC = () => {
                   </label>
                   <div className="grid grid-cols-2 gap-2">
                     {[
+                      { id: 'quantum-escapement-clock', label: 'Quantum Clock' },
+                      { id: 'pneumatic-data-pipeline', label: 'Pneumatic Pipeline' },
+                      { id: 'tokamak-reactor-core', label: 'Tokamak Core' },
                       { id: 'RoboticsHandNode', label: 'Industrial Robot Arm' },
                       { id: 'BipedalRobotMesh', label: 'Kinematic Assembler' },
                       { id: 'PointCloudNode', label: 'Point Cloud Drone' },
-                      { id: 'HolographicCore', label: 'Cyber Monolith Core' },
                     ].map((model) => (
                       <button
                         key={model.id}
@@ -1989,16 +2000,75 @@ export const CraftStudioConfigurator: React.FC = () => {
                   }}
                   onPointerLeave={() => setIsHoveringCanvas(false)}
                 >
-                  <iframe
-                    ref={iframeRef}
-                    srcDoc={generatedHtml}
-                    sandbox="allow-scripts allow-modals allow-same-origin"
-                    title="ARTIFICIAL CRAFT 3D Viewport"
-                    data-background-shader={activeShaderKey}
-                    data-base-component={formData.base_component || formData.presetModel || formData.modelType || 'RoboticsHandNode'}
-                    style={{ touchAction: 'pan-y' }}
-                    className="w-full h-full bg-transparent rounded-none border-0 pointer-events-auto touch-pan-y"
-                  />
+                  {/* Dynamic 3D Model Direct Viewport vs Iframe Fallback */}
+                  {(() => {
+                    const currentModel = formData.base_component || formData.presetModel || formData.modelType || 'quantum-escapement-clock';
+                    const activePrim = formData.theme?.primaryColor || formData.primaryColor || '#5322FF';
+                    const activeAcc = formData.theme?.accentColor || formData.accentColor || '#00E5FF';
+                    const dispAmount = Math.max(0.01, (formData.explodedProgress || 33) / 500);
+
+                    if (currentModel === 'quantum-escapement-clock') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <QuantumEscapementClock3D
+                            primaryColor={activePrim}
+                            accentColor={activeAcc}
+                            scale={1.1}
+                            rotateXDeg={formData.roboticsNode?.wireframe ? 28 : 28}
+                            dispersionAmount={dispAmount}
+                            width={720}
+                            height={600}
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      );
+                    }
+                    if (currentModel === 'pneumatic-data-pipeline') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <PneumaticDataPipeline3D
+                            primaryColor={activePrim}
+                            accentColor={activeAcc}
+                            scale={1.05}
+                            rotateXDeg={formData.roboticsNode?.wireframe ? 28 : 28}
+                            dispersionAmount={dispAmount}
+                            width={720}
+                            height={600}
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      );
+                    }
+                    if (currentModel === 'tokamak-reactor-core') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <TokamakReactorCore3D
+                            primaryColor={activePrim}
+                            accentColor={activeAcc}
+                            scale={1.1}
+                            rotateXDeg={formData.roboticsNode?.wireframe ? 28 : 28}
+                            dispersionAmount={dispAmount}
+                            width={720}
+                            height={600}
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      );
+                    }
+
+                    return (
+                      <iframe
+                        ref={iframeRef}
+                        srcDoc={generatedHtml}
+                        sandbox="allow-scripts allow-modals allow-same-origin"
+                        title="ARTIFICIAL CRAFT 3D Viewport"
+                        data-background-shader={activeShaderKey}
+                        data-base-component={currentModel}
+                        style={{ touchAction: 'pan-y' }}
+                        className="w-full h-full bg-transparent rounded-none border-0 pointer-events-auto touch-pan-y"
+                      />
+                    );
+                  })()}
 
                   {/* Raycasting Reticle Overlay Follower */}
                   {isHoveringCanvas && (

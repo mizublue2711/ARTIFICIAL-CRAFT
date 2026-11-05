@@ -1062,7 +1062,70 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
       const progress = (${config.explodedProgress} / 100.0);
       const baseComp = '${baseComponent}';
 
-      if (baseComp === 'RoboticsHandNode' || baseComp === 'robot-arm' || baseComp === 'industrial-arm') {
+      if (baseComp === 'quantum-escapement-clock') {
+        // Quantum Escapement Clock Three.js representation
+        const escapeWheel = new THREE.Mesh(new THREE.CylinderGeometry(0.9, 0.9, 0.08, 15), accentMat);
+        escapeWheel.rotation.x = Math.PI / 2;
+        escapeWheel.position.set(0.6, 0.4 + progress * 0.5, 0);
+        group.add(escapeWheel);
+
+        const balanceWheel = new THREE.Mesh(new THREE.TorusGeometry(1.0, 0.05, 16, 32), mat);
+        balanceWheel.position.set(-0.7, -0.3 - progress * 0.5, 0);
+        group.add(balanceWheel);
+
+        const palletFork = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.9, 0.1), accentMat);
+        palletFork.position.set(0.0, 0.1, 0.1);
+        palletFork.rotation.z = 0.35;
+        group.add(palletFork);
+
+        const bridgePlate = new THREE.Mesh(new THREE.BoxGeometry(2.4, 1.8, 0.05), mat);
+        bridgePlate.position.set(0, 0, -0.3 - progress * 0.8);
+        group.add(bridgePlate);
+      } else if (baseComp === 'pneumatic-data-pipeline') {
+        // Pneumatic Data Pipeline Three.js representation
+        const mainPipe = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 3.2, 24), mat);
+        mainPipe.rotation.z = Math.PI / 2;
+        group.add(mainPipe);
+
+        const riserNorth = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 1.6, 20), mat);
+        riserNorth.position.set(-0.6 - progress * 0.4, 0.9 + progress * 0.5, 0);
+        group.add(riserNorth);
+
+        const riserSouth = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 1.6, 20), mat);
+        riserSouth.position.set(0.6 + progress * 0.4, -0.9 - progress * 0.5, 0);
+        group.add(riserSouth);
+
+        const valveLeft = new THREE.Mesh(new THREE.TorusGeometry(0.35, 0.06, 16, 24), accentMat);
+        valveLeft.position.set(-0.6 - progress * 0.4, 0, 0);
+        group.add(valveLeft);
+
+        const valveRight = new THREE.Mesh(new THREE.TorusGeometry(0.35, 0.06, 16, 24), accentMat);
+        valveRight.position.set(0.6 + progress * 0.4, 0, 0);
+        group.add(valveRight);
+
+        const capsule = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.45, 12), accentMat);
+        capsule.rotation.z = Math.PI / 2;
+        capsule.position.set(0, 0, 0);
+        group.add(capsule);
+      } else if (baseComp === 'tokamak-reactor-core') {
+        // Tokamak Fusion Reactor Core Three.js representation
+        const centralSolenoid = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 2.2, 24), mat);
+        group.add(centralSolenoid);
+
+        const plasmaRing = new THREE.Mesh(new THREE.TorusGeometry(1.2, 0.12, 16, 48), accentMat);
+        plasmaRing.rotation.x = Math.PI / 2;
+        group.add(plasmaRing);
+
+        // 8 D-coils ring
+        const numDCoils = 8;
+        for (let c = 0; c < numDCoils; c++) {
+          const theta = (c / numDCoils) * Math.PI * 2;
+          const dCoil = new THREE.Mesh(new THREE.TorusGeometry(0.7, 0.04, 12, 24), mat);
+          dCoil.position.set(Math.cos(theta) * (1.2 + progress * 0.6), 0, Math.sin(theta) * (1.2 + progress * 0.6));
+          dCoil.rotation.y = -theta;
+          group.add(dCoil);
+        }
+      } else if (baseComp === 'RoboticsHandNode' || baseComp === 'robot-arm' || baseComp === 'industrial-arm') {
         const core = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.7, 1.2, 16), mat);
         group.add(core);
 

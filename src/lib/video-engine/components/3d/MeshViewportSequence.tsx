@@ -1,5 +1,8 @@
 import React from 'react';
 import { interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
+import { QuantumEscapementClock3D } from './QuantumEscapementClock3D';
+import { PneumaticDataPipeline3D } from './PneumaticDataPipeline3D';
+import { TokamakReactorCore3D } from './TokamakReactorCore3D';
 
 export interface MeshViewportSequenceProps {
   base_component?: string;
@@ -33,6 +36,88 @@ export const MeshViewportSequence: React.FC<MeshViewportSequenceProps> = ({
   // Exploded separation displacement based on assemblyStage (0-100)
   const separation = (assemblyStage / 100) * 45;
   const pulseScale = interpolate(Math.sin(frame * 0.08), [-1, 1], [0.98, 1.02]);
+  const dispAmount = Math.max(0.01, assemblyStage / 500);
+
+  if (base_component === 'quantum-escapement-clock') {
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          perspective: '1000px',
+          transform: `scale(${entrance * pulseScale})`,
+        }}
+      >
+        <QuantumEscapementClock3D
+          frame={frame}
+          primaryColor={primaryColor}
+          accentColor={accentColor}
+          scale={0.8}
+          rotateXDeg={28}
+          dispersionAmount={dispAmount}
+          width={560}
+          height={560}
+        />
+      </div>
+    );
+  }
+
+  if (base_component === 'pneumatic-data-pipeline') {
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          perspective: '1000px',
+          transform: `scale(${entrance * pulseScale})`,
+        }}
+      >
+        <PneumaticDataPipeline3D
+          frame={frame}
+          primaryColor={primaryColor}
+          accentColor={accentColor}
+          scale={0.8}
+          rotateXDeg={28}
+          dispersionAmount={dispAmount}
+          width={560}
+          height={560}
+        />
+      </div>
+    );
+  }
+
+  if (base_component === 'tokamak-reactor-core') {
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          perspective: '1000px',
+          transform: `scale(${entrance * pulseScale})`,
+        }}
+      >
+        <TokamakReactorCore3D
+          frame={frame}
+          primaryColor={primaryColor}
+          accentColor={accentColor}
+          scale={0.8}
+          rotateXDeg={28}
+          dispersionAmount={dispAmount}
+          width={560}
+          height={560}
+        />
+      </div>
+    );
+  }
 
   return (
     <div
