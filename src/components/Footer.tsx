@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Github, Mail, Linkedin, ArrowRight } from 'lucide-react';
 import BrutalistLogo from './BrutalistLogo';
-import { useTranslation } from '@/context/useLanguage';
+import { useTranslation } from '@/hooks/useTranslation';
 import JulesMemorialModal from './JulesMemorialModal';
 
 const VIBEPATH_URL = 'https://vibepath.mizu2711.workers.dev/';
@@ -112,6 +112,32 @@ export default function Footer() {
                 title="Email"
               >
                 <Mail className="h-4 w-4" />
+              </a>
+            </div>
+
+            {/* 3D Architecture Presentation Engine Card */}
+            <div className="mt-6">
+              <a
+                href="https://webapp-presentation-engine.mizu2711.workers.dev/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group block p-3 bg-[#09090B] border border-[#27272A] hover:border-[#00E5FF] transition-all duration-300 rounded-none max-w-sm"
+              >
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="flex items-center gap-1.5 font-mono text-[10px] tracking-widest text-[#00E5FF] uppercase">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#00E5FF] animate-pulse" />
+                    {t('footerEngineBadge')}
+                  </span>
+                  <span className="font-mono text-xs text-[#A1A1AA] group-hover:text-[#00E5FF] transition-colors">
+                    {t('btnLaunchEngine')}
+                  </span>
+                </div>
+                <h4 className="font-mono text-xs font-bold text-white group-hover:text-[#00E5FF] transition-colors mb-1">
+                  {t('footerEngineTitle')}
+                </h4>
+                <p className="font-sans text-[11px] text-[#8E8E93] leading-tight line-clamp-2">
+                  {t('footerEngineDesc')}
+                </p>
               </a>
             </div>
           </div>
