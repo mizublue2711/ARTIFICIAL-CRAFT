@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, ChevronDown, ExternalLink, BookOpen, Layers, Rocket, Sparkles } from 'lucide-react';
+import { Menu, X, ChevronDown, ExternalLink, BookOpen, Layers, Rocket, Sparkles, Terminal } from 'lucide-react';
 import BrutalistLogo from './BrutalistLogo';
 import LanguageToggle from './LanguageToggle';
 import { useTranslation } from '@/context/useLanguage';
@@ -293,6 +293,25 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                       <span className="text-[10px] text-zinc-500">Hybrid AI Engine Blueprint</span>
                     </div>
                   </Link>
+
+                  <Link
+                    to="/docs/architecture"
+                    onClick={() => setDocsOpen(false)}
+                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs transition-colors mt-1"
+                  >
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-2">
+                        <span className="font-bold text-white group-hover:text-[#00E5FF] flex items-center gap-1.5">
+                          <Terminal className="h-3.5 w-3.5 text-[#00FF66]" />
+                          {t('nav_docs_architecture')}
+                        </span>
+                        <span className="text-[9px] px-1 py-0.2 bg-[#00FF66]/20 text-[#00FF66] border border-[#00FF66]/40 font-bold">
+                          NEW
+                        </span>
+                      </div>
+                      <span className="text-[10px] text-zinc-500">{t('nav_docs_architecture_desc')}</span>
+                    </div>
+                  </Link>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -379,6 +398,19 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                 className="py-1.5 text-xs text-zinc-300 hover:text-white"
               >
                 📖 Flipbook Archive
+              </Link>
+              <Link
+                to="/docs/architecture"
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-1.5 text-xs text-zinc-300 hover:text-white flex items-center justify-between"
+              >
+                <span className="text-[#00FF66] flex items-center gap-1.5">
+                  <Terminal className="h-3.5 w-3.5 text-[#00FF66]" />
+                  {t('nav_docs_architecture')}
+                </span>
+                <span className="text-[9px] px-1 py-0.2 bg-[#00FF66]/20 text-[#00FF66] border border-[#00FF66]/40 font-bold">
+                  NEW
+                </span>
               </Link>
 
               <button

@@ -262,6 +262,233 @@ export interface Translations {
   blackbox_q5_a: string;
   blackbox_q6_q: string;
   blackbox_q6_a: string;
+
+  // Docs Architecture & System Manual (03 // SYSTEM ARCHITECTURE & MANUAL)
+  nav_docs_architecture: string;
+  nav_docs_architecture_desc: string;
+
+  docs_arch_breadcrumb_spec: string;
+  docs_arch_breadcrumb_title: string;
+  docs_arch_breadcrumb_node: string;
+  docs_arch_zod_enforced: string;
+  docs_arch_classification_tag: string;
+  docs_arch_ssot_cluster: string;
+  docs_arch_public_spec: string;
+
+  docs_arch_hero_title: string;
+  docs_arch_hero_desc: string;
+
+  docs_arch_metric_cost_label: string;
+  docs_arch_metric_cost_val: string;
+  docs_arch_metric_cost_unit: string;
+  docs_arch_metric_cost_sub: string;
+  docs_arch_metric_fps_label: string;
+  docs_arch_metric_fps_val: string;
+  docs_arch_metric_fps_sub: string;
+  docs_arch_metric_token_label: string;
+  docs_arch_metric_token_val: string;
+  docs_arch_metric_token_sub: string;
+  docs_arch_metric_zod_label: string;
+  docs_arch_metric_zod_val: string;
+  docs_arch_metric_zod_unit: string;
+  docs_arch_metric_zod_sub: string;
+  docs_arch_metric_failover_label: string;
+  docs_arch_metric_failover_val: string;
+  docs_arch_metric_failover_sub: string;
+
+  docs_arch_toc_label: string;
+  docs_arch_toc_sec1: string;
+  docs_arch_toc_sec2: string;
+  docs_arch_toc_sec3: string;
+  docs_arch_toc_sec4: string;
+  docs_arch_toc_sec5: string;
+  docs_arch_toc_sec6: string;
+  docs_arch_toc_sec7: string;
+
+  docs_arch_sec1_badge: string;
+  docs_arch_sec1_title: string;
+  docs_arch_sec1_tag: string;
+  docs_arch_sec1_1_title: string;
+  docs_arch_sec1_1_desc: string;
+  docs_arch_sec1_schematic_title: string;
+  docs_arch_sec1_schematic_sync: string;
+  docs_arch_tier1_badge: string;
+  docs_arch_tier1_name: string;
+  docs_arch_tier1_sub: string;
+  docs_arch_tier1_desc: string;
+  docs_arch_tier1_emit: string;
+  docs_arch_tier1_payload: string;
+  docs_arch_tier2_badge: string;
+  docs_arch_tier2_name: string;
+  docs_arch_tier2_sub: string;
+  docs_arch_tier2_desc: string;
+  docs_arch_tier2_dispatch: string;
+  docs_arch_tier2_payload: string;
+  docs_arch_tier3_badge: string;
+  docs_arch_tier3_name: string;
+  docs_arch_tier3_sub: string;
+  docs_arch_tier3_desc: string;
+  docs_arch_tier3_exec: string;
+  docs_arch_tier3_payload: string;
+  docs_arch_flow_tier1: string;
+  docs_arch_flow_tier2: string;
+  docs_arch_flow_tier3: string;
+
+  docs_arch_sec1_2_title: string;
+  docs_arch_sec1_2_desc: string;
+  docs_arch_table_col_crit: string;
+  docs_arch_table_col_old: string;
+  docs_arch_table_col_new: string;
+  docs_arch_table_r1_crit: string;
+  docs_arch_table_r1_old: string;
+  docs_arch_table_r1_new: string;
+  docs_arch_table_r2_crit: string;
+  docs_arch_table_r2_old: string;
+  docs_arch_table_r2_new: string;
+  docs_arch_table_r3_crit: string;
+  docs_arch_table_r3_old: string;
+  docs_arch_table_r3_new: string;
+  docs_arch_table_r4_crit: string;
+  docs_arch_table_r4_old: string;
+  docs_arch_table_r4_new: string;
+  docs_arch_table_r5_crit: string;
+  docs_arch_table_r5_old: string;
+  docs_arch_table_r5_new: string;
+
+  docs_arch_sec2_badge: string;
+  docs_arch_sec2_title: string;
+  docs_arch_sec2_tag: string;
+  docs_arch_sec2_1_title: string;
+  docs_arch_sec2_1_desc: string;
+  docs_arch_fail1_title: string;
+  docs_arch_fail1_desc: string;
+  docs_arch_fail2_title: string;
+  docs_arch_fail2_desc: string;
+  docs_arch_fail3_title: string;
+  docs_arch_fail3_desc: string;
+  docs_arch_fail4_title: string;
+  docs_arch_fail4_desc: string;
+  docs_arch_sec2_2_title: string;
+  docs_arch_comp_col_metric: string;
+  docs_arch_comp_col_tsx: string;
+  docs_arch_comp_col_json: string;
+  docs_arch_comp_r1_metric: string;
+  docs_arch_comp_r1_tsx: string;
+  docs_arch_comp_r1_json: string;
+  docs_arch_comp_r2_metric: string;
+  docs_arch_comp_r2_tsx: string;
+  docs_arch_comp_r2_json: string;
+  docs_arch_comp_r3_metric: string;
+  docs_arch_comp_r3_tsx: string;
+  docs_arch_comp_r3_json: string;
+  docs_arch_comp_r4_metric: string;
+  docs_arch_comp_r4_tsx: string;
+  docs_arch_comp_r4_json: string;
+  docs_arch_sec2_3_title: string;
+  docs_arch_sec2_3_desc: string;
+  docs_arch_hub1_file: string;
+  docs_arch_hub1_desc: string;
+  docs_arch_hub2_file: string;
+  docs_arch_hub2_desc: string;
+  docs_arch_hub3_file: string;
+  docs_arch_hub3_desc: string;
+
+  docs_arch_sec3_badge: string;
+  docs_arch_sec3_title: string;
+  docs_arch_sec3_tag: string;
+  docs_arch_sec3_1_title: string;
+  docs_arch_sec3_1_desc: string;
+  docs_arch_token_obsidian: string;
+  docs_arch_token_obsidian_desc: string;
+  docs_arch_token_indigo: string;
+  docs_arch_token_indigo_desc: string;
+  docs_arch_token_cyan: string;
+  docs_arch_token_cyan_desc: string;
+  docs_arch_token_green: string;
+  docs_arch_token_green_desc: string;
+  docs_arch_sec3_2_title: string;
+  docs_arch_repo_tree_title: string;
+  docs_arch_props_interface_title: string;
+
+  docs_arch_sec4_badge: string;
+  docs_arch_sec4_title: string;
+  docs_arch_sec4_tag: string;
+  docs_arch_sec4_1_title: string;
+  docs_arch_sec4_1_desc: string;
+  docs_arch_gate1_title: string;
+  docs_arch_gate1_desc: string;
+  docs_arch_gate2_title: string;
+  docs_arch_gate2_desc: string;
+  docs_arch_gate3_title: string;
+  docs_arch_gate3_desc: string;
+  docs_arch_inspector_title: string;
+  docs_arch_tab_ast: string;
+  docs_arch_tab_zod: string;
+  docs_arch_tab_stream: string;
+  docs_arch_btn_copy: string;
+  docs_arch_btn_copied: string;
+  docs_arch_btn_validate: string;
+  docs_arch_validate_success: string;
+
+  docs_arch_sec5_badge: string;
+  docs_arch_sec5_title: string;
+  docs_arch_sec5_tag: string;
+  docs_arch_sec5_1_title: string;
+  docs_arch_sec5_1_desc: string;
+  docs_arch_sec5_2_title: string;
+  docs_arch_step1_badge: string;
+  docs_arch_step1_title: string;
+  docs_arch_step1_desc: string;
+  docs_arch_step2_badge: string;
+  docs_arch_step2_title: string;
+  docs_arch_step2_desc: string;
+  docs_arch_step3_badge: string;
+  docs_arch_step3_title: string;
+  docs_arch_step3_desc: string;
+  docs_arch_step4_badge: string;
+  docs_arch_step4_title: string;
+  docs_arch_step4_desc: string;
+  docs_arch_step5_badge: string;
+  docs_arch_step5_title: string;
+  docs_arch_step5_desc: string;
+
+  docs_arch_sec6_badge: string;
+  docs_arch_sec6_title: string;
+  docs_arch_sec6_tag: string;
+  docs_arch_sec6_1_title: string;
+  docs_arch_sec6_1_desc: string;
+  docs_arch_fb1_badge: string;
+  docs_arch_fb1_title: string;
+  docs_arch_fb1_layer: string;
+  docs_arch_fb1_desc: string;
+  docs_arch_fb2_badge: string;
+  docs_arch_fb2_title: string;
+  docs_arch_fb2_layer: string;
+  docs_arch_fb2_desc: string;
+  docs_arch_sec6_2_title: string;
+  docs_arch_sec6_2_desc: string;
+  docs_arch_rule1_title: string;
+  docs_arch_rule1_desc: string;
+  docs_arch_rule2_title: string;
+  docs_arch_rule2_desc: string;
+  docs_arch_rule3_title: string;
+  docs_arch_rule3_desc: string;
+  docs_arch_rule4_title: string;
+  docs_arch_rule4_desc: string;
+
+  docs_arch_sec7_badge: string;
+  docs_arch_sec7_title: string;
+  docs_arch_sec7_tag: string;
+  docs_arch_roi1_title: string;
+  docs_arch_roi1_desc: string;
+  docs_arch_roi2_title: string;
+  docs_arch_roi2_desc: string;
+  docs_arch_roi3_title: string;
+  docs_arch_roi3_desc: string;
+  docs_arch_export_whitepaper: string;
+  docs_arch_btn_download_ast: string;
+  docs_arch_btn_export_pdf: string;
+  docs_arch_btn_export_md: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -537,6 +764,233 @@ export const translations: Record<Language, Translations> = {
     blackbox_q5_a: "A: Congratulations, you graduated from gear-pusher to System Architect. Your job is no longer dragging elements in Canva or pixel-pushing UI manually. You stand at the top of the architectural tower, monitoring GCP Cloud Logging telemetry, identifying system bottlenecks, and directing autonomous machines toward complex challenges. You are paid for strategic reasoning, system architecture, and uncompromising aesthetic taste.",
     blackbox_q6_q: "Q6: What happens if the AI finishes everything at 3 AM and realizes it doesn't need me?",
     blackbox_q6_a: "A: It sends a Slack message: 'Pipeline executed successfully. 1000 items rendered. What's next, Boss?'. And that is the true existential tragedy of the AI era: You wake up at 8 AM to find all manual labor cleared away, leaving you with nothing left to do except sit down and come up with an original idea.",
+
+    // Docs Architecture & System Manual
+    nav_docs_architecture: '03 // SYSTEM ARCHITECTURE & MANUAL',
+    nav_docs_architecture_desc: '0-Code JSON & WebGL Operating Manual',
+
+    docs_arch_breadcrumb_spec: 'SPEC//2026.11-REV4',
+    docs_arch_breadcrumb_title: 'ARTIFICIALCRAFT.SPACE // SYSTEM ARCHITECTURE REPORT',
+    docs_arch_breadcrumb_node: 'NODE 01-05 CLUSTER DOCUMENTATION',
+    docs_arch_zod_enforced: 'VERIFIED: ZOD GATE ENFORCED',
+    docs_arch_classification_tag: 'CRAFT//CODE ARCHITECTURE WHITE PAPER // VER 2026.11',
+    docs_arch_ssot_cluster: 'SSOT CLUSTER: PRODUCTION',
+    docs_arch_public_spec: 'CLASSIFICATION: PUBLIC TECHNICAL SPEC',
+
+    docs_arch_hero_title: 'TECHNICAL REPORT: 0-CODE JSON-DRIVEN ARCHITECTURE & DECOUPLED OPERATING PARADIGM AT ARTIFICIALCRAFT.SPACE',
+    docs_arch_hero_desc: 'Deep technical specification on eliminating 99% of LLM token costs through a 3-Tier Decoupled architecture, freezing TSX component source code, schema defense via Zod Gate, and full offloading of 60 FPS rendering to Client-Side WebGL GPU.',
+
+    docs_arch_metric_cost_label: 'Server Render Cost',
+    docs_arch_metric_cost_val: '$0.00',
+    docs_arch_metric_cost_unit: '/ MONTH',
+    docs_arch_metric_cost_sub: 'Client-Side GPU Offload (Zero Puppeteer)',
+    docs_arch_metric_fps_label: 'Deterministic SLA',
+    docs_arch_metric_fps_val: '60.0',
+    docs_arch_metric_fps_sub: 'Three.js / WebGL Zero GC Overhead',
+    docs_arch_metric_token_label: 'JSON AST Payload',
+    docs_arch_metric_token_val: '~50',
+    docs_arch_metric_token_sub: '99% LLM Context Bloat Elimination',
+    docs_arch_metric_zod_label: 'Validation Gate',
+    docs_arch_metric_zod_val: '0%',
+    docs_arch_metric_zod_unit: 'DRIFT',
+    docs_arch_metric_zod_sub: 'Zod safeParse Short-Circuit Active',
+    docs_arch_metric_failover_label: 'Failover SLA',
+    docs_arch_metric_failover_val: 'ZERO-CRASH',
+    docs_arch_metric_failover_sub: '2-Tier Graceful Fallback Policy',
+
+    docs_arch_toc_label: 'CONTENTS:',
+    docs_arch_toc_sec1: '01. 3-TIER ARCHITECTURE',
+    docs_arch_toc_sec2: '02. 0-CODE JSON-DRIVEN',
+    docs_arch_toc_sec3: '03. CYBERNETIC SSOT',
+    docs_arch_toc_sec4: '04. ZERO-TRUST ZOD GATE',
+    docs_arch_toc_sec5: '05. STUDIO ENGINE STREAM',
+    docs_arch_toc_sec6: '06. 2-TIER FALLBACK',
+    docs_arch_toc_sec7: '07. PERFORMANCE & ROI',
+
+    docs_arch_sec1_badge: 'SECTION 01',
+    docs_arch_sec1_title: 'SYSTEM OVERVIEW & ARCHITECTURE PHILOSOPHY',
+    docs_arch_sec1_tag: 'PARADIGM: 3-TIER DECOUPLED // $0 RENDER COST',
+    docs_arch_sec1_1_title: '1.1. 3-Tier Decoupled Operational Paradigm',
+    docs_arch_sec1_1_desc: 'ARTIFICIALCRAFT.SPACE rigorously decouples the AI reasoning core, workflow orchestration engine, and visual presentation canvas. Instead of forcing LLMs to synthesize thousands of lines of fragile frontend code, the system establishes three immutable operational boundaries:',
+    docs_arch_sec1_schematic_title: 'CAD ARCHITECTURE TOPOLOGY // BLUEPRINT SCHEMATIC',
+    docs_arch_sec1_schematic_sync: '[ SYNC: DETERMINISTIC 60FPS BUS ]',
+    docs_arch_tier1_badge: 'TIER 01',
+    docs_arch_tier1_name: 'REASONING CORE',
+    docs_arch_tier1_sub: '"THE BRAIN" // Dify Cloud & Vertex AI',
+    docs_arch_tier1_desc: 'Specialized in business context comprehension, prompt parsing, and logic reasoning. Completely isolated from TSX source code and DOM rendering.',
+    docs_arch_tier1_emit: 'EMITS: Pure JSON AST',
+    docs_arch_tier1_payload: 'Payload size ~50 tokens',
+    docs_arch_tier2_badge: 'TIER 02',
+    docs_arch_tier2_name: 'DETERMINISTIC MUSCLE',
+    docs_arch_tier2_sub: '"THE MUSCLE" // n8n Swarm Orchestrator',
+    docs_arch_tier2_desc: 'Stateless workflow orchestration engine. Routes webhooks, executes data transformation logic, validates rate limits, and guarantees schema integrity.',
+    docs_arch_tier2_dispatch: 'DISPATCH: Webhook Proxy / Validation',
+    docs_arch_tier2_payload: 'Zero LLM token consumption on JSON parsing',
+    docs_arch_tier3_badge: 'TIER 03',
+    docs_arch_tier3_name: 'PRESENTATION CANVAS',
+    docs_arch_tier3_sub: '"THE PROJECTOR" // artificialcraft.space',
+    docs_arch_tier3_desc: 'Next.js frontend acting as a pure projection canvas. Compiles inbound JSON AST into 3D WebGL structures, Remotion video previews, or Swiss HUD components.',
+    docs_arch_tier3_exec: 'EXEC: Client GPU WebGL 60 FPS',
+    docs_arch_tier3_payload: 'Server Render Cost: $0.00 / month',
+    docs_arch_flow_tier1: 'TIER 1 (LLM Inference)',
+    docs_arch_flow_tier2: 'TIER 2 (n8n JSON Dispatch)',
+    docs_arch_flow_tier3: 'TIER 3 (Client WebGL Shader Engine)',
+
+    docs_arch_sec1_2_title: '1.2. "Data Projector" Philosophy & Client-Side GPU Offloading',
+    docs_arch_sec1_2_desc: 'Traditional generative UI workflows rely heavily on Server-Side Rendering or headless browsers (Puppeteer/Playwright) draining massive CPU/RAM resources to render graphics or video servers. ARTIFICIALCRAFT.SPACE completely flips this dynamic:',
+    docs_arch_table_col_crit: 'Evaluation Criteria',
+    docs_arch_table_col_old: 'Server-Side Headless Render (Legacy)',
+    docs_arch_table_col_new: 'Data Projector Architecture (ArtificialCraft)',
+    docs_arch_table_r1_crit: 'Server Infrastructure Cost',
+    docs_arch_table_r1_old: '$250 - $1,200/mo (Cloud GPU clusters / EC2 nodes)',
+    docs_arch_table_r1_new: '$0.00 / mo (Zero server render, uses client GPU)',
+    docs_arch_table_r2_crit: 'LLM Context Consumption',
+    docs_arch_table_r2_old: '2,500 - 8,000 tokens (Full TSX components + CSS styles)',
+    docs_arch_table_r2_new: '~50 tokens (Parameterized JSON AST only)',
+    docs_arch_table_r3_crit: 'Response Latency',
+    docs_arch_table_r3_old: '15s - 45s (TSX compilation, Webpack bundling, render)',
+    docs_arch_table_r3_new: '< 150ms (Instant JSON transmission & hydration)',
+    docs_arch_table_r4_crit: 'Framerate Stability',
+    docs_arch_table_r4_old: 'Unstable, choppy stream (15 - 30 FPS)',
+    docs_arch_table_r4_new: 'Deterministic 60.0 FPS hardware fixed (Three.js WebGL)',
+    docs_arch_table_r5_crit: 'Runtime Crash Risk',
+    docs_arch_table_r5_old: 'High (LLM syntax errors, missing imports, white screen)',
+    docs_arch_table_r5_new: '0% (Shielded by Zod Schema Gate & Fallback Component)',
+
+    docs_arch_sec2_badge: 'SECTION 02',
+    docs_arch_sec2_title: '0-CODE JSON-DRIVEN SOLUTION ELIMINATING CONTEXT BLOAT',
+    docs_arch_sec2_tag: 'TOKEN REDUCTION: 99% EFFICIENCY',
+    docs_arch_sec2_1_title: '2.1. Context Bloat Analysis & AI Worker Memory Exhaustion',
+    docs_arch_sec2_1_desc: 'When forcing AI models to write full UI code (.tsx / .vue), prompt size expands exponentially, triggering 4 catastrophic failure modes in production:',
+    docs_arch_fail1_title: 'Hallucinated Code',
+    docs_arch_fail1_desc: 'AI invents non-existent React hooks or deprecated lifecycle methods due to context window exhaustion.',
+    docs_arch_fail2_title: 'Missing Imports',
+    docs_arch_fail2_desc: 'Forgets critical npm dependencies (Three.js, Lucide, Framer), breaking webpack compilation pipelines.',
+    docs_arch_fail3_title: 'Props Mismatch',
+    docs_arch_fail3_desc: 'TypeScript prop mismatches break contract between API payload and component rendering.',
+    docs_arch_fail4_title: 'Non-Deterministic Layout',
+    docs_arch_fail4_desc: 'Broken responsive layouts destroy the strict aesthetic discipline of Cybernetic Brutalism.',
+    docs_arch_sec2_2_title: '2.2. Architecture Comparison: Traditional .TSX vs. 0-Code JSON-Driven',
+    docs_arch_comp_col_metric: 'Operational Metric',
+    docs_arch_comp_col_tsx: 'Raw Code Generation (.TSX)',
+    docs_arch_comp_col_json: '0-Code JSON-Driven (AST)',
+    docs_arch_comp_r1_metric: 'Payload Size',
+    docs_arch_comp_r1_tsx: '~85 KB (Full TSX Component)',
+    docs_arch_comp_r1_json: '~0.6 KB (Parameterized AST)',
+    docs_arch_comp_r2_metric: 'LLM Generation Cost',
+    docs_arch_comp_r2_tsx: '~3,200 Tokens / request',
+    docs_arch_comp_r2_json: '~50 Tokens (-98.4% savings)',
+    docs_arch_comp_r3_metric: 'Client Hydration Time',
+    docs_arch_comp_r3_tsx: '8 - 15s (Babel / SWC compile)',
+    docs_arch_comp_r3_json: '0ms (Direct in-memory hydration)',
+    docs_arch_comp_r4_metric: 'Type-Safety Guarantee',
+    docs_arch_comp_r4_tsx: 'Unsafe (Dynamic eval code)',
+    docs_arch_comp_r4_json: 'Strict (Compile-time Zod safeParse)',
+    docs_arch_sec2_3_title: '2.3. Component Freezing & JSON Configuration Hubs',
+    docs_arch_sec2_3_desc: 'All core subsystems on ARTIFICIALCRAFT.SPACE are configured through strictly versioned central JSON files:',
+    docs_arch_hub1_file: 'site-configs/template-schema.json',
+    docs_arch_hub1_desc: 'Governs homepage layout structure, routing node matrix, technical parameter matrices, and component references.',
+    docs_arch_hub2_file: 'src/data/showcase-config.json',
+    docs_arch_hub2_desc: 'Manages 60FPS Remotion videos, timeline scripts, camera zoom splines, and telemetry HUD label overlays.',
+    docs_arch_hub3_file: 'src/data/flipbook-registry.json',
+    docs_arch_hub3_desc: 'Powers 3D Interactive Flipbooks, technical specifications, and the Single Source of Truth component registry.',
+
+    docs_arch_sec3_badge: 'SECTION 03',
+    docs_arch_sec3_title: 'CYBERNETIC SWISS BRUTALISM & SSOT REGISTRY MATRIX',
+    docs_arch_sec3_tag: 'STANDARDS: ZERO-SOFT-RADIUS // CARTESIAN GRIDS',
+    docs_arch_sec3_1_title: '3.1. Cybernetic Swiss Brutalism Design Tokens',
+    docs_arch_sec3_1_desc: 'The design celebrates the intersection of the Swiss International Typographic Style with the unapologetic precision of Cybernetic Brutalism: strict 0px border radiuses, 1px hairline coordinate grids, and absolute contrast between deep Obsidian substrates and vibrant Cyan/Indigo photons.',
+    docs_arch_token_obsidian: 'Canvas Obsidian',
+    docs_arch_token_obsidian_desc: '#09090B / #0B0B0F - Base Substrate',
+    docs_arch_token_indigo: 'Electric Indigo',
+    docs_arch_token_indigo_desc: '#5322FF - Computational Core',
+    docs_arch_token_cyan: 'Neon Cyan',
+    docs_arch_token_cyan_desc: '#00E5FF - Operational Signal',
+    docs_arch_token_green: 'Matrix Green',
+    docs_arch_token_green_desc: '#00FF66 - 60FPS Telemetry SLA',
+    docs_arch_sec3_2_title: '3.2. Repository Tree & SSOT Registry Protocol (src/core/registry.ts)',
+    docs_arch_repo_tree_title: 'DIRECTORY SSOT ARCHITECTURE',
+    docs_arch_props_interface_title: 'UNIVERSAL COMPONENT CONTRACT',
+
+    docs_arch_sec4_badge: 'SECTION 04',
+    docs_arch_sec4_title: 'ZERO-TRUST BACKEND-TO-FRONTEND & ZOD SCHEMA GATES',
+    docs_arch_sec4_tag: 'GATEWAY: safeParse SHORT-CIRCUIT',
+    docs_arch_sec4_1_title: '4.1. 3-Step Verification Pipeline at Next.js API Route Handler',
+    docs_arch_sec4_1_desc: 'To protect client runtime from abnormal JSON payloads generated by hallucinating LLMs or malicious injections, the API Route Handler implements an uncompromised 3-gate defense system:',
+    docs_arch_gate1_title: 'Gate 01: Environment Discovery',
+    docs_arch_gate1_desc: 'Validates Dify and n8n webhook authentication tokens, bearer headers, and origin domain integrity.',
+    docs_arch_gate2_title: 'Gate 02: System Contract Verification',
+    docs_arch_gate2_desc: 'Enforces JSON Schema specification, checking required keys: id, preset, title, theme, and props dictionary.',
+    docs_arch_gate3_title: 'Gate 03: Zod safeParse Circuit Breaker',
+    docs_arch_gate3_desc: 'Executes strict runtime validation. If preset or props drift from schema, short-circuits HTTP 400 immediately with detailed telemetry.',
+    docs_arch_inspector_title: 'INTERACTIVE CODE INSPECTOR // TELEMETRY TERMINAL',
+    docs_arch_tab_ast: '01 // JSON AST PAYLOAD (~50 TOKENS)',
+    docs_arch_tab_zod: '02 // ZOD VALIDATION SCHEMA (safeParse GATE)',
+    docs_arch_tab_stream: '03 // PAYLOAD STREAM PIPELINE (AST TO PROJECTION)',
+    docs_arch_btn_copy: 'COPY SNIPPET',
+    docs_arch_btn_copied: '[ COPIED ✓ ]',
+    docs_arch_btn_validate: '[ VALIDATE PAYLOAD ]',
+    docs_arch_validate_success: '[ GATE: ZOD VALIDATED // 0 ERRORS // 60FPS BUS READY ]',
+
+    docs_arch_sec5_badge: 'SECTION 05',
+    docs_arch_sec5_title: 'STUDIO CONFIGURATOR ENGINE & IN-MEMORY STREAMING',
+    docs_arch_sec5_tag: 'ROUTE: /studio // 3D MONOLITH',
+    docs_arch_sec5_1_title: '5.1. Stripping Shell Strategy & Dynamic In-Memory Stream',
+    docs_arch_sec5_1_desc: 'The CraftStudioConfigurator component applies a Stripping Shell strategy. The workstation interface is isolated from DOM memory leakage via a sandboxed container. The 3D compiler listens for parameter state changes and updates Euler/Quaternion transform matrices in a 16.6ms cycle (60 FPS) without ever triggering a full-page re-render.',
+    docs_arch_sec5_2_title: '5.2. 5-Step Wizard Dock Technical Specifications',
+    docs_arch_step1_badge: 'STEP 01',
+    docs_arch_step1_title: 'Node Identification',
+    docs_arch_step1_desc: 'Declare brandName, tagline, AST composition anchor, and node index prefixes.',
+    docs_arch_step2_badge: 'STEP 02',
+    docs_arch_step2_title: 'Color Matrix',
+    docs_arch_step2_desc: 'Select color palettes: Obsidian/Indigo, Titanium/Cyan, or trigger AI auto-generation.',
+    docs_arch_step3_badge: 'STEP 03',
+    docs_arch_step3_title: '3D Kinematics',
+    docs_arch_step3_desc: 'Calibrate 11-DOF bionic arm kinematics, harmonic drive ratios, and explodedProgress slider (0% to 100%).',
+    docs_arch_step4_badge: 'STEP 04',
+    docs_arch_step4_title: 'Telemetry Probes',
+    docs_arch_step4_desc: 'Activate 1200+ magnetic spatial point cloud, telemetryFps frequency, and torquePrecision readouts.',
+    docs_arch_step5_badge: 'STEP 05',
+    docs_arch_step5_title: 'Zero-Disk Export',
+    docs_arch_step5_desc: 'Export standalone runtime HTML, download lean JSON AST, or generate SDK embed code for TypeScript, Python, and ROS2.',
+
+    docs_arch_sec6_badge: 'SECTION 06',
+    docs_arch_sec6_title: '2-TIER GRACEFUL FALLBACK & GITOPS GOVERNANCE PROTOCOL',
+    docs_arch_sec6_tag: 'SLA: ZERO-CRASH ARCHITECTURE',
+    docs_arch_sec6_1_title: '6.1. 2-Tier Graceful Fallback Policy (Zero-Crash SLA)',
+    docs_arch_sec6_1_desc: 'To fulfill the Zero-Crash SLA in high-traffic production environments, DynamicSectionRenderer establishes a dual-tier safety net:',
+    docs_arch_fb1_badge: 'TIER 1',
+    docs_arch_fb1_title: 'Static AST Sanitizer',
+    docs_arch_fb1_layer: 'SCHEMA LAYER',
+    docs_arch_fb1_desc: 'If an incoming payload references an unregistered preset or lacks required props, Sanitizer forces default to swiss-hud and uses title PRNG hash to fill missing params.',
+    docs_arch_fb2_badge: 'TIER 2',
+    docs_arch_fb2_title: 'Safe Fallback Component',
+    docs_arch_fb2_layer: 'RUNTIME GPU LAYER',
+    docs_arch_fb2_desc: 'If the client GPU loses WebGL context, React Error Boundary intercepts the exception and immediately renders a 2D Procedural SVG Wireframe canvas with diagnostics, preventing browser crashes.',
+    docs_arch_sec6_2_title: '6.2. GitOps Handover & Build Gate Protocol',
+    docs_arch_sec6_2_desc: 'Four immutable golden rules encoded into CI/CD pipelines and the AGENT.md constitution:',
+    docs_arch_rule1_title: 'Rule 1: Scope Lock',
+    docs_arch_rule1_desc: 'Strictly forbidden from modifying .tsx UI components for routine layout tasks. 100% of content and styling updates must occur via JSON schema files.',
+    docs_arch_rule2_title: 'Rule 2: SSOT Registry Registration',
+    docs_arch_rule2_desc: 'Any new graphics component created by human engineers must be fully registered in registry.ts before it can be referenced in JSON AST.',
+    docs_arch_rule3_title: 'Rule 3: TypeScript Build Gate',
+    docs_arch_rule3_desc: 'The npx tsc --noEmit command must pass with exactly 0 errors before any pull request is merged into the main branch.',
+    docs_arch_rule4_title: 'Rule 4: Build Protection & Bundle Isolation',
+    docs_arch_rule4_desc: 'All standalone export builds must remain isolated in dedicated workspaces, never bloating core application bundle size.',
+
+    docs_arch_sec7_badge: 'SECTION 07',
+    docs_arch_sec7_title: 'SYSTEM PERFORMANCE SUMMARY & DEVELOPER ROI',
+    docs_arch_sec7_tag: 'FINAL VERDICT // BENCHMARK 2026',
+    docs_arch_roi1_title: 'For Web3D Developers',
+    docs_arch_roi1_desc: 'No more headache synchronizing React state with Three.js animation loops. Parameterize cameras, PBR materials, and kinematics with millisecond-exact JSON AST.',
+    docs_arch_roi2_title: 'For AI Systems Engineers',
+    docs_arch_roi2_desc: 'Eliminate 99% of useless token waste. Your LLM only focuses on domain logic and outputs ~50 JSON tokens. Agent execution speed increases 10x, API expenses converge to zero.',
+    docs_arch_roi3_title: 'For Solution Architects',
+    docs_arch_roi3_desc: 'A flawless decoupled architecture completely free of expensive server rendering nodes. Infinite scalability as 100% of 60 FPS graphics computation is offloaded to clients.',
+    docs_arch_export_whitepaper: 'DOWNLOAD COMPLETE ARCHITECTURE SPECIFICATION:',
+    docs_arch_btn_download_ast: '[ JSON AST ]',
+    docs_arch_btn_export_pdf: '[ PDF VI/EN ]',
+    docs_arch_btn_export_md: '[ MARKDOWN .MD ]',
   },
   vi: {
     // Navigation
@@ -810,5 +1264,232 @@ export const translations: Record<Language, Translations> = {
     blackbox_q5_a: 'A: Chúc mừng, bạn đã chính thức tốt nghiệp từ vị trí "Gã thợ đẩy bánh răng" để trở thành "Tác giả của hệ thống". Việc của bạn không phải là ngồi mở Canva lên kéo thả hay cặm cụi sửa từng pixel UI nữa. Việc của bạn là đứng ở đỉnh tháp kiến trúc, theo dõi các chỉ số sức khỏe của máy chủ trên GCP Cloud Logging, phát hiện cổ chai hệ thống và chỉ cỗ máy lao vào giải quyết những bài toán phức tạp hơn. Bạn được trả tiền cho tư duy chiến lược, kiến trúc hệ thống và gu thẩm mỹ khắt khe của bạn.',
     blackbox_q6_q: 'Q6: Được rồi. Nhưng chuyện gì sẽ xảy ra nếu con AI làm xong hết việc lúc 3 giờ sáng và nhận ra nó hoàn toàn không cần đến tôi nữa?',
     blackbox_q6_a: 'A: Nó sẽ tự động bắn một tin nhắn vào kênh Slack của bạn với nội dung: “Pipeline executed successfully. 1000 items rendered. What\'s next, Boss?”. Và đó chính là bi kịch hiện sinh, là gánh nặng khủng khiếp nhất của kỷ nguyên AI: Bạn thức dậy lúc 8 giờ sáng để nhận ra toàn bộ việc chân tay nặng nhọc đã được dọn sạch, và bạn không còn việc gì để làm ngoại trừ việc phải ngồi xuống và vắt óc nghĩ ra một ý tưởng nguyên bản.',
+
+    // Docs Architecture & System Manual
+    nav_docs_architecture: '03 // KIẾN TRÚC HỆ THỐNG & CẨM NANG',
+    nav_docs_architecture_desc: 'Cẩm Nang Vận Hành 0-Code JSON & WebGL',
+
+    docs_arch_breadcrumb_spec: 'SPEC//2026.11-REV4',
+    docs_arch_breadcrumb_title: 'BÁO CÁO KỸ THUẬT HỆ THỐNG // ARTIFICIALCRAFT.SPACE',
+    docs_arch_breadcrumb_node: 'TÀI LIỆU CỤM NODE 01-05 CLUSTER',
+    docs_arch_zod_enforced: 'XÁC THỰC: CỔNG ZOD KÍCH HOẠT',
+    docs_arch_classification_tag: 'BẠCH THƯ KIẾN TRÚC CRAFT//CODE // PHIÊN BẢN 2026.11',
+    docs_arch_ssot_cluster: 'CỤM SSOT: MÔI TRƯỜNG SẢN XUẤT',
+    docs_arch_public_spec: 'PHÂN LOẠI: ĐẶC TẢ KỸ THUẬT CÔNG KHAI',
+
+    docs_arch_hero_title: 'BÁO CÁO KỸ THUẬT: KIẾN TRÚC 0-CODE JSON-DRIVEN VÀ MÔ HÌNH PHÂN TẦNG VẬN HÀNH TẠI ARTIFICIALCRAFT.SPACE',
+    docs_arch_hero_desc: 'Đặc tả kỹ thuật sâu về cơ chế triệt tiêu 99% chi phí token LLM qua kiến trúc 3-Tier Decoupled, đóng băng mã nguồn TSX, bảo vệ schema qua Zod Gate và chuyển giao toàn bộ tải render 60 FPS về Client-Side GPU WebGL.',
+
+    docs_arch_metric_cost_label: 'Chi phí Render Server',
+    docs_arch_metric_cost_val: '$0.00',
+    docs_arch_metric_cost_unit: '/ THÁNG',
+    docs_arch_metric_cost_sub: 'Client-Side GPU Offload (Zero Puppeteer)',
+    docs_arch_metric_fps_label: 'SLA Xác Định Cố Định',
+    docs_arch_metric_fps_val: '60.0',
+    docs_arch_metric_fps_sub: 'Three.js / WebGL Không Rò Rỉ GC',
+    docs_arch_metric_token_label: 'Payload JSON AST',
+    docs_arch_metric_token_val: '~50',
+    docs_arch_metric_token_sub: 'Tiết kiệm 99% Context Bloat LLM',
+    docs_arch_metric_zod_label: 'Cổng Xác Thực Schema',
+    docs_arch_metric_zod_val: '0%',
+    docs_arch_metric_zod_unit: 'SAI LỆCH',
+    docs_arch_metric_zod_sub: 'Zod safeParse Ngắt Mạch Lập Tức',
+    docs_arch_metric_failover_label: 'SLA Kháng Lỗi',
+    docs_arch_metric_failover_val: 'ZERO-CRASH',
+    docs_arch_metric_failover_sub: 'Chính Sách Kháng Lỗi 2 Lớp Cứu Hộ',
+
+    docs_arch_toc_label: 'MỤC LỤC:',
+    docs_arch_toc_sec1: '01. KIẾN TRÚC 3-TIER',
+    docs_arch_toc_sec2: '02. 0-CODE JSON-DRIVEN',
+    docs_arch_toc_sec3: '03. CYBERNETIC SSOT',
+    docs_arch_toc_sec4: '04. ZERO-TRUST ZOD GATE',
+    docs_arch_toc_sec5: '05. STUDIO ENGINE STREAM',
+    docs_arch_toc_sec6: '06. 2-TIER FALLBACK',
+    docs_arch_toc_sec7: '07. HIỆU NĂNG & ACTION',
+
+    docs_arch_sec1_badge: 'PHẦN 01',
+    docs_arch_sec1_title: 'TỔNG QUAN KIẾN TRÚC & TRIẾT LÝ THIẾT KẾ HỆ THỐNG',
+    docs_arch_sec1_tag: 'PARADIGM: 3-TIER DECOUPLED // $0 RENDER COST',
+    docs_arch_sec1_1_title: '1.1. Mô hình Vận hành Phân tầng (3-Tier Decoupled Operational Paradigm)',
+    docs_arch_sec1_1_desc: 'Kiến trúc ARTIFICIALCRAFT.SPACE triệt để phân ly chức năng giữa bộ não tư duy AI, bộ máy điều phối luồng và màn chiếu biểu diễn đồ họa. Thay vì bắt LLM sinh trực tiếp hàng ngàn dòng code giao diện không ổn định, hệ thống phân định ba tầng ranh giới bất biến:',
+    docs_arch_sec1_schematic_title: 'CAD ARCHITECTURE TOPOLOGY // BLUEPRINT SCHEMATIC',
+    docs_arch_sec1_schematic_sync: '[ SYNC: DETERMINISTIC 60FPS BUS ]',
+    docs_arch_tier1_badge: 'TIER 01',
+    docs_arch_tier1_name: 'REASONING CORE',
+    docs_arch_tier1_sub: '"THE BRAIN" // Dify Cloud & Vertex AI',
+    docs_arch_tier1_desc: 'Chuyên biệt hóa nhận định ngữ cảnh nghiệp vụ, tiếp nhận prompt người dùng và lập luận logic. Hoàn toàn không xử lý mã nguồn TSX hay render DOM.',
+    docs_arch_tier1_emit: 'EMITS: Pure JSON AST',
+    docs_arch_tier1_payload: 'Payload kích thước ~50 tokens',
+    docs_arch_tier2_badge: 'TIER 02',
+    docs_arch_tier2_name: 'DETERMINISTIC MUSCLE',
+    docs_arch_tier2_sub: '"THE MUSCLE" // n8n Swarm Orchestrator',
+    docs_arch_tier2_desc: 'Động cơ điều phối workflow không trạng thái (stateless worker). Định tuyến webhook, thực thi logic biến đổi dữ liệu, xác thực rate-limit và bảo đảm schema.',
+    docs_arch_tier2_dispatch: 'DISPATCH: Webhook Proxy / Validation',
+    docs_arch_tier2_payload: 'Không tiêu tốn LLM token vào JSON parsing',
+    docs_arch_tier3_badge: 'TIER 03',
+    docs_arch_tier3_name: 'PRESENTATION CANVAS',
+    docs_arch_tier3_sub: '"THE PROJECTOR" // artificialcraft.space',
+    docs_arch_tier3_desc: 'Frontend Next.js đóng vai trò màn chiếu thuần túy. Biên dịch JSON AST nhận được vào cấu trúc WebGL 3D, Remotion video preview hoặc Swiss HUD component.',
+    docs_arch_tier3_exec: 'EXEC: Client GPU WebGL 60 FPS',
+    docs_arch_tier3_payload: 'Chi phí Server Render: $0.00 / tháng',
+    docs_arch_flow_tier1: 'TIER 1 (LLM Inference)',
+    docs_arch_flow_tier2: 'TIER 2 (n8n JSON Dispatch)',
+    docs_arch_flow_tier3: 'TIER 3 (Client WebGL Shader Engine)',
+
+    docs_arch_sec1_2_title: '1.2. Triết lý "Data Projector" và Cơ chế Offloading Client-Side GPU',
+    docs_arch_sec1_2_desc: 'Các mô hình tạo sinh truyền thống thường sử dụng Server-Side Rendering hoặc các cụm headless browser (Puppeteer/Playwright) ngốn CPU/RAM khủng khiếp để render đồ họa hoặc quay video trên máy chủ. ARTIFICIALCRAFT.SPACE đảo ngược hoàn toàn tư duy này:',
+    docs_arch_table_col_crit: 'Tiêu chí Đánh giá',
+    docs_arch_table_col_old: 'Server-Side Headless Render (Cũ)',
+    docs_arch_table_col_new: 'Kiến trúc Data Projector (ArtificialCraft)',
+    docs_arch_table_r1_crit: 'Chi phí hạ tầng Server',
+    docs_arch_table_r1_old: '$250 - $1,200/tháng (Cụm Cloud GPU/EC2 Render Nodes)',
+    docs_arch_table_r1_new: '$0.00 / tháng (Khách tự dùng GPU của thiết bị cá nhân)',
+    docs_arch_table_r2_crit: 'LLM Context Consumption',
+    docs_arch_table_r2_old: '2,500 - 8,000 tokens (Toàn bộ component TSX + CSS styles)',
+    docs_arch_table_r2_new: '~50 tokens (Chỉ sinh JSON AST tham số hóa)',
+    docs_arch_table_r3_crit: 'Độ trễ phản hồi (Latency)',
+    docs_arch_table_r3_old: '15s - 45s (Compile TSX, bundling, Webpack build, render)',
+    docs_arch_table_r3_new: '< 150ms (Truyền tải JSON và Hydrate ngay tức thì)',
+    docs_arch_table_r4_crit: 'Tốc độ khung hình (FPS)',
+    docs_arch_table_r4_old: 'Không ổn định, giật lag trên stream (15 - 30 FPS)',
+    docs_arch_table_r4_new: 'Chuẩn 60.0 FPS cố định phần cứng (Three.js WebGL)',
+    docs_arch_table_r5_crit: 'Rủi ro Lỗi Runtime',
+    docs_arch_table_r5_old: 'Cao (LLM sinh sai cú pháp JS/TS, thiếu import, crash UI)',
+    docs_arch_table_r5_new: '0% (Được chặn bởi Zod Schema Gate & Fallback Component)',
+
+    docs_arch_sec2_badge: 'PHẦN 02',
+    docs_arch_sec2_title: 'GIẢI PHÁP 0-CODE JSON-DRIVEN TRIỆT TIÊU "CONTEXT BLOAT" CHO AI WORKERS',
+    docs_arch_sec2_tag: 'TOKEN REDUCTION: 99% EFFICIENCY',
+    docs_arch_sec2_1_title: '2.1. Phân tích vấn đề Context Bloat & AI Worker Memory Exhaustion',
+    docs_arch_sec2_1_desc: 'Khi ép các mô hình AI viết code UI hoàn chỉnh (.tsx / .vue), kích thước prompt tăng theo cấp số nhân dẫn đến 4 hiện tượng thảm họa trong môi trường sản xuất:',
+    docs_arch_fail1_title: 'Hallucinated Code',
+    docs_arch_fail1_desc: 'AI tự bịa ra các hook React không tồn tại hoặc các hàm lifecycle lỗi thời do cạn kiệt context window.',
+    docs_arch_fail2_title: 'Missing Imports',
+    docs_arch_fail2_desc: 'Quên khai báo các thư viện npm quan trọng (Three.js, Lucide, Framer) làm đứt đoạn tiến trình compile webpack.',
+    docs_arch_fail3_title: 'Props Mismatch',
+    docs_arch_fail3_desc: 'Sai lệch kiểu dữ liệu TypeScript (props mismatch), gây gãy kết nối giữa API contract và component rendering.',
+    docs_arch_fail4_title: 'Non-Deterministic Layout',
+    docs_arch_fail4_desc: 'Vỡ layout CSS responsive trên mobile, phá hỏng tính thẩm mỹ nghiêm ngặt của chuẩn Cybernetic Brutalism.',
+    docs_arch_sec2_2_title: '2.2. So sánh Kiến trúc .TSX Truyền thống vs. 0-Code JSON-Driven',
+    docs_arch_comp_col_metric: 'Chỉ số Vận hành',
+    docs_arch_comp_col_tsx: 'Sinh Code Trực Tiếp (.TSX)',
+    docs_arch_comp_col_json: '0-Code JSON-Driven (AST)',
+    docs_arch_comp_r1_metric: 'Kích thước Payload',
+    docs_arch_comp_r1_tsx: '~85 KB (Mã nguồn component TSX)',
+    docs_arch_comp_r1_json: '~0.6 KB (Cấu trúc JSON AST)',
+    docs_arch_comp_r2_metric: 'Chi phí Token LLM',
+    docs_arch_comp_r2_tsx: '~3,200 Tokens / lượt sinh',
+    docs_arch_comp_r2_json: '~50 Tokens (Tiết kiệm 98.4%)',
+    docs_arch_comp_r3_metric: 'Thời gian Hydration',
+    docs_arch_comp_r3_tsx: '8 - 15s (Biên dịch Babel/SWC)',
+    docs_arch_comp_r3_json: '0ms (Bơm trực tiếp in-memory)',
+    docs_arch_comp_r4_metric: 'Độ An Toàn Kiểu Dữ Liệu',
+    docs_arch_comp_r4_tsx: 'Nguy hiểm (Chạy dynamic eval)',
+    docs_arch_comp_r4_json: 'Tuyệt đối (Kiểm tra Zod safeParse)',
+    docs_arch_sec2_3_title: '2.3. Cơ chế Đóng băng Lớp Component & Cập nhật Giao diện qua JSON AST',
+    docs_arch_sec2_3_desc: 'Toàn bộ các phân hệ chính trên ARTIFICIALCRAFT.SPACE được cấu hình từ các file JSON trung tâm được quản lý phiên bản nghiêm ngặt:',
+    docs_arch_hub1_file: 'site-configs/template-schema.json',
+    docs_arch_hub1_desc: 'Điều phối cấu trúc layout trang chủ, danh sách node định tuyến, ma trận thông số kỹ thuật và các tham chiếu component.',
+    docs_arch_hub2_file: 'src/data/showcase-config.json',
+    docs_arch_hub2_desc: 'Quản lý danh sách video Remotion 60FPS, timeline kịch bản, camera zoom spline và các nhãn telemetry HUD.',
+    docs_arch_hub3_file: 'src/data/flipbook-registry.json',
+    docs_arch_hub3_desc: 'Cung cấp dữ liệu cho động cơ 3D Interactive Flipbooks, tài liệu hướng dẫn kỹ thuật và danh bạ component chuẩn SSOT.',
+
+    docs_arch_sec3_badge: 'PHẦN 03',
+    docs_arch_sec3_title: 'NGÔN NGỮ THIẾT KẾ CYBERNETIC SWISS BRUTALISM & HỆ THỐNG SSOT REGISTRY MATRIX',
+    docs_arch_sec3_tag: 'STANDARDS: ZERO-SOFT-RADIUS // CARTESIAN GRIDS',
+    docs_arch_sec3_1_title: '3.1. Hệ thống Design Tokens Cybernetic Swiss Brutalism',
+    docs_arch_sec3_1_desc: 'Thiết kế tôn vinh sự kết hợp giữa chủ nghĩa quốc tế Thụy Sĩ (Swiss International Typographic Style) với sự thô ráp chính xác của Cybernetic Brutalism: đường cắt 0px radius, hệ lưới tọa độ 1px hairline, và sự tương phản tuyệt đối giữa nền Obsidian và các xung điện quang Cyan/Indigo.',
+    docs_arch_token_obsidian: 'Canvas Obsidian',
+    docs_arch_token_obsidian_desc: '#09090B / #0B0B0F - Nền tảng cấu trúc',
+    docs_arch_token_indigo: 'Electric Indigo',
+    docs_arch_token_indigo_desc: '#5322FF - Lõi tính toán phân tán',
+    docs_arch_token_cyan: 'Neon Cyan',
+    docs_arch_token_cyan_desc: '#00E5FF - Tín hiệu vận hành',
+    docs_arch_token_green: 'Matrix Green',
+    docs_arch_token_green_desc: '#00FF66 - SLA Đo lường 60FPS',
+    docs_arch_sec3_2_title: '3.2. Cấu trúc Repository Tree & Quy chuẩn SSOT Registry Protocol (src/core/registry.ts)',
+    docs_arch_repo_tree_title: 'KIẾN TRÚC THƯ MỤC SSOT',
+    docs_arch_props_interface_title: 'QUY CHUẨN UNIVERSAL COMPONENT',
+
+    docs_arch_sec4_badge: 'PHẦN 04',
+    docs_arch_sec4_title: 'CƠ CHẾ ZERO-TRUST BACKEND-TO-FRONTEND & ZOD SCHEMA GATES',
+    docs_arch_sec4_tag: 'GATEWAY: safeParse SHORT-CIRCUIT',
+    docs_arch_sec4_1_title: '4.1. Quy trình 3 bước xác thực tại Next.js API Route Handler',
+    docs_arch_sec4_1_desc: 'Để bảo vệ tuyệt đối runtime của Client khỏi các payload JSON bất thường do LLM bị ảo giác (hallucination) hoặc do tấn công giả mạo, API Route Handler tại src/app/api/craft/generate/route.ts thi hành cơ chế kiểm soát 3 cổng không thỏa hiệp:',
+    docs_arch_gate1_title: 'Cổng 01: Khám phá Môi trường',
+    docs_arch_gate1_desc: 'Kiểm tra token xác thực webhook Dify và n8n, chữ ký bearer headers và tính toàn vẹn của tên miền yêu cầu.',
+    docs_arch_gate2_title: 'Cổng 02: Hợp đồng Hệ thống',
+    docs_arch_gate2_desc: 'Đối chiếu đặc tả JSON Schema, xác minh các trường bắt buộc: id, preset, title, theme và từ điển tham số props.',
+    docs_arch_gate3_title: 'Cổng 03: Ngắt Mạch Zod safeParse',
+    docs_arch_gate3_desc: 'Thực thi kiểm tra kiểu dữ liệu runtime. Nếu preset hoặc props có dấu hiệu sai lệch, lập tức ngắt mạch trả về HTTP 400 kèm mã lỗi chi tiết.',
+    docs_arch_inspector_title: 'BẢNG SOÁT MÃ NGUỒN TƯƠNG TÁC // TELEMETRY TERMINAL',
+    docs_arch_tab_ast: '01 // PAYLOAD JSON AST (~50 TOKENS)',
+    docs_arch_tab_zod: '02 // SCHEMA XÁC THỰC ZOD (safeParse GATE)',
+    docs_arch_tab_stream: '03 // ĐƯỜNG DẪN STREAM PAYLOAD (AST VÀO CANVAS)',
+    docs_arch_btn_copy: 'SAO CHÉP MÃ',
+    docs_arch_btn_copied: '[ ĐÃ SAO CHÉP ✓ ]',
+    docs_arch_btn_validate: '[ KIỂM TRA PAYLOAD ]',
+    docs_arch_validate_success: '[ CỔNG XÁC THỰC: ZOD CHẤP THUẬN // 0 LỖI // SẴN SÀNG 60FPS ]',
+
+    docs_arch_sec5_badge: 'PHẦN 05',
+    docs_arch_sec5_title: 'ĐỘNG CƠ STUDIO CONFIGURATOR ENGINE & KỸ THUẬT STREAMING IN-MEMORY',
+    docs_arch_sec5_tag: 'ROUTE: /studio // 3D MONOLITH',
+    docs_arch_sec5_1_title: '5.1. Stripping Shell Strategy & Dynamic In-Memory Stream',
+    docs_arch_sec5_1_desc: 'Thành phần CraftStudioConfigurator.tsx áp dụng chiến lược phân tách vỏ ngoài (Stripping Shell). Giao diện trạm làm việc được cách ly tuyệt đối khỏi các hiệu ứng rò rỉ bộ nhớ DOM bằng container sandbox Iframe. Trình biên dịch 3D chỉ lắng nghe sự thay đổi của các trường trạng thái và cập nhật các ma trận biến đổi Euler/Quaternion theo chu kỳ 16.6ms (60 FPS) mà không bao giờ trigger re-render toàn bộ trang web.',
+    docs_arch_sec5_2_title: '5.2. Thông số Kỹ thuật 5-Step Wizard Dock',
+    docs_arch_step1_badge: 'BƯỚC 01',
+    docs_arch_step1_title: 'Định danh Node',
+    docs_arch_step1_desc: 'Khai báo brandName, tagline, mỏ neo định danh AST composition và tiền tố node.',
+    docs_arch_step2_badge: 'BƯỚC 02',
+    docs_arch_step2_title: 'Ma trận Bảng màu',
+    docs_arch_step2_desc: 'Lựa chọn bảng màu: Obsidian/Indigo, Titanium/Cyan hoặc kích hoạt handleAIGeneratePalette để AI phối màu tự động.',
+    docs_arch_step3_badge: 'BƯỚC 03',
+    docs_arch_step3_title: 'Động học Khớp 3D',
+    docs_arch_step3_desc: 'Điều chỉnh động học cánh tay bionic 11-DOF, hộp giảm tốc sóng ứng suất (harmonic drive) và thanh trượt tách khối explodedProgress từ 0% đến 100%.',
+    docs_arch_step4_badge: 'BƯỚC 04',
+    docs_arch_step4_title: 'Cảm biến Đo lường',
+    docs_arch_step4_desc: 'Kích hoạt đám mây 1200+ điểm từ trường không gian, tần số giám sát telemetryFps và chỉ số lực xoắn torquePrecision.',
+    docs_arch_step5_badge: 'BƯỚC 05',
+    docs_arch_step5_title: 'Xuất Bản Không Ghi Đĩa',
+    docs_arch_step5_desc: 'Xuất file HTML đơn đóng gói sẵn runtime, tải JSON AST tinh gọn hoặc trích xuất mã nhúng cho TypeScript, Python, ROS2 và C++ robot SDKs.',
+
+    docs_arch_sec6_badge: 'PHẦN 06',
+    docs_arch_sec6_title: 'CHÍNH SÁCH KHÁNG LỖI 2-TIER GRACEFUL FALLBACK & QUY TRÌNH GITOPS GOVERNANCE',
+    docs_arch_sec6_tag: 'SLA: ZERO-CRASH ARCHITECTURE',
+    docs_arch_sec6_1_title: '6.1. Mô hình 2-Tier Graceful Fallback Policy (Zero-Crash SLA)',
+    docs_arch_sec6_1_desc: 'Để bảo đảm cam kết Zero-Crash trong môi trường sản xuất có lưu lượng truy cập lớn, DynamicSectionRenderer thiết lập mạng lưới cứu hộ hai lớp:',
+    docs_arch_fb1_badge: 'TIER 1',
+    docs_arch_fb1_title: 'Static AST Sanitizer',
+    docs_arch_fb1_layer: 'TẦNG SCHEMA',
+    docs_arch_fb1_desc: 'Nếu component nhận được chứa một preset không tồn tại trong Registry hoặc bị thiếu các thuộc tính bắt buộc, Sanitizer sẽ tự động ép preset về swiss-hud mặc định và sử dụng thuật toán băm PRNG lấp đầy tham số thiếu.',
+    docs_arch_fb2_badge: 'TIER 2',
+    docs_arch_fb2_title: 'Safe Fallback Component',
+    docs_arch_fb2_layer: 'TẦNG GPU RUNTIME',
+    docs_arch_fb2_desc: 'Khi GPU của máy khách bị mất ngữ cảnh (Context Loss) hoặc trình duyệt không hỗ trợ WebGL2, React Error Boundary sẽ chặn đứng ngoại lệ và hiển thị ngay lập tức một canvas vector thuần 2D (Procedural Canvas SVG Wireframe) không làm crash trang.',
+    docs_arch_sec6_2_title: '6.2. Quy định GitOps Handover & Build Gate Protocol',
+    docs_arch_sec6_2_desc: 'Bốn nguyên tắc vàng bất di bất dịch được mã hóa trong quy trình CI/CD và bản chỉ thị AGENT.md:',
+    docs_arch_rule1_title: 'Quy tắc 1: Khóa Phạm Vi (Scope Lock)',
+    docs_arch_rule1_desc: 'Tuyệt đối cấm AI Worker tạo thêm hoặc sửa đổi các file component .tsx trong các tác vụ cập nhật giao diện thường nhật. Mọi thay đổi 100% qua file JSON.',
+    docs_arch_rule2_title: 'Quy tắc 2: Đăng ký SSOT Registry',
+    docs_arch_rule2_desc: 'Bất kỳ component mới nào được kỹ sư con người thêm vào đều bắt buộc phải đăng ký đầy đủ trong registry.ts trước khi được phép gọi từ JSON AST.',
+    docs_arch_rule3_title: 'Quy tắc 3: Cổng Kiểm Tra TypeScript',
+    docs_arch_rule3_desc: 'Lệnh npx tsc --noEmit bắt buộc phải vượt qua với chính xác 0 lỗi cú pháp trước khi bất kỳ PR nào được hợp nhất vào nhánh main.',
+    docs_arch_rule4_title: 'Quy tắc 4: Cách Ly Bản Dựng Export',
+    docs_arch_rule4_desc: 'Tất cả các bản dựng export độc lập phải nằm trong vùng cách ly, không làm phình to bundle kích thước tải trang của core web application.',
+
+    docs_arch_sec7_badge: 'PHẦN 07',
+    docs_arch_sec7_title: 'TỔNG KẾT HIỆU NĂNG HỆ THỐNG & GIÁ TRỊ CỐT LÕI CHO DEVELOPER',
+    docs_arch_sec7_tag: 'FINAL VERDICT // BENCHMARK 2026',
+    docs_arch_roi1_title: 'Dành cho Web3D Developers',
+    docs_arch_roi1_desc: 'Không còn phải lo lắng về việc đồng bộ state giữa UI React và vòng lặp Three.js animation. Tham số hóa toàn bộ camera, chất liệu PBR và khớp động học qua JSON AST chuẩn xác từng miligiây.',
+    docs_arch_roi2_title: 'Dành cho AI Systems Engineers',
+    docs_arch_roi2_desc: 'Triệt tiêu 99% token hao phí vô ích. LLM của bạn chỉ cần tập trung suy luận bài toán thực tế và trả về ~50 tokens JSON. Tốc độ thực thi của agent tăng gấp 10 lần, chi phí API giảm cận biên về 0.',
+    docs_arch_roi3_title: 'Dành cho Solution Architects',
+    docs_arch_roi3_desc: 'Một kiến trúc decoupled hoàn hảo không phụ thuộc vào hạ tầng server đắt đỏ. Khả năng mở rộng không giới hạn (infinite scale) khi toàn bộ năng lực tính toán đồ họa 60 FPS được ủy quyền cho máy khách.',
+    docs_arch_export_whitepaper: 'TẢI TOÀN BỘ ĐẶC TẢ BÁO CÁO KỸ THUẬT:',
+    docs_arch_btn_download_ast: '[ JSON AST ]',
+    docs_arch_btn_export_pdf: '[ PDF VI/EN ]',
+    docs_arch_btn_export_md: '[ MARKDOWN .MD ]',
   },
 };
