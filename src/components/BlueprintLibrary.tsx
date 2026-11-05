@@ -11,22 +11,58 @@ import {
   Loader2,
   X,
   ImageIcon,
+  Code2,
+  Terminal,
 } from 'lucide-react';
-import { BLUEPRINTS, type Blueprint } from '@/lib/data';
+import pipelineBlueprintsData from '@/data/pipeline-blueprints.json';
 import { useTranslation } from '@/context/useLanguage';
 
-function accentHex(accent: 'cyan' | 'purple') {
-  return accent === 'cyan' ? '#00E5FF' : '#5322ff';
+export interface BlueprintNode {
+  step: number;
+  id: string;
+  name: string;
+  type: string;
+  engine: string;
+  latency: string;
+  output: string;
 }
 
-function difficultyColor(d: Blueprint['difficulty']) {
-  if (d === 'Core') return 'text-emerald-400 border-emerald-400/40 bg-emerald-950/30';
-  if (d === 'Advanced') return 'text-cyan-glow border-cyan-glow/40 bg-cyan-950/30';
+export interface PipelineBlueprint {
+  id: string;
+  slug: string;
+  name: string;
+  category: string;
+  tier: 'Core' | 'Advanced' | 'Expert';
+  node_count: number;
+  description: string;
+  cli_deploy: string;
+  nodes: BlueprintNode[];
+  config_parameters: Record<string, unknown>;
+}
+
+const BLUEPRINTS = (pipelineBlueprintsData.blueprints || []) as PipelineBlueprint[];
+
+function tierColor(tier: PipelineBlueprint['tier']) {
+  if (tier === 'Core') return 'text-emerald-400 border-emerald-400/40 bg-emerald-950/30';
+  if (tier === 'Advanced') return 'text-cyan-glow border-cyan-glow/40 bg-cyan-950/30';
   return 'text-white border-[#5322ff] bg-[#5322ff]/20';
 }
 
-function NodeIcon({ icon: Icon, color }: { icon: typeof Camera; color: string }) {
-  return <Icon size={16} color={color} />;
+function tierAccent(tier: PipelineBlueprint['tier']): string {
+  if (tier === 'Core') return '#10b981';
+  if (tier === 'Advanced') return '#00E5FF';
+  return '#5322ff';
+}
+
+function isKeyExecutionNode(type: string): boolean {
+  return [
+    'AI_INFERENCE',
+    'NUMPY_MATH',
+    'GAUSSIAN_RENDER',
+    'SDK_CONTROLLER',
+    'FRONTEND_VIEWPORT',
+    'MULTI_LAYER_MERGE',
+  ].includes(type);
 }
 
 function ExportPreviewModal({
@@ -56,7 +92,7 @@ function ExportPreviewModal({
         className="relative max-w-2xl w-full"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="border border-zinc-800 bg-zinc-950 overflow-hidden">
+        <div className="border border-zinc-800 bg-zinc-950 overflow-hidden shadow-2xl">
           <div className="flex items-center justify-between px-5 py-3 border-b border-zinc-800">
             <div className="flex items-center gap-2">
               <ImageIcon className="h-4 w-4 text-cyan-glow" />
@@ -70,7 +106,7 @@ function ExportPreviewModal({
               <X className="h-4 w-4" />
             </button>
           </div>
-          <div className="p-6 bg-[#09090b] flex items-center justify-center">
+          <div className="p-6 bg-[#09090b] flex items-center justify-center max-h-[70vh] overflow-auto">
             <img
               src={dataUrl}
               alt="Blueprint export preview"
@@ -83,7 +119,7 @@ function ExportPreviewModal({
             </span>
             <button
               onClick={onDownload}
-              className="inline-flex items-center gap-2 border border-zinc-200 bg-white text-black text-[12px] font-bold px-4 py-2 hover:bg-zinc-200 transition-colors"
+              className="inline-flex items-center gap-2 border border-zinc-200 bg-white text-black text-[12px] font-bold px-4 py-2 hover:bg-zinc-200 transition-colors uppercase"
             >
               <Download className="h-4 w-4" />
               {t('download_png')}
@@ -95,24 +131,130 @@ function ExportPreviewModal({
   );
 }
 
-function BlueprintCard({ bp, index }: { bp: Blueprint; index: number }) {
+function InspectAstModal({
+  bp,
+  onClose,
+}: {
+  bp: PipelineBlueprint;
+  onClose: () => void;
+}) {
   const { t } = useTranslation();
-  const [copied, setCopied] = useState(false);
-  const [exported, setExported] = useState(false);
-  const [exporting, setExporting] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const accent = accentHex(bp.accent);
-  const exportRef = useRef<HTMLDivElement>(null);
-  const pendingDataUrl = useRef<string | null>(null);
+  const [copiedAst, setCopiedAst] = useState(false);
+  const jsonContent = JSON.stringify(bp, null, 2);
 
-  const copyApi = async () => {
+  const copyJson = async () => {
     try {
-      await navigator.clipboard.writeText(bp.api);
+      await navigator.clipboard.writeText(jsonContent);
     } catch {
       /* clipboard fallback */
     }
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1800);
+    setCopiedAst(true);
+    setTimeout(() => setCopiedAst(false), 1800);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 font-mono"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.95, y: 10 }}
+        animate={{ scale: 1, y: 0 }}
+        exit={{ scale: 0.95, y: 10 }}
+        className="relative max-w-3xl w-full"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="border border-zinc-800 bg-zinc-950 overflow-hidden shadow-2xl">
+          <div className="flex items-center justify-between px-5 py-3 border-b border-zinc-800">
+            <div className="flex items-center gap-2">
+              <Code2 className="h-4 w-4 text-cyan-glow" />
+              <span className="text-[13px] font-bold text-white uppercase">{t('inspectAst')}</span>
+              <span className="text-[10px] text-zinc-500 ml-1">AST SCHEMA // {bp.id}</span>
+            </div>
+            <button
+              onClick={onClose}
+              className="text-zinc-500 hover:text-white transition-colors"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+
+          <div className="p-4 bg-[#09090b] max-h-[65vh] overflow-auto">
+            <pre className="text-[11px] text-zinc-300 font-mono leading-relaxed overflow-x-auto p-4 bg-zinc-950 border border-zinc-800/80">
+              <code>{jsonContent}</code>
+            </pre>
+          </div>
+
+          <div className="flex items-center justify-between px-5 py-4 border-t border-zinc-800 bg-zinc-950">
+            <span className="text-[10px] text-zinc-500 uppercase">
+              AST VALIDATOR: DETERMINISTIC SCHEMA v1.0.0
+            </span>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={copyJson}
+                className="inline-flex items-center gap-1.5 border border-zinc-700 bg-zinc-900 text-zinc-200 text-[11px] font-bold px-3 py-1.5 hover:bg-zinc-800 hover:text-white transition-colors uppercase"
+              >
+                {copiedAst ? (
+                  <>
+                    <Check className="h-3.5 w-3.5 text-emerald-400" />
+                    <span className="text-emerald-400">{t('copied')}</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="h-3.5 w-3.5" />
+                    {t('copyJson')}
+                  </>
+                )}
+              </button>
+              <button
+                onClick={onClose}
+                className="inline-flex items-center border border-zinc-200 bg-white text-black text-[11px] font-bold px-4 py-1.5 hover:bg-zinc-200 transition-colors uppercase"
+              >
+                X
+              </button>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function BlueprintCard({ bp, index }: { bp: PipelineBlueprint; index: number }) {
+  const { t } = useTranslation();
+  const [copiedCli, setCopiedCli] = useState(false);
+  const [copiedApi, setCopiedApi] = useState(false);
+  const [exported, setExported] = useState(false);
+  const [exporting, setExporting] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [inspectOpen, setInspectOpen] = useState(false);
+
+  const accent = tierAccent(bp.tier);
+  const exportRef = useRef<HTMLDivElement>(null);
+  const pendingDataUrl = useRef<string | null>(null);
+
+  const copyCli = async () => {
+    try {
+      await navigator.clipboard.writeText(bp.cli_deploy);
+    } catch {
+      /* clipboard fallback */
+    }
+    setCopiedCli(true);
+    setTimeout(() => setCopiedCli(false), 1800);
+  };
+
+  const copyApi = async () => {
+    try {
+      await navigator.clipboard.writeText(bp.cli_deploy);
+    } catch {
+      /* clipboard fallback */
+    }
+    setCopiedApi(true);
+    setTimeout(() => setCopiedApi(false), 1800);
   };
 
   const exportScreenshot = async () => {
@@ -148,73 +290,117 @@ function BlueprintCard({ bp, index }: { bp: Blueprint; index: number }) {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.4, delay: index * 0.06 }}
-      className="group relative border border-zinc-800 bg-zinc-950 font-mono hover:border-zinc-700 transition-colors"
+      transition={{ duration: 0.4, delay: index * 0.08 }}
+      className="group relative border border-zinc-800 bg-zinc-950 font-mono hover:border-zinc-700 transition-colors flex flex-col justify-between"
     >
       <div
         className="absolute inset-x-0 top-0 h-1 opacity-80"
         style={{ background: accent }}
       />
 
-      <div className="p-6">
-        {/* Header */}
-        <div className="flex items-start justify-between gap-3 mb-4">
-          <div>
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-500">
-                {bp.category}
-              </span>
-              <span
-                className={`font-mono text-[9px] px-1.5 py-0.5 border ${difficultyColor(bp.difficulty)}`}
-              >
-                {bp.difficulty}
-              </span>
-            </div>
-            <h3 className="text-[15px] font-bold text-white uppercase tracking-tight leading-snug">
-              {bp.name}
-            </h3>
-          </div>
-          <div className="text-right shrink-0">
-            <div className="font-mono text-[18px] font-bold text-white">{bp.nodes}</div>
-            <div className="font-mono text-[8px] text-zinc-500 uppercase">NODES</div>
-          </div>
-        </div>
-
-        <p className="text-[12.5px] text-zinc-400 font-sans leading-relaxed mb-5">{bp.tagline}</p>
-
-        {/* Node preview */}
-        <div className="border border-zinc-800 bg-[#09090b] p-3 mb-4">
-          <div className="flex items-center gap-2 mb-2">
-            {bp.nodes_preview.map((n, i) => (
-              <div key={i} className="flex items-center gap-1.5 flex-1">
-                <div
-                  className="flex flex-col items-center gap-1 border px-2 py-1.5 flex-1 bg-zinc-950"
-                  style={{ borderColor: n.type === 'dify' ? `${accent}` : 'rgba(63,63,70,0.8)' }}
+      <div className="p-6 flex flex-col h-full justify-between">
+        <div>
+          {/* Header */}
+          <div className="flex items-start justify-between gap-3 mb-4">
+            <div>
+              <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-500">
+                  {bp.category}
+                </span>
+                <span
+                  className={`font-mono text-[9px] px-1.5 py-0.5 border ${tierColor(bp.tier)}`}
                 >
-                  <n.icon className="h-3.5 w-3.5" style={{ color: n.type === 'dify' ? accent : '#a1a1aa' }} />
-                  <span className="text-[9px] text-zinc-300 text-center leading-tight">{n.label}</span>
-                </div>
-                {i < bp.nodes_preview.length - 1 && (
-                  <span className="text-zinc-600 text-xs">→</span>
-                )}
+                  {bp.tier}
+                </span>
               </div>
-            ))}
+              <h3 className="text-[15px] font-bold text-white uppercase tracking-tight leading-snug">
+                {bp.name}
+              </h3>
+            </div>
+            <div className="text-right shrink-0">
+              <div className="font-mono text-[18px] font-bold text-white">{bp.node_count}</div>
+              <div className="font-mono text-[8px] text-zinc-500 uppercase">NODES</div>
+            </div>
+          </div>
+
+          {/* Description */}
+          <p className="text-[12.5px] text-zinc-400 font-sans leading-relaxed mb-5">
+            {bp.description}
+          </p>
+
+          {/* Node Workflow Diagram: Horizontal sequence connected with arrows */}
+          <div className="border border-zinc-800 bg-[#09090b] p-3 mb-4 overflow-x-auto">
+            <div className="flex items-stretch gap-1.5 min-w-max py-1">
+              {bp.nodes.map((node, i) => {
+                const isKeyNode = isKeyExecutionNode(node.type);
+                const borderColor = isKeyNode ? accent : 'rgba(63,63,70,0.8)';
+                return (
+                  <div key={node.id} className="flex items-center gap-1.5">
+                    <div
+                      className="flex flex-col justify-between border px-2.5 py-2 min-w-[125px] max-w-[145px] bg-zinc-950 text-left transition-colors"
+                      style={{
+                        borderColor,
+                        boxShadow: isKeyNode ? `0 0 10px ${accent}22` : undefined,
+                      }}
+                    >
+                      <div className="flex items-center justify-between text-[8px] text-zinc-500 mb-1 border-b border-zinc-900 pb-1">
+                        <span className="font-mono text-cyan-glow">0{node.step}</span>
+                        <span className="font-mono text-[7.5px] uppercase tracking-wider text-zinc-400 truncate max-w-[70px]">
+                          {node.type}
+                        </span>
+                      </div>
+                      <div className="text-[9.5px] font-bold text-white mb-1.5 leading-tight truncate" title={node.name}>
+                        {node.name}
+                      </div>
+                      <div className="flex flex-col gap-0.5 text-[8px] text-zinc-400">
+                        <span className="truncate text-zinc-400" title={node.engine}>
+                          ⚡ {node.engine}
+                        </span>
+                        <div className="flex items-center justify-between text-[7.5px] text-zinc-500 mt-0.5">
+                          <span>{node.latency}</span>
+                          <span className="text-zinc-500 truncate max-w-[55px]" title={node.output}>
+                            {node.output}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    {i < bp.nodes.length - 1 && (
+                      <span className="text-zinc-500 text-xs px-0.5 select-none font-bold">➔</span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* CLI Code Block with Copy Button */}
+          <div className="border border-zinc-800 bg-zinc-900 px-3 py-2 mb-4 font-mono text-[10.5px] text-zinc-300 flex items-center justify-between gap-2 overflow-hidden group/cli">
+            <div className="truncate flex items-center gap-1.5">
+              <Terminal className="h-3.5 w-3.5 text-cyan-glow shrink-0" />
+              <span className="truncate">{bp.cli_deploy}</span>
+            </div>
+            <button
+              onClick={copyCli}
+              className="shrink-0 text-zinc-400 hover:text-white transition-colors"
+              title="Copy CLI command"
+            >
+              {copiedCli ? (
+                <Check className="h-3.5 w-3.5 text-emerald-400" />
+              ) : (
+                <Copy className="h-3.5 w-3.5" />
+              )}
+            </button>
           </div>
         </div>
 
-        {/* API line */}
-        <div className="border border-zinc-800 bg-zinc-900 px-3 py-2 mb-4 font-mono text-[10.5px] text-zinc-300 overflow-hidden">
-          <span className="text-cyan-glow">$</span> {bp.api}
-        </div>
-
-        {/* Actions */}
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-2">
+        {/* Action Buttons: COPY API, EXPORT HD DIAGRAM, INSPECT AST JSON */}
+        <div className="flex flex-col gap-2 pt-2">
+          <div className="grid grid-cols-2 gap-2">
             <button
               onClick={copyApi}
-              className="flex-1 inline-flex items-center justify-center gap-1.5 border border-zinc-800 bg-zinc-900 text-[11px] font-bold text-zinc-300 px-3 py-2 hover:bg-zinc-800 hover:text-white transition-colors uppercase"
+              className="inline-flex items-center justify-center gap-1.5 border border-zinc-800 bg-zinc-900 text-[11px] font-bold text-zinc-300 px-3 py-2 hover:bg-zinc-800 hover:text-white transition-colors uppercase"
             >
-              {copied ? (
+              {copiedApi ? (
                 <>
                   <Check className="h-3.5 w-3.5 text-emerald-400" />
                   <span className="text-emerald-400">{t('copied')}</span>
@@ -222,17 +408,19 @@ function BlueprintCard({ bp, index }: { bp: Blueprint; index: number }) {
               ) : (
                 <>
                   <Copy className="h-3.5 w-3.5" />
-                  {t('copy_api')}
+                  {t('copyApi')}
                 </>
               )}
             </button>
             <button
-              className="inline-flex items-center justify-center border border-zinc-800 bg-zinc-900 text-zinc-300 px-3 py-2 hover:bg-zinc-800 hover:text-white transition-colors"
-              title="Download template"
+              onClick={() => setInspectOpen(true)}
+              className="inline-flex items-center justify-center gap-1.5 border border-zinc-800 bg-zinc-900 text-[11px] font-bold text-zinc-300 px-3 py-2 hover:bg-zinc-800 hover:text-white transition-colors uppercase"
             >
-              <Download className="h-3.5 w-3.5" />
+              <Code2 className="h-3.5 w-3.5 text-cyan-glow" />
+              {t('inspectAst')}
             </button>
           </div>
+
           <button
             onClick={exportScreenshot}
             disabled={exporting}
@@ -256,85 +444,94 @@ function BlueprintCard({ bp, index }: { bp: Blueprint; index: number }) {
             ) : (
               <>
                 <Camera className="h-3.5 w-3.5" style={{ color: accent }} />
-                {t('exportBlueprint')}
+                {t('exportDiagram')}
               </>
             )}
           </button>
         </div>
       </div>
 
-      {/* Hidden export-only container */}
+      {/* Hidden export-only container for High-Definition image capture */}
       <div style={{ position: 'absolute', left: '-99999px', top: 0, pointerEvents: 'none' }}>
         <div
           ref={exportRef}
           style={{
-            width: '720px',
+            width: '840px',
             background: '#09090b',
-            border: '2px solid #5322ff',
+            border: `2px solid ${accent}`,
             padding: '40px',
             fontFamily: 'JetBrains Mono, monospace',
             color: '#ffffff',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px' }}>
-            <div
-              style={{
-                width: '28px',
-                height: '28px',
-                background: '#5322ff',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: 700,
-                color: '#fff',
-                fontSize: '13px',
-              }}
-            >
-              AC
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', borderBottom: '1px solid #27272a', paddingBottom: '16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  background: accent,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontWeight: 800,
+                  color: '#000',
+                  fontSize: '14px',
+                }}
+              >
+                AC
+              </div>
+              <div>
+                <div style={{ fontSize: '15px', fontWeight: 800, color: '#fff', textTransform: 'uppercase' }}>
+                  ARTIFICIAL CRAFT // BLUEPRINT
+                </div>
+                <div style={{ fontSize: '11px', color: '#00E5FF' }}>
+                  PRODUCTION PIPELINE :: {bp.category.toUpperCase()}
+                </div>
+              </div>
             </div>
-            <div>
-              <div style={{ fontSize: '15px', fontWeight: 700, color: '#fff', textTransform: 'uppercase' }}>
-                ARTIFICIAL CRAFT
-              </div>
-              <div style={{ fontSize: '10px', color: '#00E5FF' }}>
-                CRAFT//CODE · BLUEPRINT :: {bp.category}
-              </div>
+            <div style={{ textAlign: 'right' }}>
+              <div style={{ fontSize: '18px', fontWeight: 800, color: '#fff' }}>{bp.node_count} NODES</div>
+              <div style={{ fontSize: '9px', color: '#71717a', textTransform: 'uppercase' }}>TIER: {bp.tier}</div>
             </div>
           </div>
 
-          <div style={{ fontSize: '20px', fontWeight: 700, color: '#fff', textTransform: 'uppercase', marginBottom: '8px' }}>
+          <div style={{ fontSize: '22px', fontWeight: 800, color: '#fff', textTransform: 'uppercase', marginBottom: '8px' }}>
             {bp.name}
           </div>
-          <div style={{ fontSize: '12px', color: '#a1a1aa', marginBottom: '24px' }}>
-            {bp.tagline}
+          <div style={{ fontSize: '13px', color: '#a1a1aa', marginBottom: '24px', lineHeight: '1.5' }}>
+            {bp.description}
           </div>
 
+          {/* Step Sequence in Export */}
           <div
             style={{
               background: '#050507',
               border: '1px solid #3f3f46',
-              padding: '24px',
-              marginBottom: '24px',
+              padding: '20px',
+              marginBottom: '20px',
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              {bp.nodes_preview.map((n, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', overflow: 'hidden' }}>
+              {bp.nodes.map((node, i) => (
+                <div key={node.id} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <div
                     style={{
-                      border: `1px solid ${n.type === 'dify' ? accent : '#52525b'}`,
-                      padding: '12px 16px',
+                      border: `1px solid ${isKeyExecutionNode(node.type) ? accent : '#52525b'}`,
+                      padding: '10px 12px',
                       background: '#09090b',
-                      minWidth: '110px',
-                      textAlign: 'center',
+                      minWidth: '115px',
                     }}
                   >
-                    <NodeIcon icon={n.icon} color={n.type === 'dify' ? accent : '#a1a1aa'} />
-                    <div style={{ fontSize: '11px', color: '#fff', marginTop: '6px', fontWeight: 600 }}>
-                      {n.label}
+                    <div style={{ fontSize: '8px', color: '#00E5FF', marginBottom: '4px' }}>
+                      STEP 0{node.step} // {node.type}
                     </div>
+                    <div style={{ fontSize: '10px', color: '#fff', fontWeight: 700, marginBottom: '4px' }}>
+                      {node.name}
+                    </div>
+                    <div style={{ fontSize: '8px', color: '#71717a' }}>{node.engine}</div>
                   </div>
-                  {i < bp.nodes_preview.length - 1 && <span style={{ color: '#00E5FF' }}>→</span>}
+                  {i < bp.nodes.length - 1 && <span style={{ color: accent, fontSize: '14px' }}>➔</span>}
                 </div>
               ))}
             </div>
@@ -349,11 +546,12 @@ function BlueprintCard({ bp, index }: { bp: Blueprint; index: number }) {
               color: '#00E5FF',
             }}
           >
-            $ {bp.api}
+            {bp.cli_deploy}
           </div>
         </div>
       </div>
 
+      {/* Export Preview Modal */}
       <AnimatePresence>
         {previewUrl && (
           <ExportPreviewModal
@@ -363,6 +561,16 @@ function BlueprintCard({ bp, index }: { bp: Blueprint; index: number }) {
               downloadImage();
               setPreviewUrl(null);
             }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Inspect AST JSON Modal */}
+      <AnimatePresence>
+        {inspectOpen && (
+          <InspectAstModal
+            bp={bp}
+            onClose={() => setInspectOpen(false)}
           />
         )}
       </AnimatePresence>
@@ -398,7 +606,7 @@ export default function BlueprintLibrary() {
           </p>
         </div>
 
-        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
           {BLUEPRINTS.map((bp, i) => (
             <BlueprintCard key={bp.id} bp={bp} index={i} />
           ))}
