@@ -12,6 +12,11 @@ export * from './MobiusLatticeMatrix3D';
 export * from './ChronoGeodesicDomeAssembly3D';
 export * from './ChiralDoubleHelixMatrix3D';
 
+// 3 Anatomy-Inspired CAD Mechanical 3D Meshes
+export * from './QuantumEscapementClock3D';
+export * from './PneumaticDataPipeline3D';
+export * from './TokamakReactorCore3D';
+
 // Existing 3D components
 export * from './RubikCube3D';
 export * from './LogarithmicSpiral3D';

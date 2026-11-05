@@ -18,6 +18,9 @@ import {
   MobiusLatticeMatrix3D,
   ChronoGeodesicDomeAssembly3D,
   ChiralDoubleHelixMatrix3D,
+  QuantumEscapementClock3D,
+  PneumaticDataPipeline3D,
+  TokamakReactorCore3D,
 } from './3d';
 
 export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
@@ -343,6 +346,48 @@ export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
       case 'chiral-double-helix':
         return (
           <ChiralDoubleHelixMatrix3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'quantum-escapement-clock':
+        return (
+          <QuantumEscapementClock3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'pneumatic-data-pipeline':
+        return (
+          <PneumaticDataPipeline3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'tokamak-reactor-core':
+        return (
+          <TokamakReactorCore3D
             frame={frame}
             primaryColor={primary}
             accentColor={accent}
