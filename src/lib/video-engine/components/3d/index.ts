@@ -17,6 +17,11 @@ export * from './QuantumEscapementClock3D';
 export * from './PneumaticDataPipeline3D';
 export * from './TokamakReactorCore3D';
 
+// Anatomy-Inspired Robotics & Network 3D Meshes (Batch 2)
+export * from '../../../../components/robotics/3d/BTreeDiskIndex3D';
+export * from '../../../../components/robotics/3d/MailRopewayTcp3D';
+export * from '../../../../components/robotics/3d/TurbofanJetEngine3D';
+
 // Existing 3D components
 export * from './RubikCube3D';
 export * from './LogarithmicSpiral3D';

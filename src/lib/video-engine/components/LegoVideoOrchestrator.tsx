@@ -21,6 +21,9 @@ import {
   QuantumEscapementClock3D,
   PneumaticDataPipeline3D,
   TokamakReactorCore3D,
+  BTreeDiskIndex3D,
+  MailRopewayTcp3D,
+  TurbofanJetEngine3D,
 } from './3d';
 
 export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
@@ -388,6 +391,48 @@ export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
       case 'tokamak-reactor-core':
         return (
           <TokamakReactorCore3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'btree-disk-index':
+        return (
+          <BTreeDiskIndex3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'mail-ropeway-tcp':
+        return (
+          <MailRopewayTcp3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'turbofan-jet-engine':
+        return (
+          <TurbofanJetEngine3D
             frame={frame}
             primaryColor={primary}
             accentColor={accent}
