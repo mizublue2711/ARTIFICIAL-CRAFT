@@ -222,6 +222,13 @@ export const ASSET_PRESET_REGISTRY: AssetPresetRegistry = {
       description: 'Anatomy-inspired rim light studio turntable with central pill control core, dynamic normal-vector rim illumination, orbital key lamp, and fill lamp dimmer rig',
       previewColor: '#00E5FF',
     },
+    'vdm80-actuator-joint': {
+      id: 'vdm80-actuator-joint',
+      label: 'VDM 80 Integrated Robotic Actuator Joint 3D',
+      category: 'heroObjects',
+      description: 'Integrated robotic actuator joint with Φ81mm x 79.5mm housing, 23.04:1 cycloidal reduction, BLDC stator/rotor, ⌀7.0mm hollow shaft bore, micro-driver PCB with CAN FD/RS485/EtherCAT, and 128.6 N·m peak torque',
+      previewColor: '#00E5FF',
+    },
   },
 
   '3D_MESHES': {
@@ -377,6 +384,13 @@ export const ASSET_PRESET_REGISTRY: AssetPresetRegistry = {
       label: 'Rim Light Studio 3D',
       category: '3D_MESHES',
       description: 'Anatomy-inspired rim light studio turntable with central pill control core, dynamic normal-vector rim illumination, orbital key lamp, and fill lamp dimmer rig',
+      previewColor: '#00E5FF',
+    },
+    'vdm80-actuator-joint': {
+      id: 'vdm80-actuator-joint',
+      label: 'VDM 80 Integrated Robotic Actuator Joint 3D',
+      category: '3D_MESHES',
+      description: 'Integrated robotic actuator joint with Φ81mm x 79.5mm housing, 23.04:1 cycloidal reduction, BLDC stator/rotor, ⌀7.0mm hollow shaft bore, micro-driver PCB with CAN FD/RS485/EtherCAT, and 128.6 N·m peak torque',
       previewColor: '#00E5FF',
     },
   },

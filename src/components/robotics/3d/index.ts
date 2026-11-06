@@ -7,5 +7,6 @@ export * from './LiquidSteelFoundry3D';
 export * from './OpticalBenchInterferometer3D';
 export * from './KinematicDifferentialGearbox3D';
 export * from './RimLightStudio3D';
+export * from './VDM80ActuatorJoint3D';
 export * from './PointCloudCanvas';
 export * from './RobotArmScene';

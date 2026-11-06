@@ -46,6 +46,7 @@ import {
   OpticalBenchInterferometer3D,
   KinematicDifferentialGearbox3D,
   RimLightStudio3D,
+  VDM80ActuatorJoint3D,
 } from '@/components/robotics/3d';
 
 import {
@@ -149,6 +150,7 @@ export interface ExtendedStudioConfig extends Partial<SwissDesignConfig> {
 }
 
 export const AVAILABLE_3D_COMPONENTS = [
+  { value: 'vdm80-actuator-joint', label: 'VDM 80 Integrated Robotic Actuator Joint 3D', icon: Bot },
   { value: 'rolls-royce-trent-970', label: 'Rolls-Royce Trent 970 Ground-Run 3D', icon: Zap },
   { value: 'kinematic-differential-gearbox', label: 'Kinematic Differential Gearbox 3D', icon: Zap },
   { value: 'rim-light-studio', label: 'Rim Light Studio 3D', icon: Crosshair },
@@ -2211,6 +2213,22 @@ export const CraftStudioConfigurator: React.FC = () => {
                       return (
                         <div className="w-full h-full flex items-center justify-center p-4">
                           <RimLightStudio3D
+                            primaryColor={activePrim}
+                            accentColor={activeAcc}
+                            scale={1.1}
+                            rotateXDeg={formData.roboticsNode?.wireframe ? 28 : 28}
+                            dispersionAmount={dispAmount}
+                            width={720}
+                            height={600}
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      );
+                    }
+                    if (currentModel === 'vdm80-actuator-joint') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <VDM80ActuatorJoint3D
                             primaryColor={activePrim}
                             accentColor={activeAcc}
                             scale={1.1}

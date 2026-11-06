@@ -12,6 +12,7 @@ import { LiquidSteelFoundry3D } from '../../../../components/robotics/3d/LiquidS
 import { OpticalBenchInterferometer3D } from '../../../../components/robotics/3d/OpticalBenchInterferometer3D';
 import { KinematicDifferentialGearbox3D } from '../../../../components/robotics/3d/KinematicDifferentialGearbox3D';
 import { RimLightStudio3D } from '../../../../components/robotics/3d/RimLightStudio3D';
+import { VDM80ActuatorJoint3D } from '../../../../components/robotics/3d/VDM80ActuatorJoint3D';
 
 export interface MeshViewportSequenceProps {
   base_component?: string;
@@ -358,6 +359,33 @@ export const MeshViewportSequence: React.FC<MeshViewportSequenceProps> = ({
         }}
       >
         <RimLightStudio3D
+          frame={frame}
+          primaryColor={primaryColor}
+          accentColor={accentColor}
+          scale={0.8}
+          rotateXDeg={28}
+          dispersionAmount={dispAmount}
+          width={560}
+          height={560}
+        />
+      </div>
+    );
+  }
+
+  if (base_component === 'vdm80-actuator-joint') {
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          perspective: '1000px',
+          transform: `scale(${entrance * pulseScale})`,
+        }}
+      >
+        <VDM80ActuatorJoint3D
           frame={frame}
           primaryColor={primaryColor}
           accentColor={accentColor}

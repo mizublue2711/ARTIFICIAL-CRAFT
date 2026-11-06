@@ -29,6 +29,7 @@ export * from '../../../../components/robotics/3d/LiquidSteelFoundry3D';
 export * from '../../../../components/robotics/3d/OpticalBenchInterferometer3D';
 export * from '../../../../components/robotics/3d/KinematicDifferentialGearbox3D';
 export * from '../../../../components/robotics/3d/RimLightStudio3D';
+export * from '../../../../components/robotics/3d/VDM80ActuatorJoint3D';
 
 // Existing 3D components
 export * from './RubikCube3D';
