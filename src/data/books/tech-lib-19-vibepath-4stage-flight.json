@@ -1,0 +1,54 @@
+{
+  "slug": "tech-lib-19-vibepath-4stage-flight",
+  "title": "THE 4-STAGE CINEMATIC FLIGHT ENGINE",
+  "subtitle": "How VibePath Solved WebGL 3-Second Canvas Drops and Black Frame Crashes",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "THE 4-STAGE CINEMATIC FLIGHT ENGINE",
+      "subtitle": "How VibePath Solved WebGL 3-Second Canvas Drops and Black Frame Crashes",
+      "version": "v1.0.0",
+      "tags": [
+        "VIBEPATH",
+        "3D GIS",
+        "WEBGL",
+        "60FPS CINEMA"
+      ],
+      "verified": true,
+      "seed": "vibepath-flight-cover-19",
+      "graphicType": "GEO_MAP"
+    },
+    {
+      "id": "p02_screen_recording_trap",
+      "type": "tech_doc",
+      "title": "01 // THE SCREEN-RECORDING TRAP",
+      "content": "You want a 3D map video for your food vlog. So you open Google Maps. You screen-record your laptop screen. You manually drag the mouse. Your screen stutters.\n\nNoticeable UI buttons clutter the frame. Your video looks amateur. Commercial maps are made for turn-by-turn driving. They are not built for 60FPS cinematic video production. VibePath replaces manual screen recording with automated 3D spatial flight.",
+      "seed": "vibepath-recording-trap-seed-19",
+      "graphicType": "NEURAL_MESH"
+    },
+    {
+      "id": "p03_solving_webgl_crash",
+      "type": "tech_doc",
+      "title": "02 // SOLVING THE 3-SECOND WEBGL CRASH",
+      "content": "Why do WebGL canvas recorders fail after 3 seconds? Because browsers flush graphic buffers instantly to save GPU RAM. When camera flight moves faster than map tile downloads, you get black frames.\n\nVibePath fixes this with two engineering laws:\n1. Set preserveDrawingBuffer: true on the Mapbox instance.\n2. Lock the flight into a Sequential 4-Stage Async Chain: Orbit (Zoom 1.8), Regional Descent (Zoom 9.5), District Scanner (Zoom 13.8), and Urban 3D Flyover (Zoom 17.8).",
+      "code": "const map = new mapboxgl.Map({\n  container: 'map',\n  preserveDrawingBuffer: true,\n  antialias: true\n});\nawait flightStageChain.execute([\n  { stage: 'ORBIT', zoom: 1.8, pitch: 0 },\n  { stage: 'REGIONAL', zoom: 9.5, pitch: 45 },\n  { stage: 'DISTRICT', zoom: 13.8, pitch: 60 },\n  { stage: 'STREET', zoom: 17.8, pitch: 75 }\n]);",
+      "language": "typescript",
+      "seed": "vibepath-async-chain-bento",
+      "graphicType": "ISOMETRIC_CAD"
+    },
+    {
+      "id": "p04_zero_frame_drops",
+      "type": "diagram",
+      "title": "03 // 1-CLICK CINEMATIC VIDEO & ZERO FRAME DROPS",
+      "content": "The browser links map.getCanvas().captureStream(60) directly to MediaRecorder. Recording triggers automatically at Stage 1 and stops 1.5s after Stage 4 locks target.\n\nNo screen recording tools required. No UI buttons in the final clip. Pure, unadulterated 60FPS 3D map cinema rendered straight from client GPU.",
+      "seed": "vibepath-60fps-badge-19",
+      "graphicType": "WEBM_CAPTURE_DOCK",
+      "caption": "Figure 19.1 — Pure 60FPS client-side canvas stream recording pipeline with zero black frames"
+    }
+  ]
+}
