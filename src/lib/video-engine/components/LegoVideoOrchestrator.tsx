@@ -30,6 +30,7 @@ import {
   OpticalBenchInterferometer3D,
   KinematicDifferentialGearbox3D,
   RimLightStudio3D,
+  VDM80ActuatorJoint3D,
 } from './3d';
 
 export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
@@ -523,6 +524,20 @@ export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
       case 'rim-light-studio':
         return (
           <RimLightStudio3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'vdm80-actuator-joint':
+        return (
+          <VDM80ActuatorJoint3D
             frame={frame}
             primaryColor={primary}
             accentColor={accent}
