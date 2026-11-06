@@ -201,6 +201,13 @@ export const ASSET_PRESET_REGISTRY: AssetPresetRegistry = {
       description: 'Precision Michelson laser interferometer with 50/50 beam splitter and interference fringe detector',
       previewColor: '#00E5FF',
     },
+    'kinematic-differential-gearbox': {
+      id: 'kinematic-differential-gearbox',
+      label: 'Kinematic Differential Gearbox 3D',
+      category: 'heroObjects',
+      description: '5-layer horology-inspired differential gearbox with sun gear, planetary bevel spider cross, harmonic flexspline, micrometric worm drive, and dual ball bearing races',
+      previewColor: '#00E5FF',
+    },
   },
 
   '3D_MESHES': {
@@ -335,6 +342,13 @@ export const ASSET_PRESET_REGISTRY: AssetPresetRegistry = {
       label: 'Michelson Optical Bench Interferometer 3D',
       category: '3D_MESHES',
       description: 'Precision Michelson laser interferometer with 50/50 beam splitter and interference fringe detector',
+      previewColor: '#00E5FF',
+    },
+    'kinematic-differential-gearbox': {
+      id: 'kinematic-differential-gearbox',
+      label: 'Kinematic Differential Gearbox 3D',
+      category: '3D_MESHES',
+      description: '5-layer horology-inspired differential gearbox with sun gear, planetary bevel spider cross, harmonic flexspline, micrometric worm drive, and dual ball bearing races',
       previewColor: '#00E5FF',
     },
   },

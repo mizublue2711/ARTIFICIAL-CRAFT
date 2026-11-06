@@ -43,6 +43,7 @@ import {
   PowerStationGenerator3D,
   LiquidSteelFoundry3D,
   OpticalBenchInterferometer3D,
+  KinematicDifferentialGearbox3D,
 } from '@/components/robotics/3d';
 
 import {
@@ -215,6 +216,7 @@ export const AVAILABLE_3D_COMPONENTS = [
   { value: 'power-station-generator', label: 'Power Station Stator Generator 3D', icon: Zap },
   { value: 'liquid-steel-foundry', label: 'Liquid Steel Electric Arc Foundry 3D', icon: Flame },
   { value: 'optical-bench-interferometer', label: 'Michelson Optical Bench Interferometer 3D', icon: Crosshair },
+  { value: 'kinematic-differential-gearbox', label: 'Kinematic Differential Gearbox 3D', icon: Zap },
   { value: 'RoboticsHandNode', label: 'Robotic Arm 6DOF Manipulator', icon: Bot },
   { value: 'BipedalRobotMesh', label: 'Bipedal Kinematic Assembler', icon: Cpu },
   { value: 'PointCloudNode', label: 'Point Cloud Telemetry Core', icon: Boxes },
@@ -2155,6 +2157,22 @@ export const CraftStudioConfigurator: React.FC = () => {
                       return (
                         <div className="w-full h-full flex items-center justify-center p-4">
                           <OpticalBenchInterferometer3D
+                            primaryColor={activePrim}
+                            accentColor={activeAcc}
+                            scale={1.1}
+                            rotateXDeg={formData.roboticsNode?.wireframe ? 28 : 28}
+                            dispersionAmount={dispAmount}
+                            width={720}
+                            height={600}
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      );
+                    }
+                    if (currentModel === 'kinematic-differential-gearbox') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <KinematicDifferentialGearbox3D
                             primaryColor={activePrim}
                             accentColor={activeAcc}
                             scale={1.1}

@@ -27,6 +27,7 @@ import {
   PowerStationGenerator3D,
   LiquidSteelFoundry3D,
   OpticalBenchInterferometer3D,
+  KinematicDifferentialGearbox3D,
 } from './3d';
 
 export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
@@ -478,6 +479,20 @@ export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
       case 'optical-bench-interferometer':
         return (
           <OpticalBenchInterferometer3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'kinematic-differential-gearbox':
+        return (
+          <KinematicDifferentialGearbox3D
             frame={frame}
             primaryColor={primary}
             accentColor={accent}

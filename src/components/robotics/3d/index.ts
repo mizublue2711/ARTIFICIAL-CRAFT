@@ -4,5 +4,6 @@ export * from './TurbofanJetEngine3D';
 export * from './PowerStationGenerator3D';
 export * from './LiquidSteelFoundry3D';
 export * from './OpticalBenchInterferometer3D';
+export * from './KinematicDifferentialGearbox3D';
 export * from './PointCloudCanvas';
 export * from './RobotArmScene';
