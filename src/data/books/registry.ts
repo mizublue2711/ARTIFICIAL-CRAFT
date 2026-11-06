@@ -1,5 +1,8 @@
 import manualSampleArchitecture from './manual-sample-architecture.json';
 import manualHybridAiAutomation from './manual-hybrid-ai-automation.json';
+import book19 from './tech-lib-19-vibepath-4stage-flight.json';
+import book20 from './tech-lib-20-vibepath-bspline-polygon.json';
+import book21 from './tech-lib-21-vibepath-nle-assets.json';
 import { enBooks } from './en/index';
 import { viBooks } from './vi/index';
 import { BookData } from '../../types/flipbook';
@@ -14,12 +17,21 @@ export const BOOKS_REGISTRY: BookData[] = [
   manualSampleArchitecture as BookData,
   manualHybridAiAutomation as BookData,
   ...enBooks,
+  book19 as BookData,
+  book20 as BookData,
+  book21 as BookData,
 ];
 
 // Unified lookup map supporting both slug names and legacy tech-lib slugs
 export const booksRegistry: Record<string, BookData> = {
   [manualSampleArchitecture.slug]: manualSampleArchitecture as BookData,
   [manualHybridAiAutomation.slug]: manualHybridAiAutomation as BookData,
+  [book19.slug]: book19 as BookData,
+  [book20.slug]: book20 as BookData,
+  [book21.slug]: book21 as BookData,
+  'vibepath-4stage-cinematic-flight': book19 as BookData,
+  'vibepath-bspline-polygon-scanning': book20 as BookData,
+  'vibepath-nle-asset-engine': book21 as BookData,
 };
 
 // Register English books
@@ -75,5 +87,8 @@ export const getAllBooks = (locale: 'en' | 'vi' = 'en'): BookData[] => {
     manualSampleArchitecture as BookData,
     manualHybridAiAutomation as BookData,
     ...getBooksByLocale(locale),
+    book19 as BookData,
+    book20 as BookData,
+    book21 as BookData,
   ];
 };
