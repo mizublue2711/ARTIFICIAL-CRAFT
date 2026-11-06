@@ -180,6 +180,9 @@ export const FlipBookEngine: React.FC<FlipBookEngineProps> = ({
   const totalPages = resolvedBook?.pages.length || 0;
   const pageStep = isSpread ? 2 : 1;
 
+  // Safe page index clamping to eliminate out-of-bounds rendering crashes during locale toggle
+  const safePageIndex = Math.min(pageIndex, Math.max(0, totalPages - 1));
+
   // Navigation handlers
   const goToPage = useCallback((targetIndex: number) => {
     if (!resolvedBook || targetIndex < 0 || targetIndex >= totalPages) return;
@@ -189,18 +192,18 @@ export const FlipBookEngine: React.FC<FlipBookEngineProps> = ({
   }, [pageIndex, resolvedBook, totalPages]);
 
   const nextPage = useCallback(() => {
-    if (pageIndex < totalPages - (isSpread ? 2 : 1)) {
-      goToPage(pageIndex + (isSpread ? 2 : 1));
-    } else if (isSpread && pageIndex === totalPages - 2) {
+    if (safePageIndex < totalPages - (isSpread ? 2 : 1)) {
+      goToPage(safePageIndex + (isSpread ? 2 : 1));
+    } else if (isSpread && safePageIndex === totalPages - 2) {
       goToPage(totalPages - 1);
     }
-  }, [goToPage, isSpread, pageIndex, totalPages]);
+  }, [goToPage, isSpread, safePageIndex, totalPages]);
 
   const prevPage = useCallback(() => {
-    if (pageIndex > 0) {
-      goToPage(Math.max(0, pageIndex - (isSpread ? 2 : 1)));
+    if (safePageIndex > 0) {
+      goToPage(Math.max(0, safePageIndex - (isSpread ? 2 : 1)));
     }
-  }, [goToPage, isSpread, pageIndex]);
+  }, [goToPage, isSpread, safePageIndex]);
 
   // Trackpad / Wheel Scroll Page Turning (300ms Debounce)
   const handleWheel = useCallback(
@@ -298,9 +301,9 @@ export const FlipBookEngine: React.FC<FlipBookEngineProps> = ({
     }
   };
 
-  const leftPageBlock: PageBlock | undefined = resolvedBook.pages[pageIndex];
+  const leftPageBlock: PageBlock | undefined = resolvedBook.pages[safePageIndex];
   const rightPageBlock: PageBlock | undefined = isSpread
-    ? resolvedBook.pages[pageIndex + 1]
+    ? resolvedBook.pages[safePageIndex + 1]
     : undefined;
 
   return (
@@ -359,7 +362,7 @@ export const FlipBookEngine: React.FC<FlipBookEngineProps> = ({
       <div className="relative flex-1 min-h-[540px] w-full overflow-hidden bg-black/60 border border-zinc-800/80 my-2 rounded-none shadow-2xl">
         <AnimatePresence initial={false} mode="wait" custom={direction}>
           <motion.div
-            key={pageIndex}
+            key={safePageIndex}
             custom={direction}
             initial={{ opacity: 0, x: direction * 50, rotateY: direction * 8 }}
             animate={{ opacity: 1, x: 0, rotateY: 0 }}
@@ -424,7 +427,7 @@ export const FlipBookEngine: React.FC<FlipBookEngineProps> = ({
           <Layers className="w-4 h-4 text-zinc-500" />
           <span>JUMP:</span>
           <select
-            value={pageIndex}
+            value={safePageIndex}
             onChange={(e) => goToPage(Number(e.target.value))}
             className="bg-zinc-900 border border-zinc-800 text-zinc-200 text-xs py-1 px-2 focus:outline-none focus:border-cyan-500"
           >
@@ -440,11 +443,11 @@ export const FlipBookEngine: React.FC<FlipBookEngineProps> = ({
         <div className="text-xs text-zinc-400 font-bold tracking-widest px-3 py-1 bg-zinc-900 border border-zinc-800">
           {isSpread ? (
             <span>
-              PAGES <span className="text-cyan-400">{pageIndex + 1} - {Math.min(pageIndex + 2, totalPages)}</span> / {totalPages}
+              PAGES <span className="text-cyan-400">{safePageIndex + 1} - {Math.min(safePageIndex + 2, totalPages)}</span> / {totalPages}
             </span>
           ) : (
             <span>
-              PAGE <span className="text-cyan-400">{pageIndex + 1}</span> / {totalPages}
+              PAGE <span className="text-cyan-400">{safePageIndex + 1}</span> / {totalPages}
             </span>
           )}
         </div>
