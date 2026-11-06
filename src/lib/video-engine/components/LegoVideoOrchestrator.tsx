@@ -24,6 +24,7 @@ import {
   BTreeDiskIndex3D,
   MailRopewayTcp3D,
   TurbofanJetEngine3D,
+  RollsRoyceTrent9703D,
   PowerStationGenerator3D,
   LiquidSteelFoundry3D,
   OpticalBenchInterferometer3D,
@@ -228,6 +229,20 @@ export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
       case 'nested-platonic-5layer':
         return (
           <NestedPlatonicSolids3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'rolls-royce-trent-970':
+        return (
+          <RollsRoyceTrent9703D
             frame={frame}
             primaryColor={primary}
             accentColor={accent}

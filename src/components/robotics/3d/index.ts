@@ -1,6 +1,7 @@
 export * from './BTreeDiskIndex3D';
 export * from './MailRopewayTcp3D';
 export * from './TurbofanJetEngine3D';
+export * from './RollsRoyceTrent9703D';
 export * from './PowerStationGenerator3D';
 export * from './LiquidSteelFoundry3D';
 export * from './OpticalBenchInterferometer3D';
