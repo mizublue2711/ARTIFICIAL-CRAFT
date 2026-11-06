@@ -147,6 +147,28 @@ export interface ExtendedStudioConfig extends Partial<SwissDesignConfig> {
   sandboxLanguages: any;
 }
 
+export const AVAILABLE_3D_COMPONENTS = [
+  { value: 'kinematic-differential-gearbox', label: 'Kinematic Differential Gearbox 3D', icon: Zap },
+  { value: 'rim-light-studio', label: 'Rim Light Studio 3D', icon: Crosshair },
+  { value: 'quantum-escapement-clock', label: 'Quantum Escapement Clock 3D', icon: Clock },
+  { value: 'pneumatic-data-pipeline', label: 'Pneumatic Data Pipeline 3D', icon: GitBranch },
+  { value: 'tokamak-reactor-core', label: 'Tokamak Reactor Core 3D', icon: Atom },
+  { value: 'btree-disk-index', label: 'Rotary B-Tree Disk Index 3D', icon: Layers },
+  { value: 'mail-ropeway-tcp', label: 'Mail Ropeway TCP Handshake 3D', icon: Radio },
+  { value: 'turbofan-jet-engine', label: 'Dual-Spool Turbofan Jet Engine 3D', icon: Zap },
+  { value: 'power-station-generator', label: 'Power Station Stator Generator 3D', icon: Zap },
+  { value: 'liquid-steel-foundry', label: 'Liquid Steel Electric Arc Foundry 3D', icon: Flame },
+  { value: 'optical-bench-interferometer', label: 'Michelson Optical Bench Interferometer 3D', icon: Crosshair },
+  { value: 'RoboticsHandNode', label: 'Robotic Arm 6DOF Manipulator', icon: Bot },
+  { value: 'BipedalRobotMesh', label: 'Bipedal Kinematic Assembler', icon: Cpu },
+  { value: 'PointCloudNode', label: 'Point Cloud Telemetry Core', icon: Boxes },
+  { value: 'HolographicCore', label: 'Holographic Energy Reactor', icon: Radio },
+  { value: 'ConveyorBeltV2', label: 'Cybernetic Conveyor System', icon: Terminal },
+  { value: 'CleanroomSwarmTerminal', label: 'Obsidian Cleanroom Terminal', icon: Layers },
+];
+
+export const DEFAULT_ACTIVE_MODEL_KEY = AVAILABLE_3D_COMPONENTS[0]?.value || 'kinematic-differential-gearbox';
+
 export const INITIAL_CONFIG: ExtendedStudioConfig = {
   presetId: 'node-05-digital-plumbing-swarm',
   layoutMode: 'two-column',
@@ -158,10 +180,10 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
   primaryColor: '#5322FF',
   accentColor: '#00E5FF',
   backgroundShader: 'SwissGridHUD',
-  base_component: 'quantum-escapement-clock',
+  base_component: DEFAULT_ACTIVE_MODEL_KEY,
   headlineFont: 'Space Grotesk',
-  presetModel: 'quantum-escapement-clock',
-  modelType: 'quantum-escapement-clock',
+  presetModel: DEFAULT_ACTIVE_MODEL_KEY,
+  modelType: DEFAULT_ACTIVE_MODEL_KEY,
   customModelUrl: '',
   logoUrl: 'https://raw.githubusercontent.com/artificial-craft/assets/main/logo-mark.svg',
   theme: {
@@ -175,7 +197,7 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
   codeFont: 'JetBrains Mono',
   motionTokens: ['kinetic-parallax', 'chromatic-aberration', 'magnetic-attraction'],
   roboticsNode: {
-    modelType: 'quantum-escapement-clock',
+    modelType: DEFAULT_ACTIVE_MODEL_KEY,
     wireframe: true,
     rotationSpeed: 1.5,
     autoAnimate: true,
@@ -206,26 +228,6 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
     enableAudioSynthesizer: true,
   },
 };
-
-export const AVAILABLE_3D_COMPONENTS = [
-  { value: 'kinematic-differential-gearbox', label: 'Kinematic Differential Gearbox 3D', icon: Zap },
-  { value: 'rim-light-studio', label: 'Rim Light Studio 3D', icon: Crosshair },
-  { value: 'quantum-escapement-clock', label: 'Quantum Escapement Clock 3D', icon: Clock },
-  { value: 'pneumatic-data-pipeline', label: 'Pneumatic Data Pipeline 3D', icon: GitBranch },
-  { value: 'tokamak-reactor-core', label: 'Tokamak Reactor Core 3D', icon: Atom },
-  { value: 'btree-disk-index', label: 'Rotary B-Tree Disk Index 3D', icon: Layers },
-  { value: 'mail-ropeway-tcp', label: 'Mail Ropeway TCP Handshake 3D', icon: Radio },
-  { value: 'turbofan-jet-engine', label: 'Dual-Spool Turbofan Jet Engine 3D', icon: Zap },
-  { value: 'power-station-generator', label: 'Power Station Stator Generator 3D', icon: Zap },
-  { value: 'liquid-steel-foundry', label: 'Liquid Steel Electric Arc Foundry 3D', icon: Flame },
-  { value: 'optical-bench-interferometer', label: 'Michelson Optical Bench Interferometer 3D', icon: Crosshair },
-  { value: 'RoboticsHandNode', label: 'Robotic Arm 6DOF Manipulator', icon: Bot },
-  { value: 'BipedalRobotMesh', label: 'Bipedal Kinematic Assembler', icon: Cpu },
-  { value: 'PointCloudNode', label: 'Point Cloud Telemetry Core', icon: Boxes },
-  { value: 'HolographicCore', label: 'Holographic Energy Reactor', icon: Radio },
-  { value: 'ConveyorBeltV2', label: 'Cybernetic Conveyor System', icon: Terminal },
-  { value: 'CleanroomSwarmTerminal', label: 'Obsidian Cleanroom Terminal', icon: Layers },
-];
 
 export const BACKGROUND_COMPONENTS: Record<string, React.FC<any>> = {
   SwissGridHUD,
@@ -369,15 +371,15 @@ export const CraftStudioConfigurator: React.FC = () => {
       },
       roboticsNode: {
         ...prev.roboticsNode,
-        modelType: 'kinematic-assembler',
+        modelType: preset.hero3DEngine?.modelType || DEFAULT_ACTIVE_MODEL_KEY,
         wireframe: true,
         rotationSpeed: 1.5,
         autoAnimate: true,
         telemetryHud: true,
       },
       raycastingLaser: preset.hero3DEngine.enableRaycasting,
-      presetModel: preset.hero3DEngine.modelType,
-      modelType: preset.hero3DEngine.modelType,
+      presetModel: preset.hero3DEngine?.modelType || DEFAULT_ACTIVE_MODEL_KEY,
+      modelType: preset.hero3DEngine?.modelType || DEFAULT_ACTIVE_MODEL_KEY,
       explodedStages: {
         stage0: `${preset.hero3DEngine.explodedStages[0] || '0%'} // Assembled Core Manipulator`,
         stage33: `${preset.hero3DEngine.explodedStages[1] || '33%'} // Swarm Plumbing Bus`,
@@ -575,7 +577,7 @@ export const CraftStudioConfigurator: React.FC = () => {
 
       const payloadObject: CraftPayloadObject = {
         prompt: aiPrompt || formData.aiStylist?.customPrompt || '',
-        base_component: formData.presetModel || formData.modelType || 'RoboticsHandNode',
+        base_component: formData.presetModel || formData.modelType || DEFAULT_ACTIVE_MODEL_KEY,
         aesthetic: {
           palette: formData.brandName || 'Brutalist Monochrome',
           primaryColor: formData.theme.primaryColor || '#5322FF',
@@ -1322,7 +1324,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                   <div className="grid grid-cols-1 gap-1.5">
                     {AVAILABLE_3D_COMPONENTS.map((comp) => {
                       const IconComponent = comp.icon;
-                      const activeModel = formData.base_component || formData.presetModel || formData.modelType || 'RoboticsHandNode';
+                      const activeModel = formData.base_component || formData.presetModel || formData.modelType || DEFAULT_ACTIVE_MODEL_KEY;
                       const isSelected = activeModel === comp.value;
                       return (
                         <button
@@ -2022,7 +2024,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                 >
                   {/* Dynamic 3D Model Direct Viewport vs Iframe Fallback */}
                   {(() => {
-                    const currentModel = formData.base_component || formData.presetModel || formData.modelType || 'quantum-escapement-clock';
+                    const currentModel = formData.base_component || formData.presetModel || formData.modelType || DEFAULT_ACTIVE_MODEL_KEY;
                     const activePrim = formData.theme?.primaryColor || formData.primaryColor || '#5322FF';
                     const activeAcc = formData.theme?.accentColor || formData.accentColor || '#00E5FF';
                     const dispAmount = Math.max(0.01, (formData.explodedProgress || 33) / 500);
@@ -2269,7 +2271,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                       primaryColor: formData.theme?.primaryColor || formData.primaryColor || '#5322FF',
                       accentColor: formData.theme?.accentColor || formData.accentColor || '#00E5FF',
                       backgroundColor: formData.theme?.backgroundColor || formData.backgroundColor || '#09090B',
-                      base_component: formData.base_component || formData.presetModel || formData.modelType || 'kinematic_manipulator_arm',
+                      base_component: formData.base_component || formData.presetModel || formData.modelType || DEFAULT_ACTIVE_MODEL_KEY,
                       assemblyStage: formData.explodedProgress,
                       telemetry: {
                         slaTarget: formData.aiLatency || '<2ms',

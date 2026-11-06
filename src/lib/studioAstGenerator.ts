@@ -5,6 +5,7 @@
  */
 
 import { StudioConfigData } from '@/types/studioConfig';
+import { AVAILABLE_3D_COMPONENTS } from '@/components/studio/CraftStudioConfigurator';
 
 export interface StudioAstPayload {
   version: string;
@@ -893,7 +894,8 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
   const tag = rawConfig?.tagline || config.slogan || 'Robots for Everyone // Cybernetic Automation';
   const speed = 1.5;
   const isNode05 = brand.includes('NODE_05') || config.presetModel === 'kinematic_manipulator_arm';
-  const baseComponent = rawConfig?.base_component || config.presetModel || config.modelType || 'RoboticsHandNode';
+  const defaultModel = AVAILABLE_3D_COMPONENTS[0]?.value || 'kinematic-differential-gearbox';
+  const baseComponent = rawConfig?.roboticsNode?.modelType || rawConfig?.base_component || config.presetModel || config.modelType || defaultModel;
   const enterFactoryBtnText = rawConfig?.enterFactoryNodeBtn || 'ENTER FACTORY NODE ➔';
 
   return `<!DOCTYPE html>
