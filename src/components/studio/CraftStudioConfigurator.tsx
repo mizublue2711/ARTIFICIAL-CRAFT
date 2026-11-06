@@ -207,6 +207,7 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
 };
 
 export const AVAILABLE_3D_COMPONENTS = [
+  { value: 'kinematic-differential-gearbox', label: 'Kinematic Differential Gearbox 3D', icon: Zap },
   { value: 'quantum-escapement-clock', label: 'Quantum Escapement Clock 3D', icon: Clock },
   { value: 'pneumatic-data-pipeline', label: 'Pneumatic Data Pipeline 3D', icon: GitBranch },
   { value: 'tokamak-reactor-core', label: 'Tokamak Reactor Core 3D', icon: Atom },
@@ -216,7 +217,6 @@ export const AVAILABLE_3D_COMPONENTS = [
   { value: 'power-station-generator', label: 'Power Station Stator Generator 3D', icon: Zap },
   { value: 'liquid-steel-foundry', label: 'Liquid Steel Electric Arc Foundry 3D', icon: Flame },
   { value: 'optical-bench-interferometer', label: 'Michelson Optical Bench Interferometer 3D', icon: Crosshair },
-  { value: 'kinematic-differential-gearbox', label: 'Kinematic Differential Gearbox 3D', icon: Zap },
   { value: 'RoboticsHandNode', label: 'Robotic Arm 6DOF Manipulator', icon: Bot },
   { value: 'BipedalRobotMesh', label: 'Bipedal Kinematic Assembler', icon: Cpu },
   { value: 'PointCloudNode', label: 'Point Cloud Telemetry Core', icon: Boxes },
