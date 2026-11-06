@@ -208,6 +208,13 @@ export const ASSET_PRESET_REGISTRY: AssetPresetRegistry = {
       description: '5-layer horology-inspired differential gearbox with sun gear, planetary bevel spider cross, harmonic flexspline, micrometric worm drive, and dual ball bearing races',
       previewColor: '#00E5FF',
     },
+    'rim-light-studio': {
+      id: 'rim-light-studio',
+      label: 'Rim Light Studio 3D',
+      category: 'heroObjects',
+      description: 'Anatomy-inspired rim light studio turntable with central pill control core, dynamic normal-vector rim illumination, orbital key lamp, and fill lamp dimmer rig',
+      previewColor: '#00E5FF',
+    },
   },
 
   '3D_MESHES': {
@@ -349,6 +356,13 @@ export const ASSET_PRESET_REGISTRY: AssetPresetRegistry = {
       label: 'Kinematic Differential Gearbox 3D',
       category: '3D_MESHES',
       description: '5-layer horology-inspired differential gearbox with sun gear, planetary bevel spider cross, harmonic flexspline, micrometric worm drive, and dual ball bearing races',
+      previewColor: '#00E5FF',
+    },
+    'rim-light-studio': {
+      id: 'rim-light-studio',
+      label: 'Rim Light Studio 3D',
+      category: '3D_MESHES',
+      description: 'Anatomy-inspired rim light studio turntable with central pill control core, dynamic normal-vector rim illumination, orbital key lamp, and fill lamp dimmer rig',
       previewColor: '#00E5FF',
     },
   },

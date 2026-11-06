@@ -10,6 +10,7 @@ import { PowerStationGenerator3D } from '../../../../components/robotics/3d/Powe
 import { LiquidSteelFoundry3D } from '../../../../components/robotics/3d/LiquidSteelFoundry3D';
 import { OpticalBenchInterferometer3D } from '../../../../components/robotics/3d/OpticalBenchInterferometer3D';
 import { KinematicDifferentialGearbox3D } from '../../../../components/robotics/3d/KinematicDifferentialGearbox3D';
+import { RimLightStudio3D } from '../../../../components/robotics/3d/RimLightStudio3D';
 
 export interface MeshViewportSequenceProps {
   base_component?: string;
@@ -302,6 +303,33 @@ export const MeshViewportSequence: React.FC<MeshViewportSequenceProps> = ({
         }}
       >
         <KinematicDifferentialGearbox3D
+          frame={frame}
+          primaryColor={primaryColor}
+          accentColor={accentColor}
+          scale={0.8}
+          rotateXDeg={28}
+          dispersionAmount={dispAmount}
+          width={560}
+          height={560}
+        />
+      </div>
+    );
+  }
+
+  if (base_component === 'rim-light-studio') {
+    return (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          perspective: '1000px',
+          transform: `scale(${entrance * pulseScale})`,
+        }}
+      >
+        <RimLightStudio3D
           frame={frame}
           primaryColor={primaryColor}
           accentColor={accentColor}

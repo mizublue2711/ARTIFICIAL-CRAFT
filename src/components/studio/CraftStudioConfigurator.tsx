@@ -44,6 +44,7 @@ import {
   LiquidSteelFoundry3D,
   OpticalBenchInterferometer3D,
   KinematicDifferentialGearbox3D,
+  RimLightStudio3D,
 } from '@/components/robotics/3d';
 
 import {
@@ -208,6 +209,7 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
 
 export const AVAILABLE_3D_COMPONENTS = [
   { value: 'kinematic-differential-gearbox', label: 'Kinematic Differential Gearbox 3D', icon: Zap },
+  { value: 'rim-light-studio', label: 'Rim Light Studio 3D', icon: Crosshair },
   { value: 'quantum-escapement-clock', label: 'Quantum Escapement Clock 3D', icon: Clock },
   { value: 'pneumatic-data-pipeline', label: 'Pneumatic Data Pipeline 3D', icon: GitBranch },
   { value: 'tokamak-reactor-core', label: 'Tokamak Reactor Core 3D', icon: Atom },
@@ -2173,6 +2175,22 @@ export const CraftStudioConfigurator: React.FC = () => {
                       return (
                         <div className="w-full h-full flex items-center justify-center p-4">
                           <KinematicDifferentialGearbox3D
+                            primaryColor={activePrim}
+                            accentColor={activeAcc}
+                            scale={1.1}
+                            rotateXDeg={formData.roboticsNode?.wireframe ? 28 : 28}
+                            dispersionAmount={dispAmount}
+                            width={720}
+                            height={600}
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      );
+                    }
+                    if (currentModel === 'rim-light-studio') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <RimLightStudio3D
                             primaryColor={activePrim}
                             accentColor={activeAcc}
                             scale={1.1}
