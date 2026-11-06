@@ -180,6 +180,13 @@ export const ASSET_PRESET_REGISTRY: AssetPresetRegistry = {
       description: 'Dual-spool turbofan engine with cutaway nacelle, high-pressure compressor, and pulsing plasma core',
       previewColor: '#00E5FF',
     },
+    'rolls-royce-trent-970': {
+      id: 'rolls-royce-trent-970',
+      label: 'Rolls-Royce Trent 970 Ground-Run 3D',
+      category: 'heroObjects',
+      description: 'Triple-spool turbofan jet engine hung on a ground-run thrust test rig with cutaway nacelle, N1/N2/N3 spools, and dynamic 334 kN load cell readout',
+      previewColor: '#00E5FF',
+    },
     'power-station-generator': {
       id: 'power-station-generator',
       label: 'Power Station Stator Generator 3D',
@@ -328,6 +335,13 @@ export const ASSET_PRESET_REGISTRY: AssetPresetRegistry = {
       label: 'Dual-Spool Turbofan Jet Engine 3D',
       category: '3D_MESHES',
       description: 'Dual-spool turbofan engine with cutaway nacelle, high-pressure compressor, and pulsing plasma core',
+      previewColor: '#00E5FF',
+    },
+    'rolls-royce-trent-970': {
+      id: 'rolls-royce-trent-970',
+      label: 'Rolls-Royce Trent 970 Ground-Run 3D',
+      category: '3D_MESHES',
+      description: 'Triple-spool turbofan jet engine hung on a ground-run thrust test rig with cutaway nacelle, N1/N2/N3 spools, and dynamic 334 kN load cell readout',
       previewColor: '#00E5FF',
     },
     'power-station-generator': {

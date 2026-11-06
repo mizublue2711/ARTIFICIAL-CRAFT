@@ -21,6 +21,7 @@ export * from './TokamakReactorCore3D';
 export * from '../../../../components/robotics/3d/BTreeDiskIndex3D';
 export * from '../../../../components/robotics/3d/MailRopewayTcp3D';
 export * from '../../../../components/robotics/3d/TurbofanJetEngine3D';
+export * from '../../../../components/robotics/3d/RollsRoyceTrent9703D';
 
 // Anatomy-Inspired Industrial & Power 3D Meshes (Batch 3)
 export * from '../../../../components/robotics/3d/PowerStationGenerator3D';

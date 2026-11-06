@@ -40,6 +40,7 @@ import {
   BTreeDiskIndex3D,
   MailRopewayTcp3D,
   TurbofanJetEngine3D,
+  RollsRoyceTrent9703D,
   PowerStationGenerator3D,
   LiquidSteelFoundry3D,
   OpticalBenchInterferometer3D,
@@ -148,6 +149,7 @@ export interface ExtendedStudioConfig extends Partial<SwissDesignConfig> {
 }
 
 export const AVAILABLE_3D_COMPONENTS = [
+  { value: 'rolls-royce-trent-970', label: 'Rolls-Royce Trent 970 Ground-Run 3D', icon: Zap },
   { value: 'kinematic-differential-gearbox', label: 'Kinematic Differential Gearbox 3D', icon: Zap },
   { value: 'rim-light-studio', label: 'Rim Light Studio 3D', icon: Crosshair },
   { value: 'quantum-escapement-clock', label: 'Quantum Escapement Clock 3D', icon: Clock },
@@ -2033,6 +2035,22 @@ export const CraftStudioConfigurator: React.FC = () => {
                       return (
                         <div className="w-full h-full flex items-center justify-center p-4">
                           <QuantumEscapementClock3D
+                            primaryColor={activePrim}
+                            accentColor={activeAcc}
+                            scale={1.1}
+                            rotateXDeg={formData.roboticsNode?.wireframe ? 28 : 28}
+                            dispersionAmount={dispAmount}
+                            width={720}
+                            height={600}
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      );
+                    }
+                    if (currentModel === 'rolls-royce-trent-970') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <RollsRoyceTrent9703D
                             primaryColor={activePrim}
                             accentColor={activeAcc}
                             scale={1.1}
