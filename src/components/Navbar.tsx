@@ -7,7 +7,7 @@ import LanguageToggle from './LanguageToggle';
 import { useTranslation } from '@/context/useLanguage';
 
 const AUTOPILOT_URL = 'https://dify-n8n-workflow.ai.studio/';
-const VIBEPATH_URL = 'https://vibepath.mizu2711.workers.dev/';
+const VIBEPATH_URL = 'https://vibepath.artificialcraft.space/';
 
 interface NavbarProps {
   onOpenBatchModal?: () => void;

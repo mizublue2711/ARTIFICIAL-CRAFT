@@ -5,7 +5,7 @@ import BrutalistLogo from './BrutalistLogo';
 import { useTranslation } from '@/hooks/useTranslation';
 import JulesMemorialModal from './JulesMemorialModal';
 
-const VIBEPATH_URL = 'https://vibepath.mizu2711.workers.dev/';
+const VIBEPATH_URL = 'https://vibepath.artificialcraft.space/';
 const GITHUB_DOCS_URL = 'https://github.com/mizublue2711/DIFY-N8N-AUTOMATION-DESIGN';
 
 interface FooterLinkItem {
