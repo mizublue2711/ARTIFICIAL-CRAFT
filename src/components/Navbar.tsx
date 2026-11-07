@@ -33,6 +33,21 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
   }, []);
 
   useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [mobileMenuOpen]);
+
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (studiosRef.current && !studiosRef.current.contains(event.target as Node)) {
         setStudiosOpen(false);
@@ -49,9 +64,9 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 w-full max-w-full box-border bg-[#09090B]/90 backdrop-blur-md border-b border-[#27272A] px-4 sm:px-6 pt-[env(safe-area-inset-top)] overflow-x-hidden font-mono transition-colors duration-300 ${
-        mobileMenuOpen || studiosOpen || docsOpen ? '!overflow-visible' : ''
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 w-full max-w-full box-border border-b border-[#27272A] px-4 sm:px-6 pt-[env(safe-area-inset-top)] overflow-x-hidden font-mono transition-colors duration-300 ${
+        mobileMenuOpen ? 'bg-[#09090B] !overflow-visible' : 'bg-[#09090B]/90 backdrop-blur-md'
+      } ${studiosOpen || docsOpen ? '!overflow-visible' : ''}`}
     >
       <nav className="mx-auto max-w-7xl h-16 flex items-center justify-between gap-2 sm:gap-4 w-full min-w-0">
         {/* LOGO AREA */}
@@ -351,56 +366,58 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -8 }}
+            initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-x-0 top-[calc(100%+1px)] z-40 w-full max-h-[calc(100vh-80px)] overflow-y-auto bg-[#09090B]/98 border-b border-[#27272A] p-6 flex flex-col gap-4 shadow-2xl md:hidden font-mono"
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.18 }}
+            className="fixed inset-x-0 top-[60px] bottom-0 z-50 w-full h-[calc(100vh-60px)] bg-[#09090B] border-t border-[#27272A] p-5 overflow-y-auto flex flex-col gap-5 md:hidden select-none font-mono"
           >
             {/* 01 // STUDIOS & ENGINES */}
             <div className="flex flex-col gap-2">
-              <div className="text-[10px] uppercase text-[#00E5FF] font-bold tracking-widest pb-1 border-b border-[#27272A]/80">
-                01 // STUDIOS & ENGINES
+              <div className="font-mono text-xs font-bold text-[#00E5FF] tracking-widest uppercase mb-2 px-1 flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-[#00E5FF] animate-pulse" />
+                <span>01 // STUDIOS & ENGINES</span>
               </div>
 
               <Link
                 to="/studio"
                 onClick={() => setMobileMenuOpen(false)}
-                className="min-h-[44px] px-3 py-2.5 bg-[#121218] border border-[#27272A] hover:border-[#5322FF] text-xs font-bold text-white hover:text-[#00FF66] flex items-center justify-between transition-colors"
+                className="flex items-center justify-between p-3.5 bg-[#121218] border border-[#27272A] hover:border-[#00E5FF] active:bg-[#00E5FF]/10 transition-all rounded-none min-h-[48px]"
               >
-                <span className="flex items-center gap-2">
+                <div className="flex items-center gap-2.5">
                   <span className="text-[#5322FF]">⚡</span>
-                  <span>STUDIO FACTORY</span>
-                </span>
-                <span className="text-[9px] px-1.5 py-0.5 bg-[#5322FF]/30 border border-[#5322FF] text-[#00FF66] font-bold">
-                  NEW // 3D
+                  <span className="font-mono text-xs font-bold text-white">STUDIO FACTORY</span>
+                </div>
+                <span className="font-mono text-[10px] font-bold px-2 py-0.5 bg-[#5322FF]/30 border border-[#5322FF] text-[#00FF66] shadow-[0_0_8px_rgba(83,34,255,0.4)]">
+                  [ NEW // 3D ]
                 </span>
               </Link>
 
               <Link
                 to="/playground"
                 onClick={() => setMobileMenuOpen(false)}
-                className="min-h-[44px] px-3 py-2.5 bg-[#121218] border border-[#27272A] hover:border-[#00E5FF] text-xs font-bold text-[#00E5FF] flex items-center justify-between transition-colors"
+                className="flex items-center justify-between p-3.5 bg-[#121218] border border-[#27272A] hover:border-[#00E5FF] active:bg-[#00E5FF]/10 transition-all rounded-none min-h-[48px]"
               >
-                <span className="flex items-center gap-2">
-                  <span>⚡</span>
-                  <span>PLAYGROUND STUDIO</span>
+                <div className="flex items-center gap-2.5">
+                  <Sparkles className="h-4 w-4 text-[#00E5FF]" />
+                  <span className="font-mono text-xs font-bold text-[#00E5FF]">PLAYGROUND STUDIO</span>
+                </div>
+                <span className="font-mono text-[10px] font-bold px-2 py-0.5 bg-[#00E5FF]/20 border border-[#00E5FF]/50 text-[#00E5FF] shadow-[0_0_8px_rgba(0,229,255,0.3)]">
+                  [ 60FPS SLA ]
                 </span>
-                <Sparkles className="h-3.5 w-3.5 text-[#00E5FF]" />
               </Link>
 
               <Link
                 to="/robotics"
                 onClick={() => setMobileMenuOpen(false)}
-                className="min-h-[44px] px-3 py-2.5 bg-[#121218] border border-[#27272A] hover:border-[#00E5FF] text-xs font-bold text-white hover:text-[#00E5FF] flex items-center justify-between transition-colors"
+                className="flex items-center justify-between p-3.5 bg-[#121218] border border-[#27272A] hover:border-[#00E5FF] active:bg-[#00E5FF]/10 transition-all rounded-none min-h-[48px]"
               >
-                <span className="flex items-center gap-2">
+                <div className="flex items-center gap-2.5">
                   <span>🦾</span>
-                  <span>Robotics Factory 3D</span>
-                  <span className="text-[10px] text-zinc-500 hidden sm:inline">[3D KINEMATICS]</span>
-                </span>
-                <span className="text-[9px] px-1.5 py-0.5 bg-[#00E5FF]/20 text-[#00E5FF] border border-[#00E5FF]/40 font-bold">
-                  LIVE
+                  <span className="font-mono text-xs font-bold text-white">ROBOTICS FACTORY 3D</span>
+                </div>
+                <span className="font-mono text-[10px] font-bold px-2 py-0.5 bg-[#00E5FF]/20 border border-[#00E5FF]/50 text-[#00E5FF] shadow-[0_0_8px_rgba(0,229,255,0.3)]">
+                  [ LIVE ]
                 </span>
               </Link>
 
@@ -409,13 +426,18 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileMenuOpen(false)}
-                className="min-h-[44px] px-3 py-2.5 bg-[#121218] border border-[#27272A] hover:border-zinc-700 text-xs text-zinc-300 hover:text-white flex items-center justify-between transition-colors"
+                className="flex items-center justify-between p-3.5 bg-[#121218] border border-[#27272A] hover:border-[#00E5FF] active:bg-[#00E5FF]/10 transition-all rounded-none min-h-[48px]"
               >
-                <span className="flex items-center gap-2">
+                <div className="flex items-center gap-2.5">
                   <span>🚀</span>
-                  <span>Autopilot Studio</span>
-                </span>
-                <ExternalLink className="h-3.5 w-3.5 text-zinc-500" />
+                  <span className="font-mono text-xs font-bold text-white">AUTOPILOT STUDIO</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="font-mono text-[10px] font-bold px-2 py-0.5 bg-zinc-900 border border-zinc-700 text-zinc-300">
+                    [ EXT // DIFY ]
+                  </span>
+                  <ExternalLink className="h-3.5 w-3.5 text-zinc-500" />
+                </div>
               </a>
 
               <a
@@ -423,64 +445,122 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileMenuOpen(false)}
-                className="min-h-[44px] px-3 py-2.5 bg-[#121218] border border-[#27272A] hover:border-zinc-700 text-xs text-zinc-300 hover:text-white flex items-center justify-between transition-colors"
+                className="flex items-center justify-between p-3.5 bg-[#121218] border border-[#27272A] hover:border-[#00E5FF] active:bg-[#00E5FF]/10 transition-all rounded-none min-h-[48px]"
               >
-                <span className="flex items-center gap-2">
-                  <span>🚀</span>
-                  <span>VibePath Studio</span>
-                </span>
-                <ExternalLink className="h-3.5 w-3.5 text-zinc-500" />
+                <div className="flex items-center gap-2.5">
+                  <span>🌐</span>
+                  <span className="font-mono text-xs font-bold text-white">VIBEPATH STUDIO</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="font-mono text-[10px] font-bold px-2 py-0.5 bg-zinc-900 border border-zinc-700 text-zinc-300">
+                    [ EXT // 3D ]
+                  </span>
+                  <ExternalLink className="h-3.5 w-3.5 text-zinc-500" />
+                </div>
               </a>
             </div>
 
-            {/* 02 // KNOWLEDGE & MANUALS (DOCS) */}
-            <div className="flex flex-col gap-2 pt-1">
-              <div className="text-[10px] uppercase text-[#00E5FF] font-bold tracking-widest pb-1 border-b border-[#27272A]/80">
-                02 // KNOWLEDGE & MANUALS
-              </div>
+            {/* 1PX DIVIDER */}
+            <div className="border-b border-[#1F1F2E] my-1" />
 
-              {/* 03 // SYSTEM ARCHITECTURE & MANUAL */}
-              <Link
-                to="/docs/architecture"
-                onClick={() => setMobileMenuOpen(false)}
-                className="min-h-[44px] px-3 py-2.5 bg-[#121218] border border-[#27272A] hover:border-[#00FF66] text-xs font-bold text-white hover:text-[#00FF66] flex items-center justify-between transition-colors"
-              >
-                <div className="flex items-center gap-2 min-w-0">
-                  <Terminal className="h-4 w-4 text-[#00FF66] shrink-0" />
-                  <div className="flex flex-col truncate">
-                    <span className="text-[#00FF66] truncate">{t('nav_docs_architecture')}</span>
-                    <span className="text-[10px] text-zinc-500 font-normal truncate">{t('nav_docs_architecture_desc')}</span>
-                  </div>
-                </div>
-                <span className="text-[9px] px-1.5 py-0.5 bg-[#00FF66]/20 text-[#00FF66] border border-[#00FF66]/40 font-bold shrink-0 ml-2">
-                  NEW
-                </span>
-              </Link>
+            {/* 02 // KNOWLEDGE BASE */}
+            <div className="flex flex-col gap-2">
+              <div className="font-mono text-xs font-bold text-[#00E5FF] tracking-widest uppercase mb-2 px-1 flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-[#00E5FF]" />
+                <span>02 // KNOWLEDGE BASE</span>
+              </div>
 
               <Link
                 to="/library"
                 onClick={() => setMobileMenuOpen(false)}
-                className="min-h-[44px] px-3 py-2.5 bg-[#121218] border border-[#27272A] hover:border-zinc-700 text-xs text-zinc-300 hover:text-white flex items-center justify-between transition-colors"
+                className="flex items-center justify-between p-3.5 bg-[#121218] border border-[#27272A] hover:border-[#00E5FF] active:bg-[#00E5FF]/10 transition-all rounded-none min-h-[48px]"
               >
-                <span className="flex items-center gap-2">
+                <div className="flex items-center gap-2.5">
                   <BookOpen className="h-4 w-4 text-[#00E5FF]" />
-                  <span>Flipbook Archive</span>
+                  <span className="font-mono text-xs font-bold text-white">FLIPBOOK ARCHIVE</span>
+                </div>
+                <span className="font-mono text-[10px] font-bold px-2 py-0.5 bg-zinc-900 border border-zinc-700 text-zinc-300">
+                  [ SPECS ]
                 </span>
-                <span className="text-[10px] text-zinc-500">SPECS</span>
               </Link>
 
               <Link
                 to="/flipbook/manual-hybrid-ai-automation"
                 onClick={() => setMobileMenuOpen(false)}
-                className="min-h-[44px] px-3 py-2.5 bg-[#121218] border border-[#27272A] hover:border-zinc-700 text-xs text-zinc-300 hover:text-white flex items-center justify-between transition-colors"
+                className="flex items-center justify-between p-3.5 bg-[#121218] border border-[#27272A] hover:border-[#00E5FF] active:bg-[#00E5FF]/10 transition-all rounded-none min-h-[48px]"
               >
-                <span className="flex items-center gap-2">
+                <div className="flex items-center gap-2.5">
                   <Layers className="h-4 w-4 text-cyan-400" />
-                  <span>Latest Blueprint Spec</span>
+                  <span className="font-mono text-xs font-bold text-white">HYBRID AI SPEC</span>
+                </div>
+                <span className="font-mono text-[10px] font-bold px-2 py-0.5 bg-[#00E5FF]/15 border border-[#00E5FF]/40 text-[#00E5FF]">
+                  [ BLUEPRINT ]
                 </span>
-                <span className="text-[10px] text-zinc-500">HYBRID AI</span>
               </Link>
             </div>
+
+            {/* 1PX DIVIDER */}
+            <div className="border-b border-[#1F1F2E] my-1" />
+
+            {/* 03 // SYSTEM ARCHITECTURE */}
+            <div className="flex flex-col gap-2">
+              <div className="font-mono text-xs font-bold text-[#00E5FF] tracking-widest uppercase mb-2 px-1 flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-[#00FF66]" />
+                <span>03 // SYSTEM ARCHITECTURE</span>
+              </div>
+
+              {/* Primary Architecture Card */}
+              <Link
+                to="/docs/architecture"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-between p-3.5 bg-[#121218] border border-[#27272A] hover:border-[#00FF66] active:bg-[#00FF66]/10 transition-all rounded-none min-h-[48px]"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <Terminal className="h-4 w-4 text-[#00FF66] shrink-0" />
+                  <div className="flex flex-col truncate">
+                    <span className="font-mono text-xs font-bold text-[#00FF66] truncate">{t('nav_docs_architecture')}</span>
+                    <span className="font-mono text-[10px] text-zinc-400 truncate">{t('nav_docs_architecture_desc')}</span>
+                  </div>
+                </div>
+                <span className="font-mono text-[10px] font-bold px-2 py-0.5 bg-[#00FF66]/20 border border-[#00FF66]/40 text-[#00FF66] shrink-0 ml-2 shadow-[0_0_8px_rgba(0,255,102,0.3)]">
+                  [ LIVE MANUAL ]
+                </span>
+              </Link>
+
+              {/* Visually indented sub-cards */}
+              <div className="ml-3 pl-3 border-l-2 border-[#5322FF] flex flex-col gap-2 mt-1">
+                <Link
+                  to="/docs/architecture"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center justify-between p-2.5 bg-[#0e0e14] border border-[#27272A]/70 hover:border-[#5322FF] text-xs transition-all min-h-[44px]"
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="text-[#00FF66] text-[11px] font-mono font-bold">§ 2.0</span>
+                    <span className="font-mono text-[11px] text-zinc-300 truncate">Deterministic SLA & Failover</span>
+                  </div>
+                  <span className="font-mono text-[9px] px-1.5 py-0.5 bg-[#5322FF]/20 border border-[#5322FF]/50 text-[#00FF66] shrink-0">
+                    60 FPS SLA
+                  </span>
+                </Link>
+
+                <Link
+                  to="/docs/architecture"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center justify-between p-2.5 bg-[#0e0e14] border border-[#27272A]/70 hover:border-[#5322FF] text-xs transition-all min-h-[44px]"
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="text-[#00E5FF] text-[11px] font-mono font-bold">§ 3.0</span>
+                    <span className="font-mono text-[11px] text-zinc-300 truncate">JSON Spec & AST Pipeline</span>
+                  </div>
+                  <span className="font-mono text-[9px] px-1.5 py-0.5 bg-zinc-800 border border-zinc-700 text-zinc-400 shrink-0">
+                    ZERO-CRASH
+                  </span>
+                </Link>
+              </div>
+            </div>
+
+            {/* 1PX DIVIDER */}
+            <div className="border-b border-[#1F1F2E] my-1" />
 
             {/* ACTION CTA: LAUNCH BUTTON */}
             <button
@@ -488,10 +568,10 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                 setMobileMenuOpen(false);
                 onOpenBatchModal?.();
               }}
-              className="min-h-[44px] w-full inline-flex items-center justify-center gap-2 border border-[#00E5FF] bg-[#00E5FF]/10 text-xs font-bold px-4 py-3 text-[#00E5FF] active:bg-[#00E5FF] active:text-black transition-colors uppercase tracking-wider shadow-[0_0_12px_rgba(0,229,255,0.2)] mt-1"
+              className="flex items-center justify-center gap-2 p-3.5 bg-[#00E5FF]/10 border border-[#00E5FF] hover:bg-[#00E5FF] text-[#00E5FF] hover:text-black active:bg-[#00E5FF] active:text-black transition-all font-mono text-xs font-bold uppercase tracking-wider rounded-none min-h-[48px] shadow-[0_0_16px_rgba(0,229,255,0.2)] mt-1"
             >
               <Rocket className="w-4 h-4" />
-              <span>[ 🚀 Launch ]</span>
+              <span>[ 🚀 Launch Studio Engine ]</span>
             </button>
           </motion.div>
         )}
