@@ -16,7 +16,7 @@ import {
   BookOpen,
 } from 'lucide-react';
 
-const VIBEPATH_URL = 'https://vibepath.mizu2711.workers.dev/';
+const VIBEPATH_URL = 'https://vibepath.artificialcraft.space/';
 import { useTranslation } from '@/context/useLanguage';
 
 function SpotlightCard({

@@ -23,7 +23,7 @@ import Monolith3DNode from '@/components/playground/Monolith3DNode';
 import { useTranslation } from '@/context/useLanguage';
 
 const STUDIO_URL = 'https://dify-n8n-workflow.ai.studio/';
-const VIBEPATH_URL = 'https://vibepath.mizu2711.workers.dev/';
+const VIBEPATH_URL = 'https://vibepath.artificialcraft.space/';
 const ELECTRIC_PURPLE = '#5322ff';
 const ELECTRIC_CYAN = '#00E5FF';
 
