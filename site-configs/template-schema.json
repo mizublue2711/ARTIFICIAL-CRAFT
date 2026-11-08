@@ -163,7 +163,7 @@
       "subtitle": "3D Voxel Matrix Financial Engine & Live Google Sheets Sync",
       "description": "Transforms flat financial spreadsheets into an interactive 3D Voxel Matrix city running at 60 FPS in the browser. Features live Google Sheets API integration, procedural negative profit sub-level sinking effects, and 3D Head-to-Head Duel Mode.",
       "techStack": ["Three.js / WebGL", "Google Sheets Live API", "Zod Sanitizer", "Cybernetic Brutalism"],
-      "linkUrl": "https://3d-data-metropolis-corporate-profit-visualization.mizu2711.workers.dev/",
+      "linkUrl": "https://metropolis.artificialcraft.space/",
       "accentColor": "#00E5FF",
       "primaryColor": "#5322FF",
       "ctaLabel": "LAUNCH 3D METROPOLIS DEMO ➔",
