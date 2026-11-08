@@ -1,0 +1,54 @@
+{
+  "slug": "tech-lib-19-vibepath-4stage-flight",
+  "title": "CỖ MÁY BAY ĐIỆN ẢNH 4 GIAI ĐOẠN",
+  "subtitle": "Cách VibePath Giải Quyết Hiện Tượng Rơi Khung Hình Canvas WebGL Sau 3 Giây và Đột Tử Khung Hình Đen",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "CỖ MÁY BAY ĐIỆN ẢNH 4 GIAI ĐOẠN",
+      "subtitle": "Cách VibePath Giải Quyết Hiện Tượng Rơi Khung Hình Canvas WebGL Sau 3 Giây và Đột Tử Khung Hình Đen",
+      "version": "v1.0.0",
+      "tags": [
+        "VIBEPATH",
+        "3D GIS",
+        "WEBGL",
+        "60FPS CINEMA"
+      ],
+      "verified": true,
+      "seed": "vibepath-flight-cover-19",
+      "graphicType": "GEO_MAP"
+    },
+    {
+      "id": "p02_screen_recording_trap",
+      "type": "tech_doc",
+      "title": "01 // CẠM BẪY QUAY MÀN HÌNH THỦ CÔNG",
+      "content": "Bạn muốn có một thước phim bản đồ 3D cho vlog ẩm thực. Bạn mở Google Maps. Bạn bật quay màn hình máy tính. Bạn dùng chuột rê thủ công. Màn hình giật lag (stutter).\n\nCác nút giao diện UI chằng chịt trong khung hình làm video mất đi sự chuyên nghiệp. Bản đồ thương mại vốn sinh ra để dẫn đường từng ngã rẽ, không phải cho sản xuất video điện ảnh 60FPS. VibePath thay thế thao tác quay màn hình thủ công bằng cỗ máy bay không gian 3D tự động hóa hoàn toàn.",
+      "seed": "vibepath-recording-trap-seed-19",
+      "graphicType": "NEURAL_MESH"
+    },
+    {
+      "id": "p03_solving_webgl_crash",
+      "type": "tech_doc",
+      "title": "02 // GIẢI QUYẾT LỖI SẬP WEBGL SAU 3 GIÂY",
+      "content": "Tại sao các bộ ghi canvas WebGL thường sập sau 3 giây? Vì trình duyệt lập tức giải phóng bộ đệm đồ họa nhằm tiết kiệm GPU RAM. Khi quỹ đạo bay camera di chuyển nhanh hơn tốc độ tải tile bản đồ, hiện tượng khung hình đen (black frames) xảy ra.\n\nVibePath giải quyết triệt để với hai quy tắc kỹ thuật:\n1. Thiết lập preserveDrawingBuffer: true trên thực thể Mapbox.\n2. Khóa quỹ đạo bay vào Chuỗi Bất đồng bộ 4 Giai đoạn: Quỹ đạo tổng quan (Zoom 1.8), Hạ cánh khu vực (Zoom 9.5), Quét quận huyện (Zoom 13.8), và Bay lướt đô thị 3D (Zoom 17.8).",
+      "code": "const map = new mapboxgl.Map({\n  container: 'map',\n  preserveDrawingBuffer: true,\n  antialias: true\n});\nawait flightStageChain.execute([\n  { stage: 'ORBIT', zoom: 1.8, pitch: 0 },\n  { stage: 'REGIONAL', zoom: 9.5, pitch: 45 },\n  { stage: 'DISTRICT', zoom: 13.8, pitch: 60 },\n  { stage: 'STREET', zoom: 17.8, pitch: 75 }\n]);",
+      "language": "typescript",
+      "seed": "vibepath-async-chain-bento",
+      "graphicType": "ISOMETRIC_CAD"
+    },
+    {
+      "id": "p04_zero_frame_drops",
+      "type": "diagram",
+      "title": "03 // VIDEO ĐIỆN ẢNH 1-CLICK & KHÔNG RƠI KHUNG HÌNH",
+      "content": "Trình duyệt liên kết trực tiếp map.getCanvas().captureStream(60) vào MediaRecorder. Quá trình ghi hình kích hoạt tự động tại Giai đoạn 1 và dừng sau 1.5 giây khi Giai đoạn 4 khóa mục tiêu.\n\nKhông cần công cụ quay màn hình ngoài. Không dính nút bấm UI trong video thành phẩm. Thước phim bản đồ 3D chuẩn điện ảnh 60FPS nguyên bản được kết xuất trực tiếp từ GPU máy khách.",
+      "seed": "vibepath-60fps-badge-19",
+      "graphicType": "WEBM_CAPTURE_DOCK",
+      "caption": "Hình 19.1 — Pipeline ghi luồng canvas phía client chuẩn 60FPS triệt tiêu hoàn toàn khung hình đen"
+    }
+  ]
+}
