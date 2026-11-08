@@ -45,7 +45,7 @@ const DEFAULT_CSV_DATA = [
   { title: 'Q1 Revenue Growth', metric: '$4.2M', change: '+34%', tag: 'FINANCE' },
   { title: 'Neural Model Latency', metric: '14ms', change: '-52%', tag: 'SYSTEMS' },
   { title: 'Active Node Count', metric: '1,280', change: '+18%', tag: 'INFRA' },
-  { title: 'Deterministic SLA', metric: '99.99%', change: '+0.01%', tag: 'TELEMETRY' },
+  { title: 'System Uptime Target', metric: '50% Uptime', change: 'Standard', tag: 'TELEMETRY' },
   { title: 'Token Fanout Volume', metric: '840M', change: '+120%', tag: 'AGENT' },
   { title: 'Vector DB Indexing', metric: '4.8M/s', change: '+45%', tag: 'DATA' },
 ];

@@ -17,7 +17,7 @@ export interface CyberneticHUDLayerProps {
 
 export const CyberneticHUDLayer: React.FC<CyberneticHUDLayerProps> = ({
   frame: frameProp,
-  telemetry = { slaTarget: '<2ms', fps: 60 },
+  telemetry = { slaTarget: '<16ms (Local)', fps: 60 },
   primaryColor = '#5322FF',
   accentColor = '#00E5FF',
   brandName = 'ARTIFICIAL CRAFT',
@@ -93,7 +93,7 @@ export const CyberneticHUDLayer: React.FC<CyberneticHUDLayerProps> = ({
                 boxShadow: `0 0 8px ${accentColor}`,
               }}
             />
-            <span>SLA: {telemetry.fps || 60}FPS // LATENCY: {telemetry.slaTarget || '<2ms'}</span>
+            <span>FPS: {telemetry.fps || 60} // LATENCY: {telemetry.slaTarget || '<16ms (Local)'}</span>
           </div>
           <div style={{ fontSize: '9px', color: '#71717A', letterSpacing: '1px' }}>
             ID: {brandName} // MATRIX_SYS

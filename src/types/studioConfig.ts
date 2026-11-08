@@ -91,7 +91,7 @@ export const DEFAULT_STUDIO_CONFIG: StudioConfigData = {
   explodedProgress: 33,
   explodedStages: {
     stage0: '0% // Assembled Unibody Core',
-    stage33: '33% // Tactical Outer Aerogel Shell',
+    stage33: '33% // Protective Outer Shell',
     stage66: '66% // High-Torque Brushless Motor Core',
     stage100: '100% // Micro Tactile Haptic Sensor Array',
   },
@@ -99,7 +99,7 @@ export const DEFAULT_STUDIO_CONFIG: StudioConfigData = {
   telemetryFps: 60,
   torquePrecision: '±0.01mm',
   dofSensorCount: '11 DOF',
-  aiLatency: '<2ms',
+  aiLatency: '<16ms (Local)',
   bentoModules: {
     viewport3d: true,
     performanceGraph: true,
