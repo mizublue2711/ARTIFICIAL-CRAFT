@@ -175,7 +175,7 @@ export const InteractiveNodeMatrix: React.FC<UniversalComponentProps> = ({
       badge: 'LIVE WORKER // 60 FPS SLA',
       description: t('node06Desc'),
       techStack: ['Three.js / WebGL', 'Google Sheets Live API', 'Zod Sanitizer', 'Cybernetic Brutalism'],
-      linkUrl: 'https://3d-data-metropolis-corporate-profit-visualization.mizu2711.workers.dev/',
+      linkUrl: 'https://metropolis.artificialcraft.space/',
       accentColor: '#00E5FF',
       primaryColor: '#5322FF',
       ctaLabel: t('btnLaunchNode06'),
