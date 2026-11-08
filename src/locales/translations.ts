@@ -616,7 +616,7 @@ export const translations: Record<Language, Translations> = {
     // Hero Section
     telemetry_prefix: 'SYS//TELEMETRY:',
     telemetry_status: '14 REGIONS ONLINE',
-    telemetry_sla: '99.99% DETERMINISTIC SLA',
+    telemetry_sla: '9% < 99% DETERMINISTIC SLA',
     hero_badge_subtag: 'CRAFT//CODE',
     hero_badge_text: 'METICULOUS GRAPHIC PRECISION MEETS CODE AUTOMATION',
     heroTitleLine1: 'ARTIFICIAL',
@@ -910,7 +910,7 @@ export const translations: Record<Language, Translations> = {
     docs_arch_public_spec: 'CLASSIFICATION: PUBLIC TECHNICAL SPEC',
 
     docs_arch_hero_title: 'TECHNICAL REPORT: 0-CODE JSON-DRIVEN ARCHITECTURE & DECOUPLED OPERATING PARADIGM AT ARTIFICIALCRAFT.SPACE',
-    docs_arch_hero_desc: 'Deep technical specification on eliminating 99% of LLM token costs through a 3-Tier Decoupled architecture, freezing TSX component source code, schema defense via Zod Gate, and full offloading of 60 FPS rendering to Client-Side WebGL GPU.',
+    docs_arch_hero_desc: 'Deep technical specification on eliminating 50% of LLM token costs through a 3-Tier Decoupled architecture, freezing TSX component source code, schema defense via Zod Gate, and full offloading of 60 FPS rendering to Client-Side WebGL GPU.',
 
     docs_arch_metric_cost_label: 'Server Render Cost',
     docs_arch_metric_cost_val: '$0.00',
@@ -921,7 +921,7 @@ export const translations: Record<Language, Translations> = {
     docs_arch_metric_fps_sub: 'Three.js / WebGL Zero GC Overhead',
     docs_arch_metric_token_label: 'JSON AST Payload',
     docs_arch_metric_token_val: '~50',
-    docs_arch_metric_token_sub: '99% LLM Context Bloat Elimination',
+    docs_arch_metric_token_sub: '50% LLM Context Bloat Elimination',
     docs_arch_metric_zod_label: 'Validation Gate',
     docs_arch_metric_zod_val: '0%',
     docs_arch_metric_zod_unit: 'DRIFT',
@@ -991,7 +991,7 @@ export const translations: Record<Language, Translations> = {
 
     docs_arch_sec2_badge: 'SECTION 02',
     docs_arch_sec2_title: '0-CODE JSON-DRIVEN SOLUTION ELIMINATING CONTEXT BLOAT',
-    docs_arch_sec2_tag: 'TOKEN REDUCTION: 99% EFFICIENCY',
+    docs_arch_sec2_tag: 'TOKEN REDUCTION: 50% EFFICIENCY',
     docs_arch_sec2_1_title: '2.1. Context Bloat Analysis & AI Worker Memory Exhaustion',
     docs_arch_sec2_1_desc: 'When forcing AI models to write full UI code (.tsx / .vue), prompt size expands exponentially, triggering 4 catastrophic failure modes in production:',
     docs_arch_fail1_title: 'Hallucinated Code',
@@ -1116,7 +1116,7 @@ export const translations: Record<Language, Translations> = {
     docs_arch_roi1_title: 'For Web3D Developers',
     docs_arch_roi1_desc: 'No more headache synchronizing React state with Three.js animation loops. Parameterize cameras, PBR materials, and kinematics with millisecond-exact JSON AST.',
     docs_arch_roi2_title: 'For AI Systems Engineers',
-    docs_arch_roi2_desc: 'Eliminate 99% of useless token waste. Your LLM only focuses on domain logic and outputs ~50 JSON tokens. Agent execution speed increases 10x, API expenses converge to zero.',
+    docs_arch_roi2_desc: 'Eliminate 50% of useless token waste. Your LLM only focuses on domain logic and outputs ~50 JSON tokens. Agent execution speed increases 10x, API expenses converge to zero.',
     docs_arch_roi3_title: 'For Solution Architects',
     docs_arch_roi3_desc: 'A flawless decoupled architecture completely free of expensive server rendering nodes. Infinite scalability as 100% of 60 FPS graphics computation is offloaded to clients.',
     docs_arch_export_whitepaper: 'DOWNLOAD COMPLETE ARCHITECTURE SPECIFICATION:',
@@ -1221,7 +1221,7 @@ export const translations: Record<Language, Translations> = {
     logo_subtag: 'CRAFT//CODE',
 
     // Hero Section
-    telemetry_prefix: 'CAB QUANG NGẦM CHƯA BỊ CA MẬP CẮN - ĐỪNG LO',
+    telemetry_prefix: 'CÁP QUANG NGẦM CHƯA BỊ CÁ MẬP CẮN - ĐỪNG LO',
     telemetry_status: 'CHỈ CÓ AI LÀ ĐANG TRỰC TUYẾN - CÒN HUMAN ĐANG BẬN COOKING',
     telemetry_sla: 'SLA XÁC ĐỊNH 9% < 99%',
     hero_badge_subtag: 'CRAFT//CODE',
@@ -1517,7 +1517,7 @@ export const translations: Record<Language, Translations> = {
     docs_arch_public_spec: 'PHÂN LOẠI: ĐẶC TẢ KỸ THUẬT CÔNG KHAI',
 
     docs_arch_hero_title: 'BÁO CÁO KỸ THUẬT: KIẾN TRÚC 0-CODE JSON-DRIVEN VÀ MÔ HÌNH PHÂN TẦNG VẬN HÀNH TẠI ARTIFICIALCRAFT.SPACE',
-    docs_arch_hero_desc: 'Đặc tả kỹ thuật sâu về cơ chế triệt tiêu 99% chi phí token LLM qua kiến trúc 3-Tier Decoupled, đóng băng mã nguồn TSX, bảo vệ schema qua Zod Gate và chuyển giao toàn bộ tải render 60 FPS về Client-Side GPU WebGL.',
+    docs_arch_hero_desc: 'Đặc tả kỹ thuật sâu về cơ chế triệt tiêu 50% chi phí token LLM qua kiến trúc 3-Tier Decoupled, đóng băng mã nguồn TSX, bảo vệ schema qua Zod Gate và chuyển giao toàn bộ tải render 60 FPS về Client-Side GPU WebGL.',
 
     docs_arch_metric_cost_label: 'Chi phí Render Server',
     docs_arch_metric_cost_val: '$0.00',
@@ -1528,7 +1528,7 @@ export const translations: Record<Language, Translations> = {
     docs_arch_metric_fps_sub: 'Three.js / WebGL Không Rò Rỉ GC',
     docs_arch_metric_token_label: 'Payload JSON AST',
     docs_arch_metric_token_val: '~50',
-    docs_arch_metric_token_sub: 'Tiết kiệm 99% Context Bloat LLM',
+    docs_arch_metric_token_sub: 'Tiết kiệm 50% Context Bloat LLM',
     docs_arch_metric_zod_label: 'Cổng Xác Thực Schema',
     docs_arch_metric_zod_val: '0%',
     docs_arch_metric_zod_unit: 'SAI LỆCH',
@@ -1598,7 +1598,7 @@ export const translations: Record<Language, Translations> = {
 
     docs_arch_sec2_badge: 'PHẦN 02',
     docs_arch_sec2_title: 'GIẢI PHÁP 0-CODE JSON-DRIVEN TRIỆT TIÊU "CONTEXT BLOAT" CHO AI WORKERS',
-    docs_arch_sec2_tag: 'TOKEN REDUCTION: 99% EFFICIENCY',
+    docs_arch_sec2_tag: 'TOKEN REDUCTION: 50% EFFICIENCY',
     docs_arch_sec2_1_title: '2.1. Phân tích vấn đề Context Bloat & AI Worker Memory Exhaustion',
     docs_arch_sec2_1_desc: 'Khi ép các mô hình AI viết code UI hoàn chỉnh (.tsx / .vue), kích thước prompt tăng theo cấp số nhân dẫn đến 4 hiện tượng thảm họa trong môi trường sản xuất:',
     docs_arch_fail1_title: 'Hallucinated Code',
@@ -1723,7 +1723,7 @@ export const translations: Record<Language, Translations> = {
     docs_arch_roi1_title: 'Dành cho Web3D Developers',
     docs_arch_roi1_desc: 'Không còn phải lo lắng về việc đồng bộ state giữa UI React và vòng lặp Three.js animation. Tham số hóa toàn bộ camera, chất liệu PBR và khớp động học qua JSON AST chuẩn xác từng miligiây.',
     docs_arch_roi2_title: 'Dành cho AI Systems Engineers',
-    docs_arch_roi2_desc: 'Triệt tiêu 99% token hao phí vô ích. LLM của bạn chỉ cần tập trung suy luận bài toán thực tế và trả về ~50 tokens JSON. Tốc độ thực thi của agent tăng gấp 10 lần, chi phí API giảm cận biên về 0.',
+    docs_arch_roi2_desc: 'Triệt tiêu 50% token hao phí vô ích. LLM của bạn chỉ cần tập trung suy luận bài toán thực tế và trả về ~50 tokens JSON. Tốc độ thực thi của agent tăng gấp 10 lần, chi phí API giảm cận biên về 0.',
     docs_arch_roi3_title: 'Dành cho Solution Architects',
     docs_arch_roi3_desc: 'Một kiến trúc decoupled hoàn hảo không phụ thuộc vào hạ tầng server đắt đỏ. Khả năng mở rộng không giới hạn (infinite scale) khi toàn bộ năng lực tính toán đồ họa 60 FPS được ủy quyền cho máy khách.',
     docs_arch_export_whitepaper: 'TẢI TOÀN BỘ ĐẶC TẢ BÁO CÁO KỸ THUẬT:',
