@@ -1,0 +1,54 @@
+{
+  "slug": "tech-lib-20-vibepath-bspline-polygon",
+  "title": "B-SPLINE TELEMETRY & POLYGON SCANNING",
+  "subtitle": "Smoothing Jagged GPS Logs and Lighting Global Boundaries with Laser Cyan Precision",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "B-SPLINE TELEMETRY & POLYGON SCANNING",
+      "subtitle": "Smoothing Jagged GPS Logs and Lighting Global Boundaries with Laser Cyan Precision",
+      "version": "v1.0.0",
+      "tags": [
+        "B-SPLINE",
+        "POINT-IN-POLYGON",
+        "GIS",
+        "COAXIAL LASER"
+      ],
+      "verified": true,
+      "seed": "vibepath-bspline-cover-20",
+      "graphicType": "ISOMETRIC_CAD"
+    },
+    {
+      "id": "p02_noise_in_signal",
+      "type": "tech_doc",
+      "title": "01 // THE NOISE IN THE SIGNAL",
+      "content": "Your mobile phone records GPS telemetry. You walk around a city street. Tall buildings block satellite signals. Your GPS path jumps across buildings, cuts through walls, and zig-zags wildly.\n\nIf you render that raw line on a 3D map, the camera violently jerks. VibePath routes raw coordinates through a Python geometry microservice (:8000). The Ramer-Douglas-Peucker algorithm strips point jitter. 3rd-order Cubic B-Splines convert harsh polyline angles into a smooth Coaxial Laser curve (#00E5FF).",
+      "seed": "vibepath-noise-signal-20",
+      "graphicType": "NEURAL_MESH"
+    },
+    {
+      "id": "p03_district_lighting",
+      "type": "tech_doc",
+      "title": "02 // REAL-WORLD DISTRICT LIGHTING",
+      "content": "How do traditional maps highlight a district? They draw a crude, ugly bounding box rectangle that misses actual administrative borders entirely.\n\nVibePath ingests Mapbox Global Boundaries Vector Tilesets (mapbox.boundaries-adm2-v4). As Stage 3 flight descends, the engine executes a real-time Point-in-Polygon query. It extracts the administrative mapbox_id and illuminates the exact curved municipality boundary with glowing 1px cyan laser borders.",
+      "code": "const features = map.queryRenderedFeatures(point, {\n  layers: ['mapbox-boundaries-adm2']\n});\nif (features.length > 0) {\n  const districtId = features[0].properties.mapbox_id;\n  map.setFilter('district-laser-glow', ['==', 'mapbox_id', districtId]);\n  map.setPaintProperty('district-laser-glow', 'line-opacity', 0.95);\n}",
+      "language": "typescript",
+      "seed": "vibepath-polygon-hud-20",
+      "graphicType": "GEO_MAP"
+    },
+    {
+      "id": "p04_smart_coordinate_extraction",
+      "type": "diagram",
+      "title": "03 // SMART COORDINATE EXTRACTION",
+      "content": "Parsing Google Maps URLs manually is a nightmare. Base URLs hide screen camera centers rather than restaurant pins, and shortened links hit CORS blocks.\n\nVibePath's SmartLocationResolver bypasses Google Places API paywalls entirely. It parses hidden !3d latitude and !4d longitude parameters from raw URLs. A Cloudflare Worker proxy pairs with Mapbox Search v6 and Goong API for instant global and local POI resolution with zero personal API keys.",
+      "seed": "vibepath-dual-engine-20",
+      "graphicType": "AUTOMATION_FLOW",
+      "caption": "Figure 20.1 — Point-in-Polygon boundary illumination and B-Spline telemetry smoothing pipeline"
+    }
+  ]
+}

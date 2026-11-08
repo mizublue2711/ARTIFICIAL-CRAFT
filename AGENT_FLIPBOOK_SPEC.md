@@ -209,6 +209,20 @@ export const booksRegistry: Record<string, BookData> = {
 ### A. Validate Build: Execute npm run build to verify zero TypeScript/JSON errors.
 ### B. Create Pull Request: Commit changes with commit message feat(book): add <category>-<slug>.
 
+### D. DUAL-LANGUAGE COMPILATION PROTOCOL (EN & VI)
+- Every compiled flipbook MUST support both English and Vietnamese.
+- When compiling a draft manuscript from `/drafts/`, Jules MUST generate two JSON files:
+  1. `src/data/books/en/<category>-<slug>.json` (English base)
+  2. `src/data/books/vi/<category>-<slug>.json` (Vietnamese translation)
+- Both JSON files MUST maintain identical `id`, `type`, `layoutVariant`, `graphicType`, and `seed` attributes per page block to guarantee structural parity.
+- Register both language variants in `src/data/books/registry.ts`:
+  ```typescript
+  export const booksRegistry = {
+    en: { 'manual-hybrid-ai': manualHybridAiEN },
+    vi: { 'manual-hybrid-ai': manualHybridAiVI },
+  };
+  ```
+
 🔍 6. TROUBLESHOOTING & NAVIGATION PROTOCOL
 If a build or rendering error occurs:
 Locate Page: Identify failing page.id from stack trace (e.g., p02_data_hygiene).

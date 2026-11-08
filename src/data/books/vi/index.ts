@@ -12,6 +12,9 @@ import book11 from './book-11-cybernetic-swiss-brutalism.json';
 import book12 from './book-12-3d-perspective-tunnel.json';
 import book13 from './book-13-composite-monolith-kinematics.json';
 import book14 from './book-14-client-side-webm-exporter.json';
+import book19 from './tech-lib-19-vibepath-4stage-flight.json';
+import book20 from './tech-lib-20-vibepath-bspline-polygon.json';
+import book21 from './tech-lib-21-vibepath-nle-assets.json';
 import { BookData } from '../../../types/flipbook';
 
 export const viBooks: BookData[] = [
@@ -29,4 +32,7 @@ export const viBooks: BookData[] = [
   book12 as BookData,
   book13 as BookData,
   book14 as BookData,
+  book19 as BookData,
+  book20 as BookData,
+  book21 as BookData,
 ];
