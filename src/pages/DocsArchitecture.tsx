@@ -16,7 +16,6 @@ import {
   Copy,
   Check,
   Zap,
-  Layers,
   Terminal,
   AlertTriangle,
   FolderTree,
@@ -55,18 +54,18 @@ export default function DocsArchitecture() {
 
   // Code snippets for Inspector
   const codeAst = `{
-  "id": "telemetry-cad-01",
+  "id": "workflow-pipeline-01",
   "preset": "swiss-hud",
-  "title": "ROBOTICS TELEMETRY ENGINE",
-  "subtitle": "11-DOF Bionic Arm Matrix",
+  "title": "SYSTEM PIPELINE & 3D STAGE",
+  "subtitle": "3D Model Exploded View (4 Stages)",
   "theme": "cyber-dark",
   "props": {
-    "seed": "0x892a_mecha",
+    "seed": "0x42_production",
     "explodedProgress": 0.33,
-    "telemetryFps": 60.0,
-    "torquePrecision": 0.001,
-    "harmonicDriveRatio": 120,
-    "activeNode": "NODE_05::PROD"
+    "renderFps": 60.0,
+    "interactiveResponse": "<16ms",
+    "apiLatency": "1.8s",
+    "activeNode": "AUTOMATED_WORKFLOW::PROD"
   }
 }`;
 
@@ -92,9 +91,9 @@ export async function POST(req: Request) {
   const parsed = SwissDesignConfigSchema.safeParse(rawBody);
 
   if (!parsed.success) {
-    // CIRCUIT BREAKER: Short-circuit immediately on drift
+    // INPUT DATA VERIFICATION: Return clean 400 validation error early
     return NextResponse.json(
-      { error: 'PAYLOAD_DRIFT_DETECTED', issues: parsed.error.format() },
+      { error: 'VALIDATION_FAILED', issues: parsed.error.format() },
       { status: 400 }
     );
   }
@@ -107,11 +106,11 @@ import { ComponentRegistry } from './registry';
 import type { UniversalComponentProps } from './registry';
 
 export const DynamicSectionRenderer: React.FC<{ payload: UniversalComponentProps }> = ({ payload }) => {
-  // TIER 1: Sanitizer Fallback
+  // LEVEL 1: Configuration Fallback
   const safePreset = ComponentRegistry[payload.preset] ? payload.preset : 'swiss-hud';
   const Component = ComponentRegistry[safePreset];
 
-  // TIER 2: GPU Runtime Error Boundary
+  // LEVEL 2: 2D Visual Fallback Error Boundary
   return (
     <React.Suspense fallback={<div className="h-64 bg-zinc-950 border border-zinc-800 animate-pulse" />}>
       <Component {...payload.props} title={payload.title} theme={payload.theme} />
@@ -140,8 +139,8 @@ export const DynamicSectionRenderer: React.FC<{ payload: UniversalComponentProps
   const handleValidatePayload = () => {
     setValidationActive(true);
     showToast(
-      language === 'vi' ? 'CỔNG ZOD: ĐÃ XÁC THỰC' : 'GATE: ZOD VALIDATED',
-      language === 'vi' ? 'Payload hợp lệ 100%, sẵn sàng chạy WebGL 60FPS' : 'Payload 100% compliant, 60FPS bus ready'
+      language === 'vi' ? 'XÁC THỰC DỮ LIỆU: THÀNH CÔNG' : 'INPUT DATA VERIFIED',
+      language === 'vi' ? 'Dữ liệu hợp lệ 100%, sẵn sàng dựng hình 60 FPS mượt mà' : 'Payload verified, 60 FPS client GPU ready'
     );
     setTimeout(() => setValidationActive(false), 3500);
   };
@@ -149,15 +148,16 @@ export const DynamicSectionRenderer: React.FC<{ payload: UniversalComponentProps
   // Export handlers
   const handleDownloadAst = () => {
     const specDump = {
-      spec: 'ARTIFICIALCRAFT.SPACE ARCHITECTURE REPORT',
-      version: '2026.11-REV4',
-      architecture: '3-Tier Decoupled Operational Paradigm',
-      sla: {
-        server_render_cost: '$0.00 / month',
-        target_fps: 60.0,
-        token_reduction: '99%',
-        zod_drift: '0%',
-        crash_policy: '2-Tier Graceful Fallback',
+      spec: 'ARTIFICIALCRAFT.SPACE SYSTEM ARCHITECTURE & MANUAL',
+      version: '2026.11-STABLE',
+      architecture: 'Modular Frontend & Backend Setup',
+      metrics: {
+        render_performance: '60 FPS Client GPU Render',
+        local_interactive_response: '<16ms',
+        ai_processing_time: '1.2s - 2.5s (Average API Latency)',
+        system_availability_target: '50% Uptime',
+        data_verification: 'Strict Zod Schema Validated',
+        cloud_render_cost: '$0.00 / month (Client GPU)',
       },
       registry_nodes: ['swiss-hud', 'isometric-matrix', 'bento-3d', 'rubik-3d', 'dual-engine'],
       timestamp: new Date().toISOString(),
@@ -182,49 +182,53 @@ export const DynamicSectionRenderer: React.FC<{ payload: UniversalComponentProps
       return;
     }
 
-    const viMD = `# BÁO CÁO KỸ THUẬT: KIẾN TRÚC 0-CODE JSON-DRIVEN VÀ MÔ HÌNH PHÂN TẦNG VẬN HÀNH
+    const viMD = `# HƯỚNG DẪN KIẾN TRÚC HỆ THỐNG: MÔ HÌNH PHÂN TẦNG VẬN HÀNH VÀ DỰNG HÌNH THỰC TẾ
 
 **Tổ chức:** ARTIFICIALCRAFT.SPACE
-**Phiên bản:** SPEC//2026.11-REV4
-**Phân loại:** PUBLIC TECHNICAL SPEC
+**Phiên bản:** 2026.11-STABLE
+**Phân loại:** HƯỚNG DẪN KỸ THUẬT MỞ
 
 ---
 
-## 1. TỔNG QUAN KIẾN TRÚC & TRIẾT LÝ THIẾT KẾ
-- Tier 1: REASONING CORE (Dify / Vertex AI) -> Emits Pure JSON AST (~50 tokens)
-- Tier 2: DETERMINISTIC MUSCLE (n8n Webhook Proxy & Validation Gate)
-- Tier 3: PRESENTATION CANVAS (Client GPU WebGL 60 FPS)
+## 1. TỔNG QUAN KIẾN TRÚC & TRIẾT LÝ VẬN HÀNH
+- Tầng 1: LÕI SUY LUẬN AI -> Xuất cấu hình JSON tinh gọn (~50 tokens)
+- Tầng 2: ĐỘNG CƠ TỰ ĐỘNG HÓA WORKFLOW -> Quản lý dữ liệu & xác thực đầu vào
+- Tầng 3: KHUNG HIỂN THỊ TƯƠNG TÁC -> Dựng hình 60 FPS mượt mà trên GPU máy khách
 
-## 2. CHỈ SỐ SLA CHÍNH
-- Server Render Cost: $0.00 / tháng
-- Deterministic FPS: 60.0 FPS
-- JSON AST Payload: ~50 Tokens (-99% Context Bloat)
-- Validation Drift: 0%
-- Failover SLA: ZERO-CRASH (2-Tier Graceful Fallback)
+## 2. CÁC CHỈ SỐ HOẠT ĐỘNG THỰC TẾ
+- Render Performance: 60 FPS Client GPU Render
+- Local Interactive Response: <16ms
+- AI Processing Time: 1.2s - 2.5s (Độ trễ trung bình)
+- System Availability Target: 50% Uptime
+- Data Verification: Strict Zod Schema Validated
+- Chi Phí Dựng Hình Máy Chủ: $0.00 / tháng
 
-## 3. ZERO-TRUST ZOD GATE PROTOCOL
-- Schema: SwissDesignConfigSchema.safeParse()
-- Short-circuit HTTP 400 lập tức khi payload vi phạm contract.`;
+## 3. KIỂM SOÁT DỮ LIỆU ĐẦU VÀO
+- Sử dụng Zod safeParse kiểm tra chặt chẽ cấu trúc tham số trước khi chuyển đến client.`;
 
-    const enMD = `# TECHNICAL WHITE PAPER: 0-CODE JSON-DRIVEN ARCHITECTURE & DECOUPLED OPERATIONS
+    const enMD = `# SYSTEM ARCHITECTURE & PRACTICAL TECHNICAL MANUAL
 
 **Platform:** ARTIFICIALCRAFT.SPACE
-**Revision:** SPEC//2026.11-REV4
-**Classification:** PUBLIC TECHNICAL SPEC
+**Revision:** 2026.11-STABLE
+**Classification:** OPEN TECHNICAL MANUAL
 
 ---
 
-## 1. 3-TIER DECOUPLED OPERATIONAL PARADIGM
-- Tier 1: REASONING CORE (Dify / Vertex AI) -> Emits Pure JSON AST (~50 tokens)
-- Tier 2: DETERMINISTIC MUSCLE (n8n Webhook Proxy & Validation Gate)
-- Tier 3: PRESENTATION CANVAS (Client GPU WebGL 60 FPS - Zero Puppeteer)
+## 1. MODULAR FRONTEND & BACKEND SETUP
+- Layer 1: REASONING LAYER -> Emits structured JSON configuration (~50 tokens)
+- Layer 2: AUTOMATED WORKFLOW ENGINE -> Automation pipeline & input data verification
+- Layer 3: INTERACTIVE FRONTEND CANVAS -> 60 FPS rendering on user client GPU
 
-## 2. SLA BENCHMARKS
-- Server Render Cost: $0.00 / month
-- Deterministic SLA: 60.0 FPS WebGL
-- Token Consumption: ~50 Tokens (-99% Context Bloat)
-- Validation Drift: 0% with Zod safeParse
-- Failover: 2-Tier Graceful Fallback Policy.`;
+## 2. REALISTIC OPERATIONAL METRICS
+- Render Performance: 60 FPS Client GPU Render
+- Local Interactive Response: <16ms
+- AI Processing Time: 1.2s - 2.5s (Average API Latency)
+- System Availability Target: 50% Uptime
+- Data Verification: Strict Zod Schema Validated
+- Cloud Render Cost: $0.00 / month (Zero server rendering overhead)
+
+## 3. INPUT DATA VERIFICATION
+- Zod safeParse guards incoming payload structure and prevents runtime exceptions.`;
 
     const content = lang === 'vi' ? viMD : enMD;
     const filename = `artificialcraft-whitepaper-${lang}-2026.md`;
@@ -398,7 +402,7 @@ export const DynamicSectionRenderer: React.FC<{ payload: UniversalComponentProps
               </div>
               <div className="my-2">
                 <div className="text-2xl sm:text-3xl font-extrabold text-[#00E5FF] tracking-tight">
-                  {t('docs_arch_metric_fps_val')} <span className="text-[10px] text-zinc-500 font-normal">FPS</span>
+                  {t('docs_arch_metric_fps_val')}
                 </div>
               </div>
               <div className="text-[10px] text-zinc-400">{t('docs_arch_metric_fps_sub')}</div>
@@ -411,8 +415,8 @@ export const DynamicSectionRenderer: React.FC<{ payload: UniversalComponentProps
                 <Minimize2 className="w-4 h-4 text-[#5322FF]" />
               </div>
               <div className="my-2">
-                <div className="text-2xl sm:text-3xl font-extrabold text-[#5322FF] tracking-tight">
-                  {t('docs_arch_metric_token_val')} <span className="text-[10px] text-zinc-500 font-normal">TOKENS</span>
+                <div className="text-xl sm:text-2xl font-extrabold text-[#5322FF] tracking-tight">
+                  {t('docs_arch_metric_token_val')}
                 </div>
               </div>
               <div className="text-[10px] text-zinc-400">{t('docs_arch_metric_token_sub')}</div>
@@ -845,20 +849,20 @@ export const DynamicSectionRenderer: React.FC<{ payload: UniversalComponentProps
                   <span>{t('docs_arch_repo_tree_title')}</span>
                 </div>
                 <pre className="text-[11px] sm:text-xs text-zinc-300 font-mono leading-relaxed overflow-x-auto whitespace-pre">
-{`├── AGENT.md                       # Bản hiến chương chỉ thị cho AI Worker
+{`├── AGENT.md                       # Development guidelines & instructions
 ├── site-configs/
-│   └── template-schema.json       # JSON Schema trang chủ SSOT
+│   └── template-schema.json       # Central homepage schema & layout
 ├── src/
 │   ├── app/
-│   │   ├── api/craft/generate/    # API Route Handler (Zero-Trust Gate)
-│   │   └── studio/page.tsx        # Trạm cấu hình Studio 3D Configurator
+│   │   ├── api/craft/generate/    # API Route Handler (Input Data Verification)
+│   │   └── studio/page.tsx        # 3D Studio Configurator Stage
 │   ├── core/
-│   │   ├── registry.ts            # ComponentRegistry (Đóng băng SSOT)
-│   │   └── remotion-presets/      # Kho preset video WebGL 60FPS
+│   │   ├── registry.ts            # ComponentRegistry (Central Component Catalog)
+│   │   └── remotion-presets/      # 60 FPS Remotion video presets
 │   ├── data/
-│   │   └── showcase-config.json   # Cấu hình video showcase
+│   │   └── showcase-config.json   # Showcase media & video metadata
 │   └── types/
-│       └── craft-studio.ts        # Định nghĩa kiểu dữ liệu TS`}
+│       └── craft-studio.ts        # TypeScript schemas & contracts`}
                 </pre>
               </div>
 
@@ -871,7 +875,7 @@ export const DynamicSectionRenderer: React.FC<{ payload: UniversalComponentProps
                 <pre className="text-[11px] sm:text-xs text-[#00E5FF] font-mono leading-relaxed overflow-x-auto whitespace-pre">
 {`export interface UniversalComponentProps {
   id: string;
-  preset: string; // Khóa định danh trong ComponentRegistry
+  preset: string; // Identifier in ComponentRegistry
   title: string;
   subtitle?: string;
   theme?: 'cyber-dark' | 'obsidian-indigo' | 'titanium-cyan';
@@ -879,7 +883,7 @@ export const DynamicSectionRenderer: React.FC<{ payload: UniversalComponentProps
 }`}
                 </pre>
                 <div className="text-[10px] text-zinc-500 mt-4 pt-3 border-t border-[#1F1F2E] leading-relaxed">
-                  // Bất kỳ component 3D / Remotion nào muốn cắm vào hệ thống đều bắt buộc phải kế thừa interface này.
+                  // All 3D and visual components implement this clean, shared contract.
                 </div>
               </div>
             </div>
