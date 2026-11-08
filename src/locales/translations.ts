@@ -1753,7 +1753,7 @@ export const translations: Record<Language, Translations> = {
 
     // SECTION 1: PYLON WORKBENCH
     pylonZoneTag: "TRẠM ĐIỀU HÀNH // PHÂN KHU 03 // BÀN LÀM VIỆC AGENT TỰ HÀNH",
-    pylonMainHeading: "5 TRẠM PYLON TỰ HÀNH. KHÔNG ĐỘ TRỄ CLOUD. CHÍ PHÍ RENDER $0.00.",
+    pylonMainHeading: "5 TRẠM PYLON TỰ HÀNH. KHÔNG ĐỘ TRỄ CLOUD. CHI PHÍ RENDER $0.00 (CHỈ TÍNH VỀ MẶT XUẤT BẢN).",
     pylonSubheading: "Hệ thống điều phối đa trợ lý AI độc lập được biên dịch trực tiếp thành động học WebGL phía máy khách. Loại bỏ hoàn toàn hóa đơn máy chủ rendering đám mây với luồng thực thi khép kín.",
     pylonConduitsTitle: "KÊNH DẪN PYLON TỰ HÀNH",
     pylonInspectHint: "CHỌN PYLON ĐỂ SOI CHI TIẾT",
