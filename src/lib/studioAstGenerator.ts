@@ -71,7 +71,7 @@ export function normalizeStudioConfig(raw: any): StudioConfigData {
   const explodedProgress = typeof raw?.explodedProgress === 'number' ? raw.explodedProgress : 33;
   const explodedStages = raw?.explodedStages || {
     stage0: '0% // Assembled Unibody Core',
-    stage33: '33% // Tactical Outer Aerogel Shell',
+    stage33: '33% // Protective Outer Shell',
     stage66: '66% // High-Torque Brushless Motor Core',
     stage100: '100% // Micro Tactile Haptic Sensor Array',
   };
@@ -79,7 +79,7 @@ export function normalizeStudioConfig(raw: any): StudioConfigData {
   const telemetryFps = typeof raw?.telemetryFps === 'number' ? raw.telemetryFps : 60;
   const torquePrecision = raw?.torquePrecision || '±0.01mm';
   const dofSensorCount = raw?.dofSensorCount || '11 DOF';
-  const aiLatency = raw?.aiLatency || '<2ms';
+  const aiLatency = raw?.aiLatency || '<16ms (Local)';
   const bentoModules = {
     viewport3d: raw?.bentoModules?.viewport3d ?? true,
     performanceGraph: raw?.bentoModules?.performanceGraph ?? true,

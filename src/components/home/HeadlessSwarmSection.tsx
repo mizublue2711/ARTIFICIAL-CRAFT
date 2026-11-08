@@ -49,7 +49,7 @@ const AGENT_PYLONS: AgentPylon[] = [
     hex: 0x10b981,
     badgeBorder: 'border-emerald-500/40 hover:border-emerald-400',
     pulseBg: 'bg-emerald-500/20 text-emerald-300',
-    throughput: '1,420 hooks/s',
+    throughput: '24 jobs/min',
     conduitAngle: -0.6,
   },
   {
@@ -360,7 +360,7 @@ export const HeadlessSwarmSection: React.FC = () => {
                   <span>{t('pylonZoneTag')}</span>
                 </div>
                 <span className="px-2.5 py-0.5 border border-zinc-800 bg-zinc-900/80 text-zinc-400 text-[10px] uppercase tracking-wider">
-                  SLA: 60FPS LOCAL GPU
+                  60 FPS (Client-Side)
                 </span>
               </div>
 
@@ -436,10 +436,10 @@ export const HeadlessSwarmSection: React.FC = () => {
                       <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" />
                     </div>
                     <span className="text-[10px] text-zinc-300 font-sans mt-1">
-                      Strict Zod Gate
+                      Input Data Verification
                     </span>
                     <div className="mt-2 pt-2 border-t border-purple-500/20 text-[9px] text-purple-300/80 font-mono font-bold">
-                      0.000% SILENT DRIFT
+                      Schema Validated
                     </div>
                   </div>
                 </div>
@@ -449,7 +449,7 @@ export const HeadlessSwarmSection: React.FC = () => {
               <div className="pt-2 flex flex-wrap items-center gap-3 text-[11px] font-mono">
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-bold rounded">
                   <Activity className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>60 FPS CLIENT GPU</span>
+                  <span>60 FPS (Client-Side)</span>
                 </div>
 
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 font-bold rounded">
@@ -535,8 +535,8 @@ export const HeadlessSwarmSection: React.FC = () => {
                 </div>
 
                 <p className="text-[11px] text-zinc-300 font-sans leading-relaxed">
-                  {activeAgent.role}. Dispatched across the Obsidian Hydro-Kinetic Courtyard with 1px
-                  coherent laser telemetry and zero silent API drift.
+                  {activeAgent.role}. Connected to the interactive 3D workspace with schema validation
+                  and real-time telemetry.
                 </p>
 
                 <div className="grid grid-cols-2 gap-2 pt-1 text-[10px]">

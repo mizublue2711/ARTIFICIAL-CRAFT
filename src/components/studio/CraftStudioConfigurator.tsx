@@ -210,7 +210,7 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
   explodedProgress: 33,
   explodedStages: {
     stage0: '0% // Assembled Unibody Core',
-    stage33: '33% // Tactical Aerogel Shell',
+    stage33: '33% // Protective Outer Shell',
     stage66: '66% // High-Torque Motor Stator',
     stage100: '100% // Micro Tactile Sensor Array',
   },
@@ -218,7 +218,7 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
   telemetryFps: 60,
   torquePrecision: '±0.01mm',
   dofSensorCount: '11 DOF',
-  aiLatency: '<2ms',
+  aiLatency: '<16ms (Local)',
   bentoModules: {
     viewport3d: true,
     performanceGraph: true,
@@ -812,7 +812,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                       </span>
                     </div>
                     <span className="text-[10px] text-zinc-400 font-sans">
-                      Headless Digital Plumbing Swarm • Kinematic Manipulator & Telemetry SLA 60FPS
+                      Automated Workflow Engine • 3D Model Exploded View (4 Stages) & 60 FPS (Client-Side)
                     </span>
                   </div>
                   {/* Task Mode Switcher */}
@@ -2310,7 +2310,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                       base_component: formData.base_component || formData.presetModel || formData.modelType || DEFAULT_ACTIVE_MODEL_KEY,
                       assemblyStage: formData.explodedProgress,
                       telemetry: {
-                        slaTarget: formData.aiLatency || '<2ms',
+                        slaTarget: formData.aiLatency || '<16ms (Local)',
                         fps: formData.telemetryFps || 60,
                       },
                       motion_tokens: formData.motionTokens || ['kinetic-parallax', 'chromatic-aberration', 'glitch-flicker'],

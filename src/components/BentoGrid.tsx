@@ -181,7 +181,7 @@ export default function BentoGrid() {
             <div className="p-6 h-full flex flex-col font-mono">
               <div className="flex items-center justify-between mb-3">
                 <GitBranch className="h-5 w-5 text-[#5322ff]" />
-                <span className="font-mono text-[10px] text-emerald-400">99.99% SLA</span>
+                <span className="font-mono text-[10px] text-emerald-400">50% Uptime</span>
               </div>
               <h3 className="text-[14px] font-bold text-white uppercase">
                 {t('card_det_title')}
