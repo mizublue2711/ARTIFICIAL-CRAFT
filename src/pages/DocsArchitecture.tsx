@@ -16,7 +16,6 @@ import {
   Copy,
   Check,
   Zap,
-  Layers,
   Terminal,
   AlertTriangle,
   FolderTree,
@@ -152,11 +151,11 @@ export const DynamicSectionRenderer: React.FC<{ payload: UniversalComponentProps
       spec: 'ARTIFICIALCRAFT.SPACE ARCHITECTURE REPORT',
       version: '2026.11-REV4',
       architecture: '3-Tier Decoupled Operational Paradigm',
-      sla: {
+      operational_status: {
         server_render_cost: '$0.00 / month',
-        target_fps: 60.0,
-        token_reduction: '99%',
-        zod_drift: '0%',
+        engine_runtime: 'Client GPU WebGL',
+        validation_status: '[ DATA: SCHEMA VALIDATED ]',
+        system_status: '[ STATUS: OPERATIONAL ]',
         crash_policy: '2-Tier Graceful Fallback',
       },
       registry_nodes: ['swiss-hud', 'isometric-matrix', 'bento-3d', 'rubik-3d', 'dual-engine'],
@@ -195,12 +194,12 @@ export const DynamicSectionRenderer: React.FC<{ payload: UniversalComponentProps
 - Tier 2: DETERMINISTIC MUSCLE (n8n Webhook Proxy & Validation Gate)
 - Tier 3: PRESENTATION CANVAS (Client GPU WebGL 60 FPS)
 
-## 2. CHỈ SỐ SLA CHÍNH
+## 2. CHỈ SỐ NĂNG LỰC HỆ THỐNG
 - Server Render Cost: $0.00 / tháng
-- Deterministic FPS: 60.0 FPS
-- JSON AST Payload: ~50 Tokens (-99% Context Bloat)
-- Validation Drift: 0%
-- Failover SLA: ZERO-CRASH (2-Tier Graceful Fallback)
+- Runtime Engine: [ RENDER: WebGL GPU ]
+- Data Verification: [ DATA: SCHEMA VALIDATED ]
+- System Status: [ STATUS: OPERATIONAL ]
+- Failover Policy: 2-Tier Graceful Fallback
 
 ## 3. ZERO-TRUST ZOD GATE PROTOCOL
 - Schema: SwissDesignConfigSchema.safeParse()
@@ -219,12 +218,12 @@ export const DynamicSectionRenderer: React.FC<{ payload: UniversalComponentProps
 - Tier 2: DETERMINISTIC MUSCLE (n8n Webhook Proxy & Validation Gate)
 - Tier 3: PRESENTATION CANVAS (Client GPU WebGL 60 FPS - Zero Puppeteer)
 
-## 2. SLA BENCHMARKS
+## 2. CAPABILITY BENCHMARKS
 - Server Render Cost: $0.00 / month
-- Deterministic SLA: 60.0 FPS WebGL
-- Token Consumption: ~50 Tokens (-99% Context Bloat)
-- Validation Drift: 0% with Zod safeParse
-- Failover: 2-Tier Graceful Fallback Policy.`;
+- Runtime Engine: [ RENDER: WebGL GPU ]
+- Data Verification: [ DATA: SCHEMA VALIDATED ]
+- Operational Status: [ STATUS: OPERATIONAL ]
+- Failover Policy: 2-Tier Graceful Fallback Policy.`;
 
     const content = lang === 'vi' ? viMD : enMD;
     const filename = `artificialcraft-whitepaper-${lang}-2026.md`;

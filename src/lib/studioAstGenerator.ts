@@ -79,7 +79,7 @@ export function normalizeStudioConfig(raw: any): StudioConfigData {
   const telemetryFps = typeof raw?.telemetryFps === 'number' ? raw.telemetryFps : 60;
   const torquePrecision = raw?.torquePrecision || '±0.01mm';
   const dofSensorCount = raw?.dofSensorCount || '11 DOF';
-  const aiLatency = raw?.aiLatency || '<16ms (Local)';
+  const aiLatency = raw?.aiLatency || '[ RUNTIME: CLIENT GPU ]';
   const bentoModules = {
     viewport3d: raw?.bentoModules?.viewport3d ?? true,
     performanceGraph: raw?.bentoModules?.performanceGraph ?? true,
@@ -167,7 +167,7 @@ export function generateCodeSnippets(rawConfig: any) {
     const safeCompId = (config.compositionId || 'artificial_craft').toLowerCase().replace(/[^a-z0-9_]/g, '_');
     const tsCode = `// ARTIFICIAL CRAFT 3D CLIENT ENGINE // TypeScript & Three.js
 // Composition: ${config.compositionId}
-// SLA: ${config.telemetryFps}FPS | Latency: ${config.aiLatency}
+// RUNTIME: ${config.telemetryFps}FPS | Execution: ${config.aiLatency}
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -998,7 +998,7 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
       ${isNode05 ? '<span style="color:#a855f7; font-size:9px; border:1px solid #5322FF; padding:1px 4px; background:rgba(83,34,255,0.2);">NODE 05 PRESET</span>' : ''}
     </div>
     <div style="display:flex; align-items:center; gap:8px;">
-      <span class="badge">SLA: 60FPS</span>
+      <span class="badge">[ RENDER: WebGL GPU ]</span>
       <span class="badge" style="border-color:${primary}; color:${primary};">AST VALIDATED</span>
     </div>
   </header>

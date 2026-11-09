@@ -539,7 +539,7 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                     <span className="font-mono text-[11px] text-zinc-300 truncate">Deterministic SLA & Failover</span>
                   </div>
                   <span className="font-mono text-[9px] px-1.5 py-0.5 bg-[#5322FF]/20 border border-[#5322FF]/50 text-[#00FF66] shrink-0">
-                    60 FPS SLA
+                    [ RENDER: WebGL GPU ]
                   </span>
                 </Link>
 

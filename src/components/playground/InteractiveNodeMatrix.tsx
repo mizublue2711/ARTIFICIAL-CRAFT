@@ -172,7 +172,7 @@ export const InteractiveNodeMatrix: React.FC<UniversalComponentProps> = ({
       nodeId: 'NODE 06 // DATA METROPOLIS',
       title: t('node06Title'),
       subtitle: t('node06Desc'),
-      badge: 'LIVE WORKER // 60 FPS SLA',
+      badge: '[ STATUS: OPERATIONAL ]',
       description: t('node06Desc'),
       techStack: ['Three.js / WebGL', 'Google Sheets Live API', 'Zod Sanitizer', 'Cybernetic Brutalism'],
       linkUrl: 'https://metropolis.artificialcraft.space/',

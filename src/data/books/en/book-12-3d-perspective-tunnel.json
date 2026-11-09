@@ -35,7 +35,7 @@
       "id": "p03_three_depth_layers",
       "type": "tech_doc",
       "title": "02 // THREE LAYERS OF ZERO-404 PRECISION",
-      "content": "To guarantee 60 FPS SLA without frame drops, 3D space splits into three isolated depth layers:\n1. Foreground Layer: 2D HUD cards, laser cursor, kinetic-parallax mouse response.\n2. Midground Layer: Composite Monolith, data branching tree, ambient occlusion shadows.\n3. Background Layer: Fluid noise field, 1px CAD grid, radial particle dispersion.\n\n100% of PBR textures generated in-memory via dynamic canvas textures in RAM. Zero asset loading delays.",
+      "content": "To guarantee [ RENDER: WebGL GPU ] without frame drops, 3D space splits into three isolated depth layers:\n1. Foreground Layer: 2D HUD cards, laser cursor, kinetic-parallax mouse response.\n2. Midground Layer: Composite Monolith, data branching tree, ambient occlusion shadows.\n3. Background Layer: Fluid noise field, 1px CAD grid, radial particle dispersion.\n\n100% of PBR textures generated in-memory via dynamic canvas textures in RAM. Zero asset loading delays.",
       "code": "const canvasTexture = new THREE.CanvasTexture(bufferCanvas);\ncanvasTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();\nconst tunnelMaterial = new THREE.MeshStandardMaterial({\n  map: canvasTexture,\n  roughness: 0.15,\n  metalness: 0.85\n});",
       "language": "typescript",
       "seed": "depth-layers-code-12",

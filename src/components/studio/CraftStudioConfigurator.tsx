@@ -218,7 +218,7 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
   telemetryFps: 60,
   torquePrecision: '±0.01mm',
   dofSensorCount: '11 DOF',
-  aiLatency: '<16ms (Local)',
+  aiLatency: '[ RUNTIME: CLIENT GPU ]',
   bentoModules: {
     viewport3d: true,
     performanceGraph: true,
@@ -589,7 +589,7 @@ export const CraftStudioConfigurator: React.FC = () => {
         },
         motion_tokens: formData.motionTokens || [],
         telemetry: {
-          slaTarget: formData.aiLatency || '<8ms',
+          slaTarget: formData.aiLatency || '[ RUNTIME: CLIENT GPU ]',
           fps: formData.telemetryFps || 60,
         },
       };
@@ -737,10 +737,10 @@ export const CraftStudioConfigurator: React.FC = () => {
 
         <div className="flex items-center gap-2">
           <span className="px-2 py-0.5 border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 text-[10px] font-bold">
-            GATE: ZOD 100% PASS
+            [ VERIFICATION: ZOD PASSED ]
           </span>
           <span className="px-2 py-0.5 border border-[#5322FF]/50 bg-[#5322FF]/10 text-purple-300 text-[10px] font-bold">
-            SLA: 60FPS KINEMATICS
+            [ RENDER: WebGL GPU ]
           </span>
         </div>
       </div>
@@ -1596,7 +1596,7 @@ export const CraftStudioConfigurator: React.FC = () => {
 
                   <div className="space-y-1">
                     <label className="text-[10px] text-zinc-400 font-bold uppercase">
-                      AI Latency
+                      Runtime Pipeline
                     </label>
                     <input
                       type="text"
@@ -1905,7 +1905,7 @@ export const CraftStudioConfigurator: React.FC = () => {
 
               <span className="flex items-center gap-1.5 font-bold text-zinc-200">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                <span>SYSTEM SLA: {formData.telemetryFps}FPS</span>
+                <span>[ STATUS: OPERATIONAL ]</span>
               </span>
               <span className="hidden sm:inline-block text-zinc-600">|</span>
               <span className="hidden sm:inline-flex items-center gap-1 text-[11px] text-emerald-400">
@@ -2310,7 +2310,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                       base_component: formData.base_component || formData.presetModel || formData.modelType || DEFAULT_ACTIVE_MODEL_KEY,
                       assemblyStage: formData.explodedProgress,
                       telemetry: {
-                        slaTarget: formData.aiLatency || '<16ms (Local)',
+                        slaTarget: formData.aiLatency || '[ RUNTIME: CLIENT GPU ]',
                         fps: formData.telemetryFps || 60,
                       },
                       motion_tokens: formData.motionTokens || ['kinetic-parallax', 'chromatic-aberration', 'glitch-flicker'],
