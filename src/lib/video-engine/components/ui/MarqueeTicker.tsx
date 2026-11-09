@@ -8,7 +8,7 @@ export interface MarqueeTickerProps {
 }
 
 export const MarqueeTicker: React.FC<MarqueeTickerProps> = ({
-  tickerText = 'SYS//CONTINUOUS_ENGINE :: 60FPS :: DETERMINISTIC SLA: 99.99% :: ARTIFICIAL CRAFT ::',
+  tickerText = 'SYS//CONTINUOUS_ENGINE :: 60FPS :: STATUS: OPERATIONAL :: ARTIFICIAL CRAFT ::',
   primaryColor = '#5322ff',
   accentCyan = '#00E5FF',
 }) => {

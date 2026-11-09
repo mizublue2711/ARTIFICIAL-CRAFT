@@ -99,7 +99,7 @@ export const DEFAULT_STUDIO_CONFIG: StudioConfigData = {
   telemetryFps: 60,
   torquePrecision: '±0.01mm',
   dofSensorCount: '11 DOF',
-  aiLatency: '<16ms (Local)',
+  aiLatency: '[ RUNTIME: CLIENT GPU ]',
   bentoModules: {
     viewport3d: true,
     performanceGraph: true,

@@ -79,7 +79,7 @@ export class TerminalHUD {
           </div>
           <h3 class="ac-modal-title">Deterministic Pipeline & Headless Swarm Sandbox Ready</h3>
           <p class="ac-modal-copy">
-            Pneumatic locks released. All 5 Headless Swarm conduits (n8n, Dify, Claude, Gemini, Remotion) are welded through strict Zod Schema valves with 0.000% silent drift on your local GPU.
+            Pneumatic locks released. All 5 Headless Swarm conduits (n8n, Dify, Claude, Gemini, Remotion) are welded through strict Zod Schema valves with schema validation on your local GPU.
           </p>
           <div class="ac-modal-grid">
             <div class="ac-modal-stat">

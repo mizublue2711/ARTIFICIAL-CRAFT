@@ -42,8 +42,8 @@
     {
       "id": "p04_sla_paradox",
       "type": "diagram",
-      "title": "03 // TRIỆT TIÊU SAI LỆCH TRẠNG THÁI & NGHỊCH LÝ SLA",
-      "content": "Khi tầng suy luận được tách biệt hoàn toàn khỏi tầng thực thi, sai lệch trạng thái (state drift) sẽ giảm về 0. Đó là công thức duy nhất để đạt cam kết SLA 99.99%. Các framework có thể lỗi thời, nhưng kiến trúc chuẩn mực sẽ luôn trường tồn.",
+      "title": "03 // TOÀN VẸN DỮ LIỆU & ĐỘ ỔN ĐỊNH KIẾN TRÚC",
+      "content": "Khi tầng suy luận được tách biệt hoàn toàn khỏi tầng thực thi, sai lệch trạng thái (state drift) sẽ giảm về 0. Đó là công thức duy nhất để duy trì [ HỆ THỐNG: HOẠT ĐỘNG ]. Các framework có thể lỗi thời, nhưng kiến trúc chuẩn mực sẽ luôn trường tồn.",
       "seed": "sla-metric-badge-9999",
       "graphicType": "AUTOMATION_FLOW",
       "caption": "Hình 3.1 — Luồng phân tách Suy luận & Thực thi giúp triệt tiêu hoàn toàn sai lệch trạng thái"

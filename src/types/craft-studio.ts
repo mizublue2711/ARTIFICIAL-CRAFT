@@ -7,7 +7,7 @@ export const AestheticSchema = z.object({
 });
 
 export const TelemetrySchema = z.object({
-  slaTarget: z.string().default('<8ms'),
+  slaTarget: z.string().default('[ RUNTIME: CLIENT GPU ]'),
   fps: z.number().default(60),
 });
 

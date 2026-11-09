@@ -44,8 +44,8 @@
     {
       "id": "p04_zero_silent_drift",
       "type": "diagram",
-      "title": "03 // CAM KẾT SLA KHÔNG SAI LỆCH ÂM THẦM",
-      "content": "Khi công cụ AI tạo thành phần giao diện, bố cục dễ bị xô lệch. Sai số padding tích tụ, phông chữ lệch hàng. Swiss Brutalism đóng băng các tham số hiển thị.\n\nTốc độ thực thi 1.4s toàn trình. Cam kết SLA động cơ 99.99%. Mục tiêu 60 FPS ổn định. Độ trễ RAG trung bình 540ms. Độ chuẩn xác đồ họa thủ công kết hợp cùng tự động hóa mã nguồn.",
+      "title": "03 // KIỂM SOÁT ĐỒ HỌA CHUẨN XÁC",
+      "content": "Khi công cụ AI tạo thành phần giao diện, bố cục dễ bị xô lệch. Sai số padding tích tụ, phông chữ lệch hàng. Swiss Brutalism đóng băng các tham số hiển thị.\n\n[ XỬ LÝ: GPU CLIENT ] • [ XÁC THỰC: SCHEMA CHUẨN ] • [ HỆ THỐNG: HOẠT ĐỘNG ]. Độ chuẩn xác đồ họa thủ công kết hợp cùng tự động hóa mã nguồn.",
       "seed": "zero-drift-sla-9999-11",
       "graphicType": "DATA_MATRIX",
       "caption": "Hình 11.1 — Kỷ luật hệ lưới Swiss Grid 1px loại bỏ gãy vỡ layout trên đa kênh phân phối"

@@ -34,7 +34,7 @@ export const CraftStudioVideoComposition: React.FC<CraftStudioVideoCompositionPr
   backgroundColor = '#09090B',
   base_component = 'kinematic_manipulator_arm',
   assemblyStage = 33,
-  telemetry = { slaTarget: '<16ms (Local)', fps: 60 },
+  telemetry = { slaTarget: '[ RUNTIME: CLIENT GPU ]', fps: 60 },
   motion_tokens = ['kinetic-parallax', 'chromatic-aberration', 'glitch-flicker'],
   logoUrl,
   cameraAnglePreset = 'isometric-iso',

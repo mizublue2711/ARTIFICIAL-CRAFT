@@ -37,7 +37,7 @@ export const WORKFLOW_MODES: WorkflowMode[] = [
     stats: [
       { label: 'Craft Precision', value: '1px', delta: 'Swiss Grid' },
       { label: 'Execution Speed', value: '1.4s', delta: '-180ms' },
-      { label: 'Engine SLA', value: '99.99%', delta: '+0.02%' },
+      { label: 'System Status', value: '[ OPERATIONAL ]', delta: 'READY' },
     ],
     outputs: [
       { icon: MessageCircle, label: 'Telegram', sub: 'Broadcast Node' },

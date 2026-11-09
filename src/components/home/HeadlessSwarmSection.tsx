@@ -37,7 +37,7 @@ const AGENT_PYLONS: AgentPylon[] = [
     hex: 0x00e5ff,
     badgeBorder: 'border-cyan-500/40 hover:border-cyan-400',
     pulseBg: 'bg-cyan-500/20 text-cyan-300',
-    throughput: '890 ctx/s',
+    throughput: '[ PIPELINE: ACTIVE ]',
     conduitAngle: -1.2,
   },
   {
@@ -49,7 +49,7 @@ const AGENT_PYLONS: AgentPylon[] = [
     hex: 0x10b981,
     badgeBorder: 'border-emerald-500/40 hover:border-emerald-400',
     pulseBg: 'bg-emerald-500/20 text-emerald-300',
-    throughput: '24 jobs/min',
+    throughput: '[ DATA: SCHEMA VALIDATED ]',
     conduitAngle: -0.6,
   },
   {
@@ -61,7 +61,7 @@ const AGENT_PYLONS: AgentPylon[] = [
     hex: 0xf59e0b,
     badgeBorder: 'border-amber-500/40 hover:border-amber-400',
     pulseBg: 'bg-amber-500/20 text-amber-300',
-    throughput: '3.4k AST/s',
+    throughput: '[ ARCHITECTURE: MODULAR ]',
     conduitAngle: 0.0,
   },
   {
@@ -73,7 +73,7 @@ const AGENT_PYLONS: AgentPylon[] = [
     hex: 0x6366f1,
     badgeBorder: 'border-indigo-500/40 hover:border-indigo-400',
     pulseBg: 'bg-indigo-500/20 text-indigo-300',
-    throughput: '2.0M ctx/valve',
+    throughput: '[ RUNTIME: CLIENT GPU ]',
     conduitAngle: 0.6,
   },
   {
@@ -85,7 +85,7 @@ const AGENT_PYLONS: AgentPylon[] = [
     hex: 0xf43f5e,
     badgeBorder: 'border-rose-500/40 hover:border-rose-400',
     pulseBg: 'bg-rose-500/20 text-rose-300',
-    throughput: '60.0 FPS LOCKED',
+    throughput: '[ ENGINE: THREE.JS WEBGL ]',
     conduitAngle: 1.2,
   },
 ];
@@ -512,7 +512,7 @@ export const HeadlessSwarmSection: React.FC = () => {
 
                 <div className="absolute bottom-3 right-3 z-10 pointer-events-none">
                   <div className="px-2 py-1 bg-black/80 border border-cyan-500/30 text-[9px] text-cyan-300 font-mono rounded">
-                    CONDUIT: {activeAgent.throughput}
+                    STATUS: {activeAgent.throughput}
                   </div>
                 </div>
               </div>
