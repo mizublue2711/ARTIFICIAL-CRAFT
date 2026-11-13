@@ -24,10 +24,10 @@ export const TopTelemetryBar: React.FC = () => {
           <div className="flex items-center justify-between text-[11px] font-mono-cad text-zinc-400 pb-1.5 border-b border-white/5">
             <span className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-              <strong className="text-zinc-200">NODE 01: SYSTEM SLA</strong>
+              <strong className="text-zinc-200">NODE 01: SYSTEM STATUS</strong>
             </span>
             <span className="text-[10px] text-emerald-400 font-semibold px-1.5 py-0.2 bg-emerald-950/40 border border-emerald-800/40 rounded-xs">
-              60 FPS SLA
+              [ STATUS: OPERATIONAL ]
             </span>
           </div>
           <div className="grid grid-cols-3 gap-2 pt-2 text-[11px] font-mono-cad">

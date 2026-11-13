@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" shape-rendering="crispEdges">
+  <!-- Obsidian dark brutalist square base (border-radius: 0px absolute) -->
+  <rect width="32" height="32" fill="#09090B" />
+
+  <!-- 1px Subtle Grid Guide Overlay -->
+  <line x1="0" y1="16" x2="32" y2="16" stroke="#18181B" stroke-width="1" />
+  <line x1="16" y1="0" x2="16" y2="32" stroke="#18181B" stroke-width="1" />
+
+  <!-- Swiss Framing Corner Accents (Crop marks) -->
+  <!-- Top Left -->
+  <path d="M 2 2 H 6 M 2 2 V 6" stroke="#3F3F46" stroke-width="1" fill="none" />
+  <!-- Top Right -->
+  <path d="M 26 2 H 30 M 30 2 V 6" stroke="#3F3F46" stroke-width="1" fill="none" />
+  <!-- Bottom Left -->
+  <path d="M 2 30 H 6 M 2 26 V 30" stroke="#3F3F46" stroke-width="1" fill="none" />
+  <!-- Bottom Right -->
+  <path d="M 26 30 H 30 M 30 26 V 30" stroke="#3F3F46" stroke-width="1" fill="none" />
+
+  <!-- Geometric "AC" (ARTIFICIAL CRAFT) Cybernetic Monogram -->
+
+  <!-- "A" Glyph: Electric Indigo (#5322FF) -->
+  <!-- Left stem: x: 5..7, y: 11..23 -->
+  <rect x="5" y="11" width="3" height="13" fill="#5322FF" />
+  <!-- Right stem: x: 12..14, y: 11..23 -->
+  <rect x="12" y="11" width="3" height="13" fill="#5322FF" />
+  <!-- Top apex bar: x: 7..13, y: 8..10 -->
+  <rect x="7" y="8" width="6" height="3" fill="#5322FF" />
+  <!-- Crossbar: x: 8..12, y: 15..17 -->
+  <rect x="8" y="15" width="4" height="2" fill="#5322FF" />
+
+  <!-- "C" Glyph: Neon Cyan (#00E5FF) -->
+  <!-- Back vertical spine: x: 17..19, y: 11..23 -->
+  <rect x="17" y="11" width="3" height="13" fill="#00E5FF" />
+  <!-- Top horizontal bar: x: 20..26, y: 8..10 -->
+  <rect x="20" y="8" width="7" height="3" fill="#00E5FF" />
+  <!-- Top downward terminal: x: 25..27, y: 11..13 -->
+  <rect x="25" y="11" width="2" height="2" fill="#00E5FF" />
+  <!-- Bottom horizontal bar: x: 20..26, y: 21..23 -->
+  <rect x="20" y="21" width="7" height="3" fill="#00E5FF" />
+  <!-- Bottom upward terminal: x: 25..27, y: 19..21 -->
+  <rect x="25" y="19" width="2" height="2" fill="#00E5FF" />
+
+  <!-- Precision Cybernetic Grid Reticle & Micro-dots -->
+  <rect x="15" y="15" width="2" height="2" fill="#00E5FF" />
+  <rect x="3" y="3" width="1" height="1" fill="#00E5FF" />
+  <rect x="28" y="28" width="1" height="1" fill="#5322FF" />
+</svg>

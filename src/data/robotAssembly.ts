@@ -3,8 +3,8 @@ import { MechanicalComponent, TelemetryNode, TactileGraspMode, SpecModel } from 
 export const INITIAL_TELEMETRY: TelemetryNode[] = [
   {
     id: 'node_01',
-    label: 'NODE 01: SYSTEM SLA',
-    badge: '60 FPS SLA',
+    label: 'NODE 01: SYSTEM STATUS',
+    badge: '[ STATUS: OPERATIONAL ]',
     metrics: [
       { label: 'Clock', value: '60.0 FPS' },
       { label: 'GPU Load', value: '14.2%', color: '#00E5FF' },

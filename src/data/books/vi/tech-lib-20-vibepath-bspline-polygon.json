@@ -1,0 +1,54 @@
+{
+  "slug": "tech-lib-20-vibepath-bspline-polygon",
+  "title": "THƯỚC ĐO ĐỘNG HỌC B-SPLINE & QUÉT ĐA GIÁC",
+  "subtitle": "Làm Mượt Tọa Độ GPS Gấp Khúc và Thắp Sáng Ranh Giới Hành Chính Bằng Độ Chuẩn Xác Laser Cyan",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "THƯỚC ĐO ĐỘNG HỌC B-SPLINE & QUÉT ĐA GIÁC",
+      "subtitle": "Làm Mượt Tọa Độ GPS Gấp Khúc và Thắp Sáng Ranh Giới Hành Chính Bằng Độ Chuẩn Xác Laser Cyan",
+      "version": "v1.0.0",
+      "tags": [
+        "B-SPLINE",
+        "POINT-IN-POLYGON",
+        "GIS",
+        "COAXIAL LASER"
+      ],
+      "verified": true,
+      "seed": "vibepath-bspline-cover-20",
+      "graphicType": "ISOMETRIC_CAD"
+    },
+    {
+      "id": "p02_noise_in_signal",
+      "type": "tech_doc",
+      "title": "01 // NHIỄU TRONG TÍN HIỆU TỌA ĐỘ",
+      "content": "Điện thoại ghi lại dữ liệu định vị GPS. Bạn di chuyển trên đường phố đô thị. Các tòa nhà cao tầng chặn đứng tín hiệu vệ tinh. Đường đi GPS bị nhảy cóc qua các tòa nhà, đâm xuyên qua tường và giật zíc zắc hỗn loạn.\n\nNếu vẽ trực tiếp đường gấp khúc thô đó lên bản đồ 3D, camera sẽ bị rung lắc dữ dội. VibePath điều hướng tọa độ thô qua microservice hình học Python (:8000). Thuật toán Ramer-Douglas-Peucker triệt tiêu rung nhiễu điểm. Đường cong Cubic B-Splines bậc 3 biến các góc gãy thô ráp thành đường cong Laser Đồng trục mượt mà (#00E5FF).",
+      "seed": "vibepath-noise-signal-20",
+      "graphicType": "NEURAL_MESH"
+    },
+    {
+      "id": "p03_district_lighting",
+      "type": "tech_doc",
+      "title": "02 // THẮP SÁNG RANH GIỚI KHU VỰC THỰC TẾ",
+      "content": "Các bản đồ truyền thống làm nổi bật quận huyện như thế nào? Chúng vẽ một hình chữ nhật thô kệch, bỏ qua hoàn toàn ranh giới hành chính thực tế.\n\nVibePath tiếp nhận Tileset vector Mapbox Global Boundaries (mapbox.boundaries-adm2-v4). Khi chuyến bay Giai đoạn 3 hạ độ cao, động cơ thực thi truy vấn Point-in-Polygon thời gian thực. Nó trích xuất mapbox_id hành chính và thắp sáng chính xác đường biên uốn lượn của đô thị bằng viền laser cyan phát sáng 1px.",
+      "code": "const features = map.queryRenderedFeatures(point, {\n  layers: ['mapbox-boundaries-adm2']\n});\nif (features.length > 0) {\n  const districtId = features[0].properties.mapbox_id;\n  map.setFilter('district-laser-glow', ['==', 'mapbox_id', districtId]);\n  map.setPaintProperty('district-laser-glow', 'line-opacity', 0.95);\n}",
+      "language": "typescript",
+      "seed": "vibepath-polygon-hud-20",
+      "graphicType": "GEO_MAP"
+    },
+    {
+      "id": "p04_smart_coordinate_extraction",
+      "type": "diagram",
+      "title": "03 // TRÍCH XUẤT TỌA ĐỘ THÔNG MINH",
+      "content": "Phân tích cú pháp URL Google Maps thủ công là một cơn ác mộng. Base URL che giấu tâm camera màn hình thay vì ghim nhà hàng, và link rút gọn thường bị chặn CORS.\n\nSmartLocationResolver của VibePath bỏ qua hoàn toàn rào cản tính phí Google Places API. Nó phân tích các tham số ẩn !3d vĩ độ và !4d kinh độ từ URL thô. Proxy Cloudflare Worker kết hợp cùng Mapbox Search v6 và Goong API để tra cứu tức thì POI toàn cầu lẫn địa phương mà không tốn API key cá nhân.",
+      "seed": "vibepath-dual-engine-20",
+      "graphicType": "AUTOMATION_FLOW",
+      "caption": "Hình 20.1 — Pipeline thắp sáng ranh giới Point-in-Polygon và làm mượt động học B-Spline"
+    }
+  ]
+}

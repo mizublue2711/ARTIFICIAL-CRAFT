@@ -1,0 +1,54 @@
+{
+  "slug": "tech-lib-21-vibepath-nle-assets",
+  "title": "GÓI LINH KIỆN NLE & TỰ ĐỘNG HÓA ĐA TẦNG",
+  "subtitle": "Cầu Nối Thước Phim Vlogging Hiện Trường Vào Timeline Premiere Pro Nhờ Đồng Bộ Hóa Đám Mây 1-Click",
+  "category": "manual",
+  "author": "ARTIFICIAL CRAFT",
+  "version": "1.0.0",
+  "updatedAt": "2026-03-01",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "GÓI LINH KIỆN NLE & TỰ ĐỘNG HÓA ĐA TẦNG",
+      "subtitle": "Cầu Nối Thước Phim Vlogging Hiện Trường Vào Timeline Premiere Pro Nhờ Đồng Bộ Hóa Đám Mây 1-Click",
+      "version": "v1.0.0",
+      "tags": [
+        "NLE ASSETS",
+        "XMEML",
+        "DIFY AI",
+        "MULTI-TIER"
+      ],
+      "verified": true,
+      "seed": "vibepath-nle-cover-21",
+      "graphicType": "DATA_MATRIX"
+    },
+    {
+      "id": "p02_beyond_video_rendering",
+      "type": "tech_doc",
+      "title": "01 // VƯỢT XA GIỚI HẠN XUẤT VIDEO ĐƠN THUẦN",
+      "content": "Bạn đã tạo ra một clip bản đồ 3D bắt mắt. Tiếp theo sẽ là gì? Bạn vẫn phải kéo nó vào Premiere Pro. Bạn vẫn phải gõ tay các điểm đánh dấu địa điểm. Bạn vẫn phải viết phụ đề song ngữ từng dòng một.\n\nBạn vẫn phải viết caption mạng xã hội và dấu mốc thời gian (timestamp) chương YouTube. Tạo ra một file video mà thiếu đi các linh kiện biên tập chỉ giải quyết được 20% bài toán. Nhà sáng tạo nội dung cần một gói tài nguyên hoàn chỉnh, không phải một clip video đơn lẻ.",
+      "seed": "vibepath-beyond-video-21",
+      "graphicType": "NEURAL_MESH"
+    },
+    {
+      "id": "p03_nle_asset_delivery_pack",
+      "type": "tech_doc",
+      "title": "02 // GÓI CHUYỂN GIAO LINH KIỆN NLE",
+      "content": "VibePath biến dữ liệu hiện trường thành Gói Chuyển Giao Linh Kiện NLE tích hợp:\n1. Video MP4 Bản đồ 3D 4K/60FPS theo bảng màu thương hiệu.\n2. Tệp Dòng thời gian XMEML (.xml) cho Premiere, DaVinci Resolve, hoặc CapCut tự động ghim marker điểm POI.\n3. Phụ đề Song ngữ (.srt) khớp thời gian ±0.02s với bản dịch Việt-Anh tự nhiên sinh bởi Dify AI.\n4. Bản sao chép AI mạng xã hội định dạng sẵn chương YouTube và hashtag lan truyền.",
+      "code": "const nleExportPayload = {\n  xmlTimeline: generateXmemlMarkers(poiMarkers),\n  subtitlesSrt: await difyAi.generateBilingualSrt(poiMetadata),\n  videoStreamUrl: r2ArtifactUrl,\n  youtubeChapters: formatTimestampChapters(poiTimeline)\n};\nreturn archive.createZipPackage(nleExportPayload);",
+      "language": "typescript",
+      "seed": "vibepath-3tier-bento-21",
+      "graphicType": "REMOTION_TIMELINE"
+    },
+    {
+      "id": "p04_three_tier_enterprise_backbone",
+      "type": "diagram",
+      "title": "03 // XƯƠNG SỐNG ĐÁM MÂY DOANH NGHIỆP 3 TẦNG",
+      "content": "Phía sau giao diện Cybernetic Swiss Brutalism là kiến trúc đám mây 3 tầng phân tách độc lập:\n\n• Tầng Máy khách (Client Tier): React 18, Mapbox GL JS v3 và MediaRecorder vận hành trên rìa Cloudflare Workers.\n• Tầng Điều phối (Orchestration Tier): Quy trình n8n định tuyến tọa độ GPS qua máy chủ hình học Python và lõi suy luận Dify AI thông qua Cloudflare Zero-Trust Tunnels.\n• Tầng Lưu trữ (Storage Tier): Supabase PostgreSQL theo dõi hành trình và Cloudflare R2 phân phối gói zip.",
+      "seed": "vibepath-sync-badge-21",
+      "graphicType": "AUTOMATION_FLOW",
+      "caption": "Hình 21.1 — Kiến trúc đám mây 3 tầng phân tách cung cấp khả năng đồng bộ hóa linh kiện NLE 1-click"
+    }
+  ]
+}

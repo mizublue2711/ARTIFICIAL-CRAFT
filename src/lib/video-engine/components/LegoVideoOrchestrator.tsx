@@ -18,6 +18,19 @@ import {
   MobiusLatticeMatrix3D,
   ChronoGeodesicDomeAssembly3D,
   ChiralDoubleHelixMatrix3D,
+  QuantumEscapementClock3D,
+  PneumaticDataPipeline3D,
+  TokamakReactorCore3D,
+  BTreeDiskIndex3D,
+  MailRopewayTcp3D,
+  TurbofanJetEngine3D,
+  RollsRoyceTrent9703D,
+  PowerStationGenerator3D,
+  LiquidSteelFoundry3D,
+  OpticalBenchInterferometer3D,
+  KinematicDifferentialGearbox3D,
+  RimLightStudio3D,
+  VDM80ActuatorJoint3D,
 } from './3d';
 import { PneumaticLetterA3D } from '@/components/robotics/3d';
 
@@ -229,6 +242,20 @@ export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
           />
         );
 
+      case 'rolls-royce-trent-970':
+        return (
+          <RollsRoyceTrent9703D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
       case 'gimbal-concentric-rings':
         return (
           <GimbalConcentricRings3D
@@ -358,6 +385,163 @@ export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
       case 'pneumatic-letter-a':
         return (
           <PneumaticLetterA3D
+      case 'quantum-escapement-clock':
+        return (
+          <QuantumEscapementClock3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'pneumatic-data-pipeline':
+        return (
+          <PneumaticDataPipeline3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'tokamak-reactor-core':
+        return (
+          <TokamakReactorCore3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'btree-disk-index':
+        return (
+          <BTreeDiskIndex3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'mail-ropeway-tcp':
+        return (
+          <MailRopewayTcp3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'turbofan-jet-engine':
+        return (
+          <TurbofanJetEngine3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'power-station-generator':
+        return (
+          <PowerStationGenerator3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'liquid-steel-foundry':
+        return (
+          <LiquidSteelFoundry3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'optical-bench-interferometer':
+        return (
+          <OpticalBenchInterferometer3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'kinematic-differential-gearbox':
+        return (
+          <KinematicDifferentialGearbox3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'rim-light-studio':
+        return (
+          <RimLightStudio3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'vdm80-actuator-joint':
+        return (
+          <VDM80ActuatorJoint3D
             frame={frame}
             primaryColor={primary}
             accentColor={accent}

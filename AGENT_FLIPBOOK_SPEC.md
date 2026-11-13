@@ -209,6 +209,20 @@ export const booksRegistry: Record<string, BookData> = {
 ### A. Validate Build: Execute npm run build to verify zero TypeScript/JSON errors.
 ### B. Create Pull Request: Commit changes with commit message feat(book): add <category>-<slug>.
 
+### D. DUAL-LANGUAGE COMPILATION PROTOCOL (EN & VI)
+- Every compiled flipbook MUST support both English and Vietnamese.
+- When compiling a draft manuscript from `/drafts/`, Jules MUST generate two JSON files:
+  1. `src/data/books/en/<category>-<slug>.json` (English base)
+  2. `src/data/books/vi/<category>-<slug>.json` (Vietnamese translation)
+- Both JSON files MUST maintain identical `id`, `type`, `layoutVariant`, `graphicType`, and `seed` attributes per page block to guarantee structural parity.
+- Register both language variants in `src/data/books/registry.ts`:
+  ```typescript
+  export const booksRegistry = {
+    en: { 'manual-hybrid-ai': manualHybridAiEN },
+    vi: { 'manual-hybrid-ai': manualHybridAiVI },
+  };
+  ```
+
 🔍 6. TROUBLESHOOTING & NAVIGATION PROTOCOL
 If a build or rendering error occurs:
 Locate Page: Identify failing page.id from stack trace (e.g., p02_data_hygiene).
@@ -254,9 +268,8 @@ Fix Target Block: Modify ONLY the specific JSON block inside src/data/books/<cat
 🏷️ 9. WEALTH MANAGEMENT &amp; FINANCIAL METRICS EXPANSION CLAUSE
 
 ### A. Extended GraphicType Enums (src/types/flipbook.ts)
-To support institutional private wealth reports, executive profiles, and asset allocation metrics (e.g., Hubbis Wealth Management Standards), Jules MUST register the following new graphic types:
+To support institutional private wealth reports, executive profiles, and asset allocation metrics (e.g., Wealth Management Standards), Jules MUST register the following new graphic types:
 
-```typescript
 export type GraphicType =
   | 'AUTOMATION_FLOW'
   | 'DATA_MATRIX'
@@ -279,7 +292,6 @@ export type GraphicType =
 ### A. Extended GraphicType Enums (src/types/flipbook.ts)
 To support interactive 3D WebApp case studies and WebGL presentation blueprints, Jules MUST register the following new graphic types:
 
-```typescript
 export type GraphicType =
   | 'AUTOMATION_FLOW'
   | 'DATA_MATRIX'
@@ -321,7 +333,7 @@ B. REGISTRY & DYNAMIC LOCALE RESOLUTION (`src/data/books/registry.ts`)
 
 C. COMPONENT LOCALE BINDING PROTOCOL
 - All Reader and Viewer components (`FlipbookViewer.tsx`, `FlipbookReader.tsx`, `/library` page) MUST consume the active locale via `useTranslation()` (`currentLocale`) and dynamically fetch the manuscript dataset:
-  ```tsx
+
   import { useTranslation } from '@/hooks/useTranslation';
   import { getBooksByLocale } from '@/data/books/registry';
 

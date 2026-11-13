@@ -15,7 +15,7 @@ export default function BrutalistLogo({
   subtag = 'CRAFT//CODE',
 }: BrutalistLogoProps) {
   return (
-    <div className={`inline-flex items-center gap-3 ${className}`}>
+    <div className={`inline-flex items-center gap-2 sm:gap-3 shrink-0 min-w-0 ${className}`}>
       {/* 1:1 Square Ratio SVG Logo ("LOGARITHMIC SHELL - GEOMETRIC LINE ART") */}
       <div
         className="relative shrink-0 rounded-sm bg-[#050507] border border-zinc-700/80 flex items-center justify-center p-1 overflow-hidden"
@@ -125,12 +125,12 @@ export default function BrutalistLogo({
       </div>
 
       {showText && (
-        <div className="flex flex-col leading-none">
-          <div className="flex items-center gap-1.5 font-mono text-[14px] font-bold tracking-wider text-white uppercase">
-            <span>ARTIFICIAL CRAFT</span>
+        <div className="flex flex-col leading-none min-w-0">
+          <div className="flex items-center gap-1.5 font-mono text-[13px] sm:text-[14px] font-bold tracking-wider text-white uppercase truncate">
+            <span className="truncate">ARTIFICIAL CRAFT</span>
           </div>
           {subtag && (
-            <span className="font-mono text-[9px] tracking-widest text-zinc-500 uppercase mt-0.5">
+            <span className="font-mono text-[9px] tracking-widest text-zinc-500 uppercase mt-0.5 truncate hidden sm:block">
               {subtag}
             </span>
           )}

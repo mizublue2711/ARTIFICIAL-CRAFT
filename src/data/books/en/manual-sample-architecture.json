@@ -1,0 +1,48 @@
+{
+  "slug": "manual-sample-architecture",
+  "title": "Hybrid AI Engine Architecture Specification",
+  "subtitle": "High-performance Edge & Cloud Multi-Agent Orchestration Protocol",
+  "category": "manual",
+  "author": "Artificial Craft Labs",
+  "version": "1.0.0",
+  "updatedAt": "2025-02-28",
+  "pages": [
+    {
+      "id": "p01_cover",
+      "type": "cover",
+      "title": "Hybrid AI Engine Architecture",
+      "subtitle": "High-performance Edge & Cloud Multi-Agent Orchestration Protocol",
+      "version": "v1.0.0",
+      "tags": ["AI Engine", "System Spec", "Architecture"],
+      "verified": true
+    },
+    {
+      "id": "p02_tech_doc",
+      "type": "tech_doc",
+      "title": "01 / Core Pipeline Initialization",
+      "content": "The Digital Flipbook Engine operates as a lightweight, zero-latency document renderer utilizing Swiss Brutalist design primitives and Web Audio feedback loops.",
+      "code": "import { FlipBookEngine } from './components/flipbook/FlipBookEngine';\n\nexport const App = () => (\n  <FlipBookEngine bookSlug=\"manual-sample-architecture\" />\n);",
+      "language": "typescript"
+    },
+    {
+      "id": "p03_diagram",
+      "type": "diagram",
+      "title": "02 / Edge & R2 Event Pipeline",
+      "content": "Real-time state synchronization between Cloudflare Workers and R2 bucket targets.",
+      "imageUrl": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80",
+      "caption": "Figure 2.1 — Edge-to-Cloud Event Dispatch & Persistence Layer"
+    },
+    {
+      "id": "p04_interactive",
+      "type": "interactive",
+      "title": "03 / Live Edge Node Diagnostics",
+      "status": "active",
+      "logs": [
+        "[00:00:01] [INFO] Edge worker node spin up complete (12ms)",
+        "[00:00:02] [DEBUG] R2 bucket sync initialized: target=asia-east1",
+        "[00:00:03] [SUCCESS] Audio FX WebAudio context initialized",
+        "[00:00:04] [INFO] Digital Flipbook Engine ready: 4 blocks mounted"
+      ]
+    }
+  ]
+}

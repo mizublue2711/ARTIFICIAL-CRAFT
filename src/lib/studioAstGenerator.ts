@@ -5,6 +5,7 @@
  */
 
 import { StudioConfigData } from '@/types/studioConfig';
+import { AVAILABLE_3D_COMPONENTS } from '@/components/studio/CraftStudioConfigurator';
 
 export interface StudioAstPayload {
   version: string;
@@ -70,7 +71,7 @@ export function normalizeStudioConfig(raw: any): StudioConfigData {
   const explodedProgress = typeof raw?.explodedProgress === 'number' ? raw.explodedProgress : 33;
   const explodedStages = raw?.explodedStages || {
     stage0: '0% // Assembled Unibody Core',
-    stage33: '33% // Tactical Outer Aerogel Shell',
+    stage33: '33% // Protective Outer Shell',
     stage66: '66% // High-Torque Brushless Motor Core',
     stage100: '100% // Micro Tactile Haptic Sensor Array',
   };
@@ -78,7 +79,7 @@ export function normalizeStudioConfig(raw: any): StudioConfigData {
   const telemetryFps = typeof raw?.telemetryFps === 'number' ? raw.telemetryFps : 60;
   const torquePrecision = raw?.torquePrecision || '±0.01mm';
   const dofSensorCount = raw?.dofSensorCount || '11 DOF';
-  const aiLatency = raw?.aiLatency || '<2ms';
+  const aiLatency = raw?.aiLatency || '[ RUNTIME: CLIENT GPU ]';
   const bentoModules = {
     viewport3d: raw?.bentoModules?.viewport3d ?? true,
     performanceGraph: raw?.bentoModules?.performanceGraph ?? true,
@@ -166,7 +167,7 @@ export function generateCodeSnippets(rawConfig: any) {
     const safeCompId = (config.compositionId || 'artificial_craft').toLowerCase().replace(/[^a-z0-9_]/g, '_');
     const tsCode = `// ARTIFICIAL CRAFT 3D CLIENT ENGINE // TypeScript & Three.js
 // Composition: ${config.compositionId}
-// SLA: ${config.telemetryFps}FPS | Latency: ${config.aiLatency}
+// RUNTIME: ${config.telemetryFps}FPS | Execution: ${config.aiLatency}
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -893,7 +894,8 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
   const tag = rawConfig?.tagline || config.slogan || 'Robots for Everyone // Cybernetic Automation';
   const speed = 1.5;
   const isNode05 = brand.includes('NODE_05') || config.presetModel === 'kinematic_manipulator_arm';
-  const baseComponent = rawConfig?.base_component || config.presetModel || config.modelType || 'RoboticsHandNode';
+  const defaultModel = AVAILABLE_3D_COMPONENTS[0]?.value || 'kinematic-differential-gearbox';
+  const baseComponent = rawConfig?.roboticsNode?.modelType || rawConfig?.base_component || config.presetModel || config.modelType || defaultModel;
   const enterFactoryBtnText = rawConfig?.enterFactoryNodeBtn || 'ENTER FACTORY NODE ➔';
 
   return `<!DOCTYPE html>
@@ -996,7 +998,7 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
       ${isNode05 ? '<span style="color:#a855f7; font-size:9px; border:1px solid #5322FF; padding:1px 4px; background:rgba(83,34,255,0.2);">NODE 05 PRESET</span>' : ''}
     </div>
     <div style="display:flex; align-items:center; gap:8px;">
-      <span class="badge">SLA: 60FPS</span>
+      <span class="badge">[ RENDER: WebGL GPU ]</span>
       <span class="badge" style="border-color:${primary}; color:${primary};">AST VALIDATED</span>
     </div>
   </header>
@@ -1062,7 +1064,70 @@ export function generateFallbackCyberneticHTML(rawConfig: any): string {
       const progress = (${config.explodedProgress} / 100.0);
       const baseComp = '${baseComponent}';
 
-      if (baseComp === 'RoboticsHandNode' || baseComp === 'robot-arm' || baseComp === 'industrial-arm') {
+      if (baseComp === 'quantum-escapement-clock') {
+        // Quantum Escapement Clock Three.js representation
+        const escapeWheel = new THREE.Mesh(new THREE.CylinderGeometry(0.9, 0.9, 0.08, 15), accentMat);
+        escapeWheel.rotation.x = Math.PI / 2;
+        escapeWheel.position.set(0.6, 0.4 + progress * 0.5, 0);
+        group.add(escapeWheel);
+
+        const balanceWheel = new THREE.Mesh(new THREE.TorusGeometry(1.0, 0.05, 16, 32), mat);
+        balanceWheel.position.set(-0.7, -0.3 - progress * 0.5, 0);
+        group.add(balanceWheel);
+
+        const palletFork = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.9, 0.1), accentMat);
+        palletFork.position.set(0.0, 0.1, 0.1);
+        palletFork.rotation.z = 0.35;
+        group.add(palletFork);
+
+        const bridgePlate = new THREE.Mesh(new THREE.BoxGeometry(2.4, 1.8, 0.05), mat);
+        bridgePlate.position.set(0, 0, -0.3 - progress * 0.8);
+        group.add(bridgePlate);
+      } else if (baseComp === 'pneumatic-data-pipeline') {
+        // Pneumatic Data Pipeline Three.js representation
+        const mainPipe = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 3.2, 24), mat);
+        mainPipe.rotation.z = Math.PI / 2;
+        group.add(mainPipe);
+
+        const riserNorth = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 1.6, 20), mat);
+        riserNorth.position.set(-0.6 - progress * 0.4, 0.9 + progress * 0.5, 0);
+        group.add(riserNorth);
+
+        const riserSouth = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 1.6, 20), mat);
+        riserSouth.position.set(0.6 + progress * 0.4, -0.9 - progress * 0.5, 0);
+        group.add(riserSouth);
+
+        const valveLeft = new THREE.Mesh(new THREE.TorusGeometry(0.35, 0.06, 16, 24), accentMat);
+        valveLeft.position.set(-0.6 - progress * 0.4, 0, 0);
+        group.add(valveLeft);
+
+        const valveRight = new THREE.Mesh(new THREE.TorusGeometry(0.35, 0.06, 16, 24), accentMat);
+        valveRight.position.set(0.6 + progress * 0.4, 0, 0);
+        group.add(valveRight);
+
+        const capsule = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.45, 12), accentMat);
+        capsule.rotation.z = Math.PI / 2;
+        capsule.position.set(0, 0, 0);
+        group.add(capsule);
+      } else if (baseComp === 'tokamak-reactor-core') {
+        // Tokamak Fusion Reactor Core Three.js representation
+        const centralSolenoid = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 2.2, 24), mat);
+        group.add(centralSolenoid);
+
+        const plasmaRing = new THREE.Mesh(new THREE.TorusGeometry(1.2, 0.12, 16, 48), accentMat);
+        plasmaRing.rotation.x = Math.PI / 2;
+        group.add(plasmaRing);
+
+        // 8 D-coils ring
+        const numDCoils = 8;
+        for (let c = 0; c < numDCoils; c++) {
+          const theta = (c / numDCoils) * Math.PI * 2;
+          const dCoil = new THREE.Mesh(new THREE.TorusGeometry(0.7, 0.04, 12, 24), mat);
+          dCoil.position.set(Math.cos(theta) * (1.2 + progress * 0.6), 0, Math.sin(theta) * (1.2 + progress * 0.6));
+          dCoil.rotation.y = -theta;
+          group.add(dCoil);
+        }
+      } else if (baseComp === 'RoboticsHandNode' || baseComp === 'robot-arm' || baseComp === 'industrial-arm') {
         const core = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.7, 1.2, 16), mat);
         group.add(core);
 

@@ -7,6 +7,7 @@
 - **ALL** visual, 3D, WebGL canvas, and motion components MUST be registered inside `src/core/registry.ts`.
 - **DO NOT** create isolated visual components inside random feature folders.
 - When creating a new visual element or Remotion preset, place it in `src/core/remotion-presets/` (or `src/components/`) and map its unique ID inside `src/core/registry.ts`.
+- **3D Model Prepend Protocol**: When creating a new 3D model component, always unshift/prepend it to Index 0 of `AVAILABLE_3D_COMPONENTS`. NEVER hardcode static default active strings in form states; the initial active state must ALWAYS be dynamically bound to `AVAILABLE_3D_COMPONENTS[0].value`.
 
 ---
 

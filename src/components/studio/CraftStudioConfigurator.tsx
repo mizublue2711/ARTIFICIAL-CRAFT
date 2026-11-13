@@ -26,8 +26,28 @@ import {
   Radio,
   Palette,
   Activity,
+  Clock,
+  GitBranch,
+  Atom,
+  Flame,
+  Crosshair,
 } from 'lucide-react';
 import { useTranslation } from '@/context/useLanguage';
+import { QuantumEscapementClock3D } from '@/lib/video-engine/components/3d/QuantumEscapementClock3D';
+import { PneumaticDataPipeline3D } from '@/lib/video-engine/components/3d/PneumaticDataPipeline3D';
+import { TokamakReactorCore3D } from '@/lib/video-engine/components/3d/TokamakReactorCore3D';
+import {
+  BTreeDiskIndex3D,
+  MailRopewayTcp3D,
+  TurbofanJetEngine3D,
+  RollsRoyceTrent9703D,
+  PowerStationGenerator3D,
+  LiquidSteelFoundry3D,
+  OpticalBenchInterferometer3D,
+  KinematicDifferentialGearbox3D,
+  RimLightStudio3D,
+  VDM80ActuatorJoint3D,
+} from '@/components/robotics/3d';
 
 import {
   SwissDesignConfigSchema,
@@ -129,6 +149,30 @@ export interface ExtendedStudioConfig extends Partial<SwissDesignConfig> {
   sandboxLanguages: any;
 }
 
+export const AVAILABLE_3D_COMPONENTS = [
+  { value: 'vdm80-actuator-joint', label: 'VDM 80 Integrated Robotic Actuator Joint 3D', icon: Bot },
+  { value: 'rolls-royce-trent-970', label: 'Rolls-Royce Trent 970 Ground-Run 3D', icon: Zap },
+  { value: 'kinematic-differential-gearbox', label: 'Kinematic Differential Gearbox 3D', icon: Zap },
+  { value: 'rim-light-studio', label: 'Rim Light Studio 3D', icon: Crosshair },
+  { value: 'quantum-escapement-clock', label: 'Quantum Escapement Clock 3D', icon: Clock },
+  { value: 'pneumatic-data-pipeline', label: 'Pneumatic Data Pipeline 3D', icon: GitBranch },
+  { value: 'tokamak-reactor-core', label: 'Tokamak Reactor Core 3D', icon: Atom },
+  { value: 'btree-disk-index', label: 'Rotary B-Tree Disk Index 3D', icon: Layers },
+  { value: 'mail-ropeway-tcp', label: 'Mail Ropeway TCP Handshake 3D', icon: Radio },
+  { value: 'turbofan-jet-engine', label: 'Dual-Spool Turbofan Jet Engine 3D', icon: Zap },
+  { value: 'power-station-generator', label: 'Power Station Stator Generator 3D', icon: Zap },
+  { value: 'liquid-steel-foundry', label: 'Liquid Steel Electric Arc Foundry 3D', icon: Flame },
+  { value: 'optical-bench-interferometer', label: 'Michelson Optical Bench Interferometer 3D', icon: Crosshair },
+  { value: 'RoboticsHandNode', label: 'Robotic Arm 6DOF Manipulator', icon: Bot },
+  { value: 'BipedalRobotMesh', label: 'Bipedal Kinematic Assembler', icon: Cpu },
+  { value: 'PointCloudNode', label: 'Point Cloud Telemetry Core', icon: Boxes },
+  { value: 'HolographicCore', label: 'Holographic Energy Reactor', icon: Radio },
+  { value: 'ConveyorBeltV2', label: 'Cybernetic Conveyor System', icon: Terminal },
+  { value: 'CleanroomSwarmTerminal', label: 'Obsidian Cleanroom Terminal', icon: Layers },
+];
+
+export const DEFAULT_ACTIVE_MODEL_KEY = AVAILABLE_3D_COMPONENTS[0]?.value || 'kinematic-differential-gearbox';
+
 export const INITIAL_CONFIG: ExtendedStudioConfig = {
   presetId: 'node-05-digital-plumbing-swarm',
   layoutMode: 'two-column',
@@ -140,10 +184,10 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
   primaryColor: '#5322FF',
   accentColor: '#00E5FF',
   backgroundShader: 'SwissGridHUD',
-  base_component: 'RoboticsHandNode',
+  base_component: DEFAULT_ACTIVE_MODEL_KEY,
   headlineFont: 'Space Grotesk',
-  presetModel: 'robot-arm',
-  modelType: 'preset',
+  presetModel: DEFAULT_ACTIVE_MODEL_KEY,
+  modelType: DEFAULT_ACTIVE_MODEL_KEY,
   customModelUrl: '',
   logoUrl: 'https://raw.githubusercontent.com/artificial-craft/assets/main/logo-mark.svg',
   theme: {
@@ -157,7 +201,7 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
   codeFont: 'JetBrains Mono',
   motionTokens: ['kinetic-parallax', 'chromatic-aberration', 'magnetic-attraction'],
   roboticsNode: {
-    modelType: 'RoboticsHandNode',
+    modelType: DEFAULT_ACTIVE_MODEL_KEY,
     wireframe: true,
     rotationSpeed: 1.5,
     autoAnimate: true,
@@ -166,7 +210,7 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
   explodedProgress: 33,
   explodedStages: {
     stage0: '0% // Assembled Unibody Core',
-    stage33: '33% // Tactical Aerogel Shell',
+    stage33: '33% // Protective Outer Shell',
     stage66: '66% // High-Torque Motor Stator',
     stage100: '100% // Micro Tactile Sensor Array',
   },
@@ -174,7 +218,7 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
   telemetryFps: 60,
   torquePrecision: '±0.01mm',
   dofSensorCount: '11 DOF',
-  aiLatency: '<2ms',
+  aiLatency: '[ RUNTIME: CLIENT GPU ]',
   bentoModules: {
     viewport3d: true,
     performanceGraph: true,
@@ -188,15 +232,6 @@ export const INITIAL_CONFIG: ExtendedStudioConfig = {
     enableAudioSynthesizer: true,
   },
 };
-
-export const AVAILABLE_3D_COMPONENTS = [
-  { value: 'RoboticsHandNode', label: 'Robotic Arm 6DOF Manipulator', icon: Bot },
-  { value: 'BipedalRobotMesh', label: 'Bipedal Kinematic Assembler', icon: Cpu },
-  { value: 'PointCloudNode', label: 'Point Cloud Telemetry Core', icon: Boxes },
-  { value: 'HolographicCore', label: 'Holographic Energy Reactor', icon: Radio },
-  { value: 'ConveyorBeltV2', label: 'Cybernetic Conveyor System', icon: Terminal },
-  { value: 'CleanroomSwarmTerminal', label: 'Obsidian Cleanroom Terminal', icon: Layers },
-];
 
 export const BACKGROUND_COMPONENTS: Record<string, React.FC<any>> = {
   SwissGridHUD,
@@ -340,15 +375,15 @@ export const CraftStudioConfigurator: React.FC = () => {
       },
       roboticsNode: {
         ...prev.roboticsNode,
-        modelType: 'kinematic-assembler',
+        modelType: preset.hero3DEngine?.modelType || DEFAULT_ACTIVE_MODEL_KEY,
         wireframe: true,
         rotationSpeed: 1.5,
         autoAnimate: true,
         telemetryHud: true,
       },
       raycastingLaser: preset.hero3DEngine.enableRaycasting,
-      presetModel: preset.hero3DEngine.modelType,
-      modelType: preset.hero3DEngine.modelType,
+      presetModel: preset.hero3DEngine?.modelType || DEFAULT_ACTIVE_MODEL_KEY,
+      modelType: preset.hero3DEngine?.modelType || DEFAULT_ACTIVE_MODEL_KEY,
       explodedStages: {
         stage0: `${preset.hero3DEngine.explodedStages[0] || '0%'} // Assembled Core Manipulator`,
         stage33: `${preset.hero3DEngine.explodedStages[1] || '33%'} // Swarm Plumbing Bus`,
@@ -546,7 +581,7 @@ export const CraftStudioConfigurator: React.FC = () => {
 
       const payloadObject: CraftPayloadObject = {
         prompt: aiPrompt || formData.aiStylist?.customPrompt || '',
-        base_component: formData.presetModel || formData.modelType || 'RoboticsHandNode',
+        base_component: formData.presetModel || formData.modelType || DEFAULT_ACTIVE_MODEL_KEY,
         aesthetic: {
           palette: formData.brandName || 'Brutalist Monochrome',
           primaryColor: formData.theme.primaryColor || '#5322FF',
@@ -554,7 +589,7 @@ export const CraftStudioConfigurator: React.FC = () => {
         },
         motion_tokens: formData.motionTokens || [],
         telemetry: {
-          slaTarget: formData.aiLatency || '<8ms',
+          slaTarget: formData.aiLatency || '[ RUNTIME: CLIENT GPU ]',
           fps: formData.telemetryFps || 60,
         },
       };
@@ -702,10 +737,10 @@ export const CraftStudioConfigurator: React.FC = () => {
 
         <div className="flex items-center gap-2">
           <span className="px-2 py-0.5 border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 text-[10px] font-bold">
-            GATE: ZOD 100% PASS
+            [ VERIFICATION: ZOD PASSED ]
           </span>
           <span className="px-2 py-0.5 border border-[#5322FF]/50 bg-[#5322FF]/10 text-purple-300 text-[10px] font-bold">
-            SLA: 60FPS KINEMATICS
+            [ RENDER: WebGL GPU ]
           </span>
         </div>
       </div>
@@ -777,7 +812,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                       </span>
                     </div>
                     <span className="text-[10px] text-zinc-400 font-sans">
-                      Headless Digital Plumbing Swarm • Kinematic Manipulator & Telemetry SLA 60FPS
+                      Automated Workflow Engine • 3D Model Exploded View (4 Stages) & 60 FPS (Client-Side)
                     </span>
                   </div>
                   {/* Task Mode Switcher */}
@@ -1293,7 +1328,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                   <div className="grid grid-cols-1 gap-1.5">
                     {AVAILABLE_3D_COMPONENTS.map((comp) => {
                       const IconComponent = comp.icon;
-                      const activeModel = formData.base_component || formData.presetModel || formData.modelType || 'RoboticsHandNode';
+                      const activeModel = formData.base_component || formData.presetModel || formData.modelType || DEFAULT_ACTIVE_MODEL_KEY;
                       const isSelected = activeModel === comp.value;
                       return (
                         <button
@@ -1337,10 +1372,12 @@ export const CraftStudioConfigurator: React.FC = () => {
                   </label>
                   <div className="grid grid-cols-2 gap-2">
                     {[
+                      { id: 'quantum-escapement-clock', label: 'Quantum Clock' },
+                      { id: 'pneumatic-data-pipeline', label: 'Pneumatic Pipeline' },
+                      { id: 'tokamak-reactor-core', label: 'Tokamak Core' },
                       { id: 'RoboticsHandNode', label: 'Industrial Robot Arm' },
                       { id: 'BipedalRobotMesh', label: 'Kinematic Assembler' },
                       { id: 'PointCloudNode', label: 'Point Cloud Drone' },
-                      { id: 'HolographicCore', label: 'Cyber Monolith Core' },
                     ].map((model) => (
                       <button
                         key={model.id}
@@ -1559,7 +1596,7 @@ export const CraftStudioConfigurator: React.FC = () => {
 
                   <div className="space-y-1">
                     <label className="text-[10px] text-zinc-400 font-bold uppercase">
-                      AI Latency
+                      Runtime Pipeline
                     </label>
                     <input
                       type="text"
@@ -1868,7 +1905,7 @@ export const CraftStudioConfigurator: React.FC = () => {
 
               <span className="flex items-center gap-1.5 font-bold text-zinc-200">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                <span>SYSTEM SLA: {formData.telemetryFps}FPS</span>
+                <span>[ STATUS: OPERATIONAL ]</span>
               </span>
               <span className="hidden sm:inline-block text-zinc-600">|</span>
               <span className="hidden sm:inline-flex items-center gap-1 text-[11px] text-emerald-400">
@@ -1989,16 +2026,235 @@ export const CraftStudioConfigurator: React.FC = () => {
                   }}
                   onPointerLeave={() => setIsHoveringCanvas(false)}
                 >
-                  <iframe
-                    ref={iframeRef}
-                    srcDoc={generatedHtml}
-                    sandbox="allow-scripts allow-modals allow-same-origin"
-                    title="ARTIFICIAL CRAFT 3D Viewport"
-                    data-background-shader={activeShaderKey}
-                    data-base-component={formData.base_component || formData.presetModel || formData.modelType || 'RoboticsHandNode'}
-                    style={{ touchAction: 'pan-y' }}
-                    className="w-full h-full bg-transparent rounded-none border-0 pointer-events-auto touch-pan-y"
-                  />
+                  {/* Dynamic 3D Model Direct Viewport vs Iframe Fallback */}
+                  {(() => {
+                    const currentModel = formData.base_component || formData.presetModel || formData.modelType || DEFAULT_ACTIVE_MODEL_KEY;
+                    const activePrim = formData.theme?.primaryColor || formData.primaryColor || '#5322FF';
+                    const activeAcc = formData.theme?.accentColor || formData.accentColor || '#00E5FF';
+                    const dispAmount = Math.max(0.01, (formData.explodedProgress || 33) / 500);
+
+                    if (currentModel === 'quantum-escapement-clock') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <QuantumEscapementClock3D
+                            primaryColor={activePrim}
+                            accentColor={activeAcc}
+                            scale={1.1}
+                            rotateXDeg={formData.roboticsNode?.wireframe ? 28 : 28}
+                            dispersionAmount={dispAmount}
+                            width={720}
+                            height={600}
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      );
+                    }
+                    if (currentModel === 'rolls-royce-trent-970') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <RollsRoyceTrent9703D
+                            primaryColor={activePrim}
+                            accentColor={activeAcc}
+                            scale={1.1}
+                            rotateXDeg={formData.roboticsNode?.wireframe ? 28 : 28}
+                            dispersionAmount={dispAmount}
+                            width={720}
+                            height={600}
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      );
+                    }
+                    if (currentModel === 'pneumatic-data-pipeline') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <PneumaticDataPipeline3D
+                            primaryColor={activePrim}
+                            accentColor={activeAcc}
+                            scale={1.05}
+                            rotateXDeg={formData.roboticsNode?.wireframe ? 28 : 28}
+                            dispersionAmount={dispAmount}
+                            width={720}
+                            height={600}
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      );
+                    }
+                    if (currentModel === 'tokamak-reactor-core') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <TokamakReactorCore3D
+                            primaryColor={activePrim}
+                            accentColor={activeAcc}
+                            scale={1.1}
+                            rotateXDeg={formData.roboticsNode?.wireframe ? 28 : 28}
+                            dispersionAmount={dispAmount}
+                            width={720}
+                            height={600}
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      );
+                    }
+                    if (currentModel === 'btree-disk-index') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <BTreeDiskIndex3D
+                            primaryColor={activePrim}
+                            accentColor={activeAcc}
+                            scale={1.1}
+                            rotateXDeg={formData.roboticsNode?.wireframe ? 28 : 28}
+                            dispersionAmount={dispAmount}
+                            width={720}
+                            height={600}
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      );
+                    }
+                    if (currentModel === 'mail-ropeway-tcp') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <MailRopewayTcp3D
+                            primaryColor={activePrim}
+                            accentColor={activeAcc}
+                            scale={1.1}
+                            rotateXDeg={formData.roboticsNode?.wireframe ? 28 : 28}
+                            dispersionAmount={dispAmount}
+                            width={720}
+                            height={600}
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      );
+                    }
+                    if (currentModel === 'turbofan-jet-engine') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <TurbofanJetEngine3D
+                            primaryColor={activePrim}
+                            accentColor={activeAcc}
+                            scale={1.1}
+                            rotateXDeg={formData.roboticsNode?.wireframe ? 28 : 28}
+                            dispersionAmount={dispAmount}
+                            width={720}
+                            height={600}
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      );
+                    }
+                    if (currentModel === 'power-station-generator') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <PowerStationGenerator3D
+                            primaryColor={activePrim}
+                            accentColor={activeAcc}
+                            scale={1.1}
+                            rotateXDeg={formData.roboticsNode?.wireframe ? 28 : 28}
+                            dispersionAmount={dispAmount}
+                            width={720}
+                            height={600}
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      );
+                    }
+                    if (currentModel === 'liquid-steel-foundry') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <LiquidSteelFoundry3D
+                            primaryColor={activePrim}
+                            accentColor={activeAcc}
+                            scale={1.1}
+                            rotateXDeg={formData.roboticsNode?.wireframe ? 28 : 28}
+                            dispersionAmount={dispAmount}
+                            width={720}
+                            height={600}
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      );
+                    }
+                    if (currentModel === 'optical-bench-interferometer') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <OpticalBenchInterferometer3D
+                            primaryColor={activePrim}
+                            accentColor={activeAcc}
+                            scale={1.1}
+                            rotateXDeg={formData.roboticsNode?.wireframe ? 28 : 28}
+                            dispersionAmount={dispAmount}
+                            width={720}
+                            height={600}
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      );
+                    }
+                    if (currentModel === 'kinematic-differential-gearbox') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <KinematicDifferentialGearbox3D
+                            primaryColor={activePrim}
+                            accentColor={activeAcc}
+                            scale={1.1}
+                            rotateXDeg={formData.roboticsNode?.wireframe ? 28 : 28}
+                            dispersionAmount={dispAmount}
+                            width={720}
+                            height={600}
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      );
+                    }
+                    if (currentModel === 'rim-light-studio') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <RimLightStudio3D
+                            primaryColor={activePrim}
+                            accentColor={activeAcc}
+                            scale={1.1}
+                            rotateXDeg={formData.roboticsNode?.wireframe ? 28 : 28}
+                            dispersionAmount={dispAmount}
+                            width={720}
+                            height={600}
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      );
+                    }
+                    if (currentModel === 'vdm80-actuator-joint') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <VDM80ActuatorJoint3D
+                            primaryColor={activePrim}
+                            accentColor={activeAcc}
+                            scale={1.1}
+                            rotateXDeg={formData.roboticsNode?.wireframe ? 28 : 28}
+                            dispersionAmount={dispAmount}
+                            width={720}
+                            height={600}
+                            className="max-w-full max-h-full"
+                          />
+                        </div>
+                      );
+                    }
+
+                    return (
+                      <iframe
+                        ref={iframeRef}
+                        srcDoc={generatedHtml}
+                        sandbox="allow-scripts allow-modals allow-same-origin"
+                        title="ARTIFICIAL CRAFT 3D Viewport"
+                        data-background-shader={activeShaderKey}
+                        data-base-component={currentModel}
+                        style={{ touchAction: 'pan-y' }}
+                        className="w-full h-full bg-transparent rounded-none border-0 pointer-events-auto touch-pan-y"
+                      />
+                    );
+                  })()}
 
                   {/* Raycasting Reticle Overlay Follower */}
                   {isHoveringCanvas && (
@@ -2051,10 +2307,10 @@ export const CraftStudioConfigurator: React.FC = () => {
                       primaryColor: formData.theme?.primaryColor || formData.primaryColor || '#5322FF',
                       accentColor: formData.theme?.accentColor || formData.accentColor || '#00E5FF',
                       backgroundColor: formData.theme?.backgroundColor || formData.backgroundColor || '#09090B',
-                      base_component: formData.base_component || formData.presetModel || formData.modelType || 'kinematic_manipulator_arm',
+                      base_component: formData.base_component || formData.presetModel || formData.modelType || DEFAULT_ACTIVE_MODEL_KEY,
                       assemblyStage: formData.explodedProgress,
                       telemetry: {
-                        slaTarget: formData.aiLatency || '<2ms',
+                        slaTarget: formData.aiLatency || '[ RUNTIME: CLIENT GPU ]',
                         fps: formData.telemetryFps || 60,
                       },
                       motion_tokens: formData.motionTokens || ['kinetic-parallax', 'chromatic-aberration', 'glitch-flicker'],

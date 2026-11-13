@@ -44,8 +44,8 @@
     {
       "id": "p04_zero_silent_drift",
       "type": "diagram",
-      "title": "03 // ZERO SILENT DRIFT SLA",
-      "content": "When an AI engine generates UI components, layouts drift. Marginal padding errors accumulate. Fonts misalign. Swiss Brutalism freezes the layout parameters.\n\n1.4s E2E Execution Speed. 99.99% Engine SLA. 60 FPS Target Frame Rate. 540ms Average RAG Latency. Meticulous graphic precision meets code automation.",
+      "title": "03 // PRECISE GRAPHIC CONTROL",
+      "content": "When an AI engine generates UI components, layouts drift. Marginal padding errors accumulate. Fonts misalign. Swiss Brutalism freezes the layout parameters.\n\n[ RUNTIME: CLIENT GPU ] • [ DATA: SCHEMA VALIDATED ] • [ STATUS: OPERATIONAL ]. Meticulous graphic precision meets code automation.",
       "seed": "zero-drift-sla-9999-11",
       "graphicType": "DATA_MATRIX",
       "caption": "Figure 11.1 — 1px Swiss grid discipline eliminating UI layout breaks across multi-platform delivery channels"
