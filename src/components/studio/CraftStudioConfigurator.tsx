@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Sparkles,
@@ -48,6 +48,8 @@ import {
   RimLightStudio3D,
   VDM80ActuatorJoint3D,
 } from '@/components/robotics/3d';
+
+const PneumaticLetterA3D = React.lazy(() => import('@/components/robotics/3d/PneumaticLetterA3D'));
 
 import {
   SwissDesignConfigSchema,
@@ -150,6 +152,7 @@ export interface ExtendedStudioConfig extends Partial<SwissDesignConfig> {
 }
 
 export const AVAILABLE_3D_COMPONENTS = [
+  { value: 'pneumatic-letter-a', label: 'PNEUMATIC // LETTER A 3D', icon: GitBranch, badge: 'NEW // ACTIVE' },
   { value: 'vdm80-actuator-joint', label: 'VDM 80 Integrated Robotic Actuator Joint 3D', icon: Bot },
   { value: 'rolls-royce-trent-970', label: 'Rolls-Royce Trent 970 Ground-Run 3D', icon: Zap },
   { value: 'kinematic-differential-gearbox', label: 'Kinematic Differential Gearbox 3D', icon: Zap },
@@ -1357,7 +1360,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                             <span>{comp.label}</span>
                           </div>
                           <span className="text-[10px] text-zinc-500 font-mono">
-                            {isSelected ? '[ACTIVE]' : comp.value}
+                            {isSelected ? '[ACTIVE]' : comp.badge || comp.value}
                           </span>
                         </button>
                       );
@@ -2222,6 +2225,24 @@ export const CraftStudioConfigurator: React.FC = () => {
                             height={600}
                             className="max-w-full max-h-full"
                           />
+                        </div>
+                      );
+                    }
+                    if (currentModel === 'pneumatic-letter-a') {
+                      return (
+                        <div className="w-full h-full flex items-center justify-center p-4">
+                          <Suspense fallback={<div className="text-xs font-mono text-[#00E5FF]">LOADING 3D CAD MESH...</div>}>
+                            <PneumaticLetterA3D
+                              primaryColor={activePrim}
+                              accentColor={activeAcc}
+                              scale={1.1}
+                              rotateXDeg={28}
+                              dispersionAmount={dispAmount}
+                              width={720}
+                              height={600}
+                              className="max-w-full max-h-full"
+                            />
+                          </Suspense>
                         </div>
                       );
                     }
