@@ -138,6 +138,13 @@ export const ASSET_PRESET_REGISTRY: AssetPresetRegistry = {
       description: 'Interlocking double-helix CAD ribbons with rotating Tetrahedron sub-nodes on rungs',
       previewColor: '#00E5FF',
     },
+    'pneumatic-letter-a': {
+      id: 'pneumatic-letter-a',
+      label: 'Pneumatic Letter A 3D CAD',
+      category: 'heroObjects',
+      description: 'Pneumatic data tube network & valve manifold merging letter A silhouette with 3-way diverter valve',
+      previewColor: '#00E5FF',
+    },
     'quantum-escapement-clock': {
       id: 'quantum-escapement-clock',
       label: 'Quantum Escapement Clock CAD',
@@ -300,6 +307,13 @@ export const ASSET_PRESET_REGISTRY: AssetPresetRegistry = {
       label: 'Chiral Double Helix Matrix',
       category: '3D_MESHES',
       description: 'Interlocking double-helix CAD ribbons with rotating Tetrahedron sub-nodes on rungs',
+      previewColor: '#00E5FF',
+    },
+    'pneumatic-letter-a': {
+      id: 'pneumatic-letter-a',
+      label: 'Pneumatic Letter A 3D CAD',
+      category: '3D_MESHES',
+      description: 'Pneumatic data tube network & valve manifold merging letter A silhouette with 3-way diverter valve',
       previewColor: '#00E5FF',
     },
     'quantum-escapement-clock': {
