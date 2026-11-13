@@ -19,6 +19,7 @@ import {
   ChronoGeodesicDomeAssembly3D,
   ChiralDoubleHelixMatrix3D,
 } from './3d';
+import { PneumaticLetterA3D } from '@/components/robotics/3d';
 
 export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
   const frame = useCurrentFrame();
@@ -343,6 +344,20 @@ export const LegoVideoOrchestrator: React.FC<PlaygroundRecipe> = (recipe) => {
       case 'chiral-double-helix':
         return (
           <ChiralDoubleHelixMatrix3D
+            frame={frame}
+            primaryColor={primary}
+            accentColor={accent}
+            scale={props.cameraZoom ?? 1.0}
+            rotateXDeg={props.rotateXDeg ?? 28}
+            dispersionAmount={props.dispersionAmount ?? 0.05}
+            width={520}
+            height={520}
+          />
+        );
+
+      case 'pneumatic-letter-a':
+        return (
+          <PneumaticLetterA3D
             frame={frame}
             primaryColor={primary}
             accentColor={accent}
