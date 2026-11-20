@@ -64,7 +64,20 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     const currentDict = translations[language] || translations.en;
     const translateFn = (key: string): string => {
       if (key in currentDict) {
-        return currentDict[key as keyof Translations];
+        const val = currentDict[key as keyof Translations];
+        return typeof val === 'string' ? val : (val as unknown as string);
+      }
+      if (key.includes('.')) {
+        const parts = key.split('.');
+        let val: any = currentDict;
+        for (const part of parts) {
+          if (val && typeof val === 'object' && part in val) {
+            val = val[part];
+          } else {
+            return key;
+          }
+        }
+        if (typeof val === 'string') return val;
       }
       return key;
     };

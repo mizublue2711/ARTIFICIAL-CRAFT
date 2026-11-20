@@ -91,18 +91,18 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
             </span>
           </Link>
 
-          {/* ROBOTICS 3D LINK */}
+          {/* 3D SHOWCASE LINK */}
           <Link
-            to="/robotics"
+            to="/showcase"
             className={`group relative inline-flex items-center gap-1.5 border text-xs font-mono font-bold tracking-wider px-3 py-1.5 transition-all cursor-pointer ${
-              location.pathname === '/robotics'
+              location.pathname === '/showcase'
                 ? 'border-[#00E5FF] bg-[#00E5FF]/20 text-[#00E5FF] shadow-[0_0_12px_rgba(0,229,255,0.25)]'
                 : 'border-zinc-800 bg-zinc-950 text-zinc-300 hover:border-[#00E5FF] hover:text-white'
             }`}
           >
-            <span>ROBOTICS 3D</span>
+            <span>SHOWCASE</span>
             <span className="text-[9px] px-1 py-0.5 bg-[#00E5FF]/20 text-[#00E5FF] border border-[#00E5FF]/40">
-              LIVE
+              3D // WEB
             </span>
           </Link>
 
@@ -188,6 +188,24 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                         </span>
                       </div>
                       <span className="text-[10px] text-zinc-500">[3D KINEMATICS]</span>
+                    </div>
+                  </Link>
+
+                  <Link
+                    to="/showcase"
+                    onClick={() => setStudiosOpen(false)}
+                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs transition-colors mt-1"
+                  >
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-2">
+                        <span className="font-bold text-white group-hover:text-[#00E5FF] flex items-center gap-1.5">
+                          🪐 3D Showcase Debriefs
+                        </span>
+                        <span className="text-[9px] px-1 py-0.2 bg-[#00E5FF]/20 text-[#00E5FF] border border-[#00E5FF]/40 rounded-xs font-bold">
+                          DEBRIEFS
+                        </span>
+                      </div>
+                      <span className="text-[10px] text-zinc-500">Spatial 3D & Interactive WebApps</span>
                     </div>
                   </Link>
 
@@ -418,6 +436,20 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                 </div>
                 <span className="font-mono text-[10px] font-bold px-2 py-0.5 bg-[#00E5FF]/20 border border-[#00E5FF]/50 text-[#00E5FF] shadow-[0_0_8px_rgba(0,229,255,0.3)]">
                   [ LIVE ]
+                </span>
+              </Link>
+
+              <Link
+                to="/showcase"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-between p-3.5 bg-[#121218] border border-[#27272A] hover:border-[#00E5FF] active:bg-[#00E5FF]/10 transition-all rounded-none min-h-[48px]"
+              >
+                <div className="flex items-center gap-2.5">
+                  <span>🪐</span>
+                  <span className="font-mono text-xs font-bold text-white">3D SHOWCASE DEBRIEFS</span>
+                </div>
+                <span className="font-mono text-[10px] font-bold px-2 py-0.5 bg-[#00E5FF]/20 border border-[#00E5FF]/50 text-[#00E5FF] shadow-[0_0_8px_rgba(0,229,255,0.3)]">
+                  [ 3D // WEB ]
                 </span>
               </Link>
 

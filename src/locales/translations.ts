@@ -1,3 +1,7 @@
+import { showcaseEn } from './showcase.en';
+import { showcaseVi } from './showcase.vi';
+import { ShowcaseTranslations } from '@/types/showcase';
+
 export type Language = 'en' | 'vi';
 
 export interface Translations {
@@ -594,6 +598,9 @@ export interface Translations {
   modelPneumaticPipelineDesc: string;
   modelTokamakCoreTitle: string;
   modelTokamakCoreDesc: string;
+
+  // Showcase Module
+  showcase: ShowcaseTranslations;
 
 }
 
@@ -1204,6 +1211,8 @@ export const translations: Record<Language, Translations> = {
     modelTokamakCoreTitle: "TOKAMAK REACTOR CORE 3D",
     modelTokamakCoreDesc: "Magnetic plasma confinement torus with high-energy particle acceleration visuals.",
 
+    // Showcase Module
+    showcase: showcaseEn,
   },
   vi: {
     // Navigation
@@ -1811,5 +1820,7 @@ export const translations: Record<Language, Translations> = {
     modelTokamakCoreTitle: "LÕI LÒ PHẢN ỨNG TOKAMAK 3D",
     modelTokamakCoreDesc: "Vòng xuyến giam giữ huyết tương từ trường với hiệu ứng gia tốc hạt năng lượng cao.",
 
+    // Showcase Module
+    showcase: showcaseVi,
   },
 };

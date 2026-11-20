@@ -1,0 +1,66 @@
+import React, { useEffect } from 'react';
+import { SHOWCASE_PROJECTS } from '@/data/showcase-projects';
+import ShowcaseProjectCard from '@/components/showcase/ShowcaseProjectCard';
+import { useTranslation } from '@/context/useLanguage';
+import { Sparkles, Layers } from 'lucide-react';
+
+export const ShowcasePage: React.FC = () => {
+  const { t } = useTranslation();
+  const showcaseI18n = t.showcase;
+  const visibleProjects = SHOWCASE_PROJECTS.filter((p) => !p.hidden);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    document.title = 'ARTIFICIAL CRAFT // 3D & MOTION SHOWCASE DEBRIEFS';
+  }, []);
+
+  return (
+    <main className="min-h-screen bg-[#05050A] text-white pt-24 pb-20 px-4 sm:px-6 lg:px-8 font-mono">
+      <div className="max-w-7xl mx-auto">
+        {/* Page Top Header Section */}
+        <header className="mb-14 border-b border-[#27272A] pb-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00E5FF]/10 border border-[#00E5FF]/40 text-[#00E5FF] text-[11px] font-bold uppercase mb-4 tracking-widest">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#00E5FF] animate-ping" />
+            <span>{showcaseI18n?.sectionBadge || '[ PORTFOLIO // 3D & MOTION ENGINES ]'}</span>
+          </div>
+
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+            <div>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight uppercase font-sans">
+                {showcaseI18n?.sectionTitle || 'PROJECT DEBRIEFS // 3D & INTERACTIVE WEBAPPS'}
+              </h1>
+              <p className="mt-4 text-sm sm:text-base text-zinc-400 max-w-3xl font-sans leading-relaxed">
+                {showcaseI18n?.sectionSubtitle ||
+                  'Real-world production engineering debriefs across WebGL spatial 3D, physics simulation, autonomous video rendering, and cybernetic CAD interfaces.'}
+              </p>
+            </div>
+
+            {/* Telemetry Counter Pill */}
+            <div className="border border-zinc-800 bg-[#09090D] p-3 shrink-0 flex items-center gap-3">
+              <Layers className="w-4 h-4 text-[#00E5FF]" />
+              <div className="flex flex-col text-[10px]">
+                <span className="text-zinc-500 uppercase tracking-widest font-bold">TOTAL DEBRIEFS</span>
+                <span className="text-white font-bold text-sm tracking-wider">
+                  [{visibleProjects.length}] PRODUCTION ENGINES
+                </span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* Showcase Project Cards Grid */}
+        <section aria-label="Showcase Projects List">
+          {visibleProjects.map((project, index) => (
+            <ShowcaseProjectCard
+              key={project.id}
+              project={project}
+              index={index}
+            />
+          ))}
+        </section>
+      </div>
+    </main>
+  );
+};
+
+export default ShowcasePage;

@@ -14,6 +14,7 @@ import RoboticsPage from '@/pages/Robotics';
 import StudioPage from '@/app/studio/page';
 import AboutPage from '@/app/about/page';
 import DocsArchitecture from '@/pages/DocsArchitecture';
+import ShowcasePage from '@/pages/ShowcasePage';
 
 function App() {
   const [isBatchModalOpen, setIsBatchModalOpen] = useState(false);
@@ -33,6 +34,7 @@ function App() {
             <Route path="/playground" element={<PlaygroundPage />} />
             <Route path="/robotics" element={<RoboticsPage />} />
             <Route path="/studio" element={<StudioPage />} />
+            <Route path="/showcase" element={<ShowcasePage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/docs/architecture" element={<DocsArchitecture />} />
           </Routes>
