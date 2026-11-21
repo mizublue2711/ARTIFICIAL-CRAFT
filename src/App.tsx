@@ -24,20 +24,22 @@ function App() {
   return (
     <LanguageProvider>
       <BrowserRouter>
-        <div className="relative min-h-screen bg-[#09090b] text-zinc-200 selection:bg-cyan-400/20 flex flex-col justify-between">
+        <div className="relative w-full min-h-screen bg-[#05050A] text-zinc-200 selection:bg-cyan-400/20 flex flex-col justify-between">
           <Navbar onOpenBatchModal={handleOpenBatchModal} />
 
-          <Routes>
-            <Route path="/" element={<Home onOpenBatchModal={handleOpenBatchModal} />} />
-            <Route path="/library" element={<Library />} />
-            <Route path="/flipbook/:slug" element={<FlipbookReader />} />
-            <Route path="/playground" element={<PlaygroundPage />} />
-            <Route path="/robotics" element={<RoboticsPage />} />
-            <Route path="/studio" element={<StudioPage />} />
-            <Route path="/showcase" element={<ShowcasePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/docs/architecture" element={<DocsArchitecture />} />
-          </Routes>
+          <div className="w-full flex-1 bg-[#05050A]">
+            <Routes>
+              <Route path="/" element={<Home onOpenBatchModal={handleOpenBatchModal} />} />
+              <Route path="/library" element={<Library />} />
+              <Route path="/flipbook/:slug" element={<FlipbookReader />} />
+              <Route path="/playground" element={<PlaygroundPage />} />
+              <Route path="/robotics" element={<RoboticsPage />} />
+              <Route path="/studio" element={<StudioPage />} />
+              <Route path="/showcase" element={<ShowcasePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/docs/architecture" element={<DocsArchitecture />} />
+            </Routes>
+          </div>
 
           <Footer />
 

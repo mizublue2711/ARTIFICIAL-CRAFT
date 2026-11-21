@@ -1,100 +1,82 @@
-# 🤖 ARTIFICIAL-CRAFT // AI WORKER CONSTITUTION & EXECUTION DIRECTIVES
-> **Single Source of Truth (SSOT) Architecture Directive for AI Agents (Cursor, Roo Code, Copilot Workspace, Claude Code, Dify)**
+# 🏛️ ARTIFICIAL CRAFT // AGENT DIRECTIVES & SYSTEM CONSTITUTION
+
+### 🎯 1. REPOSITORY RUNTIME & WORKSPACE CONFINEMENT
+* **Environment**: Local Vite + React Single Page Application (SPA).
+* **Authorized Workspace**: Confine all operations strictly to `/Users/macbookpro/ARTIFICIAL-CRAFT`.
+* **Execution Toolkit**: Exclusively use packages pre-installed in `package.json` (`tailwindcss`, `framer-motion`, `three`, `@react-three/fiber`, `lucide-react`).
+* **Source of Truth Directory Matrix**:
+  - Core Registry (SSOT): `src/core/registry.ts`
+  - Motion Lego Blocks: `src/components/motion/`
+  - Domain Components: `src/components/`
+  - Routes & Entry Points: `src/App.tsx`, `src/pages/`
+  - AST Schemas & Presets: `src/data/`, `site-configs/template-schema.json`
+  - Bilingual Dictionaries: `src/locales/`
+* **Modular Pipeline Sub-Protocols**: Specialized media generation tracks (such as Remotion Video Engine and Flipbook Animations) are governed by dedicated external protocols in their respective isolated modules.
 
 ---
 
-### 1. RULE OF SINGLE SOURCE OF TRUTH (SSOT) & REGISTRY
-- **ALL** visual, 3D, WebGL canvas, and motion components MUST be registered inside `src/core/registry.ts`.
-- **DO NOT** create isolated visual components inside random feature folders.
-- When creating a new visual element or Remotion preset, place it in `src/core/remotion-presets/` (or `src/components/`) and map its unique ID inside `src/core/registry.ts`.
-- **3D Model Prepend Protocol**: When creating a new 3D model component, always unshift/prepend it to Index 0 of `AVAILABLE_3D_COMPONENTS`. NEVER hardcode static default active strings in form states; the initial active state must ALWAYS be dynamically bound to `AVAILABLE_3D_COMPONENTS[0].value`.
+### 🗄️ 2. SINGLE SOURCE OF TRUTH (SSOT) REGISTRY & LEGO REUSE CONTRACT
+* **Pre-Creation Registry Inspection (Lookup-First Protocol)**:
+  - Before engineering any new component, UI node, or motion block, always inspect `src/core/registry.ts` and existing directories to check if the component or an equivalent already exists.
+  - When an existing component matches requirements: Reuse it directly via props or extend it with lightweight wrapping.
+  - Creating duplicate variants of components already cataloged in the Registry is strictly prevented.
+* **Mandatory Component Registration**:
+  - Every newly authorized Lego wrapper, 3D viewport, or pipeline template must be formally registered in `src/core/registry.ts` with explicit type contracts.
+* **Lego Wrapper Architecture (`src/components/motion/`)**:
+  - Encapsulate complex visual behaviors into reusable wrappers:
+    * `<ViewportStage>`: Full-screen `100dvh` layout enclosure with touch defense.
+    * `<TextReveal>`: Fluid kinetic split-text typography.
+    * `<MagneticButton>`: Physics-based magnetic cursor tracking.
+    * `<PerspectiveCard>`: Hardware-accelerated 3D tilt and depth container.
+  - When engineering page sections, assemble registered Lego blocks rather than recoding raw animation loops inside individual components.
 
 ---
 
-### 2. JSON-DRIVEN EXECUTION (0-CODE WEBSITE OPERATIONS)
-- **DO NOT** rewrite React page layouts or `App.tsx` to add new sections, books, or video showcases.
-- This project operates strictly as a **Visual Projector Engine** driven by lightweight JSON configuration files:
-  - **Main Website Sections & Playground Cards:** `site-configs/template-schema.json`
-  - **3D Interactive Flipbook Books:** `src/data/books/*.json`
-  - **Video Showcase Cards:** `src/data/showcase-config.json`
-- UI modifications MUST be executed by updating JSON configuration files using registered keys from `registry.ts`.
+### ⚙️ 3. JSON-DRIVEN EXECUTION (0-CODE WEBSITE OPERATIONS)
+* **Data-First Maintenance**:
+  - Content, telemetry tags, workflow presets, node connections, and showcase items are defined strictly via JSON AST schemas (`src/data/` and `site-configs/template-schema.json`).
+  - Perform operational and UI adjustments by updating configuration schemas and presets, preserving structural component code for underlying mechanics.
 
 ---
 
-### 3. STANDALONE SHELL STRIPPING & COMPONENT ISOLATION
-- When migrating or integrating external landing pages or standalone repositories (e.g., external 3D repos):
-  - **ALWAYS STRIP AWAY** duplicate `Navbar` and `Footer` components.
-  - **ISOLATE** only the core 3D Canvas / Content Body into `src/components/[feature]/` and `src/lib/video-engine/[feature]/`.
-  - **NEVER** render duplicate navigation bars or footer containers inside integrated feature nodes.
+### 🌐 4. DUAL-LANGUAGE LOCALIZATION CONTRACT (EN / VI)
+* **Bicultural Parity**:
+  - Every UI string, heading, telemetry label, button label, and modal message must exist symmetrically in both English (EN) and Vietnamese (VI).
+  - Localization files reside strictly in `src/locales/` (`translations.ts`, `showcase.en.ts`, `showcase.vi.ts`).
+  - When adding new data attributes to JSON schemas, supply paired bilingual keys (`{ "label_en": "...", "label_vi": "..." }` or matching translation keys). Hardcoding unlocalized static text inside TSX components is prevented.
 
 ---
 
-### 4. DATA CONTRACT, TYPES & ALIAS PATH STANDARDIZATION
-- All visual components MUST implement `UniversalComponentProps` from `src/types/preset.ts` (Standard props: `seed?: string`, `primaryColor?: string`, `speed?: number`, `interactive?: boolean`).
-- Standalone types and datasets MUST be isolated into `src/types/[name].ts` and `src/data/[name].ts`.
-- **STRICT ALIAS PATHS:** Convert ALL relative import paths (`../../types`, `../../data`, `../../utils`) to standard `@/` alias paths (`@/types/...`, `@/data/...`, `@/lib/...`).
+### 📐 5. AWWWARDS-TIER FRONTEND & DESIGN SYSTEM PROTOCOL
+* **Full-Viewport Canvas Standard**:
+  - Primary landing viewports span dynamic full-screen height naturally using `min-h-[100dvh]`.
+  - Maximize horizontal layout immersion using expansive width containers (`max-w-[1720px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16`).
+* **Monumental Swiss Typography**:
+  - Establish extreme scale hierarchy: Primary headlines utilize monumental fluid sizing (`text-5xl sm:text-7xl lg:text-9xl font-black uppercase tracking-tighter leading-[0.88] text-white break-words`).
+  - Supporting telemetry, badges, and coordinate tags use crisp mono typography (`text-xs font-mono text-[#00E5FF] tracking-widest uppercase`).
+  - Body narratives use comfortable, legible sizing (`text-base lg:text-lg text-zinc-300 font-sans leading-relaxed`).
+* **Mobile-First Touch Defense**:
+  - Small viewports (< 768px) apply `pointer-events-none` to decorative 3D canvases to preserve effortless one-thumb vertical page scrolling.
+  - Interactive CTA buttons, dials, and control decks retain `pointer-events-auto`.
 
 ---
 
-### 5. ATOMIC TASK BOUNDARY & STEP-BY-STEP EXECUTION
-- To prevent Context Bloat and Agent Timeout:
-- **DO NOT** request AI Workers to clone, refactor, register, and build in a single turn.
-- Split complex integration tasks into atomic turns:
-    1. *Turn 1:* File migration & path alias standardization.
-    2. *Turn 2:* Registry mapping (`src/core/registry.ts`) & Route creation.
-    3. *Turn 3:* Schema JSON update (`site-configs/template-schema.json`) & Typecheck verification.
+### ⚡ 6. PERFORMANCE & MOTION GOVERNANCE (60 FPS CLIENT RENDER)
+* **Hardware-Accelerated Animation**:
+  - Visual transitions are restricted to composite properties: `transform` (translate, scale, rotate) and `opacity`.
+  - Layout geometry (`width`, `height`, `padding`, `margin`) remains stable during animations to prevent browser reflow.
+* **Physics-Driven Motion**:
+  - Prefer Framer Motion springs (`type: "spring"`, `stiffness: 260`, `damping: 24`) for natural tactile feedback.
+* **3D Canvas Health**:
+  - Cap WebGL pixel ratio at `Math.min(window.devicePixelRatio, 1.5)`.
+  - Clean up requestAnimationFrame loops and dispose of geometries/materials when components unmount.
 
 ---
 
-### 6. TOKEN EFFICIENCY & CONTEXT BOUNDARY
-- When instructing AI Workers, **ALWAYS** point directly to `@src/core/registry.ts` and `@src/types/preset.ts`.
-- **DO NOT** ask AI Workers to scan unneeded folders. Only read `src/components/`, `src/lib/`, `src/core/`, and `site-configs/`.
-
----
-
-### 7. STRICT BUILD SAFETY & GIT DISCIPLINE
-- **NEVER** touch, create, or commit files inside `dist/` or `build/`.
-- **DO NOT** execute `npm run build` inside Agent CI environments to avoid generating untracked build artifacts.
-- Verify code integrity **ONLY** via: `npx tsc --noEmit` (Must pass cleanly with 0 errors).
-- **CLEANUP:** Always delete temporary clone folders (`rm -rf temp-*`) immediately after file migration to prevent nested Git submodule conflicts.
-- Always output clean git commits or atomic feature Pull Requests (`feat/[node-name]`).
-
----
-
-### 8. VISUAL INSPECTION PROTOCOL (FOR VISION-ENABLED AGENTS)
-- For Vision-enabled AI Workers (Cursor Composer, Roo Code, Cline):
-- Inspect rendered browser outputs or design mockups before generating layout fix code.
-- Ensure zero z-index conflicts, no scrollbar leaks, and flawless 60FPS WebGL canvas rendering.
-
-Dưới đây là điều khoản chuẩn kỹ thuật (viết bằng tiếng Anh theo đúng quy chuẩn tệp **`AGENT.md`** để mọi AI Agent khi tiếp quản đều đọc hiểu và tuân thủ 100%), bạn có thể copy và dán trực tiếp vào tệp `AGENT.md` trong REPO:
-
----
-
-
-### 9. MANDATORY RULE: CONTINUOUS LOCALIZATION & i18n SYNCHRONIZATION
-
-To prevent untranslated UI text debt and ensure 100% Vietnamese localization coverage across the entire application, every AI Agent MUST strictly enforce the following protocol:
-
-1. **IMMEDIATE LOCALIZATION UPON SECTION COMPLETION**:
-   - Whenever you create, refactor, or complete any UI section, component, card, form, or modal, you **MUST NOT** leave raw hardcoded English text strings inside JSX/TSX files.
-   - You **MUST** immediately update `src/locales/translations.ts` by adding all newly introduced text strings (titles, subtitles, badges, descriptions, button labels, placeholders) to BOTH the `en` (English) and `vi` (Vietnamese) dictionary blocks before marking the task as complete.
-
-2. **MANDATORY HOOK BINDING**:
-   - All component text nodes must be bound via the translation function `t('key')` or `useTranslation()` hook.
-   - **Forbidden Pattern**:
-     ```tsx
-     // ❌ REJECTED: Hardcoded English text string
-     <h3>STUDIO CONFIGURATOR // NO-CODE 3D FACTORY</h3>
-     <button>ENTER FACTORY NODE ➔</button>
-     ```
-   - **Required Pattern**:
-     ```tsx
-     // ✅ REQUIRED: Registered in translations.ts and bound via t()
-     <h3>{t('headerTitle')}</h3>
-     <button>{t('enterNode')} ➔</button>
-     ```
-
-3. **DEFINITION OF DONE (i18n GATE CHECK)**:
-   - A task or pull request is **STRICTLY INVALID** and cannot be finalized if any newly created UI section contains untranslated English text or lacks corresponding Vietnamese entries in `src/locales/translations.ts`.
-   - Always run `npx tsc --noEmit` to verify zero missing key type errors after updating `translations.ts`.
----
+### 🛡️ 7. ATOMIC TASK EXECUTION & DETERMINISTIC BUILD GATE
+* **Atomic Objective Rule**: Execute exactly one atomic feature, wrapper, or refactor per turn.
+* **Preserve Neighboring State**: When refactoring an interactive block, verify that adjacent controls, audio hooks, and simulation loops remain fully wired.
+* **Deterministic Build Gate**:
+  - Validate every code modification through the local TypeScript compiler:
+    `npx tsc --noEmit`
+  - Deliver changes only when the TypeScript gate exits with **0 errors**.

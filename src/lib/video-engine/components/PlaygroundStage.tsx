@@ -38,7 +38,7 @@ export const PlaygroundStage: React.FC<PlaygroundStageProps> = ({
     <div className={`relative w-full aspect-video border border-zinc-800 bg-black overflow-hidden shadow-2xl ${className}`}>
       <Player
         ref={playerRef}
-        component={LegoVideoOrchestrator}
+        component={LegoVideoOrchestrator as React.ComponentType<any>}
         inputProps={recipe}
         durationInFrames={recipe?.timing?.durationInFrames || 180}
         compositionWidth={recipe?.timing?.width || 1920}

@@ -178,8 +178,15 @@ export class ZodArray<T extends ZodType> extends ZodType<Array<T['_output']>> {
 }
 
 export class ZodObject<T extends Record<string, ZodType>> extends ZodType<{ [K in keyof T]: T[K]['_output'] }> {
+  private isPassthrough = false;
+
   constructor(public shape: T) {
     super();
+  }
+
+  passthrough(): this {
+    this.isPassthrough = true;
+    return this;
   }
 
   parse(val: unknown): { [K in keyof T]: T[K]['_output'] } {
@@ -187,7 +194,7 @@ export class ZodObject<T extends Record<string, ZodType>> extends ZodType<{ [K i
       val = {};
     }
     const raw = val as Record<string, unknown>;
-    const result: any = {};
+    const result: any = this.isPassthrough ? { ...raw } : {};
 
     for (const key of Object.keys(this.shape)) {
       const fieldType = this.shape[key];
@@ -199,13 +206,59 @@ export class ZodObject<T extends Record<string, ZodType>> extends ZodType<{ [K i
   }
 }
 
+export class ZodTuple<T extends [ZodType, ...ZodType[]]> extends ZodType<{ [K in keyof T]: T[K] extends ZodType ? T[K]['_output'] : never }> {
+  constructor(public items: T) {
+    super();
+  }
+
+  parse(val: unknown): { [K in keyof T]: T[K] extends ZodType ? T[K]['_output'] : never } {
+    if (!Array.isArray(val)) {
+      throw new Error('Expected tuple array');
+    }
+    return this.items.map((schema, i) => schema.parse(val[i])) as any;
+  }
+}
+
+export class ZodAny extends ZodType<any> {
+  parse(val: unknown): any {
+    return val;
+  }
+}
+
+export class ZodUnknown extends ZodType<unknown> {
+  parse(val: unknown): unknown {
+    return val;
+  }
+}
+
+export class ZodRecord<ValueType extends ZodType> extends ZodType<Record<string, ValueType['_output']>> {
+  constructor(public valueType: ValueType) {
+    super();
+  }
+
+  parse(val: unknown): Record<string, ValueType['_output']> {
+    if (!val || typeof val !== 'object') {
+      return {};
+    }
+    const result: Record<string, ValueType['_output']> = {};
+    for (const [k, v] of Object.entries(val)) {
+      result[k] = this.valueType.parse(v);
+    }
+    return result;
+  }
+}
+
 export const z = {
   string: () => new ZodString(),
   number: () => new ZodNumber(),
   boolean: () => new ZodBoolean(),
+  any: () => new ZodAny(),
+  unknown: () => new ZodUnknown(),
   array: <T extends ZodType>(element: T) => new ZodArray(element),
+  tuple: <T extends [ZodType, ...ZodType[]]>(items: T) => new ZodTuple(items),
   enum: <U extends string, T extends [U, ...U[]]>(values: T) => new ZodEnum(values),
   object: <T extends Record<string, ZodType>>(shape: T) => new ZodObject(shape),
+  record: <T extends ZodType>(valueType: T) => new ZodRecord(valueType),
 };
 
 export namespace z {
