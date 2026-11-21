@@ -20,22 +20,16 @@ import { WORKFLOW_MODES, type WorkflowMode } from '@/lib/data';
 import ParticleCanvas from '@/components/ParticleCanvas';
 import ThreeHookCanvas from '@/components/ThreeHookCanvas';
 import Monolith3DNode from '@/components/playground/Monolith3DNode';
+import WorkflowSvgCanvas, { type NodeDef } from '@/components/home/WorkflowSvgCanvas';
+import WorkflowCarousel3D, {
+  type WorkflowCarouselItem,
+} from '@/components/home/WorkflowCarousel3D';
 import { useTranslation } from '@/context/useLanguage';
 
 const STUDIO_URL = 'https://dify-n8n-workflow.ai.studio/';
 const VIBEPATH_URL = 'https://vibepath.artificialcraft.space/';
 const ELECTRIC_PURPLE = '#5322ff';
 const ELECTRIC_CYAN = '#00E5FF';
-
-type NodeDef = {
-  id: string;
-  label: string;
-  sub: string;
-  icon: typeof Brain;
-  type: 'dify' | 'n8n';
-  x: number;
-  y: number;
-};
 
 const baseNodes: NodeDef[] = [
   { id: 'webhook', label: 'Webhook', sub: 'trigger.start', icon: Webhook, type: 'n8n', x: 80, y: 60 },
@@ -45,10 +39,6 @@ const baseNodes: NodeDef[] = [
   { id: 'out2', label: 'Slack', sub: 'channel.out', icon: Slack, type: 'n8n', x: 940, y: 120 },
   { id: 'out3', label: 'CRM', sub: 'channel.out', icon: Users, type: 'n8n', x: 940, y: 220 },
 ];
-
-function nodeById(id: string) {
-  return baseNodes.find((n) => n.id === id)!;
-}
 
 function accentColor(accent: 'cyan' | 'purple') {
   return accent === 'cyan' ? ELECTRIC_CYAN : ELECTRIC_PURPLE;
@@ -176,6 +166,42 @@ export default function Hero({ onOpenBatchModal, monolithMode }: HeroProps) {
       simRafRef.current = null;
     }
   }, []);
+
+  const handleSelectMode = useCallback(
+    (i: number) => {
+      if (i < 0 || i >= WORKFLOW_MODES.length || i === activeIdx) return;
+      cancelSim();
+      setSimState('idle');
+      setShowMetrics(false);
+      setActiveNodeIdx(-1);
+      setProgress(0);
+      setActiveIdx(i);
+    },
+    [activeIdx, cancelSim],
+  );
+
+  const carouselItems: WorkflowCarouselItem[] = useMemo(
+    () =>
+      WORKFLOW_MODES.map((m, i) => ({
+        id: m.id,
+        label:
+          i === 0
+            ? t('mode_content_label')
+            : i === 1
+              ? t('mode_lead_label')
+              : t('mode_research_label'),
+        sublabel:
+          i === 0
+            ? t('mode_content_sublabel')
+            : i === 1
+              ? t('mode_lead_sublabel')
+              : t('mode_research_sublabel'),
+        accent: m.accent,
+        accentHex: accentColor(m.accent),
+        badge: `[ 0${i + 1} // WORKFLOW ]`,
+      })),
+    [t],
+  );
 
   const runSimulation = useCallback(() => {
     cancelSim();
@@ -352,120 +378,48 @@ export default function Hero({ onOpenBatchModal, monolithMode }: HeroProps) {
           </div>
         </div>
 
-        {/* Simulation Control Sandbox */}
+        {/* Unified Automation Terminal Cockpit: 3D Coverflow -> Action Control Bar -> SVG Stage */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.24 }}
-          className="mt-12 mx-auto max-w-3xl font-mono"
-        >
-          <div className="border border-zinc-800 bg-zinc-950 p-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-            <div className="flex items-center gap-2 flex-1 border border-zinc-800 bg-[#09090b] px-3 py-2">
-              <Link2 className="h-4 w-4 text-zinc-500 shrink-0" />
-              <input
-                type="text"
-                value={simUrl}
-                onChange={(e) => {
-                  setSimUrl(e.target.value);
-                  setActivePreset(null);
-                }}
-                placeholder={t('sim_placeholder')}
-                className="bg-transparent text-[12px] text-zinc-200 placeholder-zinc-600 outline-none flex-1 font-mono min-w-0"
-              />
-            </div>
-            <button
-              onClick={runSimulation}
-              disabled={isSimulating}
-              className="inline-flex items-center justify-center gap-2 border border-[#5322ff] bg-[#5322ff]/20 text-[12px] font-bold px-5 py-2.5 text-white transition-all hover:bg-[#5322ff] shrink-0 disabled:opacity-50"
-            >
-              {isSimulating ? (
-                <>
-                  <Activity className="h-4 w-4 animate-pulse text-cyan-glow" />
-                  {t('sim_executing')}
-                </>
-              ) : (
-                <>
-                  <Play className="h-3.5 w-3.5 text-cyan-glow" />
-                  {t('sim_run_btn')}
-                </>
-              )}
-            </button>
-          </div>
-          <div className="flex flex-wrap items-center gap-2 mt-3 justify-center">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-600 mr-1">
-              {t('preset_engine')}
-            </span>
-            {presets.map((p) => (
-              <button
-                key={p.label}
-                onClick={() => handlePreset(p)}
-                className={`border px-3 py-1 font-mono text-[11px] transition-colors ${
-                  activePreset === p.label
-                    ? 'border-[#00E5FF] bg-[#00E5FF]/10 text-[#00E5FF]'
-                    : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-white hover:border-zinc-700'
-                }`}
-              >
-                {p.label}
-              </button>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Workflow Simulator Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.3 }}
+          transition={{ duration: 0.65, delay: 0.25 }}
           className="mt-10 lg:mt-12 font-mono"
         >
-          {/* Mode selector */}
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-2 mb-4">
-            <span className="font-mono text-[11px] text-zinc-500 uppercase tracking-widest sm:mr-2">
-              {t('workflow_engine')}
-            </span>
-            <div className="inline-flex flex-wrap gap-1 border border-zinc-800 bg-zinc-950 p-1">
-              {WORKFLOW_MODES.map((m, i) => {
-                const isActive = i === activeIdx;
-                const c = accentColor(m.accent);
-                const displayLabel = i === 0 ? t('mode_content_label') : i === 1 ? t('mode_lead_label') : t('mode_research_label');
-                return (
-                  <button
-                    key={m.id}
-                    onClick={() => setActiveIdx(i)}
-                    className={`relative px-4 py-1.5 text-[12px] font-mono font-medium transition-colors ${
-                      isActive ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
-                    }`}
-                  >
-                    {isActive && (
-                      <motion.div
-                        layoutId="mode-pill"
-                        className="absolute inset-0 border border-zinc-700"
-                        style={{ background: `${c}18` }}
-                        transition={{ type: 'spring', stiffness: 400, damping: 35 }}
-                      />
-                    )}
-                    <span className="relative">{displayLabel}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+          {/* Step A & B: Section Header + 3D Perspective Coverflow Deck */}
+          <WorkflowCarousel3D
+            items={carouselItems}
+            activeIdx={activeIdx}
+            onSelectMode={handleSelectMode}
+            title={t('workflow_engine')}
+            subtitle="// 3D KINETIC COVERFLOW"
+            config={{
+              cardWidth: 360,
+              cardGap: 24,
+              perspectiveDistance: 1200,
+              zDepthOffset: 60,
+              rotationAngle: 18,
+              springStiffness: 260,
+              springDamping: 24,
+            }}
+          />
 
-          {/* Simulator card */}
-          <div className="relative border border-zinc-800 bg-[#0b0b0f] overflow-hidden">
-            {/* Top Bar */}
-            <div className="flex items-center justify-between px-4 py-2 border-b border-zinc-800 bg-zinc-950">
+          {/* Step C: Unified Cockpit Window */}
+          <div className="relative border border-[#27272A] bg-[#09090B] mt-4 overflow-hidden">
+            {/* Terminal Window Bar */}
+            <div className="flex items-center justify-between px-4 py-2.5 border-b border-[#1F1F23] bg-zinc-950 text-xs font-mono text-zinc-400">
               <div className="flex items-center gap-2">
-                <span className="h-2 w-2 bg-zinc-700" />
-                <span className="h-2 w-2 bg-zinc-700" />
-                <span className="h-2 w-2 bg-zinc-700" />
-                <span className="ml-3 font-mono text-[11px] text-zinc-400">
+                <span className="flex gap-1.5">
+                  <span className="h-2 w-2 bg-zinc-700" />
+                  <span className="h-2 w-2 bg-zinc-700" />
+                  <span className="h-2 w-2 bg-zinc-700" />
+                </span>
+                <span className="ml-2 text-[11px] text-zinc-400">
                   ~/artcraft/engine/{mode.id}.json
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <span
-                  className="font-mono text-[10px] px-2 py-0.5 border"
+                  className="font-mono text-[10px] px-2 py-0.5 border font-bold"
                   style={{
                     borderColor: isSimulating ? ELECTRIC_PURPLE : accent,
                     color: isSimulating ? ELECTRIC_CYAN : accent,
@@ -479,10 +433,65 @@ export default function Hero({ onOpenBatchModal, monolithMode }: HeroProps) {
               </div>
             </div>
 
-            {/* SVG canvas + side panel */}
-            <div className="grid lg:grid-cols-[1fr_300px]">
+            {/* Injected Action Control Bar: URL Input + RUN TEST CTA + Sample Presets */}
+            <div className="p-4 lg:px-6 lg:py-4 border-b border-[#1F1F23] bg-[#05050A]">
+              <div className="flex flex-col lg:flex-row gap-3 items-stretch lg:items-center justify-between">
+                <div className="flex-1 flex items-center gap-2 border border-[#27272A] bg-[#09090B] px-3 py-2 text-xs font-mono focus-within:border-[#00E5FF]/60 transition-colors">
+                  <Link2 className="h-4 w-4 text-zinc-500 shrink-0" />
+                  <input
+                    type="text"
+                    value={simUrl}
+                    onChange={(e) => {
+                      setSimUrl(e.target.value);
+                      setActivePreset(null);
+                    }}
+                    placeholder={t('sim_placeholder')}
+                    className="bg-transparent w-full text-[12px] text-zinc-200 placeholder-zinc-600 outline-none font-mono min-w-0"
+                  />
+                </div>
+                <button
+                  onClick={runSimulation}
+                  disabled={isSimulating}
+                  className="inline-flex items-center justify-center gap-2 bg-[#5322FF] hover:bg-[#00E5FF] hover:text-black text-white font-mono font-bold px-5 py-2.5 text-xs uppercase tracking-wider transition-all shrink-0 disabled:opacity-50 cursor-pointer"
+                >
+                  {isSimulating ? (
+                    <>
+                      <Activity className="h-3.5 w-3.5 animate-pulse" />
+                      {t('sim_executing')}
+                    </>
+                  ) : (
+                    <>
+                      <Play className="h-3.5 w-3.5" />
+                      {t('sim_run_btn')}
+                    </>
+                  )}
+                </button>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2 mt-3 text-[11px] font-mono text-zinc-400">
+                <span className="text-[10px] uppercase tracking-widest text-zinc-500 mr-1">
+                  {t('preset_engine')}
+                </span>
+                {presets.map((p) => (
+                  <button
+                    key={p.label}
+                    onClick={() => handlePreset(p)}
+                    className={`border px-2.5 py-1 font-mono text-[11px] transition-colors cursor-pointer ${
+                      activePreset === p.label
+                        ? 'border-[#00E5FF] bg-[#00E5FF]/10 text-[#00E5FF]'
+                        : 'border-[#27272A] bg-[#09090B] text-zinc-400 hover:text-white hover:border-zinc-600'
+                    }`}
+                  >
+                    {p.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* SVG Canvas + Telemetry Side Panel */}
+            <div className="grid grid-cols-1 lg:grid-cols-12">
               {/* Canvas */}
-              <div className="relative bg-[#09090b] min-h-[320px] sm:min-h-[380px]">
+              <div className="lg:col-span-8 relative bg-[#09090b] min-h-[300px] sm:min-h-[360px]">
                 {/* Progress bar */}
                 {isSimulating && (
                   <div className="absolute top-0 inset-x-0 h-1 bg-zinc-800 z-10">
@@ -497,95 +506,16 @@ export default function Hero({ onOpenBatchModal, monolithMode }: HeroProps) {
                 )}
 
                 <AnimatePresence mode="wait">
-                  <motion.svg
+                  <WorkflowSvgCanvas
                     key={mode.id}
-                    viewBox="0 0 1080 300"
-                    className="w-full h-full"
-                    preserveAspectRatio="xMidYMid meet"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {/* Edges */}
-                    {renderEdges.map(([from, to]) => {
-                      const a = nodeById(from);
-                      const b = renderNodes.find((n) => n.id === to)!;
-                      const fromIdx = nodeIndexMap[from];
-                      const toIdx = nodeIndexMap[to];
-                      const edgeActive =
-                        isSimulating &&
-                        (fromIdx === activeNodeIdx || toIdx === activeNodeIdx);
-                      const mx = (a.x + b.x) / 2;
-                      const path = `M ${a.x + 64} ${a.y + 28} C ${mx} ${a.y + 28}, ${mx} ${b.y + 28}, ${b.x} ${b.y + 28}`;
-                      return (
-                        <g key={`${from}-${to}`}>
-                          <path d={path} fill="none" stroke="rgba(63,63,70,0.6)" strokeWidth="1.5" />
-                          <path
-                            d={path}
-                            fill="none"
-                            stroke={edgeActive ? ELECTRIC_CYAN : accent}
-                            strokeWidth={edgeActive ? '2.5' : '1.5'}
-                            opacity={edgeActive ? 1 : 0.7}
-                          />
-                        </g>
-                      );
-                    })}
-
-                    {/* Nodes */}
-                    {renderNodes.map((n, ni) => {
-                      const isBrain = n.type === 'dify';
-                      const isActive = isSimulating && ni === activeNodeIdx;
-                      return (
-                        <g key={n.id} transform={`translate(${n.x}, ${n.y})`}>
-                          {isActive && (
-                            <rect
-                              x="-4"
-                              y="-4"
-                              width="136"
-                              height="64"
-                              fill="none"
-                              stroke={ELECTRIC_CYAN}
-                              strokeWidth="2"
-                            />
-                          )}
-                          <rect
-                            width="128"
-                            height="56"
-                            fill="#0b0b0f"
-                            stroke={
-                              isActive
-                                ? ELECTRIC_CYAN
-                                : isBrain
-                                  ? `${accent}`
-                                  : 'rgba(63,63,70,0.8)'
-                            }
-                            strokeWidth="1"
-                          />
-                          <circle cx="18" cy="28" r="4" fill={isActive ? ELECTRIC_CYAN : isBrain ? accent : '#71717a'} />
-                          <text
-                            x="34"
-                            y="25"
-                            fill="#fafafa"
-                            fontSize="11"
-                            fontWeight="600"
-                            fontFamily="JetBrains Mono, monospace"
-                          >
-                            {n.label}
-                          </text>
-                          <text
-                            x="34"
-                            y="40"
-                            fill="#71717a"
-                            fontSize="9"
-                            fontFamily="JetBrains Mono, monospace"
-                          >
-                            {n.sub}
-                          </text>
-                        </g>
-                      );
-                    })}
-                  </motion.svg>
+                    renderNodes={renderNodes}
+                    renderEdges={renderEdges}
+                    nodeIndexMap={nodeIndexMap}
+                    activeNodeIdx={activeNodeIdx}
+                    isSimulating={isSimulating}
+                    accent={accent}
+                    progress={progress}
+                  />
                 </AnimatePresence>
 
                 {/* Metrics popup */}
@@ -651,7 +581,7 @@ export default function Hero({ onOpenBatchModal, monolithMode }: HeroProps) {
               </div>
 
               {/* Side panel */}
-              <div className="border-t lg:border-t-0 lg:border-l border-zinc-800 bg-zinc-950 p-5 flex flex-col font-mono">
+              <div className="lg:col-span-4 border-t lg:border-t-0 lg:border-l border-[#1F1F23] bg-zinc-950 p-5 flex flex-col font-mono">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={mode.id}
