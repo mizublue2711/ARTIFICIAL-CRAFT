@@ -8,15 +8,32 @@ import {
   type PipelineBlueprintsCatalog,
 } from '../schemas/workflow.schema';
 import rawBlueprints from '../pipeline-blueprints.json';
+import rawShowcaseBlueprints from '../showcase-blueprints.json';
 
 /**
  * Normalizes blueprint source data: handles both flat arrays and catalog objects.
  */
-const getRawBlueprintList = (): unknown[] => {
-  if (Array.isArray(rawBlueprints)) {
-    return rawBlueprints;
+const normalizeBlueprintList = (source: unknown): unknown[] => {
+  if (Array.isArray(source)) {
+    return source;
   }
-  return (rawBlueprints as { blueprints?: unknown[] })?.blueprints ?? [];
+  return (source as { blueprints?: unknown[] })?.blueprints ?? [];
+};
+
+const getRawBlueprintList = (): unknown[] => normalizeBlueprintList(rawBlueprints);
+
+/**
+ * Validates and retrieves Hero showcase presentation blueprints through Zod validation.
+ * Isolated from production execution schemas in pipeline-blueprints.json.
+ */
+export const getShowcaseBlueprints = (): WorkflowBlueprint[] => {
+  const target = normalizeBlueprintList(rawShowcaseBlueprints);
+  const parsed = z.array(WorkflowBlueprintSchema).safeParse(target);
+  if (!parsed.success) {
+    console.warn('[DAL Gate] Showcase schema mismatch:', parsed.error.format());
+    return target as unknown as WorkflowBlueprint[];
+  }
+  return parsed.data;
 };
 
 /**
@@ -73,7 +90,7 @@ export const getPipelineBlueprintsCatalog = (): PipelineBlueprintsCatalog => {
   return parsed.data;
 };
 
-export { rawBlueprints };
+export { rawBlueprints, rawShowcaseBlueprints };
 export type {
   WorkflowBlueprint,
   WorkflowNodeDef,

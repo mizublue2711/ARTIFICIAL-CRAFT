@@ -602,6 +602,57 @@ export interface Translations {
   // Showcase Module
   showcase: ShowcaseTranslations;
 
+  // Cockpit Module
+  cockpit: CockpitTranslations;
+
+}
+
+export interface CockpitTranslations {
+  workflow_engine: string;
+  coverflow_subtitle: string;
+  badge_blueprint: string;
+  default_category: string;
+  run_id: string;
+  exec_status_executing: string;
+  exec_status_ready: string;
+  sim_placeholder: string;
+  sim_run_btn: string;
+  sim_executing: string;
+  preset_engine: string;
+  preset_swiss: string;
+  preset_brutalist: string;
+  preset_financial: string;
+  exec_completed_title: string;
+  metric_deterministic: string;
+  metric_deterministic_val: string;
+  metric_token_cost: string;
+  metric_token_cost_val: string;
+  metric_craft_precision: string;
+  metric_craft_precision_val: string;
+  run_another_sim: string;
+  stat_nodes: string;
+  stat_nodes_unit: string;
+  stat_tier: string;
+  stat_density: string;
+  stat_edges_unit: string;
+  output_nodes: string;
+  telemetry_ok: string;
+  telemetry_schema_validated: string;
+  telemetry_nodes_mounted: string;
+  telemetry_active: string;
+  telemetry_dag_edges: string;
+  telemetry_verified: string;
+  vault_bridge_title: string;
+  vault_bridge_desc: string;
+  blueprint_dify_n8n_lego_showcase_title: string;
+  blueprint_dify_n8n_lego_showcase_desc: string;
+  blueprint_image_pim_showcase_title: string;
+  blueprint_image_pim_showcase_desc: string;
+  blueprint_contour_shadow_showcase_title: string;
+  blueprint_contour_shadow_showcase_desc: string;
+  blueprint_grafx_3d_showcase_title: string;
+  blueprint_grafx_3d_showcase_desc: string;
+  [key: string]: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -1213,6 +1264,54 @@ export const translations: Record<Language, Translations> = {
 
     // Showcase Module
     showcase: showcaseEn,
+
+    // Cockpit Module
+    cockpit: {
+      workflow_engine: 'AUTOMATION ENGINE:',
+      coverflow_subtitle: '// 3D KINETIC COVERFLOW',
+      badge_blueprint: 'BLUEPRINT',
+      default_category: '// WORKFLOW BLUEPRINT',
+      run_id: 'RUN #08942',
+      exec_status_executing: 'PROCESSING',
+      exec_status_ready: 'READY',
+      sim_placeholder: 'Paste endpoint or URL to trigger workflow...',
+      sim_run_btn: 'RUN WORKFLOW TEST',
+      sim_executing: 'PROCESSING STEP...',
+      preset_engine: 'SAMPLE WORKFLOW:',
+      preset_swiss: 'Design System Template',
+      preset_brutalist: 'Project Overview Deck',
+      preset_financial: 'Financial Summary Report',
+      exec_completed_title: 'PROCESSING COMPLETE',
+      metric_deterministic: 'Reliability',
+      metric_deterministic_val: '100%',
+      metric_token_cost: 'Resource Cost',
+      metric_token_cost_val: '$0.0018',
+      metric_craft_precision: 'Design Quality',
+      metric_craft_precision_val: 'Sub-Pixel',
+      run_another_sim: 'RUN ANOTHER TEST',
+      stat_nodes: 'Pipeline Nodes',
+      stat_nodes_unit: 'Nodes',
+      stat_tier: 'Security Tier',
+      stat_density: 'DAG Density',
+      stat_edges_unit: 'Edges',
+      output_nodes: 'WORKFLOW RESULTS',
+      telemetry_ok: '[OK]',
+      telemetry_schema_validated: 'dal.pipeline → schema validated (0.4ms)',
+      telemetry_nodes_mounted: 'nodes.mounted →',
+      telemetry_active: 'active',
+      telemetry_dag_edges: 'dag.edges →',
+      telemetry_verified: 'verified',
+      vault_bridge_title: 'GRAFX STUDIO 3D INTERACTIVE BRIDGE',
+      vault_bridge_desc: 'Real-time bridge connecting GraFx Studio SDK to inject Cloudflare R2 texture variables directly into interactive Three.js WebGL viewports.',
+      blueprint_dify_n8n_lego_showcase_title: 'DIFY + N8N JSON-DRIVEN LEGO PROTOCOL',
+      blueprint_dify_n8n_lego_showcase_desc: 'Hybrid architecture decoupling Reasoning Brain (Dify) and Execution Muscle (n8n), saving 98% token costs via deterministic JSON AST forging.',
+      blueprint_image_pim_showcase_title: 'E2E AI IMAGE & SHADOW STUDIO PIPELINE',
+      blueprint_image_pim_showcase_desc: 'Automated product image studio: background removal, 75% grid fitting, 2-layer contour shadow synthesis, and Cloudflare R2 CDN delivery.',
+      blueprint_contour_shadow_showcase_title: 'STANDALONE 4-NODE CONTOUR SHADOW COMPOSITOR',
+      blueprint_contour_shadow_showcase_desc: 'CPU-native 4-node shadow compositor completing in <80ms with non-destructive dual-layer contact and ambient drop shadow control.',
+      blueprint_grafx_3d_showcase_title: 'GRAFX STUDIO 3D INTERACTIVE BRIDGE',
+      blueprint_grafx_3d_showcase_desc: 'Real-time bridge connecting GraFx Studio SDK to inject Cloudflare R2 texture variables directly into interactive Three.js WebGL viewports.',
+    },
   },
   vi: {
     // Navigation
@@ -1822,5 +1921,53 @@ export const translations: Record<Language, Translations> = {
 
     // Showcase Module
     showcase: showcaseVi,
+
+    // Cockpit Module
+    cockpit: {
+      workflow_engine: 'ĐỘNG CƠ TỰ ĐỘNG HÓA:',
+      coverflow_subtitle: '// COVERFLOW ĐỘNG LỰC HỌC 3D',
+      badge_blueprint: 'BẢN THIẾT KẾ',
+      default_category: '// BẢN THIẾT KẾ QUY TRÌNH',
+      run_id: 'PHIÊN #08942',
+      exec_status_executing: 'ĐANG XỬ LÝ',
+      exec_status_ready: 'SẴN SÀNG',
+      sim_placeholder: 'Dán URL endpoint để kích hoạt quy trình...',
+      sim_run_btn: 'CHẠY KIỂM THỬ QUY TRÌNH',
+      sim_executing: 'ĐANG XỬ LÝ BƯỚC...',
+      preset_engine: 'QUY TRÌNH MẪU:',
+      preset_swiss: 'Mẫu Hệ Thống Thiết Kế',
+      preset_brutalist: 'Hồ Sơ Tổng Quan Dự Án',
+      preset_financial: 'Báo Cáo Tóm Tắt Tài Chính',
+      exec_completed_title: 'HOÀN THÀNH XỬ LÝ',
+      metric_deterministic: 'Độ Tin Cậy',
+      metric_deterministic_val: '100%',
+      metric_token_cost: 'Chi Phí Tài Nguyên',
+      metric_token_cost_val: '$0.0018',
+      metric_craft_precision: 'Chất Lượng Thiết Kế',
+      metric_craft_precision_val: 'Cấp Độ Sub-Pixel',
+      run_another_sim: 'CHẠY KIỂM THỬ KHÁC',
+      stat_nodes: 'Số Nút Quy Trình',
+      stat_nodes_unit: 'Nút',
+      stat_tier: 'Cấp Bảo Mật',
+      stat_density: 'Mật Độ DAG',
+      stat_edges_unit: 'Cạnh',
+      output_nodes: 'KẾT QUẢ QUY TRÌNH',
+      telemetry_ok: '[OK]',
+      telemetry_schema_validated: 'dal.pipeline → schema đã xác thực (0.4ms)',
+      telemetry_nodes_mounted: 'nodes.mounted →',
+      telemetry_active: 'kích hoạt',
+      telemetry_dag_edges: 'dag.edges →',
+      telemetry_verified: 'đã xác minh',
+      vault_bridge_title: 'CẦU NỐI TƯƠNG TÁC 3D GRAFX STUDIO REAL-TIME',
+      vault_bridge_desc: 'Cầu nối thời gian thực tích hợp GraFx Studio SDK giúp đồng bộ hóa texture R2 động vào không gian viewport 3D Three.js.',
+      blueprint_dify_n8n_lego_showcase_title: 'GIAO THỨC LEGO REGISTRY ĐIỀU PHỐI JSON DIFY & N8N',
+      blueprint_dify_n8n_lego_showcase_desc: 'Kiến trúc lai tách biệt não bộ lập luận (Dify) và cơ bắp thực thi (n8n), tiết kiệm 98% chi phí token thông qua giao thức sinh cấu trúc JSON AST.',
+      blueprint_image_pim_showcase_title: 'PIPELINE XỬ LÝ ẢNH & BÓNG E-COMMERCE TỰ ĐỘNG E2E',
+      blueprint_image_pim_showcase_desc: 'Quy trình xử lý ảnh sản phẩm tự động: tách nền tốc độ cao, căn tỷ lệ khung lưới 75%, đổ bóng 2 tầng contour và đẩy lên Cloudflare R2 CDN.',
+      blueprint_contour_shadow_showcase_title: 'BỘ GHÉP ĐỔ BÓNG CONTOUR 4 NODE ĐỘC LẬP',
+      blueprint_contour_shadow_showcase_desc: 'Bộ ghép bóng độc lập 4 node chạy trên CPU trong <80ms, cho phép tinh chỉnh độ mờ và độ sâu bóng đa tầng không phá hủy ảnh gốc.',
+      blueprint_grafx_3d_showcase_title: 'CẦU NỐI TƯƠNG TÁC 3D GRAFX STUDIO REAL-TIME',
+      blueprint_grafx_3d_showcase_desc: 'Cầu nối thời gian thực tích hợp GraFx Studio SDK giúp đồng bộ hóa texture R2 động vào không gian viewport 3D Three.js.',
+    },
   },
 };

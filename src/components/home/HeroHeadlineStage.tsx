@@ -50,26 +50,26 @@ export const HeroHeadlineStage: React.FC<HeroHeadlineStageProps> = ({
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45 }}
-            className="inline-flex items-center gap-2 text-xs font-mono text-[#00E5FF] tracking-widest uppercase mb-6 pb-2 border-b border-[#1F1F23] w-fit"
+            className="inline-flex items-center gap-2 type-telemetry-tag mb-6 pb-2 border-b border-[#1F1F23] w-fit"
           >
             <span className="w-2 h-2 rounded-full bg-[#00E5FF] animate-pulse" />
             AUTONOMOUS WEB ARCHITECTURE // 2026
           </motion.div>
 
-          {/* Monumental Headline (Fluid scale, stays cleanly within left 50% column) */}
+          {/* Monumental Headline (Mapped to central type-display-hero token) */}
           <motion.h1
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.06 }}
-            className="flex flex-col font-black uppercase tracking-tighter leading-[0.86] text-white mb-6 select-none"
+            className="type-display-hero flex flex-col mb-6 select-none"
           >
-            <span className="text-[clamp(2.5rem,5vw,6.25rem)] whitespace-nowrap">
+            <span className="whitespace-nowrap">
               AUTONOMOUS
             </span>
-            <span className="text-[clamp(2.5rem,5vw,6.25rem)] whitespace-nowrap">
+            <span className="whitespace-nowrap">
               CODE
             </span>
-            <span className="text-[clamp(2.5rem,5vw,6.25rem)] whitespace-nowrap text-[#00E5FF]">
+            <span className="whitespace-nowrap text-[#00E5FF]">
               ARCHITECT.
             </span>
           </motion.h1>
@@ -78,7 +78,7 @@ export const HeroHeadlineStage: React.FC<HeroHeadlineStageProps> = ({
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.12 }}
-            className="text-base sm:text-lg lg:text-xl text-zinc-400 font-sans max-w-xl leading-relaxed mb-8"
+            className="type-body-narrative max-w-xl mb-8"
           >
             Clean graphic design powered by reliable autonomous workflows.
             Engineered for deterministic client-side execution.
@@ -135,7 +135,7 @@ export const HeroHeadlineStage: React.FC<HeroHeadlineStageProps> = ({
       </div>
 
       {/* Bottom Viewport Telemetry Dock */}
-      <div className="w-full px-6 sm:px-12 lg:px-16 py-4 flex items-center justify-between text-[11px] font-mono text-zinc-500 border-t border-[#1F1F23] z-10">
+      <div className="w-full px-6 sm:px-12 lg:px-16 py-4 flex items-center justify-between type-telemetry-tag text-zinc-500 border-t border-[#1F1F23] z-10">
         <span>ENGINE: VITE_SPA // 60FPS</span>
         <div
           role="button"

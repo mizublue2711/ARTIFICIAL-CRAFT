@@ -7,6 +7,7 @@ import { ViewportOverlay } from '@/core/monolith-engine/src/components/ViewportO
 import { BrandDossierModal } from '@/core/monolith-engine/src/components/BrandDossierModal';
 import { Sliders, Minimize2, Play, Pause, RotateCcw } from 'lucide-react';
 import { UniversalComponentProps } from '@/types/preset';
+import { useInViewport } from '@/hooks/useInViewport';
 
 export interface Monolith3DNodeProps extends UniversalComponentProps {
   mode?: 'compact' | 'studio';
@@ -21,6 +22,7 @@ export const Monolith3DNode: React.FC<Monolith3DNodeProps> = ({
   autoPulseSpeed = 1.0,
   className = '',
 }) => {
+  const { ref: viewportRef, isInView } = useInViewport();
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneControllerRef = useRef<SceneController | null>(null);
   const synthRef = useRef<SynthesizerEngine | null>(null);
@@ -57,6 +59,11 @@ export const Monolith3DNode: React.FC<Monolith3DNodeProps> = ({
   useEffect(() => {
     playbackSpeedRef.current = playbackSpeed;
   }, [playbackSpeed]);
+
+  // Pause WebGL rAF loop when scrolled out of viewport
+  useEffect(() => {
+    sceneControllerRef.current?.setPaused(!isInView);
+  }, [isInView]);
 
   // Initialize Three.js Scene and Synth with proper cleanup on unmount
   useEffect(() => {
@@ -221,7 +228,10 @@ export const Monolith3DNode: React.FC<Monolith3DNodeProps> = ({
   // MODE: COMPACT (Optimized for Hero Background or embedded previews)
   if (mode === 'compact') {
     return (
-      <div className={`relative w-full h-full min-h-[300px] overflow-hidden bg-[#04050a] ${className}`}>
+      <div
+        ref={viewportRef}
+        className={`relative w-full h-full min-h-[300px] overflow-hidden bg-[#04050a] ${className}`}
+      >
         {/* Three.js 60fps Live Procedural WebGL Canvas */}
         <div
           ref={mountRef}
@@ -328,7 +338,10 @@ export const Monolith3DNode: React.FC<Monolith3DNodeProps> = ({
 
   // MODE: STUDIO (Full Control Matrix & Telemetry Console)
   return (
-    <div className={`relative w-full h-full min-h-[600px] overflow-hidden bg-[#04050a] flex flex-col ${className}`}>
+    <div
+      ref={viewportRef}
+      className={`relative w-full h-full min-h-[600px] overflow-hidden bg-[#04050a] flex flex-col ${className}`}
+    >
       {/* 3D WebGL Canvas */}
       <div
         ref={mountRef}

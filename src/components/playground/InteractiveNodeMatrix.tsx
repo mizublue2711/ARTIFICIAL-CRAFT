@@ -47,18 +47,18 @@ export const UnifiedHubCard: React.FC<HubCardProps> = ({
   <div className="p-4 border border-[#5322FF]/40 bg-[#09090B] hover:border-[#00E5FF] transition-all flex flex-col justify-between gap-4 group h-full">
     <div className="space-y-2.5">
       {/* Top Badge Line */}
-      <div className="flex items-center justify-between text-[10px] font-mono">
-        <span className="text-[#5322FF] font-bold">{nodeId}</span>
-        <span className="px-2 py-0.5 bg-[#00E5FF]/10 text-[#00E5FF] border border-[#00E5FF]/30 font-bold uppercase">
+      <div className="flex items-center justify-between">
+        <span className="type-telemetry-tag text-[#5322FF] font-bold">{nodeId}</span>
+        <span className="px-2 py-0.5 bg-[#00E5FF]/10 type-telemetry-tag border border-[#00E5FF]/30 font-bold">
           {badge}
         </span>
       </div>
 
       {/* Title & Description */}
-      <h3 className="text-sm font-bold text-white uppercase tracking-wider group-hover:text-[#00E5FF] transition">
+      <h3 className="type-card-title group-hover:text-[#00E5FF] transition">
         {title}
       </h3>
-      <p className="text-xs text-zinc-400 font-sans leading-relaxed line-clamp-3">
+      <p className="type-body-narrative line-clamp-3">
         {description}
       </p>
 
@@ -67,7 +67,7 @@ export const UnifiedHubCard: React.FC<HubCardProps> = ({
         {techStack.map((tech) => (
           <span
             key={tech}
-            className="px-1.5 py-0.5 bg-zinc-900 border border-zinc-800 text-[9px] font-mono text-zinc-300"
+            className="px-1.5 py-0.5 bg-zinc-900 border border-zinc-800 type-node-meta text-zinc-300"
           >
             {tech}
           </span>
@@ -81,7 +81,7 @@ export const UnifiedHubCard: React.FC<HubCardProps> = ({
         href={onClickUrl}
         target={onClickUrl.startsWith('http') ? '_blank' : '_self'}
         rel="noopener noreferrer"
-        className="w-full min-h-[44px] py-2.5 px-4 bg-[#5322FF] hover:bg-[#5322FF]/80 text-white font-mono text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 text-center touch-manipulation"
+        className="w-full min-h-[44px] py-2.5 px-4 bg-[#5322FF] hover:bg-[#5322FF]/80 type-telemetry-tag text-white font-bold transition flex items-center justify-center gap-2 text-center touch-manipulation"
       >
         <span>{ctaLabel.endsWith('➔') ? ctaLabel : `${ctaLabel} ➔`}</span>
       </a>
@@ -89,7 +89,7 @@ export const UnifiedHubCard: React.FC<HubCardProps> = ({
       <button
         type="button"
         onClick={onAction}
-        className="w-full min-h-[44px] py-2.5 px-4 bg-[#5322FF] hover:bg-[#5322FF]/80 text-white font-mono text-xs font-bold uppercase tracking-wider transition flex items-center justify-center gap-2 text-center touch-manipulation"
+        className="w-full min-h-[44px] py-2.5 px-4 bg-[#5322FF] hover:bg-[#5322FF]/80 type-telemetry-tag text-white font-bold transition flex items-center justify-center gap-2 text-center touch-manipulation"
       >
         <span>{ctaLabel.endsWith('➔') ? ctaLabel : `${ctaLabel} ➔`}</span>
       </button>
@@ -198,21 +198,21 @@ export const InteractiveNodeMatrix: React.FC<UniversalComponentProps> = ({
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00E5FF]/10 border border-[#00E5FF]/40 text-[#00E5FF] text-[11px] font-bold uppercase mb-4 tracking-widest">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00E5FF]/10 border border-[#00E5FF]/40 type-telemetry-tag font-bold mb-4">
               <span className="w-1.5 h-1.5 rounded-full bg-[#00E5FF] animate-ping" />
               {t('matrixTag')}
             </div>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight uppercase">
+            <h2 className="type-section-title">
               {t('matrixHeading')}
             </h2>
-            <p className="mt-3 text-sm text-zinc-400 max-w-xl font-sans">
+            <p className="mt-3 type-body-narrative max-w-xl">
               {t('matrixSubheading')}
             </p>
           </div>
 
           <Link
             to="/playground"
-            className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#00E5FF] hover:bg-[#00E5FF]/90 text-black font-bold text-xs uppercase tracking-wider transition shadow-[0_0_20px_rgba(0,229,255,0.4)] shrink-0"
+            className="inline-flex items-center gap-2 px-6 py-3.5 bg-[#00E5FF] hover:bg-[#00E5FF]/90 type-telemetry-tag text-black font-bold transition shadow-[0_0_20px_rgba(0,229,255,0.4)] shrink-0"
           >
             <span>{t('btnLaunchFullMatrix')}</span>
             <ChevronRight className="w-4 h-4" />
@@ -238,10 +238,10 @@ export const InteractiveNodeMatrix: React.FC<UniversalComponentProps> = ({
                   {/* Card Top */}
                   <div>
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-[10px] text-zinc-500 font-bold tracking-widest uppercase">
+                      <span className="type-telemetry-tag text-zinc-500 font-bold">
                         {node.number || 'NODE 01'}
                       </span>
-                      <span className="text-[9px] px-2 py-0.5 border border-[#00E5FF]/60 text-[#00E5FF] bg-[#00E5FF]/10 font-bold uppercase">
+                      <span className="type-telemetry-tag px-2 py-0.5 border border-[#00E5FF]/60 bg-[#00E5FF]/10 font-bold">
                         {node.badge || 'FLAGSHIP HERO'}
                       </span>
                     </div>
@@ -250,22 +250,22 @@ export const InteractiveNodeMatrix: React.FC<UniversalComponentProps> = ({
                       <div className="p-2 border border-[#00E5FF]/40 text-[#00E5FF] bg-[#00E5FF]/10">
                         <Icon className="w-5 h-5" />
                       </div>
-                      <h3 className="text-base font-bold text-white uppercase tracking-tight group-hover:text-[#00E5FF] transition-colors">
+                      <h3 className="type-card-title group-hover:text-[#00E5FF] transition-colors">
                         {node.title}
                       </h3>
                     </div>
 
-                    <p className="text-xs text-zinc-400 leading-relaxed font-sans mb-6">
+                    <p className="type-body-narrative mb-6">
                       {node.description || node.subtitle}
                     </p>
                   </div>
 
                   {/* Card Bottom - Enforcing 44px min touch target on mobile */}
-                  <div className="pt-4 border-t border-zinc-800/80 flex items-center justify-between text-[11px] min-h-[44px]">
-                    <span className="text-zinc-500 font-mono text-[10px]">
+                  <div className="pt-4 border-t border-zinc-800/80 flex items-center justify-between min-h-[44px]">
+                    <span className="type-node-meta text-zinc-500">
                       {techList.join(' • ')}
                     </span>
-                    <div className="flex items-center gap-1 text-[#00E5FF] font-bold group-hover:translate-x-1 transition-transform py-2 px-1">
+                    <div className="flex items-center gap-1 type-telemetry-tag font-bold group-hover:translate-x-1 transition-transform py-2 px-1">
                       <span>{node.enterLabel?.replace('↗', '').trim() || 'ENTER'}</span>
                       <ArrowUpRight className="w-3.5 h-3.5" />
                     </div>

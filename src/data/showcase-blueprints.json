@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "1.0.0",
+  "title": "ARTIFICIAL CRAFT - Hero Showcase Presentation Blueprints",
+  "blueprints": [
+    {
+      "id": "dify-n8n-lego-showcase",
+      "title": "DIFY + N8N JSON-DRIVEN LEGO PROTOCOL",
+      "title_vi": "GIAO THỨC LEGO REGISTRY ĐIỀU PHỐI JSON DIFY & N8N",
+      "category": "Hybrid Architecture",
+      "tier": "Advanced",
+      "accent": "#00E5FF",
+      "description": "Hybrid architecture decoupling Reasoning Brain (Dify) and Execution Muscle (n8n), saving 98% token costs via deterministic JSON AST forging.",
+      "description_vi": "Kiến trúc lai tách biệt não bộ lập luận (Dify) và cơ bắp thực thi (n8n), tiết kiệm 98% chi phí token thông qua giao thức sinh cấu trúc JSON AST.",
+      "nodes": [
+        { "id": "n1", "label": "Inbound Hook", "x": 80, "y": 140, "type": "TRIGGER", "engine": "n8n.webhook", "latency": "0.01s" },
+        { "id": "n2", "label": "Task Classifier", "x": 300, "y": 80, "type": "AI_ROUTER", "engine": "dify.router", "latency": "0.12s" },
+        { "id": "n3", "label": "AST Generator", "x": 540, "y": 180, "type": "AI_INFERENCE", "engine": "dify.json_ast", "latency": "0.42s" },
+        { "id": "n4", "label": "Validate Gate", "x": 760, "y": 90, "type": "VALIDATOR", "engine": "zod.schema", "latency": "0.02s" },
+        { "id": "n5", "label": "Publisher", "x": 960, "y": 140, "type": "FANOUT", "engine": "r2.cdn_sync", "latency": "0.15s" }
+      ],
+      "edges": [
+        ["n1", "n2"],
+        ["n2", "n3"],
+        ["n3", "n4"],
+        ["n4", "n5"]
+      ]
+    },
+    {
+      "id": "image-pim-showcase",
+      "title": "E2E AI IMAGE & SHADOW STUDIO PIPELINE",
+      "title_vi": "PIPELINE XỬ LÝ ẢNH & BÓNG E-COMMERCE TỰ ĐỘNG E2E",
+      "category": "E-Commerce Automation",
+      "tier": "Core",
+      "accent": "#5322FF",
+      "description": "Automated product image studio: background removal, 75% grid fitting, 2-layer contour shadow synthesis, and Cloudflare R2 CDN delivery.",
+      "description_vi": "Quy trình xử lý ảnh sản phẩm tự động: tách nền tốc độ cao, căn tỷ lệ khung lưới 75%, đổ bóng 2 tầng contour và đẩy lên Cloudflare R2 CDN.",
+      "nodes": [
+        { "id": "img_1", "label": "Remove BG", "x": 80, "y": 150, "type": "TRIGGER", "engine": "bria.rmbg_2", "latency": "0.50s" },
+        { "id": "img_2", "label": "Grid Fit 75%", "x": 300, "y": 75, "type": "CV_TRANSFORM", "engine": "opencv.fit", "latency": "0.05s" },
+        { "id": "img_3", "label": "Shadow Engine", "x": 540, "y": 175, "type": "AI_RENDER", "engine": "contour.2layer", "latency": "0.08s" },
+        { "id": "img_4", "label": "PSD Compositor", "x": 760, "y": 85, "type": "LAYER_MERGE", "engine": "psd.tools", "latency": "0.10s" },
+        { "id": "img_5", "label": "R2 CDN Push", "x": 960, "y": 145, "type": "STORAGE_UPLOAD", "engine": "cloudflare.r2", "latency": "0.20s" }
+      ],
+      "edges": [
+        ["img_1", "img_2"],
+        ["img_2", "img_3"],
+        ["img_3", "img_4"],
+        ["img_4", "img_5"]
+      ]
+    },
+    {
+      "id": "contour-shadow-showcase",
+      "title": "STANDALONE 4-NODE CONTOUR SHADOW COMPOSITOR",
+      "title_vi": "BỘ GHÉP ĐỔ BÓNG CONTOUR 4 NODE ĐỘC LẬP",
+      "category": "Image Processing",
+      "tier": "Core",
+      "accent": "#00E5FF",
+      "description": "CPU-native 4-node shadow compositor completing in <80ms with non-destructive dual-layer contact and ambient drop shadow control.",
+      "description_vi": "Bộ ghép bóng độc lập 4 node chạy trên CPU trong <80ms, cho phép tinh chỉnh độ mờ và độ sâu bóng đa tầng không phá hủy ảnh gốc.",
+      "nodes": [
+        { "id": "sh_1", "label": "RGBA Ingest", "x": 90, "y": 140, "type": "INGEST", "engine": "pil.image", "latency": "0.01s" },
+        { "id": "sh_2", "label": "Contour Slice", "x": 360, "y": 75, "type": "ALPHA_ANALYSIS", "engine": "numpy.mask", "latency": "0.01s" },
+        { "id": "sh_3", "label": "Dual Shadow", "x": 640, "y": 180, "type": "AI_GAUSSIAN", "engine": "blur.3px_18px", "latency": "0.04s" },
+        { "id": "sh_4", "label": "Canvas Export", "x": 920, "y": 115, "type": "LAYER_MERGE", "engine": "export.1024", "latency": "0.02s" }
+      ],
+      "edges": [
+        ["sh_1", "sh_2"],
+        ["sh_2", "sh_3"],
+        ["sh_3", "sh_4"]
+      ]
+    },
+    {
+      "id": "grafx-3d-showcase",
+      "title": "GRAFX STUDIO 3D INTERACTIVE BRIDGE",
+      "title_vi": "CẦU NỐI TƯƠNG TÁC 3D GRAFX STUDIO REAL-TIME",
+      "category": "3D & Interactive Web",
+      "tier": "Expert",
+      "accent": "#5322FF",
+      "description": "Real-time bridge connecting GraFx Studio SDK to inject Cloudflare R2 texture variables directly into interactive Three.js WebGL viewports.",
+      "description_vi": "Cầu nối thời gian thực tích hợp GraFx Studio SDK giúp đồng bộ hóa texture R2 động vào không gian viewport 3D Three.js.",
+      "nodes": [
+        { "id": "gx_1", "label": "SKU AI Parser", "x": 80, "y": 130, "type": "AI_EXTRACTOR", "engine": "dify.contract", "latency": "0.30s" },
+        { "id": "gx_2", "label": "Texture Clean", "x": 300, "y": 185, "type": "IMAGE_AGENT", "engine": "python.vps", "latency": "0.10s" },
+        { "id": "gx_3", "label": "R2 Asset CDN", "x": 540, "y": 80, "type": "CDN_STORAGE", "engine": "cloudflare.r2", "latency": "0.15s" },
+        { "id": "gx_4", "label": "GraFx Inject", "x": 760, "y": 175, "type": "SDK_CONTROLLER", "engine": "studio.sdk", "latency": "0.05s" },
+        { "id": "gx_5", "label": "WebGL 360°", "x": 960, "y": 110, "type": "VIEWPORT", "engine": "threejs.gpu", "latency": "0.04s" }
+      ],
+      "edges": [
+        ["gx_1", "gx_2"],
+        ["gx_2", "gx_3"],
+        ["gx_3", "gx_4"],
+        ["gx_4", "gx_5"]
+      ]
+    }
+  ]
+}

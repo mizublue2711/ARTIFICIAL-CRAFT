@@ -13,6 +13,7 @@ import {
   Boxes,
 } from 'lucide-react';
 import { useTranslation } from '@/context/useLanguage';
+import { useInViewport } from '@/hooks/useInViewport';
 
 interface AgentPylon {
   id: string;
@@ -101,7 +102,15 @@ export const HeadlessSwarmSection: React.FC = () => {
   const [activeAgent, setActiveAgent] = useState<AgentPylon>(AGENT_PYLONS[0]);
   const activeAgentRef = useRef<AgentPylon>(AGENT_PYLONS[0]);
   const [fpsCounter, setFpsCounter] = useState(60);
+  const { ref: viewportRef, isInView } = useInViewport();
+  const isInViewRef = useRef(isInView);
+  const syncLoopRef = useRef<(() => void) | null>(null);
   const canvasContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    isInViewRef.current = isInView;
+    syncLoopRef.current?.();
+  }, [isInView]);
 
   useEffect(() => {
     activeAgentRef.current = activeAgent;
@@ -258,15 +267,18 @@ export const HeadlessSwarmSection: React.FC = () => {
     const particlePoints = new THREE.Points(particleGeo, particleMat);
     scene.add(particlePoints);
 
-    // Animation Loop
+    // Animation Loop (viewport-culled via useInViewport)
     let animId = 0;
-    let clock = new THREE.Clock();
+    let isRunning = false;
+    const clock = new THREE.Clock();
     let frameAcc = 0;
     let lastTime = 0;
 
     const animate = () => {
+      if (!isRunning) return;
       animId = requestAnimationFrame(animate);
       const dt = clock.getDelta();
+      void dt;
       const elapsed = clock.getElapsedTime();
 
       // FPS Calculation
@@ -298,7 +310,22 @@ export const HeadlessSwarmSection: React.FC = () => {
       renderer.render(scene, camera);
     };
 
-    animate();
+    const syncLoop = () => {
+      const shouldRun = isInViewRef.current && !document.hidden;
+      if (shouldRun && !isRunning) {
+        isRunning = true;
+        clock.getDelta();
+        lastTime = clock.getElapsedTime();
+        frameAcc = 0;
+        animId = requestAnimationFrame(animate);
+      } else if (!shouldRun && isRunning) {
+        isRunning = false;
+        cancelAnimationFrame(animId);
+      }
+    };
+
+    syncLoopRef.current = syncLoop;
+    syncLoop();
 
     const handleResize = () => {
       if (!container) return;
@@ -310,10 +337,14 @@ export const HeadlessSwarmSection: React.FC = () => {
     };
 
     window.addEventListener('resize', handleResize);
+    document.addEventListener('visibilitychange', syncLoop);
 
     return () => {
+      syncLoopRef.current = null;
+      isRunning = false;
       cancelAnimationFrame(animId);
       window.removeEventListener('resize', handleResize);
+      document.removeEventListener('visibilitychange', syncLoop);
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
@@ -482,7 +513,10 @@ export const HeadlessSwarmSection: React.FC = () => {
             {/* ======================================================== */}
             {/* RIGHT COLUMN: Interactive 3D Pylon Telemetry Card */}
             {/* ======================================================== */}
-            <div className="lg:col-span-5 flex flex-col border border-cyan-500/30 bg-[#090910] rounded-xl overflow-hidden relative shadow-2xl">
+            <div
+              ref={viewportRef}
+              className="lg:col-span-5 flex flex-col border border-cyan-500/30 bg-[#090910] rounded-xl overflow-hidden relative shadow-2xl"
+            >
               {/* Telemetry Card Header */}
               <div className="px-4 py-3 bg-[#0d0d16] border-b border-zinc-800 flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2">

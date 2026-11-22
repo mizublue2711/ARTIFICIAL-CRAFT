@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toPng } from 'html-to-image';
 import {
@@ -96,8 +97,8 @@ function ExportPreviewModal({
           <div className="flex items-center justify-between px-5 py-3 border-b border-zinc-800">
             <div className="flex items-center gap-2">
               <ImageIcon className="h-4 w-4 text-cyan-glow" />
-              <span className="text-[13px] font-bold text-white uppercase">{t('export_preview_title')}</span>
-              <span className="text-[10px] text-zinc-500 ml-1">HD · 2160PX</span>
+              <span className="type-node-title uppercase">{t('export_preview_title')}</span>
+              <span className="type-telemetry-tag text-zinc-500 ml-1">HD · 2160PX</span>
             </div>
             <button
               onClick={onClose}
@@ -114,12 +115,12 @@ function ExportPreviewModal({
             />
           </div>
           <div className="flex items-center justify-between px-5 py-4 border-t border-zinc-800">
-            <span className="text-[10px] text-zinc-500 uppercase">
+            <span className="type-telemetry-tag text-zinc-500">
               ARTIFICIAL CRAFT // SWISS GRID EXPORT
             </span>
             <button
               onClick={onDownload}
-              className="inline-flex items-center gap-2 border border-zinc-200 bg-white text-black text-[12px] font-bold px-4 py-2 hover:bg-zinc-200 transition-colors uppercase"
+              className="inline-flex items-center gap-2 border border-zinc-200 bg-white type-telemetry-tag text-black font-bold px-4 py-2 hover:bg-zinc-200 transition-colors"
             >
               <Download className="h-4 w-4" />
               {t('download_png')}
@@ -182,8 +183,8 @@ function InspectAstModal({
           <div className="flex items-center justify-between px-5 py-3 border-b border-zinc-800">
             <div className="flex items-center gap-2">
               <Code2 className="h-4 w-4 text-cyan-glow" />
-              <span className="text-[13px] font-bold text-white uppercase">{t('inspectAst')}</span>
-              <span className="text-[10px] text-zinc-500 ml-1">AST SCHEMA // {bp.id}</span>
+              <span className="type-node-title uppercase">{t('inspectAst')}</span>
+              <span className="type-telemetry-tag text-zinc-500 ml-1">AST SCHEMA // {bp.id}</span>
             </div>
             <button
               onClick={onClose}
@@ -194,26 +195,26 @@ function InspectAstModal({
           </div>
 
           <div className="p-4 bg-[#09090b] max-h-[65vh] overflow-auto">
-            <pre className="text-[11px] text-zinc-300 font-mono leading-relaxed overflow-x-auto p-4 bg-zinc-950 border border-zinc-800/80">
+            <pre className="type-node-meta text-zinc-300 leading-relaxed overflow-x-auto p-4 bg-zinc-950 border border-zinc-800/80">
               <code>{jsonContent}</code>
             </pre>
           </div>
 
           <div className="flex items-center justify-between px-5 py-4 border-t border-zinc-800 bg-zinc-950">
-            <span className="text-[10px] text-zinc-500 uppercase">
+            <span className="type-telemetry-tag text-zinc-500">
               AST VALIDATOR: DETERMINISTIC SCHEMA v1.0.0
             </span>
             <div className="flex items-center gap-2">
               <button
                 onClick={downloadJson}
-                className="inline-flex items-center gap-1.5 border border-zinc-700 bg-zinc-900 text-zinc-200 text-[11px] font-bold px-3 py-1.5 hover:bg-zinc-800 hover:text-white transition-colors uppercase"
+                className="inline-flex items-center gap-1.5 border border-zinc-700 bg-zinc-900 type-telemetry-tag text-zinc-200 font-bold px-3 py-1.5 hover:bg-zinc-800 hover:text-white transition-colors"
               >
                 <Download className="h-3.5 w-3.5" />
                 {t('btnDownloadJson')}
               </button>
               <button
                 onClick={copyJson}
-                className="inline-flex items-center gap-1.5 border border-zinc-700 bg-zinc-900 text-zinc-200 text-[11px] font-bold px-3 py-1.5 hover:bg-zinc-800 hover:text-white transition-colors uppercase"
+                className="inline-flex items-center gap-1.5 border border-zinc-700 bg-zinc-900 type-telemetry-tag text-zinc-200 font-bold px-3 py-1.5 hover:bg-zinc-800 hover:text-white transition-colors"
               >
                 {copiedAst ? (
                   <>
@@ -229,7 +230,7 @@ function InspectAstModal({
               </button>
               <button
                 onClick={onClose}
-                className="inline-flex items-center border border-zinc-200 bg-white text-black text-[11px] font-bold px-4 py-1.5 hover:bg-zinc-200 transition-colors uppercase"
+                className="inline-flex items-center border border-zinc-200 bg-white type-telemetry-tag text-black font-bold px-4 py-1.5 hover:bg-zinc-200 transition-colors"
               >
                 X
               </button>
@@ -333,27 +334,27 @@ function BlueprintCard({ bp, index }: { bp: PipelineBlueprint; index: number }) 
           <div className="flex items-start justify-between gap-3 mb-4">
             <div>
               <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-                <span className="font-mono text-[9px] uppercase tracking-widest text-zinc-500">
+                <span className="type-telemetry-tag text-zinc-500">
                   {bp.category}
                 </span>
                 <span
-                  className={`font-mono text-[9px] px-1.5 py-0.5 border ${tierColor(bp.tier)}`}
+                  className={`type-telemetry-tag px-1.5 py-0.5 border ${tierColor(bp.tier)}`}
                 >
                   {bp.tier}
                 </span>
               </div>
-              <h3 className="text-[15px] font-bold text-white uppercase tracking-tight leading-snug">
+              <h3 className="type-card-title">
                 {bp.name}
               </h3>
             </div>
             <div className="text-right shrink-0">
-              <div className="font-mono text-[18px] font-bold text-white">{bp.node_count}</div>
-              <div className="font-mono text-[8px] text-zinc-500 uppercase">NODES</div>
+              <div className="type-node-title">{bp.node_count}</div>
+              <div className="type-telemetry-tag text-zinc-500">NODES</div>
             </div>
           </div>
 
           {/* Description */}
-          <p className="text-[12.5px] text-zinc-400 font-sans leading-relaxed mb-5">
+          <p className="type-body-narrative mb-5">
             {localizedDescription}
           </p>
 
@@ -366,35 +367,35 @@ function BlueprintCard({ bp, index }: { bp: PipelineBlueprint; index: number }) 
                 return (
                   <div key={node.id} className="flex items-center gap-1.5">
                     <div
-                      className="flex flex-col justify-between border px-2.5 py-2 min-w-[125px] max-w-[145px] bg-zinc-950 text-left transition-colors"
+                      className="flex flex-col justify-between border px-2.5 py-2 min-w-[140px] max-w-[175px] bg-zinc-950 text-left transition-colors"
                       style={{
                         borderColor,
                         boxShadow: isKeyNode ? `0 0 10px ${accent}22` : undefined,
                       }}
                     >
-                      <div className="flex items-center justify-between text-[8px] text-zinc-500 mb-1 border-b border-zinc-900 pb-1">
-                        <span className="font-mono text-cyan-glow">0{node.step}</span>
-                        <span className="font-mono text-[7.5px] uppercase tracking-wider text-zinc-400 truncate max-w-[70px]">
+                      <div className="flex items-center justify-between gap-2 mb-1 border-b border-zinc-900 pb-1">
+                        <span className="type-telemetry-tag">0{node.step}</span>
+                        <span className="type-node-meta uppercase truncate max-w-[90px]">
                           {node.type}
                         </span>
                       </div>
-                      <div className="text-[9.5px] font-bold text-white mb-1.5 leading-tight truncate" title={node.name}>
+                      <div className="type-node-title mb-1.5 leading-tight truncate" title={node.name}>
                         {node.name}
                       </div>
-                      <div className="flex flex-col gap-0.5 text-[8px] text-zinc-400">
-                        <span className="truncate text-zinc-400" title={node.engine}>
+                      <div className="flex flex-col gap-0.5">
+                        <span className="type-node-meta truncate" title={node.engine}>
                           ⚡ {node.engine}
                         </span>
-                        <div className="flex items-center justify-between text-[7.5px] text-zinc-500 mt-0.5">
+                        <div className="flex items-center justify-between type-node-meta text-zinc-500 mt-0.5">
                           <span>{node.latency}</span>
-                          <span className="text-zinc-500 truncate max-w-[55px]" title={node.output}>
+                          <span className="truncate max-w-[65px]" title={node.output}>
                             {node.output}
                           </span>
                         </div>
                       </div>
                     </div>
                     {i < bp.nodes.length - 1 && (
-                      <span className="text-zinc-500 text-xs px-0.5 select-none font-bold">➔</span>
+                      <span className="type-node-meta text-zinc-500 px-0.5 select-none font-bold">➔</span>
                     )}
                   </div>
                 );
@@ -403,7 +404,7 @@ function BlueprintCard({ bp, index }: { bp: PipelineBlueprint; index: number }) 
           </div>
 
           {/* CLI Code Block with Copy Button */}
-          <div className="border border-zinc-800 bg-zinc-900 px-3 py-2 mb-4 font-mono text-[10.5px] text-zinc-300 flex items-center justify-between gap-2 overflow-hidden group/cli">
+          <div className="border border-zinc-800 bg-zinc-900 px-3 py-2 mb-4 type-node-meta text-zinc-300 flex items-center justify-between gap-2 overflow-hidden group/cli">
             <div className="truncate flex items-center gap-1.5">
               <Terminal className="h-3.5 w-3.5 text-cyan-glow shrink-0" />
               <span className="truncate">{bp.cli_deploy}</span>
@@ -427,7 +428,7 @@ function BlueprintCard({ bp, index }: { bp: PipelineBlueprint; index: number }) 
           <div className="grid grid-cols-2 gap-2">
             <button
               onClick={copyApi}
-              className="inline-flex items-center justify-center gap-1.5 border border-zinc-800 bg-zinc-900 text-[11px] font-bold text-zinc-300 px-3 py-2 hover:bg-zinc-800 hover:text-white transition-colors uppercase"
+              className="inline-flex items-center justify-center gap-1.5 border border-zinc-800 bg-zinc-900 type-telemetry-tag font-bold text-zinc-300 px-3 py-2 hover:bg-zinc-800 hover:text-white transition-colors"
             >
               {copiedApi ? (
                 <>
@@ -443,7 +444,7 @@ function BlueprintCard({ bp, index }: { bp: PipelineBlueprint; index: number }) 
             </button>
             <button
               onClick={() => setInspectOpen(true)}
-              className="inline-flex items-center justify-center gap-1.5 border border-zinc-800 bg-zinc-900 text-[11px] font-bold text-zinc-300 px-3 py-2 hover:bg-zinc-800 hover:text-white transition-colors uppercase"
+              className="inline-flex items-center justify-center gap-1.5 border border-zinc-800 bg-zinc-900 type-telemetry-tag font-bold text-zinc-300 px-3 py-2 hover:bg-zinc-800 hover:text-white transition-colors"
             >
               <Code2 className="h-3.5 w-3.5 text-cyan-glow" />
               {t('btnInspectAstJson') || t('inspectAst')}
@@ -453,7 +454,7 @@ function BlueprintCard({ bp, index }: { bp: PipelineBlueprint; index: number }) 
           <button
             onClick={exportScreenshot}
             disabled={exporting}
-            className="inline-flex items-center justify-center gap-2 border text-[11.5px] font-bold px-3 py-2 transition-all uppercase disabled:opacity-50"
+            className="inline-flex items-center justify-center gap-2 border type-telemetry-tag font-bold px-3 py-2 transition-all disabled:opacity-50"
             style={{
               borderColor: `${accent}`,
               background: `${accent}18`,
@@ -581,28 +582,36 @@ function BlueprintCard({ bp, index }: { bp: PipelineBlueprint; index: number }) 
       </div>
 
       {/* Export Preview Modal */}
-      <AnimatePresence>
-        {previewUrl && (
-          <ExportPreviewModal
-            dataUrl={previewUrl}
-            onClose={() => setPreviewUrl(null)}
-            onDownload={() => {
-              downloadImage();
-              setPreviewUrl(null);
-            }}
-          />
+      {typeof document !== 'undefined' &&
+        createPortal(
+          <AnimatePresence>
+            {previewUrl && (
+              <ExportPreviewModal
+                dataUrl={previewUrl}
+                onClose={() => setPreviewUrl(null)}
+                onDownload={() => {
+                  downloadImage();
+                  setPreviewUrl(null);
+                }}
+              />
+            )}
+          </AnimatePresence>,
+          document.body,
         )}
-      </AnimatePresence>
 
       {/* Inspect AST JSON Modal */}
-      <AnimatePresence>
-        {inspectOpen && (
-          <InspectAstModal
-            bp={bp}
-            onClose={() => setInspectOpen(false)}
-          />
+      {typeof document !== 'undefined' &&
+        createPortal(
+          <AnimatePresence>
+            {inspectOpen && (
+              <InspectAstModal
+                bp={bp}
+                onClose={() => setInspectOpen(false)}
+              />
+            )}
+          </AnimatePresence>,
+          document.body,
         )}
-      </AnimatePresence>
     </motion.div>
   );
 }
@@ -613,7 +622,7 @@ export default function BlueprintLibrary() {
   return (
     <section className="relative py-20 lg:py-28 bg-[#09090b] font-mono" id="blueprints">
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-cyan-glow mb-3 border border-zinc-800 bg-zinc-900 px-2.5 py-1">
+        <div className="inline-flex items-center gap-2 type-telemetry-tag mb-3 border border-zinc-800 bg-zinc-900 px-2.5 py-1">
           <span className="h-1.5 w-1.5 bg-[#5322ff]" />
           {t('bp_section_label')}
         </div>
@@ -624,13 +633,13 @@ export default function BlueprintLibrary() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.5 }}
-            className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white max-w-2xl uppercase leading-[1.05]"
+            className="type-section-title max-w-2xl leading-[1.05]"
           >
             {t('blueprintSectionTitle') || t('bp_title_line1')}
             <br />
             <span className="text-zinc-500">{t('bp_title_line2')}</span>
           </motion.h2>
-          <p className="max-w-md text-[14px] text-zinc-400 font-sans leading-relaxed border-l-2 border-[#5322ff] pl-3">
+          <p className="max-w-md type-body-narrative border-l-2 border-[#5322ff] pl-3">
             {t('blueprintSectionSubtitle') || t('bp_desc')}
           </p>
         </div>
@@ -645,13 +654,13 @@ export default function BlueprintLibrary() {
           <div className="flex items-center gap-3">
             <Boxes className="h-6 w-6 text-cyan-glow" />
             <div>
-              <div className="text-[13px] font-bold text-white uppercase">{t('bp_banner_title')}</div>
-              <div className="text-[11px] text-zinc-500">{t('bp_banner_sub')}</div>
+              <div className="type-node-title uppercase">{t('bp_banner_title')}</div>
+              <div className="type-node-meta text-zinc-500">{t('bp_banner_sub')}</div>
             </div>
           </div>
           <a
             href="#"
-            className="group inline-flex items-center gap-1.5 text-[12px] font-bold text-cyan-glow hover:text-white transition-colors uppercase"
+            className="group inline-flex items-center gap-1.5 type-telemetry-tag font-bold hover:text-white transition-colors"
           >
             {t('bp_browse_all')}
             <ArrowUpRight className="h-4 w-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />

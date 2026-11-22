@@ -9,12 +9,11 @@ import {
   Activity,
   Zap,
   Link2,
-  Play,
   X,
   CheckCircle2,
   Cpu,
 } from 'lucide-react';
-import { getWorkflowBlueprints, type WorkflowBlueprint, type WorkflowNodeDef } from '@/data/dal';
+import { getShowcaseBlueprints, type WorkflowBlueprint, type WorkflowNodeDef } from '@/data/dal';
 import WorkflowSvgCanvas, { type NodeDef } from '@/components/home/WorkflowSvgCanvas';
 import WorkflowCarousel3D, {
   type WorkflowCarouselItem,
@@ -57,8 +56,8 @@ function MetricRow({
   return (
     <div className="flex items-center gap-3 border border-zinc-800 bg-zinc-950 px-3 py-2.5 font-mono">
       <Icon className="h-4 w-4 shrink-0" style={{ color }} />
-      <span className="text-[12px] text-zinc-400">{label}</span>
-      <span className="ml-auto text-[13px] font-bold text-white">{value}</span>
+      <span className="type-node-meta">{label}</span>
+      <span className="ml-auto type-node-title">{value}</span>
     </div>
   );
 }
@@ -77,9 +76,9 @@ export const AutomationCockpit: React.FC<AutomationCockpitProps> = ({
   const { t, language } = useTranslation();
   const [activeIdx, setActiveIdx] = useState(0);
 
-  // Hydrate workflow modes dynamically from the validated Data Access Layer (DAL)
+  // Hydrate Hero showcase presets from isolated presentation data (showcase-blueprints.json)
   const workflowModes: WorkflowBlueprint[] = useMemo(() => {
-    return getWorkflowBlueprints();
+    return getShowcaseBlueprints();
   }, []);
 
   const activeBlueprint: WorkflowBlueprint = useMemo(() => {
@@ -93,27 +92,33 @@ export const AutomationCockpit: React.FC<AutomationCockpitProps> = ({
   }, [workflowModes, activeIdx]);
 
   const activeTitle = useMemo(() => {
+    const key = `cockpit.blueprint_${activeBlueprint.id.replace(/-/g, '_')}_title`;
+    const translated = t(key);
+    if (translated !== key) return translated;
     return (language === 'vi' && activeBlueprint.title_vi)
       ? activeBlueprint.title_vi
       : activeBlueprint.title;
-  }, [language, activeBlueprint]);
+  }, [language, activeBlueprint, t]);
 
   const activeDescription = useMemo(() => {
+    const key = `cockpit.blueprint_${activeBlueprint.id.replace(/-/g, '_')}_desc`;
+    const translated = t(key);
+    if (translated !== key) return translated;
     return (language === 'vi' && activeBlueprint.description_vi)
       ? activeBlueprint.description_vi
       : activeBlueprint.description || '';
-  }, [language, activeBlueprint]);
+  }, [language, activeBlueprint, t]);
 
   const activeCategory = useMemo(() => {
     return (activeBlueprint as any).category
       ? `// ${((activeBlueprint as any).category as string).toUpperCase()}`
-      : '// WORKFLOW BLUEPRINT';
-  }, [activeBlueprint]);
+      : t('cockpit.default_category');
+  }, [activeBlueprint, t]);
 
   const presets = useMemo(() => [
-    { label: t('preset_swiss'), url: 'https://craft.code/air-jordan-1-2024' },
-    { label: t('preset_brutalist'), url: 'https://docs.artcraft.io/pitchdeck.pdf' },
-    { label: t('preset_financial'), url: 'https://reports.artcraft.io/q4-annual.pdf' },
+    { label: t('cockpit.preset_swiss'), url: 'https://craft.code/air-jordan-1-2024' },
+    { label: t('cockpit.preset_brutalist'), url: 'https://docs.artcraft.io/pitchdeck.pdf' },
+    { label: t('cockpit.preset_financial'), url: 'https://reports.artcraft.io/q4-annual.pdf' },
   ], [t]);
 
   const accent = getAccentHex(activeBlueprint.accent);
@@ -196,12 +201,22 @@ export const AutomationCockpit: React.FC<AutomationCockpitProps> = ({
         const isPurple = hex.toLowerCase().includes('5322ff') || m.accent === 'purple';
         const accentVariant: 'cyan' | 'purple' = isPurple ? 'purple' : 'cyan';
 
-        const label = (language === 'vi' && m.title_vi) ? m.title_vi : m.title;
+        const titleKey = `cockpit.blueprint_${m.id.replace(/-/g, '_')}_title`;
+        const translatedTitle = t(titleKey);
+        const label = translatedTitle !== titleKey
+          ? translatedTitle
+          : (language === 'vi' && m.title_vi)
+            ? m.title_vi
+            : m.title;
+
+        const descKey = `cockpit.blueprint_${m.id.replace(/-/g, '_')}_desc`;
+        const translatedDesc = t(descKey);
+        const descSource = translatedDesc !== descKey ? translatedDesc : m.description;
         const sublabel = (m as any).category
           ? `// ${((m as any).category as string).toUpperCase()}`
-          : m.description
-            ? m.description.slice(0, 36) + '...'
-            : '// PIPELINE BLUEPRINT';
+          : descSource
+            ? descSource.slice(0, 36) + '...'
+            : t('cockpit.default_category');
 
         return {
           id: m.id,
@@ -209,10 +224,10 @@ export const AutomationCockpit: React.FC<AutomationCockpitProps> = ({
           sublabel,
           accent: accentVariant,
           accentHex: hex,
-          badge: `[ 0${i + 1} // BLUEPRINT ]`,
+          badge: `[ 0${i + 1} // ${t('cockpit.badge_blueprint')} ]`,
         };
       }),
-    [workflowModes, language],
+    [workflowModes, language, t],
   );
 
   const blueprintStats = useMemo(() => {
@@ -220,11 +235,11 @@ export const AutomationCockpit: React.FC<AutomationCockpitProps> = ({
     const tier = (activeBlueprint as any).tier ?? 'Core';
     const edgeCount = renderEdges.length;
     return [
-      { label: 'Pipeline Nodes', value: `${nodeCount} Nodes` },
-      { label: 'Security Tier', value: `[ ${tier} ]` },
-      { label: 'DAG Density', value: `${edgeCount} Edges` },
+      { label: t('cockpit.stat_nodes'), value: `${nodeCount} ${t('cockpit.stat_nodes_unit')}` },
+      { label: t('cockpit.stat_tier'), value: `[ ${tier} ]` },
+      { label: t('cockpit.stat_density'), value: `${edgeCount} ${t('cockpit.stat_edges_unit')}` },
     ];
-  }, [activeBlueprint, renderNodes.length, renderEdges.length]);
+  }, [activeBlueprint, renderNodes.length, renderEdges.length, t]);
 
   const runSimulation = useCallback(() => {
     cancelSim();
@@ -279,8 +294,8 @@ export const AutomationCockpit: React.FC<AutomationCockpitProps> = ({
         items={carouselItems}
         activeIdx={activeIdx}
         onSelectMode={handleSelectMode}
-        title={t('workflow_engine')}
-        subtitle="// 3D KINETIC COVERFLOW"
+        title={t('cockpit.workflow_engine')}
+        subtitle={t('cockpit.coverflow_subtitle')}
         config={{
           cardWidth: 360,
           cardGap: 24,
@@ -295,29 +310,34 @@ export const AutomationCockpit: React.FC<AutomationCockpitProps> = ({
       {/* Step C: Unified Cockpit Window */}
       <div className="relative border border-[#27272A] bg-[#09090B] mt-4 overflow-hidden">
         {/* Terminal Window Bar */}
-        <div className="flex items-center justify-between px-4 py-2.5 border-b border-[#1F1F23] bg-zinc-950 text-xs font-mono text-zinc-400">
+        <div className="flex items-center justify-between px-4 py-2.5 border-b border-[#1F1F23] bg-zinc-950">
           <div className="flex items-center gap-2">
             <span className="flex gap-1.5">
               <span className="h-2 w-2 bg-zinc-700" />
               <span className="h-2 w-2 bg-zinc-700" />
               <span className="h-2 w-2 bg-zinc-700" />
             </span>
-            <span className="ml-2 text-[11px] text-zinc-400">
+            <span className="ml-2 type-telemetry-tag text-zinc-400 normal-case">
               ~/artcraft/engine/{activeBlueprint.id}.json
             </span>
           </div>
           <div className="flex items-center gap-2">
             <span
-              className="font-mono text-[10px] px-2 py-0.5 border font-bold"
-              style={{
-                borderColor: isSimulating ? ELECTRIC_PURPLE : accent,
-                color: isSimulating ? ELECTRIC_CYAN : accent,
-              }}
+              className={`type-telemetry-tag px-2 py-0.5 border font-bold inline-flex items-center gap-1.5 ${
+                isSimulating
+                  ? 'border-[#00E5FF]/50'
+                  : 'border-[#1F1F23] text-zinc-400'
+              }`}
             >
-              {isSimulating ? t('exec_status_executing') : t('exec_status_ready')}
+              <span
+                className={`h-1.5 w-1.5 rounded-full ${
+                  isSimulating ? 'bg-[#00E5FF] animate-pulse' : 'bg-[#00E5FF]/70'
+                }`}
+              />
+              {isSimulating ? t('cockpit.exec_status_executing') : t('cockpit.exec_status_ready')}
             </span>
-            <span className="font-mono text-[11px] text-zinc-500 hidden sm:inline">
-              RUN #08942
+            <span className="type-telemetry-tag text-zinc-500 hidden sm:inline">
+              {t('cockpit.run_id')}
             </span>
           </div>
         </div>
@@ -325,7 +345,7 @@ export const AutomationCockpit: React.FC<AutomationCockpitProps> = ({
         {/* Injected Action Control Bar: URL Input + RUN TEST CTA + Sample Presets */}
         <div className="p-4 lg:px-6 lg:py-4 border-b border-[#1F1F23] bg-[#05050A]">
           <div className="flex flex-col lg:flex-row gap-3 items-stretch lg:items-center justify-between">
-            <div className="flex-1 flex items-center gap-2 border border-[#27272A] bg-[#09090B] px-3 py-2 text-xs font-mono focus-within:border-[#00E5FF]/60 transition-colors">
+            <div className="flex-1 flex items-center gap-2 border border-[#1F1F23] bg-[#09090B] px-3 py-2 focus-within:border-zinc-500 transition-colors">
               <Link2 className="h-4 w-4 text-zinc-500 shrink-0" />
               <input
                 type="text"
@@ -334,41 +354,41 @@ export const AutomationCockpit: React.FC<AutomationCockpitProps> = ({
                   setSimUrl(e.target.value);
                   setActivePreset(null);
                 }}
-                placeholder={t('sim_placeholder')}
-                className="bg-transparent w-full text-[12px] text-zinc-200 placeholder-zinc-600 outline-none font-mono min-w-0"
+                placeholder={t('cockpit.sim_placeholder')}
+                className="bg-transparent w-full type-node-meta text-zinc-200 placeholder-zinc-600 outline-none min-w-0"
               />
             </div>
             <button
               onClick={runSimulation}
               disabled={isSimulating}
-              className="inline-flex items-center justify-center gap-2 bg-[#5322FF] hover:bg-[#00E5FF] hover:text-black text-white font-mono font-bold px-5 py-2.5 text-xs uppercase tracking-wider transition-all shrink-0 disabled:opacity-50 cursor-pointer"
+              className="h-11 px-6 border border-[#27272A] hover:border-[#00E5FF] bg-[#0C0C14] hover:bg-[#12121E] type-telemetry-tag text-white transition-all flex items-center justify-center gap-2 group cursor-pointer shrink-0 disabled:opacity-50"
             >
               {isSimulating ? (
                 <>
-                  <Activity className="h-3.5 w-3.5 animate-pulse" />
-                  {t('sim_executing')}
+                  <Activity className="h-3.5 w-3.5 text-[#00E5FF] animate-pulse" />
+                  <span className="font-bold">{t('cockpit.sim_executing')}</span>
                 </>
               ) : (
                 <>
-                  <Play className="h-3.5 w-3.5" />
-                  {t('sim_run_btn')}
+                  <span className="text-[#00E5FF] group-hover:scale-110 transition-transform">▶</span>
+                  <span className="font-bold">{t('cockpit.sim_run_btn')}</span>
                 </>
               )}
             </button>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 mt-3 text-[11px] font-mono text-zinc-400">
-            <span className="text-[10px] uppercase tracking-widest text-zinc-500 mr-1">
-              {t('preset_engine')}
+          <div className="flex flex-wrap items-center gap-2 mt-3">
+            <span className="type-telemetry-tag text-zinc-400 mr-1">
+              {t('cockpit.preset_engine')}
             </span>
             {presets.map((p) => (
               <button
                 key={p.label}
                 onClick={() => handlePreset(p)}
-                className={`border px-2.5 py-1 font-mono text-[11px] transition-colors cursor-pointer ${
+                className={`type-telemetry-tag border px-2.5 py-1 transition-colors cursor-pointer ${
                   activePreset === p.label
-                    ? 'border-[#00E5FF] bg-[#00E5FF]/10 text-[#00E5FF]'
-                    : 'border-[#27272A] bg-[#09090B] text-zinc-400 hover:text-white hover:border-zinc-600'
+                    ? 'border-zinc-500 bg-zinc-900 text-white'
+                    : 'border-[#1F1F23] bg-[#09090B] text-zinc-400 hover:text-white hover:border-zinc-600'
                 }`}
               >
                 {p.label}
@@ -420,7 +440,7 @@ export const AutomationCockpit: React.FC<AutomationCockpitProps> = ({
                     initial={{ scale: 0.95, y: 12 }}
                     animate={{ scale: 1, y: 0 }}
                     exit={{ scale: 0.95, y: 12 }}
-                    className="relative border border-[#00E5FF] bg-zinc-950 p-6 max-w-sm w-full"
+                    className="relative border border-[#27272A] bg-zinc-950 p-6 max-w-sm w-full"
                   >
                     <button
                       onClick={() => setShowMetrics(false)}
@@ -428,29 +448,29 @@ export const AutomationCockpit: React.FC<AutomationCockpitProps> = ({
                     >
                       <X className="h-4 w-4" />
                     </button>
-                    <div className="flex items-center gap-2.5 mb-5 border-b border-zinc-800 pb-3">
-                      <Zap className="h-5 w-5 text-cyan-glow" />
-                      <span className="text-[14px] font-bold text-white uppercase">
-                        {t('exec_completed_title')}
+                    <div className="flex items-center gap-2.5 mb-5 border-b border-[#1F1F23] pb-3">
+                      <Zap className="h-5 w-5 text-[#00E5FF]" />
+                      <span className="type-node-title uppercase">
+                        {t('cockpit.exec_completed_title')}
                       </span>
                     </div>
                     <div className="space-y-2">
                       <MetricRow
                         icon={CheckCircle2}
-                        label={t('metric_deterministic')}
-                        value="100%"
+                        label={t('cockpit.metric_deterministic')}
+                        value={t('cockpit.metric_deterministic_val')}
                         color="#10b981"
                       />
                       <MetricRow
                         icon={Cpu}
-                        label={t('metric_token_cost')}
-                        value="$0.0018"
+                        label={t('cockpit.metric_token_cost')}
+                        value={t('cockpit.metric_token_cost_val')}
                         color="#00E5FF"
                       />
                       <MetricRow
                         icon={Activity}
-                        label={t('metric_craft_precision')}
-                        value="Sub-Pixel"
+                        label={t('cockpit.metric_craft_precision')}
+                        value={t('cockpit.metric_craft_precision_val')}
                         color="#5322ff"
                       />
                     </div>
@@ -459,9 +479,9 @@ export const AutomationCockpit: React.FC<AutomationCockpitProps> = ({
                         setShowMetrics(false);
                         setSimState('idle');
                       }}
-                      className="mt-5 w-full border border-zinc-800 bg-zinc-900 text-[12px] font-bold text-zinc-300 py-2.5 hover:bg-zinc-800 hover:text-white uppercase"
+                      className="mt-5 w-full border border-zinc-800 bg-zinc-900 type-telemetry-tag font-bold text-zinc-300 py-2.5 hover:bg-zinc-800 hover:text-white"
                     >
-                      {t('run_another_sim')}
+                      {t('cockpit.run_another_sim')}
                     </button>
                   </motion.div>
                 </motion.div>
@@ -481,13 +501,13 @@ export const AutomationCockpit: React.FC<AutomationCockpitProps> = ({
                 className="flex flex-col h-full gap-4"
               >
                 <div>
-                  <div className="font-mono text-[10px] uppercase tracking-widest text-cyan-glow mb-1">
+                  <div className="type-telemetry-tag mb-1">
                     {activeCategory}
                   </div>
-                  <h4 className="font-mono text-[13px] font-bold text-white leading-snug mb-2 uppercase">
+                  <h4 className="type-section-title leading-snug mb-2">
                     {activeTitle}
                   </h4>
-                  <p className="text-[12px] leading-relaxed text-zinc-400 font-sans">
+                  <p className="type-body-narrative max-w-lg mb-6">
                     {activeDescription}
                   </p>
                 </div>
@@ -496,30 +516,30 @@ export const AutomationCockpit: React.FC<AutomationCockpitProps> = ({
                   {blueprintStats.map((s) => (
                     <div
                       key={s.label}
-                      className="border border-zinc-800 bg-zinc-900/60 p-2"
+                      className="border border-[#1F1F23] bg-zinc-900/60 p-2.5"
                     >
-                      <div className="font-mono text-[13px] font-bold text-white truncate">
+                      <div className="type-node-title truncate">
                         {s.value}
                       </div>
-                      <div className="text-[9px] text-zinc-500 leading-tight">
+                      <div className="type-node-meta leading-tight">
                         {s.label}
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <div className="mt-auto pt-3 border-t border-zinc-800">
-                  <div className="font-mono text-[10px] uppercase tracking-widest text-zinc-500 mb-2">
-                    {t('output_nodes')}
+                <div className="mt-auto pt-3 border-t border-[#1F1F23]">
+                  <div className="type-telemetry-tag text-zinc-400 mb-2">
+                    {t('cockpit.output_nodes')}
                   </div>
                   <div className="flex flex-col gap-1.5">
                     {renderNodes.slice(-3).map((n) => {
                       const NodeIcon = n.icon || Activity;
                       return (
-                        <div key={n.id} className="flex items-center gap-2 text-[11px]">
-                          <NodeIcon className="h-3.5 w-3.5 text-cyan-glow shrink-0" />
-                          <span className="text-zinc-300 truncate">{n.label}</span>
-                          <span className="text-zinc-600 font-mono text-[9px] ml-auto shrink-0">
+                        <div key={n.id} className="flex items-center gap-2">
+                          <NodeIcon className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
+                          <span className="type-node-meta text-zinc-200 truncate">{n.label}</span>
+                          <span className="type-node-meta ml-auto shrink-0">
                             {n.sub}
                           </span>
                         </div>
@@ -534,12 +554,12 @@ export const AutomationCockpit: React.FC<AutomationCockpitProps> = ({
       </div>
 
       {/* Telemetry log strip */}
-      <div className="mt-2 border border-zinc-800 bg-zinc-950 px-4 py-2.5 font-mono text-[10px] text-zinc-500 flex flex-wrap items-center gap-3">
-        <span className="text-emerald-400">[OK]</span> dal.pipeline → schema validated (0.4ms)
-        <span>|</span>
-        <span className="text-cyan-glow">[{activeBlueprint.id}]</span> nodes.mounted → {renderNodes.length} active
-        <span>|</span>
-        <span style={{ color: accent }}>[craft]</span> dag.edges → {renderEdges.length} verified
+      <div className="mt-2 border border-[#1F1F23] bg-zinc-950 px-4 py-2.5 type-telemetry-tag text-zinc-400 normal-case flex flex-wrap items-center gap-3">
+        <span className="text-emerald-400">{t('cockpit.telemetry_ok')}</span> {t('cockpit.telemetry_schema_validated')}
+        <span className="text-zinc-600">|</span>
+        <span className="text-zinc-300">[{activeBlueprint.id}]</span> {t('cockpit.telemetry_nodes_mounted')} {renderNodes.length} {t('cockpit.telemetry_active')}
+        <span className="text-zinc-600">|</span>
+        <span className="text-zinc-300">[craft]</span> {t('cockpit.telemetry_dag_edges')} {renderEdges.length} {t('cockpit.telemetry_verified')}
       </div>
     </motion.div>
   );

@@ -8,7 +8,7 @@
     --bg-elev: #0b0b0f;
     --border: rgba(63, 63, 70, 0.8);
     --cyan: #00e5ff;
-    --purple: #7c3aed;
+    --purple: #5322ff;
   }
 
   * {
@@ -50,6 +50,32 @@
   }
 }
 
+@layer components {
+  .type-display-hero {
+    @apply text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-black uppercase tracking-tighter leading-[0.85] text-white;
+  }
+  .type-section-title {
+    @apply text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-white;
+  }
+  /* Card & Project Feature Headings (Showcase, Library, Playground) */
+  .type-card-title {
+    @apply text-lg sm:text-xl lg:text-2xl font-bold uppercase tracking-tight text-white leading-snug;
+  }
+  .type-node-title {
+    @apply text-sm sm:text-base font-bold text-white font-mono tracking-tight;
+  }
+  /* Rebalanced Body Narrative (Comfortably subordinate to card titles) */
+  .type-body-narrative {
+    @apply text-sm sm:text-base text-zinc-300 font-sans leading-relaxed;
+  }
+  .type-node-meta {
+    @apply text-xs sm:text-[13px] text-zinc-400 font-mono tracking-tight;
+  }
+  .type-telemetry-tag {
+    @apply text-[11px] sm:text-xs font-mono text-[#00E5FF] tracking-wider uppercase;
+  }
+}
+
 @layer utilities {
   .font-mono {
     font-family: 'JetBrains Mono', ui-monospace, monospace;
@@ -63,14 +89,14 @@
   }
 
   .text-gradient-purple {
-    background: linear-gradient(135deg, #ffffff 0%, #7c3aed 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #5322ff 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
   .text-gradient-mix {
-    background: linear-gradient(110deg, #00e5ff 0%, #7c3aed 70%, #ffffff 100%);
+    background: linear-gradient(110deg, #00e5ff 0%, #5322ff 70%, #ffffff 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -109,6 +135,15 @@
   .mask-fade-edges {
     -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
     mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+  }
+}
+
+@keyframes dash {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -36;
   }
 }
 
@@ -158,7 +193,7 @@
 }
 
 .text-gradient-cyan-magenta {
-  background: linear-gradient(110deg, #00E5FF 0%, #FF0055 80%, #ffffff 100%);
+  background: linear-gradient(110deg, #00E5FF 0%, #f9709e 80%, #ffffff 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;

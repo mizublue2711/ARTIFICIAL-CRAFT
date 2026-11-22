@@ -79,14 +79,14 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
           {/* STUDIO FACTORY LINK */}
           <Link
             to="/studio"
-            className={`group relative inline-flex items-center gap-1.5 border text-xs font-mono font-bold tracking-wider px-3 py-1.5 transition-all cursor-pointer ${
+            className={`group relative inline-flex items-center gap-1.5 border type-telemetry-tag font-bold px-3 py-1.5 transition-all cursor-pointer ${
               location.pathname === '/studio'
                 ? 'border-[#5322FF] bg-[#5322FF]/20 text-[#00FF66] shadow-[0_0_12px_rgba(83,34,255,0.35)]'
                 : 'border-zinc-800 bg-zinc-950 text-zinc-300 hover:border-[#5322FF] hover:text-white'
             }`}
           >
             <span>STUDIO FACTORY</span>
-            <span className="text-[9px] px-1.5 py-0.5 bg-[#5322FF]/30 border border-[#5322FF] text-[#00FF66]">
+            <span className="type-telemetry-tag px-1.5 py-0.5 bg-[#5322FF]/30 border border-[#5322FF] text-[#00FF66]">
               NEW // 3D
             </span>
           </Link>
@@ -94,14 +94,14 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
           {/* 3D SHOWCASE LINK */}
           <Link
             to="/showcase"
-            className={`group relative inline-flex items-center gap-1.5 border text-xs font-mono font-bold tracking-wider px-3 py-1.5 transition-all cursor-pointer ${
+            className={`group relative inline-flex items-center gap-1.5 border type-telemetry-tag font-bold px-3 py-1.5 transition-all cursor-pointer ${
               location.pathname === '/showcase'
                 ? 'border-[#00E5FF] bg-[#00E5FF]/20 text-[#00E5FF] shadow-[0_0_12px_rgba(0,229,255,0.25)]'
                 : 'border-zinc-800 bg-zinc-950 text-zinc-300 hover:border-[#00E5FF] hover:text-white'
             }`}
           >
             <span>SHOWCASE</span>
-            <span className="text-[9px] px-1 py-0.5 bg-[#00E5FF]/20 text-[#00E5FF] border border-[#00E5FF]/40">
+            <span className="type-telemetry-tag px-1 py-0.5 bg-[#00E5FF]/20 border border-[#00E5FF]/40">
               3D // WEB
             </span>
           </Link>
@@ -109,7 +109,7 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
           {/* HIGH-TECH PLAYGROUND TAB */}
           <Link
             to="/playground"
-            className={`group relative inline-flex items-center gap-2 border text-xs font-mono font-bold tracking-wider px-3 py-1.5 transition-all cursor-pointer shadow-[0_0_12px_rgba(0,229,255,0.25)] ${
+            className={`group relative inline-flex items-center gap-2 border type-telemetry-tag font-bold px-3 py-1.5 transition-all cursor-pointer shadow-[0_0_12px_rgba(0,229,255,0.25)] ${
               isPlaygroundActive
                 ? 'border-[#00E5FF] bg-[#00E5FF] text-black'
                 : 'border-[#00E5FF]/70 bg-zinc-950 text-[#00E5FF] hover:bg-[#00E5FF] hover:text-black'
@@ -130,7 +130,7 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                 setStudiosOpen((v) => !v);
                 setDocsOpen(false);
               }}
-              className="group inline-flex items-center gap-1.5 border border-zinc-800 bg-zinc-950 text-xs font-mono font-bold tracking-wider px-3.5 py-1.5 text-zinc-200 hover:text-white hover:border-[#00E5FF] transition-all cursor-pointer"
+              className="group inline-flex items-center gap-1.5 border border-zinc-800 bg-zinc-950 type-telemetry-tag font-bold px-3.5 py-1.5 text-zinc-200 hover:text-white hover:border-[#00E5FF] transition-all cursor-pointer"
             >
               <span className="text-[#00E5FF]">STUDIOS</span>
               <ChevronDown className={`h-3.5 w-3.5 text-[#00E5FF] transition-transform duration-200 ${studiosOpen ? 'rotate-180' : ''}`} />
@@ -145,17 +145,17 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                   transition={{ duration: 0.15 }}
                   className="absolute left-0 mt-2 w-64 border border-zinc-800 bg-[#09090b]/98 backdrop-blur-xl shadow-2xl z-50 p-1.5 font-mono"
                 >
-                  <div className="text-[9px] uppercase tracking-widest text-zinc-500 px-2.5 py-1 mb-1 border-b border-zinc-800/60">
+                  <div className="type-telemetry-tag text-zinc-500 px-2.5 py-1 mb-1 border-b border-zinc-800/60">
                     INTERACTIVE TOOLS
                   </div>
 
                   <Link
                     to="/studio"
                     onClick={() => setStudiosOpen(false)}
-                    className="flex items-center justify-between px-3 py-2 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs font-mono text-white/90 hover:text-white transition-colors"
+                    className="flex items-center justify-between px-3 py-2 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 type-node-meta text-white/90 hover:text-white transition-colors"
                   >
                     <span className="font-bold flex items-center gap-1.5">⚡ Studio Configurator</span>
-                    <span className="text-[10px] px-1.5 py-0.5 bg-[#5322FF]/30 border border-[#5322FF] text-[#00FF66] font-bold">
+                    <span className="type-telemetry-tag px-1.5 py-0.5 bg-[#5322FF]/30 border border-[#5322FF] text-[#00FF66] font-bold">
                       NO-CODE 3D
                     </span>
                   </Link>
@@ -163,49 +163,49 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                   <Link
                     to="/playground"
                     onClick={() => setStudiosOpen(false)}
-                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs transition-colors"
+                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 transition-colors"
                   >
                     <div className="flex flex-col">
-                      <span className="font-bold text-[#00E5FF] flex items-center gap-1.5">
+                      <span className="type-node-meta font-bold text-[#00E5FF] flex items-center gap-1.5">
                         ⚡ 3-Column Playground Studio
                       </span>
-                      <span className="text-[10px] text-zinc-500">60FPS Remotion Stage & Live Inspector</span>
+                      <span className="type-node-meta text-zinc-500">60FPS Remotion Stage & Live Inspector</span>
                     </div>
                   </Link>
 
                   <Link
                     to="/robotics"
                     onClick={() => setStudiosOpen(false)}
-                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs transition-colors mt-1"
+                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 transition-colors mt-1"
                   >
                     <div className="flex flex-col">
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-white group-hover:text-[#00E5FF] flex items-center gap-1.5">
+                        <span className="type-node-meta font-bold text-white group-hover:text-[#00E5FF] flex items-center gap-1.5">
                           🦾 Robotics Factory 3D
                         </span>
-                        <span className="text-[9px] px-1 py-0.2 bg-[#00E5FF]/20 text-[#00E5FF] border border-[#00E5FF]/40 rounded-xs font-bold">
+                        <span className="type-telemetry-tag px-1 py-0.2 bg-[#00E5FF]/20 border border-[#00E5FF]/40 rounded-xs font-bold">
                           NEW
                         </span>
                       </div>
-                      <span className="text-[10px] text-zinc-500">[3D KINEMATICS]</span>
+                      <span className="type-node-meta text-zinc-500">[3D KINEMATICS]</span>
                     </div>
                   </Link>
 
                   <Link
                     to="/showcase"
                     onClick={() => setStudiosOpen(false)}
-                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs transition-colors mt-1"
+                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 transition-colors mt-1"
                   >
                     <div className="flex flex-col">
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-white group-hover:text-[#00E5FF] flex items-center gap-1.5">
+                        <span className="type-node-meta font-bold text-white group-hover:text-[#00E5FF] flex items-center gap-1.5">
                           🪐 3D Showcase Debriefs
                         </span>
-                        <span className="text-[9px] px-1 py-0.2 bg-[#00E5FF]/20 text-[#00E5FF] border border-[#00E5FF]/40 rounded-xs font-bold">
+                        <span className="type-telemetry-tag px-1 py-0.2 bg-[#00E5FF]/20 border border-[#00E5FF]/40 rounded-xs font-bold">
                           DEBRIEFS
                         </span>
                       </div>
-                      <span className="text-[10px] text-zinc-500">Spatial 3D & Interactive WebApps</span>
+                      <span className="type-node-meta text-zinc-500">Spatial 3D & Interactive WebApps</span>
                     </div>
                   </Link>
 
@@ -214,13 +214,13 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setStudiosOpen(false)}
-                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs transition-colors mt-1"
+                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 transition-colors mt-1"
                   >
                     <div className="flex flex-col">
-                      <span className="font-bold text-white group-hover:text-[#00E5FF] flex items-center gap-1.5">
+                      <span className="type-node-meta font-bold text-white group-hover:text-[#00E5FF] flex items-center gap-1.5">
                         🚀 Autopilot Studio
                       </span>
-                      <span className="text-[10px] text-zinc-500">Dify + n8n Multi-Agent Workflow</span>
+                      <span className="type-node-meta text-zinc-500">Dify + n8n Multi-Agent Workflow</span>
                     </div>
                     <ExternalLink className="h-3.5 w-3.5 text-zinc-500 group-hover:text-[#00E5FF] shrink-0 ml-2" />
                   </a>
@@ -230,13 +230,13 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setStudiosOpen(false)}
-                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs transition-colors mt-1"
+                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 transition-colors mt-1"
                   >
                     <div className="flex flex-col">
-                      <span className="font-bold text-white group-hover:text-[#00E5FF] flex items-center gap-1.5">
+                      <span className="type-node-meta font-bold text-white group-hover:text-[#00E5FF] flex items-center gap-1.5">
                         🚀 VibePath Studio
                       </span>
-                      <span className="text-[10px] text-zinc-500">VibePath automates 3D mapping</span>
+                      <span className="type-node-meta text-zinc-500">VibePath automates 3D mapping</span>
                     </div>
                     <ExternalLink className="h-3.5 w-3.5 text-zinc-500 group-hover:text-[#00E5FF] shrink-0 ml-2" />
                   </a>
@@ -244,26 +244,26 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                   <Link
                     to="/playground?tab=node-03"
                     onClick={() => setStudiosOpen(false)}
-                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs transition-colors mt-1"
+                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 transition-colors mt-1"
                   >
                     <div className="flex flex-col">
-                      <span className="font-bold text-white group-hover:text-[#00E5FF]">
+                      <span className="type-node-meta font-bold text-white group-hover:text-[#00E5FF]">
                         🎨 LinkedIn Banner Studio
                       </span>
-                      <span className="text-[10px] text-zinc-500">Brutalist Graphic Generator</span>
+                      <span className="type-node-meta text-zinc-500">Brutalist Graphic Generator</span>
                     </div>
                   </Link>
 
                   <Link
                     to="/playground?tab=node-04"
                     onClick={() => setStudiosOpen(false)}
-                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs transition-colors mt-1"
+                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 transition-colors mt-1"
                   >
                     <div className="flex flex-col">
-                      <span className="font-bold text-white group-hover:text-[#00E5FF]">
+                      <span className="type-node-meta font-bold text-white group-hover:text-[#00E5FF]">
                         📊 CSV Data Sandbox
                       </span>
-                      <span className="text-[10px] text-zinc-500">CKAN Mekong Open Data Visualizer</span>
+                      <span className="type-node-meta text-zinc-500">CKAN Mekong Open Data Visualizer</span>
                     </div>
                   </Link>
                 </motion.div>
@@ -278,7 +278,7 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                 setDocsOpen((v) => !v);
                 setStudiosOpen(false);
               }}
-              className="group inline-flex items-center gap-1.5 border border-zinc-800 bg-zinc-950 text-xs font-mono font-bold tracking-wider px-3.5 py-1.5 text-zinc-200 hover:text-white hover:border-[#00E5FF] transition-all cursor-pointer"
+              className="group inline-flex items-center gap-1.5 border border-zinc-800 bg-zinc-950 type-telemetry-tag font-bold px-3.5 py-1.5 text-zinc-200 hover:text-white hover:border-[#00E5FF] transition-all cursor-pointer"
             >
               <span className="text-zinc-300 group-hover:text-[#00E5FF]">DOCS</span>
               <ChevronDown className={`h-3.5 w-3.5 text-zinc-400 group-hover:text-[#00E5FF] transition-transform duration-200 ${docsOpen ? 'rotate-180' : ''}`} />
@@ -293,54 +293,54 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                   transition={{ duration: 0.15 }}
                   className="absolute left-0 mt-2 w-64 border border-zinc-800 bg-[#09090b]/98 backdrop-blur-xl shadow-2xl z-50 p-1.5 font-mono"
                 >
-                  <div className="text-[9px] uppercase tracking-widest text-zinc-500 px-2.5 py-1 mb-1 border-b border-zinc-800/60">
+                  <div className="type-telemetry-tag text-zinc-500 px-2.5 py-1 mb-1 border-b border-zinc-800/60">
                     KNOWLEDGE & MANUALS
                   </div>
 
                   <Link
                     to="/library"
                     onClick={() => setDocsOpen(false)}
-                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs transition-colors"
+                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 transition-colors"
                   >
                     <div className="flex flex-col">
-                      <span className="font-bold text-white group-hover:text-[#00E5FF] flex items-center gap-1.5">
+                      <span className="type-node-meta font-bold text-white group-hover:text-[#00E5FF] flex items-center gap-1.5">
                         <BookOpen className="h-3.5 w-3.5 text-[#00E5FF]" />
                         Flipbook Archive
                       </span>
-                      <span className="text-[10px] text-zinc-500">Interactive Technical Specs</span>
+                      <span className="type-node-meta text-zinc-500">Interactive Technical Specs</span>
                     </div>
                   </Link>
 
                   <Link
                     to="/flipbook/manual-hybrid-ai-automation"
                     onClick={() => setDocsOpen(false)}
-                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs transition-colors mt-1"
+                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 transition-colors mt-1"
                   >
                     <div className="flex flex-col">
-                      <span className="font-bold text-white group-hover:text-[#00E5FF] flex items-center gap-1.5">
+                      <span className="type-node-meta font-bold text-white group-hover:text-[#00E5FF] flex items-center gap-1.5">
                         <Layers className="h-3.5 w-3.5 text-cyan-400" />
                         Latest Blueprint Spec
                       </span>
-                      <span className="text-[10px] text-zinc-500">Hybrid AI Engine Blueprint</span>
+                      <span className="type-node-meta text-zinc-500">Hybrid AI Engine Blueprint</span>
                     </div>
                   </Link>
 
                   <Link
                     to="/docs/architecture"
                     onClick={() => setDocsOpen(false)}
-                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 text-xs transition-colors mt-1"
+                    className="group flex items-center justify-between p-2.5 hover:bg-zinc-900 border border-transparent hover:border-zinc-800 transition-colors mt-1"
                   >
                     <div className="flex flex-col">
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-white group-hover:text-[#00E5FF] flex items-center gap-1.5">
+                        <span className="type-node-meta font-bold text-white group-hover:text-[#00E5FF] flex items-center gap-1.5">
                           <Terminal className="h-3.5 w-3.5 text-[#00FF66]" />
                           {t('nav_docs_architecture')}
                         </span>
-                        <span className="text-[9px] px-1 py-0.2 bg-[#00FF66]/20 text-[#00FF66] border border-[#00FF66]/40 font-bold">
+                        <span className="type-telemetry-tag px-1 py-0.2 bg-[#00FF66]/20 text-[#00FF66] border border-[#00FF66]/40 font-bold">
                           NEW
                         </span>
                       </div>
-                      <span className="text-[10px] text-zinc-500">{t('nav_docs_architecture_desc')}</span>
+                      <span className="type-node-meta text-zinc-500">{t('nav_docs_architecture_desc')}</span>
                     </div>
                   </Link>
                 </motion.div>
@@ -355,7 +355,7 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
 
           <button
             onClick={onOpenBatchModal}
-            className="group relative inline-flex items-center gap-2 border border-[#00E5FF] bg-[#00E5FF]/10 text-xs font-mono font-bold tracking-wider px-4 py-2 text-[#00E5FF] hover:bg-[#00E5FF] hover:text-black transition-all duration-300 cursor-pointer uppercase shadow-[0_0_16px_rgba(0,229,255,0.3)] whitespace-nowrap shrink-0"
+            className="group relative inline-flex items-center gap-2 border border-[#00E5FF] bg-[#00E5FF]/10 type-telemetry-tag font-bold px-4 py-2 hover:bg-[#00E5FF] hover:text-black transition-all duration-300 cursor-pointer shadow-[0_0_16px_rgba(0,229,255,0.3)] whitespace-nowrap shrink-0"
           >
             <Rocket className="w-4 h-4 text-[#00E5FF] group-hover:text-black transition-colors" />
             <span>[ 🚀 Launch ]</span>
@@ -392,7 +392,7 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
           >
             {/* 01 // STUDIOS & ENGINES */}
             <div className="flex flex-col gap-2">
-              <div className="font-mono text-xs font-bold text-[#00E5FF] tracking-widest uppercase mb-2 px-1 flex items-center gap-2">
+              <div className="type-telemetry-tag font-bold mb-2 px-1 flex items-center gap-2">
                 <span className="w-1.5 h-1.5 bg-[#00E5FF] animate-pulse" />
                 <span>01 // STUDIOS & ENGINES</span>
               </div>
@@ -404,9 +404,9 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
               >
                 <div className="flex items-center gap-2.5">
                   <span className="text-[#5322FF]">⚡</span>
-                  <span className="font-mono text-xs font-bold text-white">STUDIO FACTORY</span>
+                  <span className="type-telemetry-tag font-bold text-white">STUDIO FACTORY</span>
                 </div>
-                <span className="font-mono text-[10px] font-bold px-2 py-0.5 bg-[#5322FF]/30 border border-[#5322FF] text-[#00FF66] shadow-[0_0_8px_rgba(83,34,255,0.4)]">
+                <span className="type-telemetry-tag font-bold px-2 py-0.5 bg-[#5322FF]/30 border border-[#5322FF] text-[#00FF66] shadow-[0_0_8px_rgba(83,34,255,0.4)]">
                   [ NEW // 3D ]
                 </span>
               </Link>
@@ -418,9 +418,9 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
               >
                 <div className="flex items-center gap-2.5">
                   <Sparkles className="h-4 w-4 text-[#00E5FF]" />
-                  <span className="font-mono text-xs font-bold text-[#00E5FF]">PLAYGROUND STUDIO</span>
+                  <span className="type-telemetry-tag font-bold">PLAYGROUND STUDIO</span>
                 </div>
-                <span className="font-mono text-[10px] font-bold px-2 py-0.5 bg-[#00E5FF]/20 border border-[#00E5FF]/50 text-[#00E5FF] shadow-[0_0_8px_rgba(0,229,255,0.3)]">
+                <span className="type-telemetry-tag font-bold px-2 py-0.5 bg-[#00E5FF]/20 border border-[#00E5FF]/50 shadow-[0_0_8px_rgba(0,229,255,0.3)]">
                   [ 60FPS SLA ]
                 </span>
               </Link>
@@ -432,9 +432,9 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
               >
                 <div className="flex items-center gap-2.5">
                   <span>🦾</span>
-                  <span className="font-mono text-xs font-bold text-white">ROBOTICS FACTORY 3D</span>
+                  <span className="type-telemetry-tag font-bold text-white">ROBOTICS FACTORY 3D</span>
                 </div>
-                <span className="font-mono text-[10px] font-bold px-2 py-0.5 bg-[#00E5FF]/20 border border-[#00E5FF]/50 text-[#00E5FF] shadow-[0_0_8px_rgba(0,229,255,0.3)]">
+                <span className="type-telemetry-tag font-bold px-2 py-0.5 bg-[#00E5FF]/20 border border-[#00E5FF]/50 shadow-[0_0_8px_rgba(0,229,255,0.3)]">
                   [ LIVE ]
                 </span>
               </Link>
@@ -446,9 +446,9 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
               >
                 <div className="flex items-center gap-2.5">
                   <span>🪐</span>
-                  <span className="font-mono text-xs font-bold text-white">3D SHOWCASE DEBRIEFS</span>
+                  <span className="type-telemetry-tag font-bold text-white">3D SHOWCASE DEBRIEFS</span>
                 </div>
-                <span className="font-mono text-[10px] font-bold px-2 py-0.5 bg-[#00E5FF]/20 border border-[#00E5FF]/50 text-[#00E5FF] shadow-[0_0_8px_rgba(0,229,255,0.3)]">
+                <span className="type-telemetry-tag font-bold px-2 py-0.5 bg-[#00E5FF]/20 border border-[#00E5FF]/50 shadow-[0_0_8px_rgba(0,229,255,0.3)]">
                   [ 3D // WEB ]
                 </span>
               </Link>
@@ -462,10 +462,10 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
               >
                 <div className="flex items-center gap-2.5">
                   <span>🚀</span>
-                  <span className="font-mono text-xs font-bold text-white">AUTOPILOT STUDIO</span>
+                  <span className="type-telemetry-tag font-bold text-white">AUTOPILOT STUDIO</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="font-mono text-[10px] font-bold px-2 py-0.5 bg-zinc-900 border border-zinc-700 text-zinc-300">
+                  <span className="type-telemetry-tag font-bold px-2 py-0.5 bg-zinc-900 border border-zinc-700 text-zinc-300">
                     [ EXT // DIFY ]
                   </span>
                   <ExternalLink className="h-3.5 w-3.5 text-zinc-500" />
@@ -481,10 +481,10 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
               >
                 <div className="flex items-center gap-2.5">
                   <span>🌐</span>
-                  <span className="font-mono text-xs font-bold text-white">VIBEPATH STUDIO</span>
+                  <span className="type-telemetry-tag font-bold text-white">VIBEPATH STUDIO</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="font-mono text-[10px] font-bold px-2 py-0.5 bg-zinc-900 border border-zinc-700 text-zinc-300">
+                  <span className="type-telemetry-tag font-bold px-2 py-0.5 bg-zinc-900 border border-zinc-700 text-zinc-300">
                     [ EXT // 3D ]
                   </span>
                   <ExternalLink className="h-3.5 w-3.5 text-zinc-500" />
@@ -497,7 +497,7 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
 
             {/* 02 // KNOWLEDGE BASE */}
             <div className="flex flex-col gap-2">
-              <div className="font-mono text-xs font-bold text-[#00E5FF] tracking-widest uppercase mb-2 px-1 flex items-center gap-2">
+              <div className="type-telemetry-tag font-bold mb-2 px-1 flex items-center gap-2">
                 <span className="w-1.5 h-1.5 bg-[#00E5FF]" />
                 <span>02 // KNOWLEDGE BASE</span>
               </div>
@@ -509,9 +509,9 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
               >
                 <div className="flex items-center gap-2.5">
                   <BookOpen className="h-4 w-4 text-[#00E5FF]" />
-                  <span className="font-mono text-xs font-bold text-white">FLIPBOOK ARCHIVE</span>
+                  <span className="type-telemetry-tag font-bold text-white">FLIPBOOK ARCHIVE</span>
                 </div>
-                <span className="font-mono text-[10px] font-bold px-2 py-0.5 bg-zinc-900 border border-zinc-700 text-zinc-300">
+                <span className="type-telemetry-tag font-bold px-2 py-0.5 bg-zinc-900 border border-zinc-700 text-zinc-300">
                   [ SPECS ]
                 </span>
               </Link>
@@ -523,9 +523,9 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
               >
                 <div className="flex items-center gap-2.5">
                   <Layers className="h-4 w-4 text-cyan-400" />
-                  <span className="font-mono text-xs font-bold text-white">HYBRID AI SPEC</span>
+                  <span className="type-telemetry-tag font-bold text-white">HYBRID AI SPEC</span>
                 </div>
-                <span className="font-mono text-[10px] font-bold px-2 py-0.5 bg-[#00E5FF]/15 border border-[#00E5FF]/40 text-[#00E5FF]">
+                <span className="type-telemetry-tag font-bold px-2 py-0.5 bg-[#00E5FF]/15 border border-[#00E5FF]/40">
                   [ BLUEPRINT ]
                 </span>
               </Link>
@@ -536,7 +536,7 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
 
             {/* 03 // SYSTEM ARCHITECTURE */}
             <div className="flex flex-col gap-2">
-              <div className="font-mono text-xs font-bold text-[#00E5FF] tracking-widest uppercase mb-2 px-1 flex items-center gap-2">
+              <div className="type-telemetry-tag font-bold mb-2 px-1 flex items-center gap-2">
                 <span className="w-1.5 h-1.5 bg-[#00FF66]" />
                 <span>03 // SYSTEM ARCHITECTURE</span>
               </div>
@@ -550,11 +550,11 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                 <div className="flex items-center gap-2.5 min-w-0">
                   <Terminal className="h-4 w-4 text-[#00FF66] shrink-0" />
                   <div className="flex flex-col truncate">
-                    <span className="font-mono text-xs font-bold text-[#00FF66] truncate">{t('nav_docs_architecture')}</span>
-                    <span className="font-mono text-[10px] text-zinc-400 truncate">{t('nav_docs_architecture_desc')}</span>
+                    <span className="type-telemetry-tag font-bold text-[#00FF66] truncate">{t('nav_docs_architecture')}</span>
+                    <span className="type-node-meta truncate">{t('nav_docs_architecture_desc')}</span>
                   </div>
                 </div>
-                <span className="font-mono text-[10px] font-bold px-2 py-0.5 bg-[#00FF66]/20 border border-[#00FF66]/40 text-[#00FF66] shrink-0 ml-2 shadow-[0_0_8px_rgba(0,255,102,0.3)]">
+                <span className="type-telemetry-tag font-bold px-2 py-0.5 bg-[#00FF66]/20 border border-[#00FF66]/40 text-[#00FF66] shrink-0 ml-2 shadow-[0_0_8px_rgba(0,255,102,0.3)]">
                   [ LIVE MANUAL ]
                 </span>
               </Link>
@@ -564,13 +564,13 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                 <Link
                   to="/docs/architecture"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-between p-2.5 bg-[#0e0e14] border border-[#27272A]/70 hover:border-[#5322FF] text-xs transition-all min-h-[44px]"
+                  className="flex items-center justify-between p-2.5 bg-[#0e0e14] border border-[#27272A]/70 hover:border-[#5322FF] transition-all min-h-[44px]"
                 >
                   <div className="flex items-center gap-2 min-w-0">
-                    <span className="text-[#00FF66] text-[11px] font-mono font-bold">§ 2.0</span>
-                    <span className="font-mono text-[11px] text-zinc-300 truncate">Deterministic SLA & Failover</span>
+                    <span className="type-telemetry-tag text-[#00FF66] font-bold">§ 2.0</span>
+                    <span className="type-node-meta text-zinc-300 truncate">Deterministic SLA & Failover</span>
                   </div>
-                  <span className="font-mono text-[9px] px-1.5 py-0.5 bg-[#5322FF]/20 border border-[#5322FF]/50 text-[#00FF66] shrink-0">
+                  <span className="type-telemetry-tag px-1.5 py-0.5 bg-[#5322FF]/20 border border-[#5322FF]/50 text-[#00FF66] shrink-0">
                     [ RENDER: WebGL GPU ]
                   </span>
                 </Link>
@@ -578,13 +578,13 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                 <Link
                   to="/docs/architecture"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-between p-2.5 bg-[#0e0e14] border border-[#27272A]/70 hover:border-[#5322FF] text-xs transition-all min-h-[44px]"
+                  className="flex items-center justify-between p-2.5 bg-[#0e0e14] border border-[#27272A]/70 hover:border-[#5322FF] transition-all min-h-[44px]"
                 >
                   <div className="flex items-center gap-2 min-w-0">
-                    <span className="text-[#00E5FF] text-[11px] font-mono font-bold">§ 3.0</span>
-                    <span className="font-mono text-[11px] text-zinc-300 truncate">JSON Spec & AST Pipeline</span>
+                    <span className="type-telemetry-tag font-bold">§ 3.0</span>
+                    <span className="type-node-meta text-zinc-300 truncate">JSON Spec & AST Pipeline</span>
                   </div>
-                  <span className="font-mono text-[9px] px-1.5 py-0.5 bg-zinc-800 border border-zinc-700 text-zinc-400 shrink-0">
+                  <span className="type-telemetry-tag px-1.5 py-0.5 bg-zinc-800 border border-zinc-700 text-zinc-400 shrink-0">
                     ZERO-CRASH
                   </span>
                 </Link>
@@ -600,7 +600,7 @@ export default function Navbar({ onOpenBatchModal }: NavbarProps) {
                 setMobileMenuOpen(false);
                 onOpenBatchModal?.();
               }}
-              className="flex items-center justify-center gap-2 p-3.5 bg-[#00E5FF]/10 border border-[#00E5FF] hover:bg-[#00E5FF] text-[#00E5FF] hover:text-black active:bg-[#00E5FF] active:text-black transition-all font-mono text-xs font-bold uppercase tracking-wider rounded-none min-h-[48px] shadow-[0_0_16px_rgba(0,229,255,0.2)] mt-1"
+              className="flex items-center justify-center gap-2 p-3.5 bg-[#00E5FF]/10 border border-[#00E5FF] hover:bg-[#00E5FF] type-telemetry-tag font-bold hover:text-black active:bg-[#00E5FF] active:text-black transition-all rounded-none min-h-[48px] shadow-[0_0_16px_rgba(0,229,255,0.2)] mt-1"
             >
               <Rocket className="w-4 h-4" />
               <span>[ 🚀 Launch Studio Engine ]</span>

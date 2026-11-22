@@ -47,6 +47,7 @@ export class SceneController {
   private lastTime: number = 0;
   private running: boolean = false;
   private animFrameId: number = 0;
+  private getTimelineTimeFn?: () => { time: number; isPlaying: boolean; speed: number };
 
   // External callback when timeline ticks
   public onTimeTick?: (timeSec: number, frame: number, currentAct: number) => void;
@@ -105,6 +106,7 @@ export class SceneController {
     this.controls = new OrbitControls(this.camera, this.canvas);
     this.controls.enableDamping = true;
     this.controls.dampingFactor = 0.05;
+    this.controls.enableZoom = false; // Prevent mouse wheel zoom from trapping page scroll
     this.controls.target.set(0, 1.8, 0);
     this.controls.maxPolarAngle = Math.PI / 2 + 0.05; // Don't dip below floor
     this.controls.minDistance = 2.0;
@@ -332,6 +334,8 @@ export class SceneController {
   }
 
   public startAnimationLoop(getTimelineTime: () => { time: number; isPlaying: boolean; speed: number }) {
+    this.getTimelineTimeFn = getTimelineTime;
+    if (this.running) return;
     this.running = true;
     this.lastTime = performance.now();
 
@@ -356,6 +360,14 @@ export class SceneController {
     };
 
     this.animFrameId = requestAnimationFrame(loop);
+  }
+
+  public setPaused(paused: boolean) {
+    if (paused) {
+      this.stopAnimationLoop();
+    } else if (!this.running && this.getTimelineTimeFn) {
+      this.startAnimationLoop(this.getTimelineTimeFn);
+    }
   }
 
   public stopAnimationLoop() {

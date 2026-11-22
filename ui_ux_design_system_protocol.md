@@ -87,18 +87,31 @@ Primary Call-to-Action buttons (e.g., `RENDER 60FPS VIDEO`, `DOWNLOAD ALL ASSETS
 
 ---
 
-## 4. TYPOGRAPHY & BRACKET TAXONOMY
+## #### 4. TYPOGRAPHY & TYPE SCALE TOKENS
+##### 4.1 Font Family Stacks
+*   **Technical Headings & Action Labels:** 'Space Grotesk', 'Inter', sans-serif (font-semibold / font-bold, uppercase, tracking-wider).
+*   **Telemetry Readouts, Coordinates, Code & Timers:** 'JetBrains Mono', 'Fira Code', monospace (font-variant-numeric: tabular-nums).
 
-### 4.1 Font Family Stacks
-- **Technical Headings & Action Labels:** `'Space Grotesk'`, `'Inter'`, sans-serif (`font-semibold` / `font-bold`, uppercase, tracking-wider).
-- **Telemetry Readouts, Coordinates, Code & Timers:** `'JetBrains Mono'`, `'Fira Code'`, monospace (`font-variant-numeric: tabular-nums`).
+##### 4.2 Universal Typographic Scale & Token Mapping (Mandatory SSOT)
+All font sizes across every component, card, and node MUST map to these standardized classes. Hardcoding arbitrary inline sizes (e.g. `text-[9px]`, `text-[10px]`) in `.tsx` files is strictly prohibited:
 
-### 4.2 Machine-Syntax Bracket Wrapping
+| Semantic Level | CSS Token Class | Font Size / Line Height | Context & Usage |
+| :--- | :--- | :--- | :--- |
+| **Display Hero** | `.type-display-hero` | `text-5xl sm:text-7xl lg:text-8xl xl:text-9xl` (`leading-[0.85]`) | Main Hero banner headlines only. |
+| **Section Title** | `.type-section-title` | `text-2xl sm:text-3xl lg:text-4xl` (`leading-tight font-black uppercase`) | Top-level section anchors and coverflow headers. |
+| **Card / Node Title** | `.type-node-title` | `text-sm sm:text-base` (`font-bold text-white font-mono tracking-tight`) | **Workflow nodes, card titles, interactive block headers.** |
+| **Body Narrative** | `.type-body-narrative`| `text-sm sm:text-base lg:text-lg` (`text-zinc-300 font-sans leading-relaxed`) | Explanatory paragraphs, feature debriefs, descriptions. |
+| **Node Meta / Sub-label** | `.type-node-meta` | `text-xs sm:text-[13px]` (`text-zinc-400 font-mono tracking-tight`) | **Under-node actions (`dify.router`, `zod.schema`), tags.** |
+| **Telemetry / Micro Tag** | `.type-telemetry-tag` | `text-[11px] sm:text-xs` (`font-mono text-[#00E5FF] tracking-wider uppercase`) | Status pills, coordinates, live beacons. Minimum floor is 11px. |
+
+##### 4.3 Machine-Syntax Bracket Wrapping
 All status indicators, category headers, tags, and action targets must follow the mechanical bracket enclosure rule:
-- Section header: `[ 01 // VECTOR_TRACK ]`
-- GNSS coordinate: `[ LAT: 10.7629°N // LON: 106.7009°E ]`
-- System state: `[ ⏣ GNSS_LOCKED • RTK_STABLE ]`
-- Dismissal/Close: `[ × DISMISS ]`
+
+*  Section header: [ 01 // VECTOR_TRACK ]
+*  GNSS coordinate: [ LAT: 10.7629°N // LON: 106.7009°E ]
+*  System state: [ ⏣ GNSS_LOCKED • RTK_STABLE ]
+*  Dismissal/Close: [ × DISMISS ]
+
 
 ---
 

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import { Github, Mail, Linkedin, ArrowRight } from 'lucide-react';
 import BrutalistLogo from './BrutalistLogo';
@@ -60,19 +61,19 @@ export default function Footer() {
         <div className="relative border border-zinc-800 bg-zinc-950 p-8 lg:p-12 mb-16 overflow-hidden">
           <div className="relative flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
             <div>
-              <span className="text-[10px] uppercase text-cyan-glow tracking-widest border border-zinc-800 bg-zinc-900 px-2 py-0.5">
+              <span className="type-telemetry-tag border border-zinc-800 bg-zinc-900 px-2 py-0.5">
                 {t('footer_banner_tag')}
               </span>
-              <h3 className="mt-3 text-2xl sm:text-3xl font-extrabold tracking-tight text-white uppercase font-mono">
+              <h3 className="mt-3 type-section-title">
                 {t('footer_banner_title')}
               </h3>
-              <p className="mt-2 text-[14px] text-zinc-400 font-sans max-w-lg">
+              <p className="mt-2 type-body-narrative max-w-lg">
                 {t('footer_banner_desc')}
               </p>
             </div>
             <Link
               to="/studio"
-              className="group inline-flex items-center gap-2 border border-zinc-200 bg-white text-black text-xs font-bold px-5 py-3 hover:bg-zinc-200 transition-colors shrink-0 uppercase"
+              className="group inline-flex items-center gap-2 border border-zinc-200 bg-white type-telemetry-tag text-black font-bold px-5 py-3 hover:bg-zinc-200 transition-colors shrink-0"
             >
               {t('footer_start_building')}
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -84,7 +85,7 @@ export default function Footer() {
         <div className="grid grid-cols-2 lg:grid-cols-5 gap-8">
           <div className="col-span-2">
             <BrutalistLogo size={36} subtag={t('logo_subtag')} className="mb-4" />
-            <p className="text-[12.5px] text-zinc-400 font-sans leading-relaxed max-w-xs border-l-2 border-[#5322ff] pl-3">
+            <p className="type-body-narrative max-w-xs border-l-2 border-[#5322ff] pl-3">
               {t('footer_brand_desc')}
             </p>
             <div className="flex items-center gap-2 mt-5">
@@ -124,18 +125,18 @@ export default function Footer() {
                 className="group block p-3 bg-[#09090B] border border-[#27272A] hover:border-[#00E5FF] transition-all duration-300 rounded-none max-w-sm"
               >
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="flex items-center gap-1.5 font-mono text-[10px] tracking-widest text-[#00E5FF] uppercase">
+                  <span className="flex items-center gap-1.5 type-telemetry-tag">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#00E5FF] animate-pulse" />
                     {t('footerEngineBadge')}
                   </span>
-                  <span className="font-mono text-xs text-[#A1A1AA] group-hover:text-[#00E5FF] transition-colors">
+                  <span className="type-node-meta text-[#A1A1AA] group-hover:text-[#00E5FF] transition-colors">
                     {t('btnLaunchEngine')}
                   </span>
                 </div>
-                <h4 className="font-mono text-xs font-bold text-white group-hover:text-[#00E5FF] transition-colors mb-1">
+                <h4 className="type-node-title group-hover:text-[#00E5FF] transition-colors mb-1">
                   {t('footerEngineTitle')}
                 </h4>
-                <p className="font-sans text-[11px] text-[#8E8E93] leading-tight line-clamp-2">
+                <p className="type-body-narrative text-[#8E8E93] line-clamp-2">
                   {t('footerEngineDesc')}
                 </p>
               </a>
@@ -144,7 +145,7 @@ export default function Footer() {
 
           {cols.map((col) => (
             <div key={col.title}>
-              <h4 className="font-mono text-[11px] uppercase tracking-widest text-cyan-glow mb-3">
+              <h4 className="type-telemetry-tag mb-3">
                 {col.title}
               </h4>
               <ul className="space-y-2">
@@ -153,7 +154,7 @@ export default function Footer() {
                     {l.isRouterLink ? (
                       <Link
                         to={l.href}
-                        className="text-[12px] text-zinc-400 hover:text-white transition-colors"
+                        className="type-node-meta hover:text-white transition-colors"
                       >
                         {l.label}
                       </Link>
@@ -162,7 +163,7 @@ export default function Footer() {
                         href={l.href}
                         target={l.external ? '_blank' : undefined}
                         rel={l.external ? 'noopener noreferrer' : undefined}
-                        className="text-[12px] text-zinc-400 hover:text-white transition-colors"
+                        className="type-node-meta hover:text-white transition-colors"
                       >
                         {l.label}
                         {l.external && ' ↗'}
@@ -177,17 +178,17 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-14 pt-6 border-t border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex flex-wrap items-center gap-4 font-mono text-[10px] text-zinc-500">
+          <div className="flex flex-wrap items-center gap-4 type-telemetry-tag text-zinc-500">
             <div>{t('copyright_text')}</div>
             <button
               onClick={() => setIsJulesModalOpen(true)}
-              className="px-3 py-1.5 border border-[#8A2BE2]/40 bg-[#8A2BE2]/10 hover:bg-[#8A2BE2]/20 text-xs font-mono text-zinc-300 flex items-center space-x-2 transition-all cursor-pointer"
+              className="px-3 py-1.5 border border-[#8A2BE2]/40 bg-[#8A2BE2]/10 hover:bg-[#8A2BE2]/20 type-telemetry-tag text-zinc-300 flex items-center space-x-2 transition-all cursor-pointer"
             >
               <span className="w-2 h-2 rounded-full bg-[#8A2BE2] animate-pulse" />
               <span>BUILT BY HUMANS & GOOGLE JULES AGENT ↗</span>
             </button>
           </div>
-          <div className="flex items-center gap-4 font-mono text-[10px] text-zinc-500">
+          <div className="flex items-center gap-4 type-telemetry-tag text-zinc-500">
             <span className="flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
               {t('status_online')}
@@ -200,10 +201,14 @@ export default function Footer() {
       </div>
 
       {/* Jules Memorial Modal */}
-      <JulesMemorialModal
-        isOpen={isJulesModalOpen}
-        onClose={() => setIsJulesModalOpen(false)}
-      />
+      {typeof document !== 'undefined' &&
+        createPortal(
+          <JulesMemorialModal
+            isOpen={isJulesModalOpen}
+            onClose={() => setIsJulesModalOpen(false)}
+          />,
+          document.body,
+        )}
     </footer>
   );
 }

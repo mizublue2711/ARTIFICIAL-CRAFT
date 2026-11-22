@@ -1,7 +1,16 @@
 import { useEffect, useRef } from 'react';
+import { useInViewport } from '@/hooks/useInViewport';
 
 export default function ParticleCanvas({ className = '' }: { className?: string }) {
+  const { ref: viewportRef, isInView } = useInViewport();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const isInViewRef = useRef(isInView);
+  const syncLoopRef = useRef<(() => void) | null>(null);
+
+  useEffect(() => {
+    isInViewRef.current = isInView;
+    syncLoopRef.current?.();
+  }, [isInView]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -11,7 +20,7 @@ export default function ParticleCanvas({ className = '' }: { className?: string 
     const ctx: CanvasRenderingContext2D = context;
 
     let raf = 0;
-    let running = true;
+    let running = false;
     const CYAN = '#00E5FF';
     const PURPLE = '#5322ff';
     const SPACING = 50;
@@ -135,24 +144,29 @@ export default function ParticleCanvas({ className = '' }: { className?: string 
       raf = requestAnimationFrame(frame);
     }
 
-    build();
-    frame();
-
-    const onResize = () => build();
-    const onVisibility = () => {
-      if (document.hidden) {
-        running = false;
-        cancelAnimationFrame(raf);
-      } else if (!running) {
+    const syncLoop = () => {
+      const shouldRun = isInViewRef.current && !document.hidden;
+      if (shouldRun && !running) {
         running = true;
         raf = requestAnimationFrame(frame);
+      } else if (!shouldRun && running) {
+        running = false;
+        cancelAnimationFrame(raf);
       }
     };
+
+    syncLoopRef.current = syncLoop;
+    build();
+    syncLoop();
+
+    const onResize = () => build();
+    const onVisibility = () => syncLoop();
 
     window.addEventListener('resize', onResize);
     document.addEventListener('visibilitychange', onVisibility);
 
     return () => {
+      syncLoopRef.current = null;
       running = false;
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', onResize);
@@ -161,10 +175,16 @@ export default function ParticleCanvas({ className = '' }: { className?: string 
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
+    <div
+      ref={viewportRef}
       className={className}
       style={{ width: '100%', height: '100%' }}
-    />
+    >
+      <canvas
+        ref={canvasRef}
+        className="block w-full h-full"
+        style={{ width: '100%', height: '100%' }}
+      />
+    </div>
   );
 }

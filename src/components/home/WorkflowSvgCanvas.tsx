@@ -3,6 +3,16 @@ import { motion, useInView } from 'framer-motion';
 
 const ELECTRIC_PURPLE = '#5322ff';
 const ELECTRIC_CYAN = '#00E5FF';
+const NODE_WIDTH = 192;
+const NODE_HEIGHT = 82;
+
+const generateBezierPath = (
+  source: { x: number; y: number },
+  target: { x: number; y: number },
+) => {
+  const dx = (target.x - source.x) * 0.5;
+  return `M ${source.x} ${source.y} C ${source.x + dx} ${source.y}, ${target.x - dx} ${target.y}, ${target.x} ${target.y}`;
+};
 
 export interface NodeDef {
   id: string;
@@ -24,17 +34,12 @@ export interface WorkflowSvgCanvasProps {
   progress: number;
 }
 
-function getNodeDelay(id: string): number {
-  if (id === 'webhook') return 0.08;
-  if (id === 'brain') return 0.85;
-  if (id === 'process') return 1.55;
-  return 2.2;
+function getNodeDelay(index: number): number {
+  return 0.08 + Math.max(index, 0) * 0.16;
 }
 
-function getEdgeDelay(from: string, to: string): number {
-  if (from === 'webhook' && to === 'brain') return 0.45;
-  if (from === 'brain' && to === 'process') return 1.2;
-  return 1.85;
+function getEdgeDelay(fromIndex: number): number {
+  return 0.18 + Math.max(fromIndex, 0) * 0.16;
 }
 
 const WorkflowSvgCanvas = memo(function WorkflowSvgCanvas({
@@ -73,7 +78,7 @@ const WorkflowSvgCanvas = memo(function WorkflowSvgCanvas({
   return (
     <motion.svg
       ref={containerRef}
-      viewBox="0 0 1080 300"
+      viewBox="56 44 1120 248"
       className="w-full h-full"
       preserveAspectRatio="xMidYMid meet"
       initial={{ opacity: 0 }}
@@ -81,6 +86,16 @@ const WorkflowSvgCanvas = memo(function WorkflowSvgCanvas({
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
+      <defs>
+        <filter id="laser-glow" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="2.5" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+
       {/* Connector Edges */}
       {renderEdges.map(([from, to]) => {
         const a = nodeMap.get(from);
@@ -91,15 +106,17 @@ const WorkflowSvgCanvas = memo(function WorkflowSvgCanvas({
         const toIdx = nodeIndexMap[to] ?? -1;
         const edgeActive =
           isSimulating && (fromIdx === activeNodeIdx || toIdx === activeNodeIdx);
-        const mx = (a.x + b.x) / 2;
-        const pathData = `M ${a.x + 64} ${a.y + 28} C ${mx} ${a.y + 28}, ${mx} ${b.y + 28}, ${b.x} ${b.y + 28}`;
-        const edgeDelay = getEdgeDelay(from, to);
+        const pathString = generateBezierPath(
+          { x: a.x + NODE_WIDTH, y: a.y + NODE_HEIGHT / 2 },
+          { x: b.x, y: b.y + NODE_HEIGHT / 2 },
+        );
+        const edgeDelay = getEdgeDelay(fromIdx);
 
         return (
           <g key={`${from}-${to}`}>
             {/* Background Track Guide Path */}
             <motion.path
-              d={pathData}
+              d={pathString}
               fill="none"
               stroke="rgba(63,63,70,0.6)"
               strokeWidth="1.5"
@@ -127,18 +144,18 @@ const WorkflowSvgCanvas = memo(function WorkflowSvgCanvas({
 
             {/* Foreground Animated / Active Path */}
             <motion.path
-              d={pathData}
+              d={pathString}
               fill="none"
-              stroke={edgeActive ? ELECTRIC_CYAN : accent}
+              stroke={edgeActive ? ELECTRIC_CYAN : 'rgba(63,63,70,0.9)'}
               strokeWidth={edgeActive ? 2.5 : 1.5}
               initial={{ pathLength: 0, opacity: 0 }}
               animate={
                 isSimulating
-                  ? { pathLength: 1, opacity: edgeActive ? 1 : 0.7 }
+                  ? { pathLength: 1, opacity: edgeActive ? 1 : 0.45 }
                   : animationCompleted
-                    ? { pathLength: 1, opacity: 0.7 }
+                    ? { pathLength: 1, opacity: 0.45 }
                     : shouldAnimate
-                      ? { pathLength: 1, opacity: 0.8 }
+                      ? { pathLength: 1, opacity: 0.55 }
                       : { pathLength: 0, opacity: 0 }
               }
               transition={
@@ -156,6 +173,17 @@ const WorkflowSvgCanvas = memo(function WorkflowSvgCanvas({
                       }
               }
             />
+
+            {/* Glowing Cyan Laser Pulse */}
+            <path
+              d={pathString}
+              fill="none"
+              stroke="#00E5FF"
+              strokeWidth="2"
+              strokeDasharray="6 12"
+              filter="url(#laser-glow)"
+              className="animate-[dash_2s_linear_infinite]"
+            />
           </g>
         );
       })}
@@ -164,7 +192,7 @@ const WorkflowSvgCanvas = memo(function WorkflowSvgCanvas({
       {renderNodes.map((n, ni) => {
         const isBrain = n.type === 'dify';
         const isActive = isSimulating && ni === activeNodeIdx;
-        const nodeDelay = getNodeDelay(n.id);
+        const nodeDelay = getNodeDelay(ni);
 
         return (
           <g key={n.id} transform={`translate(${n.x}, ${n.y})`}>
@@ -186,15 +214,15 @@ const WorkflowSvgCanvas = memo(function WorkflowSvgCanvas({
                       ease: [0.16, 1, 0.3, 1],
                     }
               }
-              style={{ transformOrigin: '64px 28px' }}
+              style={{ transformOrigin: `${NODE_WIDTH / 2}px ${NODE_HEIGHT / 2}px` }}
             >
               {/* Trigger pulse ring for webhook */}
               {n.id === 'webhook' && !isSimulating && !animationCompleted && (
                 <motion.rect
                   x="-4"
                   y="-4"
-                  width="136"
-                  height="64"
+                  width={NODE_WIDTH + 8}
+                  height={NODE_HEIGHT + 8}
                   fill="none"
                   stroke={ELECTRIC_CYAN}
                   strokeWidth="1.5"
@@ -209,7 +237,7 @@ const WorkflowSvgCanvas = memo(function WorkflowSvgCanvas({
                     delay: 0.12,
                     ease: 'easeOut',
                   }}
-                  style={{ transformOrigin: '64px 28px' }}
+                  style={{ transformOrigin: `${NODE_WIDTH / 2}px ${NODE_HEIGHT / 2}px` }}
                 />
               )}
 
@@ -218,8 +246,8 @@ const WorkflowSvgCanvas = memo(function WorkflowSvgCanvas({
                 <motion.rect
                   x="-4"
                   y="-4"
-                  width="136"
-                  height="64"
+                  width={NODE_WIDTH + 8}
+                  height={NODE_HEIGHT + 8}
                   fill="none"
                   stroke={accent || ELECTRIC_PURPLE}
                   strokeWidth="1.5"
@@ -234,7 +262,7 @@ const WorkflowSvgCanvas = memo(function WorkflowSvgCanvas({
                     delay: 0.85,
                     ease: 'easeOut',
                   }}
-                  style={{ transformOrigin: '64px 28px' }}
+                  style={{ transformOrigin: `${NODE_WIDTH / 2}px ${NODE_HEIGHT / 2}px` }}
                 />
               )}
 
@@ -243,8 +271,8 @@ const WorkflowSvgCanvas = memo(function WorkflowSvgCanvas({
                 <rect
                   x="-4"
                   y="-4"
-                  width="136"
-                  height="64"
+                  width={NODE_WIDTH + 8}
+                  height={NODE_HEIGHT + 8}
                   fill="none"
                   stroke={ELECTRIC_CYAN}
                   strokeWidth="2"
@@ -253,49 +281,38 @@ const WorkflowSvgCanvas = memo(function WorkflowSvgCanvas({
 
               {/* Node Card Base */}
               <rect
-                width="128"
-                height="56"
+                width={NODE_WIDTH}
+                height={NODE_HEIGHT}
                 fill="#0b0b0f"
                 stroke={
                   isActive
                     ? ELECTRIC_CYAN
                     : isBrain
-                      ? `${accent}`
-                      : 'rgba(63,63,70,0.8)'
+                      ? '#3f3f46'
+                      : '#1F1F23'
                 }
-                strokeWidth="1"
+                strokeWidth={isActive ? '1.5' : '1'}
               />
 
-              {/* Status Circle */}
-              <circle
-                cx="18"
-                cy="28"
-                r="4"
-                fill={isActive ? ELECTRIC_CYAN : isBrain ? accent : '#71717a'}
-              />
-
-              {/* Node Label */}
-              <text
-                x="34"
-                y="25"
-                fill="#fafafa"
-                fontSize="11"
-                fontWeight="600"
-                fontFamily="JetBrains Mono, monospace"
-              >
-                {n.label}
-              </text>
-
-              {/* Node Subtitle */}
-              <text
-                x="34"
-                y="40"
-                fill="#71717a"
-                fontSize="9"
-                fontFamily="JetBrains Mono, monospace"
-              >
-                {n.sub}
-              </text>
+              {/* Padded Node Content Mapped to Central Typography Tokens */}
+              <foreignObject x="0" y="0" width={NODE_WIDTH} height={NODE_HEIGHT}>
+                <div className="w-full h-full min-w-[150px] min-h-[58px] py-2.5 px-4 flex items-center gap-2.5">
+                  <span
+                    className="h-2 w-2 rounded-full shrink-0"
+                    style={{
+                      backgroundColor: isActive || isBrain ? ELECTRIC_CYAN : '#71717a',
+                    }}
+                  />
+                  <div className="min-w-0 flex flex-col justify-center gap-0.5">
+                    <div className="type-node-title leading-tight truncate">
+                      {n.label}
+                    </div>
+                    <div className="type-node-meta leading-tight truncate">
+                      {n.sub}
+                    </div>
+                  </div>
+                </div>
+              </foreignObject>
             </motion.g>
           </g>
         );

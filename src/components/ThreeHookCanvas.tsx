@@ -1,8 +1,16 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import { useInViewport } from '@/hooks/useInViewport';
 
 export default function ThreeHookCanvas({ className = '' }: { className?: string }) {
-  const mountRef = useRef<HTMLDivElement>(null);
+  const { ref: mountRef, isInView } = useInViewport();
+  const isInViewRef = useRef(isInView);
+  const syncLoopRef = useRef<(() => void) | null>(null);
+
+  useEffect(() => {
+    isInViewRef.current = isInView;
+    syncLoopRef.current?.();
+  }, [isInView]);
 
   useEffect(() => {
     const container = mountRef.current;
@@ -115,13 +123,19 @@ export default function ThreeHookCanvas({ className = '' }: { className?: string
     cyanPointLight.position.set(-5, -3, 4);
     scene.add(cyanPointLight);
 
-    // Mouse Interaction / Parallax
+    // Mouse Interaction / Parallax (throttled & gated by viewport visibility)
     let targetMouseX = 0;
     let targetMouseY = 0;
     let mouseX = 0;
     let mouseY = 0;
+    let lastMouseMoveTime = 0;
 
     const onMouseMove = (event: MouseEvent) => {
+      if (!isInViewRef.current) return;
+      const now = performance.now();
+      if (now - lastMouseMoveTime < 32) return;
+      lastMouseMoveTime = now;
+
       const rect = container.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
@@ -131,11 +145,13 @@ export default function ThreeHookCanvas({ className = '' }: { className?: string
 
     window.addEventListener('mousemove', onMouseMove, { passive: true });
 
-    // Animation Loop
+    // Animation Loop (viewport-culled via useInViewport)
     let animId = 0;
+    let isRunning = false;
     const clock = new THREE.Clock();
 
     const animate = () => {
+      if (!isRunning) return;
       animId = requestAnimationFrame(animate);
       const elapsedTime = clock.getElapsedTime();
 
@@ -162,7 +178,20 @@ export default function ThreeHookCanvas({ className = '' }: { className?: string
       renderer.render(scene, camera);
     };
 
-    animate();
+    const syncLoop = () => {
+      const shouldRun = isInViewRef.current && !document.hidden;
+      if (shouldRun && !isRunning) {
+        isRunning = true;
+        clock.getDelta();
+        animId = requestAnimationFrame(animate);
+      } else if (!shouldRun && isRunning) {
+        isRunning = false;
+        cancelAnimationFrame(animId);
+      }
+    };
+
+    syncLoopRef.current = syncLoop;
+    syncLoop();
 
     // Resize handler
     const onResize = () => {
@@ -173,11 +202,15 @@ export default function ThreeHookCanvas({ className = '' }: { className?: string
     };
 
     window.addEventListener('resize', onResize);
+    document.addEventListener('visibilitychange', syncLoop);
 
     return () => {
+      syncLoopRef.current = null;
+      isRunning = false;
       cancelAnimationFrame(animId);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('resize', onResize);
+      document.removeEventListener('visibilitychange', syncLoop);
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }

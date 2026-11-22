@@ -261,21 +261,22 @@ const WorkflowCarousel3D = memo(function WorkflowCarousel3D({
     }
   }, [activeIdx, stride, x, config.springStiffness, config.springDamping]);
 
-  // Non-passive wheel interceptor: maps normalized wheel ticks to kinetic spring without trapping page flow
+  // Non-passive wheel interceptor: only intercept horizontal gestures so vertical wheel scroll passes through to window
   useEffect(() => {
     const stageEl = stageRef.current;
     if (!stageEl) return;
 
     const handleWheel = (e: WheelEvent) => {
-      const delta =
-        Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      // Do NOT hijack vertical scrolling; only intercept explicitly horizontal gestures
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+      const delta = e.deltaX;
       if (Math.abs(delta) < 1) return;
 
       const currentX = x.get();
       const isAtStart = currentX >= -2 && delta < 0;
       const isAtEnd = currentX <= -maxDrag + 2 && delta > 0;
 
-      // Release vertical scroll back to page when at deck boundaries
+      // Release scroll back to page when at deck boundaries
       if (isAtStart || isAtEnd) return;
 
       e.preventDefault();
