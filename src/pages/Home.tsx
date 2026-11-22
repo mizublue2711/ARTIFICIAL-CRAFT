@@ -1,6 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import Hero from '@/components/Hero';
+import AutomationCockpit from '@/components/home/AutomationCockpit';
 import BentoGrid from '@/components/BentoGrid';
 import BlueprintLibrary from '@/components/BlueprintLibrary';
 import InteractiveNodeMatrix from '@/components/playground/InteractiveNodeMatrix';
@@ -13,7 +13,6 @@ import {
   ScrollDirectorSection,
   StandaloneLabSection,
   TelemetryMiniDock,
-  itemFadeUpVariants,
 } from '@/components/motion';
 import { useTranslation } from '@/context/useLanguage';
 
@@ -96,32 +95,25 @@ export default function Home({ onOpenBatchModal, isPreloaderComplete = true }: H
     <main>
       <TelemetryMiniDock />
 
-      {/* LAYER 1: Foundation & Reasoning Pipelines */}
-      <MacroLayer layerIndex={1} id="macro-layer-foundation">
-        {/* Hero section rendering 3D engine in compact mode + AutomationCockpit */}
-        <div id="hero">
-          <Hero
-            onOpenBatchModal={onOpenBatchModal}
-            monolithMode="compact"
-            isReady={isPreloaderComplete}
-          />
-        </div>
-        <LogoMarquee />
+      {/* HERO STAGE (Top Entrance): 250vh Scroll Runway & Monolith Deconstruction */}
+      <div id="hero">
+        <Hero
+          onOpenBatchModal={onOpenBatchModal}
+          monolithMode="compact"
+          isReady={isPreloaderComplete}
+          showCockpit={false}
+        />
+      </div>
 
-        <ScrollDirectorSection>
-          <BlueprintLibrary />
-        </ScrollDirectorSection>
-      </MacroLayer>
-
-      {/* LAYER 2: 3D High-Density Labs & Runtimes */}
-      <MacroLayer layerIndex={2} id="macro-layer-labs">
-        {/* Zone 03 Headless Swarm Workbench & 5 Autonomous GPU Pylons */}
+      {/* LAYER 1: 3D High-Density Labs & Runtimes */}
+      <MacroLayer layerIndex={1} id="macro-layer-labs">
+        {/* Zone 03 Headless Swarm Workbench & Agent Topology */}
         <StandaloneLabSection id="pylons">
           <HeadlessSwarmSection />
         </StandaloneLabSection>
 
-        {/* Unified Interactive Node Matrix Teaser pointing to /playground */}
-        <StandaloneLabSection>
+        {/* Unified Interactive Node Matrix & Expanding Accordion Playground Hubs */}
+        <StandaloneLabSection id="playground">
           <InteractiveNodeMatrix />
         </StandaloneLabSection>
 
@@ -165,10 +157,27 @@ export default function Home({ onOpenBatchModal, isPreloaderComplete = true }: H
             </div>
           </div>
         </div>
+      </MacroLayer>
 
-        <StandaloneLabSection id="workflow-vault">
-          <BentoGrid />
-        </StandaloneLabSection>
+      {/* LAYER 2: Architectural Reasoning & Blueprint Vault */}
+      <MacroLayer layerIndex={2} id="macro-layer-foundation">
+        {/* DAG Canvas Simulator */}
+        <ScrollDirectorSection id="cockpit" className="mx-auto max-w-7xl px-6 lg:px-8 pt-20 lg:pt-28 pb-12">
+          <AutomationCockpit />
+        </ScrollDirectorSection>
+
+        <LogoMarquee />
+
+        {/* Dual Dify/n8n Architecture & Tested Automation Workflows Vault */}
+        <div id="workflow-vault">
+          <StandaloneLabSection>
+            <BentoGrid />
+          </StandaloneLabSection>
+
+          <ScrollDirectorSection>
+            <BlueprintLibrary />
+          </ScrollDirectorSection>
+        </div>
       </MacroLayer>
 
       {/* LAYER 3: The Substrate & Closing Protocol */}

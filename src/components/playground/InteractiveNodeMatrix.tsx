@@ -1,10 +1,14 @@
 import React, { useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Box, Film, Image, BarChart3, ChevronRight, ArrowUpRight } from 'lucide-react';
+import { Box, Film, Image, BarChart3, Cpu, Layers, ChevronRight } from 'lucide-react';
 import { useTranslation } from '@/context/useLanguage';
 import { UniversalComponentProps } from '@/types/preset';
 import { itemFadeUpVariants } from '@/components/motion/ScrollDirectorSection';
+import {
+  ExpandingAccordionGrid,
+  type AccordionEngineItem,
+} from '@/components/motion/ExpandingAccordionGrid';
 
 export interface NodeCardProps {
   id?: string;
@@ -103,84 +107,106 @@ export const InteractiveNodeMatrix: React.FC<UniversalComponentProps> = ({
   className = '',
 }) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
 
-  const nodes: NodeCardProps[] = useMemo(() => [
+  const engines: AccordionEngineItem[] = useMemo(() => [
     {
-      nodeId: 'node-01',
-      number: 'NODE 01',
+      id: '01',
+      index: '01',
+      spineLabel: '01 // 3D MONOLITH',
       title: t('node01Title'),
-      subtitle: t('node01Desc'),
+      slaBadge: '[ 60 FPS DETERMINISTIC ]',
+      statusBadge: 'LIVE ENGINE',
       description: t('node01Desc'),
       techStack: ['Three.js', 'WebGL', 'Web Audio API'],
       icon: Box,
-      badge: 'LIVE ENGINE',
-      to: '/playground?tab=node-01',
       ctaLabel: t('btnEnterNode01'),
-      enterLabel: t('btnEnterNode01'),
+      href: '/playground?tab=node-01',
+      isExternal: false,
+      accentColor: '#00E5FF',
+      artVariant: 'monolith',
     },
     {
-      nodeId: 'NODE 02 // REMOTION STUDIO',
-      number: 'NODE 02',
+      id: '02',
+      index: '02',
+      spineLabel: '02 // REMOTION 2K',
       title: t('node02Title'),
-      subtitle: t('node02Desc'),
+      slaBadge: '[ 60 FPS DETERMINISTIC ]',
+      statusBadge: '2K 60FPS',
       description: t('node02Desc'),
       techStack: ['Remotion 4.0', 'React', 'Kinetic Typography', 'WebGL'],
       icon: Film,
-      badge: '2K 60FPS',
-      to: '/playground?tab=node-02',
       ctaLabel: t('btnLaunchNode02'),
+      href: '/playground?tab=node-02',
+      isExternal: false,
+      accentColor: '#5322FF',
+      artVariant: 'remotion',
     },
     {
-      nodeId: 'NODE 03 // BANNER STUDIO',
-      number: 'NODE 03',
+      id: '03',
+      index: '03',
+      spineLabel: '03 // BANNER STUDIO',
       title: t('node03Title'),
-      subtitle: t('node03Desc'),
+      slaBadge: '[ 60 FPS DETERMINISTIC ]',
+      statusBadge: 'BATCH ASSETS',
       description: t('node03Desc'),
       techStack: ['HTML5 Canvas', 'SVG Engine', 'n8n Webhook', 'Brutalist Tokens'],
       icon: Image,
-      badge: 'BATCH ASSETS',
-      to: '/playground?tab=node-03',
       ctaLabel: t('btnOpenNode03'),
+      href: '/playground?tab=node-03',
+      isExternal: false,
+      accentColor: '#00E5FF',
+      artVariant: 'banner',
     },
     {
-      nodeId: 'NODE 04 // MEKONG CAD',
-      number: 'NODE 04',
+      id: '04',
+      index: '04',
+      spineLabel: '04 // MEKONG CAD',
       title: t('node04Title'),
-      subtitle: t('node04Desc'),
+      slaBadge: '[ 60 FPS DETERMINISTIC ]',
+      statusBadge: 'LIVE DATA',
       description: t('node04Desc'),
       techStack: ['PapaParse', 'CKAN API', 'Line Art', 'Waveform Visualizer'],
       icon: BarChart3,
-      badge: 'LIVE DATA',
-      to: '/playground?tab=node-04',
       ctaLabel: t('btnOpenNode04'),
+      href: '/playground?tab=node-04',
+      isExternal: false,
+      accentColor: '#00E5FF',
+      artVariant: 'cad',
     },
     {
-      id: 'plug-and-play-sandbox',
-      nodeId: 'NODE 05 // PLUG AND PLAY SANDBOX',
+      id: '05',
+      index: '05',
+      spineLabel: '05 // SANDBOX SDK',
       title: t('node05Title'),
-      subtitle: t('node05Desc'),
-      badge: 'INTERACTIVE SANDBOX // 60 FPS',
+      slaBadge: '[ 60 FPS DETERMINISTIC ]',
+      statusBadge: 'INTERACTIVE SANDBOX',
       description: t('node05Desc'),
       techStack: ['React / Vite', 'Three.js / WebGL', 'Zod AST Gate', 'Cybernetic UI'],
-      linkUrl: '/playground?node=plug-and-play-sandbox',
-      accentColor: '#5322FF',
-      primaryColor: '#00E5FF',
-      to: '/playground?node=plug-and-play-sandbox',
+      icon: Cpu,
       ctaLabel: t('btnOpenNode05'),
+      href: '/playground?node=plug-and-play-sandbox',
+      isExternal: false,
+      accentColor: '#5322FF',
+      artVariant: 'sandbox',
+      onLaunch: () => {
+        console.log('Launching Plug and Play Sandbox...');
+      },
     },
     {
-      id: '3d-data-metropolis',
-      nodeId: 'NODE 06 // DATA METROPOLIS',
+      id: '06',
+      index: '06',
+      spineLabel: '06 // METROPOLIS 3D',
       title: t('node06Title'),
-      subtitle: t('node06Desc'),
-      badge: '[ STATUS: OPERATIONAL ]',
+      slaBadge: '[ 60 FPS DETERMINISTIC ]',
+      statusBadge: '[ STATUS: OPERATIONAL ]',
       description: t('node06Desc'),
       techStack: ['Three.js / WebGL', 'Google Sheets Live API', 'Zod Sanitizer', 'Cybernetic Brutalism'],
-      linkUrl: 'https://metropolis.artificialcraft.space/',
-      accentColor: '#00E5FF',
-      primaryColor: '#5322FF',
+      icon: Layers,
       ctaLabel: t('btnLaunchNode06'),
+      href: 'https://metropolis.artificialcraft.space/',
+      isExternal: true,
+      accentColor: '#00E5FF',
+      artVariant: 'metropolis',
     },
   ], [t]);
 
@@ -221,89 +247,8 @@ export const InteractiveNodeMatrix: React.FC<UniversalComponentProps> = ({
           </Link>
         </div>
 
-        {/* 6-Node Bento Matrix */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {nodes.map((node, index) => {
-            const techList = Array.isArray(node.techStack)
-              ? node.techStack
-              : [node.techStack];
-
-            // Node 01: Retains its distinct Flagship Hero badge and primary highlight style
-            if (index === 0) {
-              const Icon = node.icon || Box;
-              return (
-                <Link
-                  key={node.nodeId}
-                  to={node.to || '/playground?tab=node-01'}
-                  className="group relative border border-[#00E5FF] bg-[#0c1220]/80 hover:bg-[#0e1628] transition-all duration-300 p-6 flex flex-col justify-between"
-                >
-                  {/* Card Top */}
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="type-telemetry-tag text-zinc-500 font-bold">
-                        {node.number || 'NODE 01'}
-                      </span>
-                      <span className="type-telemetry-tag px-2 py-0.5 border border-[#00E5FF]/60 bg-[#00E5FF]/10 font-bold">
-                        {node.badge || 'FLAGSHIP HERO'}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="p-2 border border-[#00E5FF]/40 text-[#00E5FF] bg-[#00E5FF]/10">
-                        <Icon className="w-5 h-5" />
-                      </div>
-                      <motion.h3 variants={itemFadeUpVariants} className="type-card-title group-hover:text-[#00E5FF] transition-colors">
-                        {node.title}
-                      </motion.h3>
-                    </div>
-
-                    <motion.p variants={itemFadeUpVariants} className="type-body-narrative mb-6">
-                      {node.description || node.subtitle}
-                    </motion.p>
-                  </div>
-
-                  {/* Card Bottom - Enforcing 44px min touch target on mobile */}
-                  <div className="pt-4 border-t border-zinc-800/80 flex items-center justify-between min-h-[44px]">
-                    <span className="type-node-meta text-zinc-500">
-                      {techList.join(' • ')}
-                    </span>
-                    <div className="flex items-center gap-1 type-telemetry-tag font-bold group-hover:translate-x-1 transition-transform py-2 px-1">
-                      <span>{node.enterLabel?.replace('↗', '').trim() || 'ENTER'}</span>
-                      <ArrowUpRight className="w-3.5 h-3.5" />
-                    </div>
-                  </div>
-                </Link>
-              );
-            }
-
-            // Nodes 02 to 06: Unified Cybernetic Brutalist Card Template
-            const destinationUrl = node.linkUrl || node.to;
-            const isExternal = Boolean(destinationUrl && destinationUrl.startsWith('http'));
-
-            return (
-              <UnifiedHubCard
-                key={node.id || node.nodeId}
-                nodeId={node.nodeId}
-                badge={node.badge || '60 FPS'}
-                title={node.title}
-                description={node.description || node.subtitle}
-                techStack={techList}
-                ctaLabel={node.ctaLabel || 'LAUNCH NODE'}
-                onClickUrl={isExternal ? destinationUrl : undefined}
-                onAction={
-                  !isExternal && destinationUrl
-                    ? () => {
-                        if (node.id === 'plug-and-play-sandbox') {
-                          console.log('Launching Plug and Play Sandbox...');
-                        }
-                        navigate(destinationUrl);
-                      }
-                    : undefined
-                }
-              />
-            );
-          })}
-        </div>
+        {/* 6-Engine Expanding Accordion Strip Carousel */}
+        <ExpandingAccordionGrid items={engines} defaultActiveId="01" />
       </div>
     </section>
   );

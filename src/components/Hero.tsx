@@ -7,6 +7,7 @@ import { ScrollDirectorSection } from '@/components/motion/ScrollDirectorSection
 
 export interface HeroProps extends HeroHeadlineStageProps, AutomationCockpitProps {
   className?: string;
+  showCockpit?: boolean;
 }
 
 const HeroStageScrollConductor: React.FC<
@@ -46,12 +47,13 @@ export const Hero: React.FC<HeroProps> = ({
   monolithMode = 'compact',
   className = '',
   isReady = true,
+  showCockpit = true,
   onSimulationStart,
   onSimulationComplete,
 }) => {
   return (
     <section
-      className={`relative w-full pb-20 lg:pb-28 overflow-x-clip bg-[#05050A] ${className}`}
+      className={`relative w-full ${showCockpit ? 'pb-20 lg:pb-28' : 'pb-0'} overflow-x-clip bg-[#05050A] ${className}`}
       id="platform"
     >
       {/* Background Particle Canvas */}
@@ -74,13 +76,15 @@ export const Hero: React.FC<HeroProps> = ({
         isReady={isReady}
       />
 
-      {/* Centered Automation Cockpit below the fold */}
-      <ScrollDirectorSection id="automation-cockpit" className="mx-auto max-w-7xl px-6 lg:px-8">
-        <AutomationCockpit
-          onSimulationStart={onSimulationStart}
-          onSimulationComplete={onSimulationComplete}
-        />
-      </ScrollDirectorSection>
+      {/* Centered Automation Cockpit below the fold (optional when hoisted to MacroLayer 2) */}
+      {showCockpit && (
+        <ScrollDirectorSection id="automation-cockpit" className="mx-auto max-w-7xl px-6 lg:px-8">
+          <AutomationCockpit
+            onSimulationStart={onSimulationStart}
+            onSimulationComplete={onSimulationComplete}
+          />
+        </ScrollDirectorSection>
+      )}
     </section>
   );
 };

@@ -9,3 +9,4 @@ export * from './PreloaderStage';
 export * from './StickyStackContainer';
 export * from './MacroLayer';
 export * from './TelemetryMiniDock';
+export * from './ExpandingAccordionGrid';

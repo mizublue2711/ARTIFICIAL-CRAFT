@@ -8,16 +8,19 @@ export interface DockSection {
 
 export const DOCK_SECTIONS: readonly DockSection[] = [
   { id: 'hero', label: 'HERO // MONOLITH', num: '01' },
-  { id: 'cockpit', label: 'COCKPIT // SIMULATOR', num: '02' },
-  { id: 'pylons', label: '5-GPU PYLONS', num: '03' },
+  { id: 'pylons', label: 'AGENT TOPOLOGY', num: '02' },
+  { id: 'playground', label: 'PLAYGROUND HUBS', num: '03' },
   { id: 'studio-configurator', label: '3D KINEMATICS STUDIO', num: '04' },
-  { id: 'workflow-vault', label: 'WORKFLOW VAULT', num: '05' },
-  { id: 'blackbox', label: 'BLACKBOX SUBSTRATE', num: '06' },
+  { id: 'cockpit', label: 'COCKPIT // SIMULATOR', num: '05' },
+  { id: 'workflow-vault', label: 'BLUEPRINT & VAULT', num: '06' },
+  { id: 'blackbox', label: 'BLACKBOX SUBSTRATE', num: '07' },
 ] as const;
 
 const SECTION_ID_FALLBACKS: Record<string, string[]> = {
-  cockpit: ['automation-cockpit'],
   pylons: ['zone-03-headless-swarm'],
+  playground: ['interactive-node-matrix'],
+  cockpit: ['automation-cockpit'],
+  'workflow-vault': ['blueprints', 'architecture'],
   blackbox: ['existential-blackbox'],
 };
 
@@ -33,6 +36,42 @@ function resolveSectionElement(id: string): HTMLElement | null {
     if (el) return el;
   }
   return null;
+}
+
+function getStaticDocumentTop(el: HTMLElement): number {
+  let stickyAncestor: HTMLElement | null = null;
+  let cursor: HTMLElement | null = el;
+
+  while (cursor && cursor !== document.body && cursor !== document.documentElement) {
+    if (window.getComputedStyle(cursor).position === 'sticky') {
+      stickyAncestor = cursor;
+    }
+    cursor = cursor.parentElement;
+  }
+
+  if (!stickyAncestor) {
+    return Math.max(0, Math.round(el.getBoundingClientRect().top + window.scrollY));
+  }
+
+  // Offset of the target relative to its outermost sticky container is invariant under sticky clamping
+  const elOffsetInSticky =
+    el.getBoundingClientRect().top - stickyAncestor.getBoundingClientRect().top;
+
+  // Compute the sticky container's true un-stuck document flow Y by summing preceding in-flow siblings
+  const parent = stickyAncestor.parentElement;
+  const parentTop = parent ? parent.getBoundingClientRect().top + window.scrollY : 0;
+  let precedingHeight = 0;
+  let sib = stickyAncestor.previousElementSibling as HTMLElement | null;
+
+  while (sib) {
+    const pos = window.getComputedStyle(sib).position;
+    if (pos !== 'fixed' && pos !== 'absolute') {
+      precedingHeight += sib.getBoundingClientRect().height;
+    }
+    sib = sib.previousElementSibling as HTMLElement | null;
+  }
+
+  return Math.max(0, Math.round(parentTop + precedingHeight + elOffsetInSticky));
 }
 
 export const TelemetryMiniDock: React.FC = () => {
@@ -96,7 +135,8 @@ export const TelemetryMiniDock: React.FC = () => {
     if (!el) return;
 
     setActiveId(id);
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const targetTop = getStaticDocumentTop(el);
+    window.scrollTo({ top: targetTop, behavior: 'smooth' });
   }, []);
 
   return (

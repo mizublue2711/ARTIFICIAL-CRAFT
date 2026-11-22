@@ -79,6 +79,14 @@ export type ActiveWizardStep = 1 | 2 | 3 | 4 | 5;
 export type DevicePreviewMode = 'desktop' | 'tablet' | 'mobile';
 export type PreviewViewportMode = '3d-canvas' | 'remotion-video';
 
+const STEP_TABS: { step: ActiveWizardStep; num: string; label: string }[] = [
+  { step: 1, num: '01', label: 'BRAND' },
+  { step: 2, num: '02', label: 'STYLIST' },
+  { step: 3, num: '03', label: '3D MESH' },
+  { step: 4, num: '04', label: 'TELEMETRY' },
+  { step: 5, num: '05', label: 'EXPORT' },
+];
+
 export interface ExtendedStudioConfig extends Partial<SwissDesignConfig> {
   compositionId: string;
   slogan: string;
@@ -796,53 +804,35 @@ export const CraftStudioConfigurator: React.FC = () => {
       </div>
 
       {/* Main Two-Column Split Layout */}
-      <div className="flex-1 flex flex-col lg:flex-row w-full overflow-hidden">
+      <div className="flex-1 flex flex-col lg:flex-row w-full">
         {/* ======================================================== */}
         {/* LEFT COLUMN: 5-STEP CONFIGURATOR WIZARD DOCK (440px - 480px) */}
         {/* ======================================================== */}
-        <aside className="w-full lg:w-[460px] xl:w-[480px] bg-[#09090B] border-r border-zinc-800/90 flex flex-col h-auto lg:h-[calc(100vh-108px)] overflow-y-auto">
-          {/* Step Indicator Navigation */}
-          <div className="p-3 border-b border-zinc-800 bg-zinc-950/70 sticky top-0 z-30">
-            <div className="grid grid-cols-5 gap-1 text-center">
-              {[1, 2, 3, 4, 5].map((step) => {
-                const isStep3 = step === 3;
-                const isActive = activeStep === step;
-
-                return (
-                  <button
-                    key={step}
-                    onClick={() => setActiveStep(step as ActiveWizardStep)}
-                    className={`relative py-1.5 px-1 border text-[10px] font-bold transition flex flex-col items-center gap-0.5 ${
-                      isActive
-                        ? isStep3
-                          ? 'border-[#00F0FF] bg-[#00F0FF]/20 text-cyan-200 shadow-[0_0_12px_rgba(0,240,255,0.45)]'
-                          : 'border-[#5322FF] bg-[#5322FF]/20 text-white shadow-[0_0_10px_rgba(83,34,255,0.4)]'
-                        : isStep3
-                          ? 'border-[#00F0FF]/50 bg-[#00F0FF]/5 text-cyan-400 hover:border-[#00F0FF] hover:bg-[#00F0FF]/15'
-                          : 'border-zinc-800 bg-zinc-900/40 text-zinc-500 hover:text-zinc-300'
-                    }`}
-                  >
-                    {isStep3 && (
-                      <span className="absolute -top-1.5 right-0.5 px-1 py-[0.5px] bg-[#00F0FF] text-black text-[7px] font-black tracking-wider leading-none rounded-none shadow-[0_0_6px_rgba(0,240,255,0.6)]">
-                        CORE // 3D
-                      </span>
-                    )}
-                    <span>STEP 0{step}</span>
-                    <span className="text-[8px] opacity-75 truncate max-w-full">
-                      {step === 1 && 'BRAND'}
-                      {step === 2 && 'STYLIST'}
-                      {step === 3 && '3D MESH'}
-                      {step === 4 && 'TELEMETRY'}
-                      {step === 5 && 'EXPORT'}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+        <aside className="order-last lg:order-first w-full lg:w-[460px] xl:w-[480px] bg-[#09090B] lg:border-r border-zinc-800/90 flex flex-col h-auto lg:h-[calc(100vh-108px)] lg:overflow-y-auto">
+          {/* Mobile-Optimized Horizontal Step Runway */}
+          <div className="w-full flex flex-row items-center gap-2 overflow-x-auto py-2 px-3 border-b border-zinc-900 bg-zinc-950/90 backdrop-blur-sm sticky top-0 z-30 custom-scrollbar whitespace-nowrap">
+            {STEP_TABS.map((tab) => (
+              <button
+                key={tab.step}
+                type="button"
+                onClick={() => setActiveStep(tab.step)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono tracking-wider transition-all shrink-0 border ${
+                  activeStep === tab.step
+                    ? 'border-[#00E5FF] bg-[#00E5FF]/10 text-[#00E5FF] shadow-[0_0_10px_rgba(0,229,255,0.2)]'
+                    : 'border-zinc-800 bg-zinc-950/60 text-zinc-400 hover:border-zinc-700'
+                }`}
+              >
+                <span className="opacity-60">{tab.num}</span>
+                <span>{tab.label}</span>
+                {tab.step === 3 && (
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#00E5FF] animate-pulse" />
+                )}
+              </button>
+            ))}
           </div>
 
           {/* Wizard Content Panels */}
-          <div className="p-5 flex-1 flex flex-col gap-6">
+          <div className="p-4 sm:p-5 flex-1 flex flex-col gap-6">
             {/* STEP 1: BRAND IDENTIFICATION & NODE SELECTION */}
             {activeStep === 1 && (
               <motion.div
@@ -1386,12 +1376,12 @@ export const CraftStudioConfigurator: React.FC = () => {
 
                 {/* 3D Mesh & Component Selector List */}
                 <div className="space-y-2">
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-wrap items-center justify-between gap-1">
                     <label className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
                       Base 3D Mesh Component
                     </label>
-                    <span className="text-[#00E5FF] text-[10px] tracking-widest font-mono">
-                      [ SCROLL TO PREVIEW 20 MESHES // CLICK TO LOCK ]
+                    <span className="text-[#00E5FF] text-[9px] sm:text-[10px] tracking-widest font-mono">
+                      [ 20 MESHES // TAP TO LOCK ]
                     </span>
                   </div>
 
@@ -1399,7 +1389,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                   <div
                     ref={meshListContainerRef}
                     onScroll={handleMeshContainerScroll}
-                    className="max-h-[300px] overflow-y-auto space-y-1.5 pr-1.5 custom-scrollbar snap-y snap-mandatory border border-zinc-900 bg-zinc-950/60 p-1.5"
+                    className="max-h-[220px] sm:max-h-[300px] overflow-y-auto grid grid-cols-2 gap-1.5 sm:flex sm:flex-col sm:gap-1.5 pr-1.5 custom-scrollbar snap-y snap-mandatory border border-zinc-900 bg-zinc-950/60 p-1.5"
                     style={{ overscrollBehavior: 'contain' }}
                   >
                     {AVAILABLE_3D_COMPONENTS.map((comp) => {
@@ -1427,17 +1417,17 @@ export const CraftStudioConfigurator: React.FC = () => {
                               block: 'nearest',
                             });
                           }}
-                          className={`w-full px-3 py-2 border text-left text-xs font-mono transition flex items-center justify-between snap-start ${
+                          className={`w-full px-2 py-1.5 sm:px-3 sm:py-2 border text-left text-[10px] sm:text-xs font-mono transition flex flex-col sm:flex-row sm:items-center justify-between gap-1 snap-start min-w-0 ${
                             isSelected
                               ? 'border-[#5322FF] bg-[#5322FF]/20 text-white shadow-[0_0_12px_rgba(83,34,255,0.3)]'
                               : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-white hover:border-zinc-700'
                           }`}
                         >
-                          <div className="flex items-center gap-2.5">
-                            <IconComponent className="w-4 h-4 text-[#00E5FF] stroke-[1.5]" />
-                            <span>{comp.label}</span>
+                          <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
+                            <IconComponent className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#00E5FF] stroke-[1.5] shrink-0" />
+                            <span className="truncate">{comp.label}</span>
                           </div>
-                          <span className="text-[10px] text-zinc-500 font-mono">
+                          <span className="text-[9px] sm:text-[10px] text-zinc-500 font-mono truncate shrink-0">
                             {isSelected ? '[ACTIVE]' : comp.badge || comp.value}
                           </span>
                         </button>
@@ -1949,56 +1939,58 @@ export const CraftStudioConfigurator: React.FC = () => {
         {/* RIGHT COLUMN: 60FPS REAL-TIME LIVE PREVIEW STAGE (FLEX-1) */}
         {/* ======================================================== */}
         <main
-          className={`flex-1 flex flex-col bg-[#050508] relative ${
-            isFullscreen ? 'fixed inset-0 z-50 bg-black' : 'h-[600px] lg:h-[calc(100vh-108px)]'
+          className={`order-first lg:order-last flex flex-col bg-[#05050A] relative border-b border-zinc-900 lg:border-b-0 ${
+            isFullscreen
+              ? 'fixed inset-0 z-50 bg-black'
+              : 'w-full lg:flex-1 lg:h-[calc(100vh-8rem)] lg:sticky lg:top-24'
           }`}
         >
           {/* Top Viewport Header Dock */}
-          <div className="px-4 py-2 border-b border-zinc-800 bg-[#09090D] flex flex-wrap items-center justify-between gap-3 text-xs z-20">
+          <div className="px-2.5 sm:px-4 py-1.5 sm:py-2 border-b border-zinc-800 bg-[#09090D] flex flex-wrap items-center justify-between gap-2 sm:gap-3 text-xs z-20">
             {/* Viewport Status & SLA & DUAL-MODE PREVIEW TOGGLE */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               {/* Dual-Mode Preview Toggle */}
               <div className="flex items-center border border-zinc-800 bg-zinc-950 p-0.5">
                 <button
                   type="button"
                   onClick={() => setPreviewViewportMode('3d-canvas')}
-                  className={`px-2.5 py-1 text-[11px] font-bold uppercase transition flex items-center gap-1.5 ${
+                  className={`px-2 sm:px-2.5 py-1 text-[10px] sm:text-[11px] font-bold uppercase transition flex items-center gap-1.5 ${
                     previewViewportMode === '3d-canvas'
                       ? 'bg-[#5322FF] text-white shadow-[0_0_10px_rgba(83,34,255,0.4)]'
                       : 'text-zinc-400 hover:text-zinc-200'
                   }`}
                 >
-                  <span>[🎮 3D WebGL Canvas]</span>
+                  <span>[🎮 3D Canvas]</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setPreviewViewportMode('remotion-video')}
-                  className={`px-2.5 py-1 text-[11px] font-bold uppercase transition flex items-center gap-1.5 ${
+                  className={`px-2 sm:px-2.5 py-1 text-[10px] sm:text-[11px] font-bold uppercase transition flex items-center gap-1.5 ${
                     previewViewportMode === 'remotion-video'
                       ? 'bg-[#00E5FF] text-black shadow-[0_0_10px_rgba(0,229,255,0.4)]'
                       : 'text-zinc-400 hover:text-zinc-200'
                   }`}
                 >
-                  <span>[🎬 Remotion Video Preview]</span>
+                  <span>[🎬 Video]</span>
                 </button>
               </div>
 
               <span className="hidden sm:inline-block text-zinc-700">|</span>
 
-              <span className="flex items-center gap-1.5 font-bold text-zinc-200">
+              <span className="hidden sm:flex items-center gap-1.5 font-bold text-zinc-200">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
                 <span>[ STATUS: OPERATIONAL ]</span>
               </span>
-              <span className="hidden sm:inline-block text-zinc-600">|</span>
-              <span className="hidden sm:inline-flex items-center gap-1 text-[11px] text-emerald-400">
+              <span className="hidden md:inline-block text-zinc-600">|</span>
+              <span className="hidden md:inline-flex items-center gap-1 text-[11px] text-emerald-400">
                 <CheckCircle2 className="w-3.5 h-3.5" />
                 <span>GATE: ZOD VALIDATED</span>
               </span>
             </div>
 
             {/* Device Switcher & Controls */}
-            <div className="flex items-center gap-2">
-              <div className="flex items-center border border-zinc-800 bg-zinc-950 p-0.5">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="hidden md:flex items-center border border-zinc-800 bg-zinc-950 p-0.5">
                 <button
                   onClick={() => setDeviceMode('desktop')}
                   className={`p-1.5 transition ${
@@ -2034,12 +2026,12 @@ export const CraftStudioConfigurator: React.FC = () => {
                 </button>
               </div>
 
-              <div className="h-4 w-[1px] bg-zinc-800 hidden sm:block" />
+              <div className="h-4 w-[1px] bg-zinc-800 hidden md:block" />
 
               {/* View Raw Code Button */}
               <button
                 onClick={() => setIsCodeModalOpen(true)}
-                className="px-2.5 py-1 border border-zinc-700 bg-zinc-900 text-zinc-300 hover:text-white flex items-center gap-1 text-xs transition"
+                className="px-2 sm:px-2.5 py-1 border border-zinc-700 bg-zinc-900 text-zinc-300 hover:text-white flex items-center gap-1 text-xs transition"
               >
                 <Code className="w-3.5 h-3.5 text-[#00E5FF]" />
                 <span className="hidden sm:inline">Raw Code</span>
@@ -2070,7 +2062,14 @@ export const CraftStudioConfigurator: React.FC = () => {
           </div>
 
           {/* Central Canvas Viewport Frame */}
-          <div className="flex-1 w-full h-full p-2 flex items-center justify-center overflow-hidden bg-black relative">
+          <div
+            className={`w-full p-1 sm:p-2 flex items-center justify-center overflow-hidden bg-[#05050A] relative touch-pan-y ${
+              isFullscreen
+                ? 'flex-1 h-full'
+                : 'h-[250px] sm:h-[300px] lg:flex-1 lg:h-full'
+            }`}
+            style={{ touchAction: 'pan-y' }}
+          >
             <div
               className={`h-full transition-all duration-300 relative border border-white/10 flex items-center justify-center bg-black overflow-hidden ${
                 deviceMode === 'desktop'
