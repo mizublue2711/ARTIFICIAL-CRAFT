@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import * as THREE from 'three';
+import { itemFadeUpVariants } from '@/components/motion/ScrollDirectorSection';
 import {
   ExternalLink,
   Cpu,
@@ -397,12 +399,18 @@ export const HeadlessSwarmSection: React.FC = () => {
 
               {/* Bold Headline */}
               <div className="space-y-3">
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight uppercase font-mono leading-snug">
+                <motion.h2
+                  variants={itemFadeUpVariants}
+                  className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight uppercase font-mono leading-snug"
+                >
                   {t('pylonMainHeading')}
-                </h2>
-                <p className="text-xs sm:text-sm text-zinc-300 font-sans leading-relaxed border-l-2 border-cyan-400 pl-4 py-1">
+                </motion.h2>
+                <motion.p
+                  variants={itemFadeUpVariants}
+                  className="text-xs sm:text-sm text-zinc-300 font-sans leading-relaxed border-l-2 border-cyan-400 pl-4 py-1"
+                >
                   {t('pylonSubheading')}
-                </p>
+                </motion.p>
               </div>
 
               {/* 5 Agent Pylon Badges Grid */}

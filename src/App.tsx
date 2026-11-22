@@ -4,6 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import BackToTop from '@/components/BackToTop';
 import BatchProductionModal from '@/components/BatchProductionModal';
+import { PreloaderStage } from '@/components/motion/PreloaderStage';
 import { LanguageProvider } from '@/context/LanguageContext';
 
 import Home from '@/pages/Home';
@@ -18,18 +19,28 @@ import ShowcasePage from '@/pages/ShowcasePage';
 
 function App() {
   const [isBatchModalOpen, setIsBatchModalOpen] = useState(false);
+  const [isPreloaderComplete, setIsPreloaderComplete] = useState(false);
 
   const handleOpenBatchModal = () => setIsBatchModalOpen(true);
 
   return (
     <LanguageProvider>
       <BrowserRouter>
+        <PreloaderStage onComplete={() => setIsPreloaderComplete(true)} />
         <div className="relative w-full min-h-screen bg-[#05050A] text-zinc-200 selection:bg-cyan-400/20 flex flex-col justify-between">
           <Navbar onOpenBatchModal={handleOpenBatchModal} />
 
           <div className="w-full flex-1 bg-[#05050A]">
             <Routes>
-              <Route path="/" element={<Home onOpenBatchModal={handleOpenBatchModal} />} />
+              <Route
+                path="/"
+                element={
+                  <Home
+                    onOpenBatchModal={handleOpenBatchModal}
+                    isPreloaderComplete={isPreloaderComplete}
+                  />
+                }
+              />
               <Route path="/library" element={<Library />} />
               <Route path="/flipbook/:slug" element={<FlipbookReader />} />
               <Route path="/playground" element={<PlaygroundPage />} />

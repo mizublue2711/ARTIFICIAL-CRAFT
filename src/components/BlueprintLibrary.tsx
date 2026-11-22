@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import pipelineBlueprintsData from '@/data/pipeline-blueprints.json';
 import { useTranslation } from '@/hooks/useTranslation';
+import { itemFadeUpVariants, StickyStackContainer } from '@/components/motion';
 
 export interface BlueprintNode {
   step: number;
@@ -316,11 +317,7 @@ function BlueprintCard({ bp, index }: { bp: PipelineBlueprint; index: number }) 
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.4, delay: index * 0.08 }}
+    <div
       className="group relative border border-zinc-800 bg-zinc-950 font-mono hover:border-zinc-700 transition-colors flex flex-col justify-between"
     >
       <div
@@ -343,9 +340,9 @@ function BlueprintCard({ bp, index }: { bp: PipelineBlueprint; index: number }) 
                   {bp.tier}
                 </span>
               </div>
-              <h3 className="type-card-title">
+              <motion.h3 variants={itemFadeUpVariants} className="type-card-title">
                 {bp.name}
-              </h3>
+              </motion.h3>
             </div>
             <div className="text-right shrink-0">
               <div className="type-node-title">{bp.node_count}</div>
@@ -354,9 +351,9 @@ function BlueprintCard({ bp, index }: { bp: PipelineBlueprint; index: number }) 
           </div>
 
           {/* Description */}
-          <p className="type-body-narrative mb-5">
+          <motion.p variants={itemFadeUpVariants} className="type-body-narrative mb-5">
             {localizedDescription}
-          </p>
+          </motion.p>
 
           {/* Node Workflow Diagram: Horizontal sequence connected with arrows */}
           <div className="border border-zinc-800 bg-[#09090b] p-3 mb-4 overflow-x-auto">
@@ -612,7 +609,7 @@ function BlueprintCard({ bp, index }: { bp: PipelineBlueprint; index: number }) 
           </AnimatePresence>,
           document.body,
         )}
-    </motion.div>
+    </div>
   );
 }
 
@@ -629,26 +626,30 @@ export default function BlueprintLibrary() {
 
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
           <motion.h2
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.5 }}
+            variants={itemFadeUpVariants}
             className="type-section-title max-w-2xl leading-[1.05]"
           >
             {t('blueprintSectionTitle') || t('bp_title_line1')}
             <br />
             <span className="text-zinc-500">{t('bp_title_line2')}</span>
           </motion.h2>
-          <p className="max-w-md type-body-narrative border-l-2 border-[#5322ff] pl-3">
+          <motion.p
+            variants={itemFadeUpVariants}
+            className="max-w-md type-body-narrative border-l-2 border-[#5322ff] pl-3"
+          >
             {t('blueprintSectionSubtitle') || t('bp_desc')}
-          </p>
+          </motion.p>
         </div>
 
-        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+        <StickyStackContainer
+          topOffsetBase={112}
+          topOffsetIncrement={24}
+          className="mt-10 pb-12"
+        >
           {BLUEPRINTS.map((bp, i) => (
             <BlueprintCard key={bp.id} bp={bp} index={i} />
           ))}
-        </div>
+        </StickyStackContainer>
 
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 border border-zinc-800 bg-zinc-950 p-5">
           <div className="flex items-center gap-3">

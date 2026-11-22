@@ -14,6 +14,7 @@ export interface Monolith3DNodeProps extends UniversalComponentProps {
   height?: string | number;
   className?: string;
   autoPulseSpeed?: number;
+  externalExploded?: number; // Normalized scroll progress (0.0 to 1.0)
 }
 
 export const Monolith3DNode: React.FC<Monolith3DNodeProps> = ({
@@ -21,6 +22,7 @@ export const Monolith3DNode: React.FC<Monolith3DNodeProps> = ({
   speed = 1.0,
   autoPulseSpeed = 1.0,
   className = '',
+  externalExploded,
 }) => {
   const { ref: viewportRef, isInView } = useInViewport();
   const mountRef = useRef<HTMLDivElement>(null);
@@ -64,6 +66,16 @@ export const Monolith3DNode: React.FC<Monolith3DNodeProps> = ({
   useEffect(() => {
     sceneControllerRef.current?.setPaused(!isInView);
   }, [isInView]);
+
+  // Scrub Monolith disassembly from external scroll progress (0.0 to 1.0)
+  useEffect(() => {
+    if (typeof externalExploded === 'number' && sceneControllerRef.current?.monolith) {
+      // Smooth runway calibration: 0.0 at top -> peak 0.95 at 70% runway -> holds during un-pin (85%-100%)
+      const targetExploded = Math.max(0, Math.min(0.95, (externalExploded / 0.7) * 0.95));
+      sceneControllerRef.current.monolith.setExplodedProgress(targetExploded);
+      mountRef.current?.setAttribute('data-exploded', targetExploded.toFixed(2));
+    }
+  }, [externalExploded]);
 
   // Initialize Three.js Scene and Synth with proper cleanup on unmount
   useEffect(() => {

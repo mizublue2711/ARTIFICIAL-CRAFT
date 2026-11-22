@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { ShowcaseProject } from '@/types/showcase';
 import { useTranslation } from '@/context/useLanguage';
+import { itemFadeUpVariants } from '@/components/motion/ScrollDirectorSection';
 import {
   Compass,
   Cpu,
@@ -84,12 +86,12 @@ export const ShowcaseProjectCard: React.FC<ShowcaseProjectCardProps> = ({ projec
         <div className="lg:col-span-5 space-y-6">
           {/* Title & About Overview */}
           <div>
-            <h3 className="type-card-title mb-3">
+            <motion.h3 variants={itemFadeUpVariants} className="type-card-title mb-3">
               {title}
-            </h3>
-            <p className="type-body-narrative">
+            </motion.h3>
+            <motion.p variants={itemFadeUpVariants} className="type-body-narrative">
               {about}
-            </p>
+            </motion.p>
           </div>
 
           {/* Impressive Metric Banner */}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import Hero from '@/components/Hero';
 import BentoGrid from '@/components/BentoGrid';
 import BlueprintLibrary from '@/components/BlueprintLibrary';
@@ -7,6 +8,12 @@ import ExistentialBlackbox from '@/components/ExistentialBlackbox';
 import Experts from '@/components/Experts';
 import CraftStudioConfigurator from '@/components/studio/CraftStudioConfigurator';
 import HeadlessSwarmSection from '@/components/home/HeadlessSwarmSection';
+import {
+  MacroLayer,
+  ScrollDirectorSection,
+  StandaloneLabSection,
+  itemFadeUpVariants,
+} from '@/components/motion';
 import { useTranslation } from '@/context/useLanguage';
 
 class StudioErrorBoundary extends React.Component<
@@ -51,6 +58,7 @@ class StudioErrorBoundary extends React.Component<
 
 interface HomeProps {
   onOpenBatchModal?: () => void;
+  isPreloaderComplete?: boolean;
 }
 
 function LogoMarquee() {
@@ -80,62 +88,95 @@ function LogoMarquee() {
   );
 }
 
-export default function Home({ onOpenBatchModal }: HomeProps) {
+export default function Home({ onOpenBatchModal, isPreloaderComplete = true }: HomeProps) {
   const { t } = useTranslation();
 
   return (
     <main>
-      {/* Hero section rendering 3D engine in compact mode */}
-      <Hero onOpenBatchModal={onOpenBatchModal} monolithMode="compact" />
-      <LogoMarquee />
+      {/* LAYER 1: Foundation & Reasoning Pipelines */}
+      <MacroLayer layerIndex={1} id="macro-layer-foundation">
+        {/* Hero section rendering 3D engine in compact mode + AutomationCockpit */}
+        <Hero
+          onOpenBatchModal={onOpenBatchModal}
+          monolithMode="compact"
+          isReady={isPreloaderComplete}
+        />
+        <LogoMarquee />
 
-      {/* Zone 03 Headless Swarm Workbench & $0.00 Cloud Render Showcase Section */}
-      <HeadlessSwarmSection />
+        <ScrollDirectorSection>
+          <BlueprintLibrary />
+        </ScrollDirectorSection>
+      </MacroLayer>
 
-      {/* Unified Interactive Node Matrix Teaser pointing to /playground */}
-      <InteractiveNodeMatrix />
+      {/* LAYER 2: 3D High-Density Labs & Runtimes */}
+      <MacroLayer layerIndex={2} id="macro-layer-labs">
+        {/* Zone 03 Headless Swarm Workbench & 5 Autonomous GPU Pylons */}
+        <StandaloneLabSection>
+          <HeadlessSwarmSection />
+        </StandaloneLabSection>
 
-      {/* Fixed Section: Studio Configurator Node (Nhà máy sản xuất Web 3D No-Code/Low-Code) */}
-      <section id="studio-configurator" className="relative w-full border-t border-zinc-800 bg-[#09090B]">
-        <div className="max-w-7xl mx-auto px-6 pt-16 pb-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-zinc-800 pb-6">
-            <div>
-              <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-[#5322FF]/20 border border-[#5322FF]/50 text-purple-300 font-mono text-[10px] font-bold uppercase tracking-widest mb-3">
-                <span className="w-2 h-2 rounded-full bg-[#00E5FF] animate-pulse" />
-                {t('configuratorNodeBadge')}
+        {/* Unified Interactive Node Matrix Teaser pointing to /playground */}
+        <StandaloneLabSection>
+          <InteractiveNodeMatrix />
+        </StandaloneLabSection>
+
+        {/* Fixed Section: Studio Configurator Node (Nhà máy sản xuất Web 3D No-Code/Low-Code) */}
+        <StandaloneLabSection id="studio-configurator" className="border-t border-zinc-800 bg-[#09090B]">
+          <div className="max-w-7xl mx-auto px-6 pt-16 pb-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-zinc-800 pb-6">
+              <div>
+                <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-[#5322FF]/20 border border-[#5322FF]/50 text-purple-300 font-mono text-[10px] font-bold uppercase tracking-widest mb-3">
+                  <span className="w-2 h-2 rounded-full bg-[#00E5FF] animate-pulse" />
+                  {t('configuratorNodeBadge')}
+                </div>
+                <motion.h2
+                  variants={itemFadeUpVariants}
+                  className="text-2xl md:text-4xl font-extrabold text-white tracking-tight uppercase font-mono"
+                >
+                  {t('configuratorHeader')}
+                </motion.h2>
+                <motion.p
+                  variants={itemFadeUpVariants}
+                  className="text-xs md:text-sm text-zinc-400 font-mono mt-2 max-w-2xl"
+                >
+                  Real-time Cybernetic Brutalism design engine. Customize brand parameters, generate AI palettes, inspect 4-stage exploded assembly, and compile deterministic 60FPS WebGL artifacts.
+                </motion.p>
               </div>
-              <h2 className="text-2xl md:text-4xl font-extrabold text-white tracking-tight uppercase font-mono">
-                {t('configuratorHeader')}
-              </h2>
-              <p className="text-xs md:text-sm text-zinc-400 font-mono mt-2 max-w-2xl">
-                Real-time Cybernetic Brutalism design engine. Customize brand parameters, generate AI palettes, inspect 4-stage exploded assembly, and compile deterministic 60FPS WebGL artifacts.
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <a
-                href="https://multi-zone-spatial-3d-compound-engine-v4-0-calibrated.mizu2711.workers.dev/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2 bg-[#5322FF] hover:bg-[#5322FF]/90 text-white font-mono text-xs font-bold uppercase transition flex items-center gap-2 shadow-[0_0_15px_rgba(83,34,255,0.4)]"
-              >
-                <span>{t('enterFactoryNodeBtn')}</span>
-              </a>
+              <div className="flex items-center gap-2">
+                <a
+                  href="https://multi-zone-spatial-3d-compound-engine-v4-0-calibrated.mizu2711.workers.dev/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 bg-[#5322FF] hover:bg-[#5322FF]/90 text-white font-mono text-xs font-bold uppercase transition flex items-center gap-2 shadow-[0_0_15px_rgba(83,34,255,0.4)]"
+                >
+                  <span>{t('enterFactoryNodeBtn')}</span>
+                </a>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Embedded Studio Configurator */}
-        <div className="w-full border-b border-zinc-800">
-          <StudioErrorBoundary>
-            <CraftStudioConfigurator />
-          </StudioErrorBoundary>
-        </div>
-      </section>
+          {/* Embedded Studio Configurator */}
+          <div className="w-full border-b border-zinc-800">
+            <StudioErrorBoundary>
+              <CraftStudioConfigurator />
+            </StudioErrorBoundary>
+          </div>
+        </StandaloneLabSection>
 
-      <BentoGrid />
-      <BlueprintLibrary />
-      <ExistentialBlackbox />
-      <Experts />
+        <StandaloneLabSection>
+          <BentoGrid />
+        </StandaloneLabSection>
+      </MacroLayer>
+
+      {/* LAYER 3: The Substrate & Closing Protocol */}
+      <MacroLayer layerIndex={3} id="macro-layer-substrate">
+        <StandaloneLabSection>
+          <ExistentialBlackbox />
+        </StandaloneLabSection>
+        <StandaloneLabSection>
+          <Experts />
+        </StandaloneLabSection>
+      </MacroLayer>
     </main>
   );
 }

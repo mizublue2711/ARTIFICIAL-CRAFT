@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { itemFadeUpVariants } from '@/components/motion/ScrollDirectorSection';
 import {
   Brain,
   Workflow,
@@ -77,19 +78,19 @@ export default function BentoGrid() {
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         <SectionLabel>{t('bento_section_label')}</SectionLabel>
         <motion.h2
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.5 }}
+          variants={itemFadeUpVariants}
           className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white max-w-3xl uppercase font-mono leading-[1.05]"
         >
           {t('bento_title_line1')}
           <br />
           <span className="text-zinc-500">{t('bento_title_line2')}</span>
         </motion.h2>
-        <p className="mt-4 max-w-2xl text-[15px] text-zinc-400 leading-relaxed font-sans border-l-2 border-[#00E5FF] pl-4">
+        <motion.p
+          variants={itemFadeUpVariants}
+          className="mt-4 max-w-2xl text-[15px] text-zinc-400 leading-relaxed font-sans border-l-2 border-[#00E5FF] pl-4"
+        >
           {t('bento_desc')}
-        </p>
+        </motion.p>
 
         <div className="mt-10 grid grid-cols-1 md:grid-cols-6 gap-4 auto-rows-[minmax(180px,auto)]">
           {/* Card 1 — VibePath Automation Engine */}

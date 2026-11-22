@@ -1,5 +1,6 @@
 import React, { useState, useRef, useMemo, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { itemFadeUpVariants } from '@/components/motion/ScrollDirectorSection';
 import {
   Brain,
   Webhook,
@@ -504,12 +505,18 @@ export const AutomationCockpit: React.FC<AutomationCockpitProps> = ({
                   <div className="type-telemetry-tag mb-1">
                     {activeCategory}
                   </div>
-                  <h4 className="type-section-title leading-snug mb-2">
+                  <motion.h4
+                    variants={itemFadeUpVariants}
+                    className="type-section-title leading-snug mb-2"
+                  >
                     {activeTitle}
-                  </h4>
-                  <p className="type-body-narrative max-w-lg mb-6">
+                  </motion.h4>
+                  <motion.p
+                    variants={itemFadeUpVariants}
+                    className="type-body-narrative max-w-lg mb-6"
+                  >
                     {activeDescription}
-                  </p>
+                  </motion.p>
                 </div>
 
                 <div className="grid grid-cols-3 gap-2">

@@ -1,8 +1,10 @@
 import React, { useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { Box, Film, Image, BarChart3, ChevronRight, ArrowUpRight } from 'lucide-react';
 import { useTranslation } from '@/context/useLanguage';
 import { UniversalComponentProps } from '@/types/preset';
+import { itemFadeUpVariants } from '@/components/motion/ScrollDirectorSection';
 
 export interface NodeCardProps {
   id?: string;
@@ -55,12 +57,12 @@ export const UnifiedHubCard: React.FC<HubCardProps> = ({
       </div>
 
       {/* Title & Description */}
-      <h3 className="type-card-title group-hover:text-[#00E5FF] transition">
+      <motion.h3 variants={itemFadeUpVariants} className="type-card-title group-hover:text-[#00E5FF] transition">
         {title}
-      </h3>
-      <p className="type-body-narrative line-clamp-3">
+      </motion.h3>
+      <motion.p variants={itemFadeUpVariants} className="type-body-narrative line-clamp-3">
         {description}
-      </p>
+      </motion.p>
 
       {/* Tech Stack Pills */}
       <div className="flex flex-wrap gap-1.5 pt-1">
@@ -202,12 +204,12 @@ export const InteractiveNodeMatrix: React.FC<UniversalComponentProps> = ({
               <span className="w-1.5 h-1.5 rounded-full bg-[#00E5FF] animate-ping" />
               {t('matrixTag')}
             </div>
-            <h2 className="type-section-title">
+            <motion.h2 variants={itemFadeUpVariants} className="type-section-title">
               {t('matrixHeading')}
-            </h2>
-            <p className="mt-3 type-body-narrative max-w-xl">
+            </motion.h2>
+            <motion.p variants={itemFadeUpVariants} className="mt-3 type-body-narrative max-w-xl">
               {t('matrixSubheading')}
-            </p>
+            </motion.p>
           </div>
 
           <Link
@@ -250,14 +252,14 @@ export const InteractiveNodeMatrix: React.FC<UniversalComponentProps> = ({
                       <div className="p-2 border border-[#00E5FF]/40 text-[#00E5FF] bg-[#00E5FF]/10">
                         <Icon className="w-5 h-5" />
                       </div>
-                      <h3 className="type-card-title group-hover:text-[#00E5FF] transition-colors">
+                      <motion.h3 variants={itemFadeUpVariants} className="type-card-title group-hover:text-[#00E5FF] transition-colors">
                         {node.title}
-                      </h3>
+                      </motion.h3>
                     </div>
 
-                    <p className="type-body-narrative mb-6">
+                    <motion.p variants={itemFadeUpVariants} className="type-body-narrative mb-6">
                       {node.description || node.subtitle}
-                    </p>
+                    </motion.p>
                   </div>
 
                   {/* Card Bottom - Enforcing 44px min touch target on mobile */}
