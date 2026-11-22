@@ -8,3 +8,4 @@ export * from './StandaloneLabSection';
 export * from './PreloaderStage';
 export * from './StickyStackContainer';
 export * from './MacroLayer';
+export * from './TelemetryMiniDock';

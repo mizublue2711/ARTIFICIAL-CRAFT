@@ -12,6 +12,7 @@ import {
   MacroLayer,
   ScrollDirectorSection,
   StandaloneLabSection,
+  TelemetryMiniDock,
   itemFadeUpVariants,
 } from '@/components/motion';
 import { useTranslation } from '@/context/useLanguage';
@@ -93,14 +94,18 @@ export default function Home({ onOpenBatchModal, isPreloaderComplete = true }: H
 
   return (
     <main>
+      <TelemetryMiniDock />
+
       {/* LAYER 1: Foundation & Reasoning Pipelines */}
       <MacroLayer layerIndex={1} id="macro-layer-foundation">
         {/* Hero section rendering 3D engine in compact mode + AutomationCockpit */}
-        <Hero
-          onOpenBatchModal={onOpenBatchModal}
-          monolithMode="compact"
-          isReady={isPreloaderComplete}
-        />
+        <div id="hero">
+          <Hero
+            onOpenBatchModal={onOpenBatchModal}
+            monolithMode="compact"
+            isReady={isPreloaderComplete}
+          />
+        </div>
         <LogoMarquee />
 
         <ScrollDirectorSection>
@@ -111,7 +116,7 @@ export default function Home({ onOpenBatchModal, isPreloaderComplete = true }: H
       {/* LAYER 2: 3D High-Density Labs & Runtimes */}
       <MacroLayer layerIndex={2} id="macro-layer-labs">
         {/* Zone 03 Headless Swarm Workbench & 5 Autonomous GPU Pylons */}
-        <StandaloneLabSection>
+        <StandaloneLabSection id="pylons">
           <HeadlessSwarmSection />
         </StandaloneLabSection>
 
@@ -121,56 +126,54 @@ export default function Home({ onOpenBatchModal, isPreloaderComplete = true }: H
         </StandaloneLabSection>
 
         {/* Fixed Section: Studio Configurator Node (Nhà máy sản xuất Web 3D No-Code/Low-Code) */}
-        <StandaloneLabSection id="studio-configurator" className="border-t border-zinc-800 bg-[#09090B]">
-          <div className="max-w-7xl mx-auto px-6 pt-16 pb-6">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-zinc-800 pb-6">
-              <div>
-                <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-[#5322FF]/20 border border-[#5322FF]/50 text-purple-300 font-mono text-[10px] font-bold uppercase tracking-widest mb-3">
-                  <span className="w-2 h-2 rounded-full bg-[#00E5FF] animate-pulse" />
-                  {t('configuratorNodeBadge')}
+        {/* Outer Scroll Runway: Provides a 150vh-160vh dwell zone before releasing */}
+        <div id="studio-configurator" className="relative w-full h-[160vh] border-t border-zinc-800 bg-[#09090B]">
+          {/* Sticky Viewport Stage: Anchors cleanly while user rolls through the dwell travel */}
+          <div className="sticky top-0 w-full min-h-screen flex flex-col justify-between">
+            <div className="max-w-7xl mx-auto px-6 pt-8 pb-4 w-full">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-zinc-800 pb-4">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-2.5 py-1 bg-[#5322FF]/20 border border-[#5322FF]/50 text-purple-300 font-mono text-[10px] font-bold uppercase tracking-widest mb-2">
+                    <span className="w-2 h-2 rounded-full bg-[#00E5FF] animate-pulse" />
+                    {t('configuratorNodeBadge')}
+                  </div>
+                  <h2 className="text-xl md:text-3xl font-extrabold text-white tracking-tight uppercase font-mono">
+                    {t('configuratorHeader')}
+                  </h2>
+                  <p className="text-xs md:text-sm text-zinc-400 font-mono mt-1 max-w-2xl">
+                    Real-time Cybernetic Brutalism design engine. Customize brand parameters, generate AI palettes, inspect 4-stage exploded assembly, and compile deterministic 60FPS WebGL artifacts.
+                  </p>
                 </div>
-                <motion.h2
-                  variants={itemFadeUpVariants}
-                  className="text-2xl md:text-4xl font-extrabold text-white tracking-tight uppercase font-mono"
-                >
-                  {t('configuratorHeader')}
-                </motion.h2>
-                <motion.p
-                  variants={itemFadeUpVariants}
-                  className="text-xs md:text-sm text-zinc-400 font-mono mt-2 max-w-2xl"
-                >
-                  Real-time Cybernetic Brutalism design engine. Customize brand parameters, generate AI palettes, inspect 4-stage exploded assembly, and compile deterministic 60FPS WebGL artifacts.
-                </motion.p>
-              </div>
-              <div className="flex items-center gap-2">
-                <a
-                  href="https://multi-zone-spatial-3d-compound-engine-v4-0-calibrated.mizu2711.workers.dev/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2 bg-[#5322FF] hover:bg-[#5322FF]/90 text-white font-mono text-xs font-bold uppercase transition flex items-center gap-2 shadow-[0_0_15px_rgba(83,34,255,0.4)]"
-                >
-                  <span>{t('enterFactoryNodeBtn')}</span>
-                </a>
+                <div className="flex items-center gap-2">
+                  <a
+                    href="https://multi-zone-spatial-3d-compound-engine-v4-0-calibrated.mizu2711.workers.dev/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 bg-[#5322FF] hover:bg-[#5322FF]/90 text-white font-mono text-xs font-bold uppercase transition flex items-center gap-2 shadow-[0_0_15px_rgba(83,34,255,0.4)]"
+                  >
+                    <span>{t('enterFactoryNodeBtn')}</span>
+                  </a>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Embedded Studio Configurator */}
-          <div className="w-full border-b border-zinc-800">
-            <StudioErrorBoundary>
-              <CraftStudioConfigurator />
-            </StudioErrorBoundary>
+            {/* Embedded Studio Configurator */}
+            <div className="w-full flex-1 border-b border-zinc-800 flex flex-col">
+              <StudioErrorBoundary>
+                <CraftStudioConfigurator />
+              </StudioErrorBoundary>
+            </div>
           </div>
-        </StandaloneLabSection>
+        </div>
 
-        <StandaloneLabSection>
+        <StandaloneLabSection id="workflow-vault">
           <BentoGrid />
         </StandaloneLabSection>
       </MacroLayer>
 
       {/* LAYER 3: The Substrate & Closing Protocol */}
       <MacroLayer layerIndex={3} id="macro-layer-substrate">
-        <StandaloneLabSection>
+        <StandaloneLabSection id="blackbox">
           <ExistentialBlackbox />
         </StandaloneLabSection>
         <StandaloneLabSection>

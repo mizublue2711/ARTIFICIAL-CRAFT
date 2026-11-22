@@ -314,7 +314,8 @@ export const CraftStudioConfigurator: React.FC = () => {
   const [activeTabMode, setActiveTabMode] = useState<'FORGE_NODE' | 'USER_WEBAPP_GEN'>('USER_WEBAPP_GEN');
   const [previewViewportMode, setPreviewViewportMode] = useState<PreviewViewportMode>('3d-canvas');
   const [selectedNodePreset, setSelectedNodePreset] = useState<string>('NODE_05_MANUFACTURING_FACTORY');
-  const [activeStep, setActiveStep] = useState<ActiveWizardStep>(1);
+  // Set default initial active step to 3 (3D ENGINE & EXPLODED ASSEMBLY)
+  const [activeStep, setActiveStep] = useState<ActiveWizardStep>(3);
   const [deviceMode, setDeviceMode] = useState<DevicePreviewMode>('desktop');
   const [backgroundShader, setBackgroundShader] = useState<string>('SwissGridHUD');
   const [pointerCoords, setPointerCoords] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -326,6 +327,47 @@ export const CraftStudioConfigurator: React.FC = () => {
   const [copiedCode, setCopiedCode] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const meshListContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleMeshContainerScroll = useCallback(() => {
+    if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+
+    // Throttle by 90ms to allow smooth wheel scrubbing without overwhelming WebGL pipeline
+    scrollTimeoutRef.current = setTimeout(() => {
+      const container = meshListContainerRef.current;
+      if (!container) return;
+
+      const items = container.querySelectorAll<HTMLElement>('[data-mesh-id]');
+      const containerCenter = container.getBoundingClientRect().top + container.clientHeight / 2;
+
+      let closestId = '';
+      let minDistance = Infinity;
+
+      items.forEach((item) => {
+        const rect = item.getBoundingClientRect();
+        const itemCenter = rect.top + rect.height / 2;
+        const dist = Math.abs(containerCenter - itemCenter);
+        if (dist < minDistance) {
+          minDistance = dist;
+          closestId = item.getAttribute('data-mesh-id') || '';
+        }
+      });
+
+      if (closestId && closestId !== (formData.base_component || formData.presetModel)) {
+        setFormData((prev) => ({
+          ...prev,
+          base_component: closestId,
+          presetModel: closestId,
+          modelType: closestId,
+          roboticsNode: {
+            ...prev.roboticsNode,
+            modelType: closestId as any,
+          },
+        }));
+      }
+    }, 90);
+  }, [formData.base_component, formData.presetModel]);
 
   const handleFileSelect = (file: File) => {
     if (file && file.type.startsWith('image/')) {
@@ -739,6 +781,11 @@ export const CraftStudioConfigurator: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2">
+          {/* Magnetic Telemetry Status Beacon */}
+          <div className="hidden md:flex items-center gap-2 py-1 px-3 border border-[#00E5FF]/40 bg-[#00E5FF]/10 text-[#00E5FF] font-mono text-[11px] tracking-widest w-fit">
+            <span className="w-2 h-2 rounded-full bg-[#00E5FF] animate-ping" />
+            <span>[ 🧲 MAGNETIC DWELL // CORE ENGAGED // 60 FPS ]</span>
+          </div>
           <span className="px-2 py-0.5 border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 text-[10px] font-bold">
             [ VERIFICATION: ZOD PASSED ]
           </span>
@@ -757,26 +804,40 @@ export const CraftStudioConfigurator: React.FC = () => {
           {/* Step Indicator Navigation */}
           <div className="p-3 border-b border-zinc-800 bg-zinc-950/70 sticky top-0 z-30">
             <div className="grid grid-cols-5 gap-1 text-center">
-              {[1, 2, 3, 4, 5].map((step) => (
-                <button
-                  key={step}
-                  onClick={() => setActiveStep(step as ActiveWizardStep)}
-                  className={`py-1.5 px-1 border text-[10px] font-bold transition flex flex-col items-center gap-0.5 ${
-                    activeStep === step
-                      ? 'border-[#5322FF] bg-[#5322FF]/20 text-white shadow-[0_0_10px_rgba(83,34,255,0.4)]'
-                      : 'border-zinc-800 bg-zinc-900/40 text-zinc-500 hover:text-zinc-300'
-                  }`}
-                >
-                  <span>STEP 0{step}</span>
-                  <span className="text-[8px] opacity-75 truncate max-w-full">
-                    {step === 1 && 'BRAND'}
-                    {step === 2 && 'STYLIST'}
-                    {step === 3 && '3D MESH'}
-                    {step === 4 && 'TELEMETRY'}
-                    {step === 5 && 'EXPORT'}
-                  </span>
-                </button>
-              ))}
+              {[1, 2, 3, 4, 5].map((step) => {
+                const isStep3 = step === 3;
+                const isActive = activeStep === step;
+
+                return (
+                  <button
+                    key={step}
+                    onClick={() => setActiveStep(step as ActiveWizardStep)}
+                    className={`relative py-1.5 px-1 border text-[10px] font-bold transition flex flex-col items-center gap-0.5 ${
+                      isActive
+                        ? isStep3
+                          ? 'border-[#00F0FF] bg-[#00F0FF]/20 text-cyan-200 shadow-[0_0_12px_rgba(0,240,255,0.45)]'
+                          : 'border-[#5322FF] bg-[#5322FF]/20 text-white shadow-[0_0_10px_rgba(83,34,255,0.4)]'
+                        : isStep3
+                          ? 'border-[#00F0FF]/50 bg-[#00F0FF]/5 text-cyan-400 hover:border-[#00F0FF] hover:bg-[#00F0FF]/15'
+                          : 'border-zinc-800 bg-zinc-900/40 text-zinc-500 hover:text-zinc-300'
+                    }`}
+                  >
+                    {isStep3 && (
+                      <span className="absolute -top-1.5 right-0.5 px-1 py-[0.5px] bg-[#00F0FF] text-black text-[7px] font-black tracking-wider leading-none rounded-none shadow-[0_0_6px_rgba(0,240,255,0.6)]">
+                        CORE // 3D
+                      </span>
+                    )}
+                    <span>STEP 0{step}</span>
+                    <span className="text-[8px] opacity-75 truncate max-w-full">
+                      {step === 1 && 'BRAND'}
+                      {step === 2 && 'STYLIST'}
+                      {step === 3 && '3D MESH'}
+                      {step === 4 && 'TELEMETRY'}
+                      {step === 5 && 'EXPORT'}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -1325,10 +1386,22 @@ export const CraftStudioConfigurator: React.FC = () => {
 
                 {/* 3D Mesh & Component Selector List */}
                 <div className="space-y-2">
-                  <label className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
-                    Base 3D Mesh Component
-                  </label>
-                  <div className="grid grid-cols-1 gap-1.5">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[11px] text-zinc-400 font-bold uppercase tracking-wider">
+                      Base 3D Mesh Component
+                    </label>
+                    <span className="text-[#00E5FF] text-[10px] tracking-widest font-mono">
+                      [ SCROLL TO PREVIEW 20 MESHES // CLICK TO LOCK ]
+                    </span>
+                  </div>
+
+                  {/* Mechanical Mesh Selector Track with Native Scroll-Spy */}
+                  <div
+                    ref={meshListContainerRef}
+                    onScroll={handleMeshContainerScroll}
+                    className="max-h-[300px] overflow-y-auto space-y-1.5 pr-1.5 custom-scrollbar snap-y snap-mandatory border border-zinc-900 bg-zinc-950/60 p-1.5"
+                    style={{ overscrollBehavior: 'contain' }}
+                  >
                     {AVAILABLE_3D_COMPONENTS.map((comp) => {
                       const IconComponent = comp.icon;
                       const activeModel = formData.base_component || formData.presetModel || formData.modelType || DEFAULT_ACTIVE_MODEL_KEY;
@@ -1337,7 +1410,8 @@ export const CraftStudioConfigurator: React.FC = () => {
                         <button
                           key={comp.value}
                           type="button"
-                          onClick={() => {
+                          data-mesh-id={comp.value}
+                          onClick={(e) => {
                             setFormData((prev) => ({
                               ...prev,
                               base_component: comp.value,
@@ -1348,8 +1422,12 @@ export const CraftStudioConfigurator: React.FC = () => {
                                 modelType: comp.value as any,
                               },
                             }));
+                            (e.currentTarget as HTMLElement).scrollIntoView({
+                              behavior: 'smooth',
+                              block: 'nearest',
+                            });
                           }}
-                          className={`w-full px-3 py-2 border text-left text-xs font-mono transition flex items-center justify-between ${
+                          className={`w-full px-3 py-2 border text-left text-xs font-mono transition flex items-center justify-between snap-start ${
                             isSelected
                               ? 'border-[#5322FF] bg-[#5322FF]/20 text-white shadow-[0_0_12px_rgba(83,34,255,0.3)]'
                               : 'border-zinc-800 bg-zinc-950 text-zinc-400 hover:text-white hover:border-zinc-700'
@@ -1409,12 +1487,13 @@ export const CraftStudioConfigurator: React.FC = () => {
                 </div>
 
                 {/* 4-Stage Exploded Assembly Text Inputs & Slider */}
-                <div className="space-y-3 p-3 border border-zinc-800 bg-zinc-950/70">
+                <div className="space-y-3 p-3 border border-zinc-800 bg-zinc-950/70 relative overflow-hidden">
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] text-white font-bold uppercase">
-                      Exploded Assembly Progress
+                    <span className="text-[11px] text-white font-bold uppercase flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#00E5FF] animate-ping" />
+                      <span>Exploded Assembly Progress</span>
                     </span>
-                    <span className="text-xs font-bold text-[#00E5FF]">
+                    <span className="text-xs font-bold text-[#00E5FF] font-mono px-1.5 py-0.5 border border-[#00E5FF]/40 bg-[#00E5FF]/10 shadow-[0_0_8px_rgba(0,229,255,0.2)]">
                       {formData.explodedProgress}%
                     </span>
                   </div>
@@ -1430,7 +1509,7 @@ export const CraftStudioConfigurator: React.FC = () => {
                         explodedProgress: parseInt(e.target.value, 10),
                       }))
                     }
-                    className="w-full accent-[#00E5FF] cursor-pointer"
+                    className="w-full accent-[#00E5FF] cursor-pointer hover:shadow-[0_0_10px_rgba(0,229,255,0.4)] transition-shadow"
                   />
 
                   {/* 4 Stage Labels */}
@@ -2400,10 +2479,11 @@ export const CraftStudioConfigurator: React.FC = () => {
                   {/* Primary CTA Button */}
                   <a
                     href="mailto:thuyvu@artificialcraft.space?subject=ARTIFICIAL%20CRAFT%20-%20Enterprise%203D%20Kinematics%20Consultation"
-                    className="w-full py-2.5 px-3 bg-[#5322FF] hover:bg-[#5322FF]/90 text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(83,34,255,0.5)] border border-[#00E5FF]/30 text-center"
+                    className="relative group w-full py-2.5 px-3 bg-[#5322FF] hover:bg-[#5322FF]/90 text-white font-bold text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(83,34,255,0.6)] border border-[#00E5FF]/50 text-center animate-pulse hover:animate-none"
                   >
-                    <Zap className="w-3.5 h-3.5 text-[#00E5FF] shrink-0" />
-                    <span>[ ⚡ {t('btnBookB2bConsultation')} ]</span>
+                    <span className="absolute -inset-0.5 bg-gradient-to-r from-[#5322FF] via-[#00E5FF] to-[#5322FF] rounded-none opacity-40 group-hover:opacity-100 blur-[2px] transition duration-500 group-hover:duration-200 pointer-events-none" />
+                    <Zap className="relative w-3.5 h-3.5 text-[#00E5FF] shrink-0" />
+                    <span className="relative">[ ⚡ {t('btnBookB2bConsultation')} // CHẾ TÁC KHỐI NÀY // CUSTOMIZE MESH ]</span>
                   </a>
                 </motion.div>
               )}
